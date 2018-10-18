@@ -1,0 +1,73 @@
+#!/bin/sh -l
+
+#$ -o run_sum.out
+#$ -e run_sum.err
+#$ -N run_sum
+#$ -cwd
+#$ -q all.q
+
+#Import the config file with shortcuts and settings
+. /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts/config.sh
+
+#
+# Creates a summary file for the run and prints out a one word status for each sample in the run
+#
+# Usage ./run_sum.sh run_id
+#
+# No modules required
+#
+
+# Checks for proper argumentation
+if [[ $# -eq 0 ]]; then
+	echo "No argument supplied to run_sum.sh, exiting"
+	exit 1
+elif [[ -z "${1}" ]]; then
+	echo "Empty run_id supplied to run_sum.sh, exiting"
+	exit 1
+elif [[ "${1}" = "-h" ]]; then
+	echo "Usage is ./run_sum.sh miseq_run_id -vo(optional)"
+	echo "Output is saved to ${processed}/miseq_run_id"
+	exit 0
+fi
+
+echo "Checking for ${processed}/${1}/${1}_list(_ordered).txt"
+
+if [[ -z ${2} ]]; then
+	if [[ -f ${processed}/${1}/${1}_list_ordered.txt ]]; then
+		list="${processed}/${1}/${1}_list_ordered.txt"
+	elif [[ -f ${processed}/${1}/${1}_list.txt ]]; then
+		list="${processed}/${1}/${1}_list.txt"
+	else
+		echo "No list file exists, cannot do a summary, unless I add in an automagic creator later"
+		exit
+	fi
+	type="project"
+else
+	type="list"
+	list=${share}/${1}
+fi
+runsumdate=$(date "+%m_%d_%Y_at_%Hh_%Mm")
+echo "Creating run summary at ${runsumdate}"
+# Status of each individual sample is updated in its own folder and the run_summary file
+if [[ "${type}" = "project" ]]; then
+	sum_name="${1}_run_summary_at_${runsumdate}.sum"
+	echo "named as project"
+else
+	sum_name="list_summary_at_${runsumdate}.sum"
+	echo "named as list"
+fi
+
+echo "${list}"
+
+while IFS= read -r samples; 
+do
+	echo ${file}
+	file=$(echo "${samples}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
+	proj=$(echo "${samples}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
+	"${shareScript}/validate_piperun.sh" "${file}" "${proj}" > "${processed}/${proj}/${file}/${file}_pipeline_stats.txt"
+	if [[ "${type}" = "project" ]]; then
+		cat "${processed}/${proj}/${file}/${file}_pipeline_stats.txt" >> "${processed}/${proj}/${sum_name}"
+	else
+		cat "${processed}/${proj}/${file}/${file}_pipeline_stats.txt" >> "${share}/${sum_name}"
+	fi
+done < ${list}
