@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Kingella kingae PasteurMLST</title>
+<meta name="viewport" content="width=device_width" />
+<link rel="stylesheet" type="text/css" href="/kingella/bigsdb.css?v=20170614" media="Screen"/>
+<link rel="stylesheet" type="text/css" href="/kingella/jquery_ui.css?v=20170614" media="Screen"/>
+<link rel="stylesheet" type="text/css" href="/kingella/font_awesome.css?v=20170614" media="Screen"/>
+<style type="text/css">
+<!__/* <![CDATA[ */
+.tooltip{display:inline}
+
+/* ]]> */__>
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/Javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery_ui.min.js" type="text/Javascript"></script>
+<script src="/javascript/bigsdb.js?v20160718" type="text/Javascript"></script>
+<script src="/javascript/packery.js" type="text/Javascript"></script>
+<script type="text/Javascript">//<![CDATA[
+$(document).ready(function() 
+    { 
+    	var $grid = $(".grid").packery({
+        	itemSelector: '.grid_item',
+  			gutter: 10,
+        });        
+        $(window).resize(function() {
+    		delay(function(){
+      			$grid.packery();
+    		}, 1000);
+ 		});
+    }  
+    	
+); 
+var delay = (function(){
+  var timer = 0;
+  return function(callback, ms){
+    clearTimeout (timer);
+    timer = setTimeout(callback, ms);
+  };
+})();
+
+//]]></script>
+<meta http_equiv="Content_Type" content="text/html; charset=utf_8" />
+</head>
+<body>
+
+<div class="menu">
+<table>
+<tr>
+<td><a class="logo" href="/"><img src="/images/PasteurMLST.jpg" alt="PasteurMLST" width="122" height="34" style="border:0px" /></a></td>
+
+<td>Query: 
+<a href="/cgi_bin/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public&amp;page=query">Search</a> |
+<a href="/cgi_bin/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public&amp;page=browse">Browse</a> |
+<a href="/cgi_bin/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public&amp;page=listQuery">List</a>
+<br />
+Options: <a href="/cgi_bin/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public&amp;page=options">General</a> |
+<a href="/cgi_bin/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public&amp;page=tableQuery&amp;table=schemes">Schemes</a> | 
+<a href="/cgi_bin/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public&amp;page=tableQuery&amp;table=loci">Loci</a> |
+<a href="/cgi_bin/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public&amp;page=tableQuery&amp;table=scheme_fields">Scheme fields</a>
+<br />
+Breakdown: <a href="/cgi_bin/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public&amp;page=plugin&amp;name=FieldBreakdown">Isolate fields</a> | 
+<a href="/cgi_bin/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public&amp;page=plugin&amp;name=SchemeBreakdown">Scheme/alleles</a> | 
+<a href="/cgi_bin/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public&amp;page=plugin&amp;name=PublicationBreakdown">Publications</a><br />
+Links: 
+<!__<a href="mlstdbnet.pl?db=pubmlst_kingella_isolates_public&amp;page=stats">Stats</a> |__>
+<a href="/cgi_bin/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public">Contents</a> |
+<a href="/kingella/">Home</a> |
+<!__ <a href="$profhome">Profiles Home</a> |__>
+<a href="/cgi_bin/bigsdb/bigscurate.pl?db=pubmlst_kingella_isolates_public">Curate</a>
+</td>
+</tr>
+</table>
+</div>
+
+<div class="content" style="min_height: 400px">
+
+<div id="logindetails">
+<span class="fa fa_sign_in"></span> <a href="/perl/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public&amp;page=login">Log in</a>
+</div>
+<div id="menubutton">
+<a style="cursor:pointer"><span class="fa fa_bars"></span></a>
+</div>
+<div id="menupanel"></div>
+<div id="fieldvalueshelp">
+</div>
+<h1>Kingella kingae PasteurMLST database</h1>
+<div class="box" id="banner">
+<p>This database contains data for a collection of isolates that 
+represent the total known diversity of Kingella kingae.  For every allelic
+profile in the <a href="/cgi_bin/bigsdb/bigsdb.pl?db=pubmlst_kingella_seqdef">profiles/sequence definition database</a>
+there is at least one corresponding isolate deposited here.  Isolates submitted to this database are (in general) those that represent novel allelic profiles and consequently it should be noted that the database
+does not represent an unbiased population sample.</p>
+</div>
+<div class="box" id="index"><div class="scrollable"><div class="grid">
+<div style="float:left;margin_right:1em" class="grid_item">
+<span class="main_icon fa fa_search fa_3x pull_left"></span>
+<h2>Query database</h2><ul class="toplevel">
+<li><a href="/perl/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public&amp;page=query">Search or browse database</a></li>
+<li><a href="/perl/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public&amp;page=profiles">Search by combinations of loci (profiles)</a></li>
+</ul></div>
+<div style="float:left;margin_right:1em" class="grid_item">
+<span class="main_icon fa fa_list_alt fa_3x pull_left"></span>
+<h2>Projects</h2><ul class="toplevel">
+<li><a href="/perl/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public&amp;page=projects">Main public projects</a></li>
+</ul></div>
+<div style="float:left; margin_right:1em" class="grid_item">
+<span class="main_icon fa fa_cogs fa_3x pull_left"></span>
+<h2>Option settings</h2>
+<ul class="toplevel">
+<li><a href="/perl/bigsdb/bigsdb.pl?page=options&amp;db=pubmlst_kingella_isolates_public">Set general options</a>
+ _ including isolate table field handling.
+</li>
+<li>Set display and query options for <a href="/perl/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public&amp;page=tableQuery&amp;table=loci">locus</a>, <a href="/perl/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public&amp;page=tableQuery&amp;table=schemes">schemes</a> or <a href="/perl/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public&amp;page=tableQuery&amp;table=scheme_fields">scheme fields</a>.</li>
+</ul></div>
+<div style="float:left; margin_right:1em" class="grid_item">
+<span class="main_icon fa fa_info_circle fa_3x pull_left"></span>
+<h2>General information</h2><ul class="toplevel">
+<li>Isolates: 137</li><li>Last updated: 2017_10_24</li>
+<li><a href="/perl/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public&amp;page=fieldValues">Defined field values</a></li>
+<li><a href="/perl/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public&amp;page=tableQuery&amp;table=history&amp;order=timestamp&amp;direction=descending&amp;submit=1">Update history</a></li>
+<li><a href="/perl/bigsdb/bigsdb.pl?db=pubmlst_kingella_isolates_public&amp;page=version">About BIGSdb</a></li>
+</ul></div>
+</div></div></div>
+<div class="box" id="plugins"><div class="scrollable"><div class="grid">
+<div style="float:left; margin_right:1em" class="grid_item">
+<span class="plugin_icon fa fa_pie_chart fa_3x pull_left"></span>
+<h2 style="margin_right:1em">Breakdown</h2><ul class="toplevel">
+<li><a href="/perl/bigsdb/bigsdb.pl?page=plugin&amp;name=FieldBreakdown&amp;db=pubmlst_kingella_isolates_public">Single field</a>
+</li>
+<li><a href="/perl/bigsdb/bigsdb.pl?page=plugin&amp;name=TwoFieldBreakdown&amp;db=pubmlst_kingella_isolates_public">Two field</a>
+</li>
+<li><a href="/perl/bigsdb/bigsdb.pl?page=plugin&amp;name=Polymorphisms&amp;db=pubmlst_kingella_isolates_public">Polymorphic sites</a>
+</li>
+<li><a href="/perl/bigsdb/bigsdb.pl?page=plugin&amp;name=Combinations&amp;db=pubmlst_kingella_isolates_public">Unique combinations</a>
+</li>
+<li><a href="/perl/bigsdb/bigsdb.pl?page=plugin&amp;name=SchemeBreakdown&amp;db=pubmlst_kingella_isolates_public">Scheme and alleles</a>
+</li>
+<li><a href="/perl/bigsdb/bigsdb.pl?page=plugin&amp;name=PublicationBreakdown&amp;db=pubmlst_kingella_isolates_public">Publications</a>
+</li>
+<li><a href="/perl/bigsdb/bigsdb.pl?page=plugin&amp;name=SeqbinBreakdown&amp;db=pubmlst_kingella_isolates_public">Sequence bin</a>
+</li>
+<li><a href="/perl/bigsdb/bigsdb.pl?page=plugin&amp;name=TagStatus&amp;db=pubmlst_kingella_isolates_public">Tag status</a>
+</li>
+</ul></div>
+<div style="float:left; margin_right:1em" class="grid_item">
+<span class="plugin_icon fa fa_save fa_3x pull_left"></span>
+<h2 style="margin_right:1em">Export</h2><ul class="toplevel">
+<li><a href="/perl/bigsdb/bigsdb.pl?page=plugin&amp;name=Export&amp;db=pubmlst_kingella_isolates_public">Export dataset</a>
+</li>
+<li><a href="/perl/bigsdb/bigsdb.pl?page=plugin&amp;name=SequenceExport&amp;db=pubmlst_kingella_isolates_public">Sequences</a>
+ _ XMFA / concatenated FASTA formats
+</li>
+</ul></div>
+<div style="float:left; margin_right:1em" class="grid_item">
+<span class="plugin_icon fa fa_line_chart fa_3x pull_left"></span>
+<h2 style="margin_right:1em">Analysis</h2><ul class="toplevel">
+<li><a href="/perl/bigsdb/bigsdb.pl?page=plugin&amp;name=CodonUsage&amp;db=pubmlst_kingella_isolates_public">Codon usage</a>
+</li>
+<li><a href="/perl/bigsdb/bigsdb.pl?page=plugin&amp;name=PresenceAbsence&amp;db=pubmlst_kingella_isolates_public">Presence/absence status of loci</a>
+</li>
+<li><a href="/perl/bigsdb/bigsdb.pl?page=plugin&amp;name=GenomeComparator&amp;db=pubmlst_kingella_isolates_public">Genome comparator</a>
+</li>
+<li><a href="/perl/bigsdb/bigsdb.pl?page=plugin&amp;name=BLAST&amp;db=pubmlst_kingella_isolates_public">BLAST</a>
+</li>
+<li><a href="/perl/bigsdb/bigsdb.pl?page=plugin&amp;name=PhyloTree&amp;db=pubmlst_kingella_isolates_public">PhyloTree</a>
+ _ Generate phylogenetic trees
+</li>
+</ul></div>
+<div style="float:left; margin_right:1em" class="grid_item">
+<span class="plugin_icon fa fa_file_text_o fa_3x pull_left"></span>
+<h2 style="margin_right:1em">Miscellaneous</h2><ul class="toplevel">
+<li><a href="/perl/bigsdb/bigsdb.pl?page=plugin&amp;name=DatabaseFields&amp;db=pubmlst_kingella_isolates_public">Description of database fields</a>
+</li>
+</ul></div>
+</div></div></div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+definitions: neisseria.txt
+13862 profiles
+sourced from: https://pubmlst.org/data/profiles/neisseria.txt
+
+locus abcZ
+abcZ.tfa
+Sourced from https://pubmlst.org/data/alleles/neisseria/abcZ.tfa
+
+locus adk
+adk.tfa
+Sourced from https://pubmlst.org/data/alleles/neisseria/adk.tfa
+
+locus aroE
+aroE.tfa
+Sourced from https://pubmlst.org/data/alleles/neisseria/aroE.tfa
+
+locus fumC
+fumC.tfa
+Sourced from https://pubmlst.org/data/alleles/neisseria/fumC.tfa
+
+locus gdh
+gdh.tfa
+Sourced from https://pubmlst.org/data/alleles/neisseria/gdh.tfa
+
+locus pdhC
+pdhC.tfa
+Sourced from https://pubmlst.org/data/alleles/neisseria/pdhC.tfa
+
+locus pgm
+pgm.tfa
+Sourced from https://pubmlst.org/data/alleles/neisseria/pgm.tfa
+
+all loci: Neisseria_spp..fasta

@@ -1,0 +1,33 @@
+definitions: bcc.txt
+1526 profiles
+sourced from: https://pubmlst.org/data/profiles/bcc.txt
+
+locus atpD
+atpD.tfa
+Sourced from https://pubmlst.org/data/alleles/bcc/atpD.tfa
+
+locus gltB
+gltB.tfa
+Sourced from https://pubmlst.org/data/alleles/bcc/gltB.tfa
+
+locus gyrB
+gyrB.tfa
+Sourced from https://pubmlst.org/data/alleles/bcc/gyrB.tfa
+
+locus recA
+recA.tfa
+Sourced from https://pubmlst.org/data/alleles/bcc/recA.tfa
+
+locus lepA
+lepA.tfa
+Sourced from https://pubmlst.org/data/alleles/bcc/lepA.tfa
+
+locus phaC
+phaC.tfa
+Sourced from https://pubmlst.org/data/alleles/bcc/phaC.tfa
+
+locus trpB
+trpB.tfa
+Sourced from https://pubmlst.org/data/alleles/bcc/trpB.tfa
+
+all loci: Burkholderia_cepacia_complex.fasta

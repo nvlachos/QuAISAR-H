@@ -1,0 +1,33 @@
+definitions: ecoli.txt
+7469 profiles
+sourced from: https://pubmlst.org/data/profiles/ecoli.txt
+
+locus adk
+adk.tfa
+Sourced from https://pubmlst.org/data/alleles/ecoli/adk.tfa
+
+locus fumC
+fumC.tfa
+Sourced from https://pubmlst.org/data/alleles/ecoli/fumC.tfa
+
+locus gyrB
+gyrB.tfa
+Sourced from https://pubmlst.org/data/alleles/ecoli/gyrB.tfa
+
+locus icd
+icd.tfa
+Sourced from https://pubmlst.org/data/alleles/ecoli/icd.tfa
+
+locus mdh
+mdh.tfa
+Sourced from https://pubmlst.org/data/alleles/ecoli/mdh.tfa
+
+locus purA
+purA.tfa
+Sourced from https://pubmlst.org/data/alleles/ecoli/purA.tfa
+
+locus recA
+recA.tfa
+Sourced from https://pubmlst.org/data/alleles/ecoli/recA.tfa
+
+all loci: Escherichia_coli#1.fasta

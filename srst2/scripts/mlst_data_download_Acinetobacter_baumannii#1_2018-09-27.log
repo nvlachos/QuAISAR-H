@@ -1,0 +1,33 @@
+definitions: abaumannii.txt
+1866 profiles
+sourced from: https://pubmlst.org/data/profiles/abaumannii.txt
+
+locus Oxf_gltA
+Oxf_gltA.tfa
+Sourced from https://pubmlst.org/data/alleles/abaumannii/Oxf_gltA.tfa
+
+locus Oxf_gyrB
+Oxf_gyrB.tfa
+Sourced from https://pubmlst.org/data/alleles/abaumannii/Oxf_gyrB.tfa
+
+locus Oxf_gdhB
+Oxf_gdhB.tfa
+Sourced from https://pubmlst.org/data/alleles/abaumannii/Oxf_gdhB.tfa
+
+locus Oxf_recA
+Oxf_recA.tfa
+Sourced from https://pubmlst.org/data/alleles/abaumannii/Oxf_recA.tfa
+
+locus Oxf_cpn60
+Oxf_cpn60.tfa
+Sourced from https://pubmlst.org/data/alleles/abaumannii/Oxf_cpn60.tfa
+
+locus Oxf_gpi
+Oxf_gpi.tfa
+Sourced from https://pubmlst.org/data/alleles/abaumannii/Oxf_gpi.tfa
+
+locus Oxf_rpoD
+Oxf_rpoD.tfa
+Sourced from https://pubmlst.org/data/alleles/abaumannii/Oxf_rpoD.tfa
+
+all loci: Acinetobacter_baumannii#1.fasta
