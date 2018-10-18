@@ -7,6 +7,9 @@
 #$ -q all.q
 
 #Import the config file with shortcuts and settings
+if [[ ! -f "./config.sh" ]]; then
+	cp ./config_template.sh ./config.sh
+fi
 . ./config.sh
 . "${mod_changers}/load_python_3.6.1.sh"
 
@@ -33,7 +36,7 @@ elif [[ "${1}" = "-h" ]]; then
 elif [ -z "$2" ]; then
 	echo "Empty database name supplied to do_busco.sh, exiting"
 	exit 1
-elif [ ! -s "${share}/DBs/BUSCO/${2,}" ]; then
+elif [ ! -s "${local_DBs}/${2,}" ]; then
 	echo "The taxon does not exist in the BUSCO database. This will be noted and the curator of the database will be notified. However, since nothing can be done at the moment....exiting"
 	# Create a dummy folder to put non-results into (if it doesnt exist)
 	if [ ! -d "${processed}/${4}/${1}/BUSCO" ]; then  #create outdir if absent
@@ -54,7 +57,7 @@ fi
 # Sets output folder to parent isolate folder
 OUTDATADIR="${processed}/${3}/${1}"
 # Sets buscoDB to the folder matching the 2nd argument (dbs vary on taxonomic level)
-buscoDB="${share}/DBs/BUSCO/${2,}"
+buscoDB="${local_DBs}/BUSCO/${2,}"
 
 ### BUSCO % Conserved Protein Identity ###
 echo "Running BUSCO for Conserved Protein Identity"

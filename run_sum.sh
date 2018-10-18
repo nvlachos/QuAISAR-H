@@ -7,12 +7,15 @@
 #$ -q all.q
 
 #Import the config file with shortcuts and settings
-. /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts/config.sh
+if [[ ! -f "./config.sh" ]]; then
+	cp ./config_template.sh ./config.sh
+fi
+. ./config.sh
 
 #
 # Creates a summary file for the run and prints out a one word status for each sample in the run
 #
-# Usage ./run_sum.sh run_id
+# Usage ./run_sum.sh run_id output_location
 #
 # No modules required
 #
@@ -44,7 +47,7 @@ if [[ -z ${2} ]]; then
 	type="project"
 else
 	type="list"
-	list=${share}/${1}
+	list=${1}
 fi
 runsumdate=$(date "+%m_%d_%Y_at_%Hh_%Mm")
 echo "Creating run summary at ${runsumdate}"
@@ -68,6 +71,6 @@ do
 	if [[ "${type}" = "project" ]]; then
 		cat "${processed}/${proj}/${file}/${file}_pipeline_stats.txt" >> "${processed}/${proj}/${sum_name}"
 	else
-		cat "${processed}/${proj}/${file}/${file}_pipeline_stats.txt" >> "${share}/${sum_name}"
+		cat "${processed}/${proj}/${file}/${file}_pipeline_stats.txt" >> "${3}/${sum_name}"
 	fi
 done < ${list}

@@ -7,6 +7,9 @@
 #$ -q all.q
 
 # Import the config file with shortcuts and settings
+if [[ ! -f "./config.sh" ]]; then
+	cp ./config_template.sh ./config.sh
+fi
 . ./config.sh
 
 #
@@ -698,7 +701,7 @@ while IFS= read -r bug_lines; do
 	bug_name=$(echo "${bug_lines}" | cut -d'	' -f3)
 	#echo "Should be adding ${bug_size} for ${bug_name}"
 	mmb_bugs["${bug_name}"]="${bug_size}"
-done < ${share}/DBs/MMB_Bugs.txt
+done < ${local_DBs}/MMB_Bugs.txt
 genus_initial="${genusweighted^}"
 genus_initial="${genusweighted:0:1}"
 ass_ID="${genus_initial}.${speciesweighted}"

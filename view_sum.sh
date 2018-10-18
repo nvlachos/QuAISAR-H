@@ -7,7 +7,10 @@
 #$ -q all.q
 
 #Import the config file with shortcuts and settings
-. /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts/config.sh
+if [[ ! -f "./config.sh" ]]; then
+	cp ./config_template.sh ./config.sh
+fi
+. ./config.sh
 
 #
 # Creates a summary file for the run and prints out a one word status for each sample in the run
@@ -46,11 +49,11 @@ else
 	echo "Creating run summary at ${runsumdate}"
 	# Status of each individual sample is updated in its own folder and the run_summary file
 	sum_name="${1}"
-	if [[ -f "${share}/${1}" ]]; then
-		sum_file="${share}/${1}"
+	if [[ -f "${1}" ]]; then
+		sum_file="${1}"
 		echo -e "\n\nSummary found: ${1}\n"
 	else
-		echo "Summary file not found: ${share}/${1}"
+		echo "Summary file not found: ${1}"
 	fi
 fi
 

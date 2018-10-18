@@ -568,7 +568,7 @@ process_samples()	{
 		busco_found=0
 		for tax in $species $genus $family $order $class $phylum $kingdom $domain
 		do
-			if [ -d "${share}/DBs/BUSCO/${tax,}_odb9" ]
+			if [ -d "${local_DBs}/BUSCO/${tax,}_odb9" ]
 			then
 				buscoDB="${tax}_odb9"
 				busco_found=1
@@ -603,10 +603,10 @@ process_samples()	{
 
 	# Run csstar in default mode from config.sh
 	"${shareScript}/run_c-sstar_on_single.sh" "${filename}" "${csstar_gapping}" "${csstar_identity}" "${project}"
-	"${shareScript}/run_c-sstar_on_single_alternate_DB.sh" "${filename}" "${csstar_gapping}" "${csstar_identity}" "${project}" "${share}/DBs/star/ResGANNOT_20180608_srst2.fasta"
+	"${shareScript}/run_c-sstar_on_single_alternate_DB.sh" "${filename}" "${csstar_gapping}" "${csstar_identity}" "${project}" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
 	# Should the parameters be different when checking on plasmids specifically
 	"${shareScript}/run_c-sstar_on_single.sh" "${filename}" "${csstar_gapping}" "${csstar_plasmid_identity}" "${project}" "--plasmid"
-	"${shareScript}/run_c-sstar_on_single_alternate_DB.sh" "${filename}" "${csstar_gapping}" "${csstar_identity}" "${project}" "--plasmid" "${share}/DBs/star/ResGANNOT_20180608_srst2.fasta"
+	"${shareScript}/run_c-sstar_on_single_alternate_DB.sh" "${filename}" "${csstar_gapping}" "${csstar_identity}" "${project}" "--plasmid" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
 
 	# Get end time of csstar and calculate run time and append to time summary (and sum to total time used
 	end=$SECONDS
@@ -618,7 +618,7 @@ process_samples()	{
 	echo "----- Running SRST2 -----"
 	start=$SECONDS
 	"${shareScript}/run_srst2_on_singleDB.sh" "${filename}" "${project}"
-	"${shareScript}/run_srst2_on_singleDB_alternateDB.sh" "${filename}" "${project}" "${share}/DBs/star/ResGANNOT_20180608_srst2.fasta"
+	"${shareScript}/run_srst2_on_singleDB_alternateDB.sh" "${filename}" "${project}" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
 	end=$SECONDS
 	timesrst2=$((end - start))
 	echo "SRST2 - ${timesrst2} seconds" >> "${time_summary}"

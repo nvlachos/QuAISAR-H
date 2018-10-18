@@ -33,6 +33,10 @@ processed="/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles"
 shareScript="$(pwd)"
 # Location of any files being called that have an effect on loaded modules
 mod_changers="${shareScript}/module_changers"
+# Local databases that are necessary for pipeline...ANI, BUSCO, star, adapters, phiX
+local_DBs="/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases"
+# Scicomp databases that are necessary for pipeline...eventually refseq, kraken, gottcha, 
+scicomp_DBs="/scicomp/reference"
 # Maximum number of quaisar pipelines to be running concurrently
 max_quaisars=25
 
@@ -71,7 +75,7 @@ trim_endtype=PE
 trim_phred="phred$phred"
 
 #Location of the Adapter FASTA file used for trimming
-trim_adapter_location=$shareScript/adapters.fasta
+trim_adapter_location="${local_DBs}/adapters.fasta"
 
 #Seeding mismatches
 trim_seed_mismatch=2
@@ -116,11 +120,11 @@ csstar_low=80
 csstar_other=40
 
 ##### c-SSTAR standard settings #####
-argannot_srst2=$(find /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/DBs/star/argannot_*_srst2.fasta -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
+argannot_srst2=$(find ${local_DBs}/star/argannot_*_srst2.fasta -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
 #echo "ARG Summary found: ${argannot_srst2}"
-resFinder_srst2=$(find /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/DBs/star/resFinder_*_srst2.fasta -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
+resFinder_srst2=$(find ${local_DBs}/star/resFinder_*_srst2.fasta -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
 #echo "RES Summary found: ${resFinder_srst2}"
-resGANNOT_srst2=$(find /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/DBs/star/ResGANNOT_*_srst2.fasta -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
+resGANNOT_srst2=$(find ${local_DBs}/star/ResGANNOT_*_srst2.fasta -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
 resGANNOT_previous_srst2=$(find /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/DBs/star/ResGANNOT_*_srst2.fasta -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 2 | tail -n 1)
 #echo "ResGANNOT Summary found: ${resGANNOT_srst2}"
 argannot_srst2_filename=$(echo "${argannot_srst2}" | rev | cut -d'/' -f1 | rev | cut -d'_' -f1,2)
@@ -136,8 +140,8 @@ csstar_plasmid_identity="o"
 # Will throw a warning flag during run summary if percent of unclassified reads are above this value
 unclass_flag=30
 # MiniKraken DB (smaller, but effective option)
-kraken_mini_db="${share}/DBs/minikrakenDB/"
-kraken_full_db="/scicomp/reference/kraken/1.0.0/kraken_db/"
+kraken_mini_db="$${local_DBs}/minikrakenDB/"
+kraken_full_db="${scicomp_DBs}/kraken/1.0.0/kraken_db/"
 ### MOVE THESE TO SHARE/DBS
 # Kraken normal, specially made by Tom with bacteria,archae, and viruses
 # kraken_db="/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/kraken_BAV_17/"
@@ -147,7 +151,7 @@ contamination_threshold=25
 
 ##### gottcha #####
 # gottcha DB
-gottcha_db="${share}/DBs/gottcha/GOTTCHA_BACTERIA_c4937_k24_u30.species"
+gottcha_db="${local_DBs}/gottcha/GOTTCHA_BACTERIA_c4937_k24_u30.species"
 
 ##### plasmidFinder ######
 #percent identity to match
@@ -155,9 +159,9 @@ plasmidFinder_identity=95.00
 #percent length minimum (although not found in command line version, yet)
 plasmidFinder_length=60
 #DB
-plasmidFinder_all_DB=$(find /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/DBs/plasmidFinder_DB/all_*.fsa -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
-plasmidFinder_entero_DB=$(find /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/DBs/plasmidFinder_DB/enterobacteriaceae_*.fsa -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
-plasmidFinder_gpos_DB=$(find /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/DBs/plasmidFinder_DB/gram_positive_*.fsa -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
+#plasmidFinder_all_DB=$(find ${local_DBs}/plasmidFinder_DB/all_*.fsa -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
+#plasmidFinder_entero_DB=$(find ${local_DBs}/plasmidFinder_DB/enterobacteriaceae_*.fsa -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
+#plasmidFinder_gpos_DB=$(find ${local_DBs}/plasmidFinder_DB/gram_positive_*.fsa -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
 
 
 ########## Settings used by downstream scripts ##########
@@ -171,4 +175,6 @@ project_parser_Percent_identity=95
 # Minimum % length required to be included in report when looking at plasmid assembly, typically more leeway is given to plasmid only hits, otherwise gets placed in rejects file
 project_parser_plasmid_Percent_identity=40
 
-
+if [[ ! -f "./config.sh" ]]; then
+	cp ./config_template.sh ./config.sh
+fi

@@ -7,7 +7,10 @@
 #$ -q short.q
 
 #Import the config file with shortcuts and settings
-. /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts/config.sh
+if [[ ! -f "./config.sh" ]]; then
+	cp ./config_template.sh ./config.sh
+fi
+. ./config.sh
 
 #
 # Creates a summary file for the run and prints out a one word status for each sample in the run
@@ -145,7 +148,7 @@ do
 	DB_genus=$(echo ${line} | cut -d"," -f1)
 	#echo "${Genus}:${DB_genus}"
 	if [[ "${Genus,}" = "${DB_genus}" ]]; then
-			tax_DB="${share}/DBs/taxes.csv"
+			tax_DB="${local_DBs}/taxes.csv"
 			Domain=$(echo "${line}" | cut -d"," -f2)
 			Phylum=$(echo "${line}" | cut -d"," -f3)
 			Class=$(echo "${line}" | cut -d"," -f4)
@@ -154,5 +157,5 @@ do
 			#echo ":${Family}:"
 			break
 	fi
-done < "${share}/DBs/taxes.csv"
+done < "${local_DBs}/taxes.csv"
 printf "(${source}) \nD:	${Domain} \nP:	${Phylum} \nC:	${Class} \nO:	${Order} \nF:	${Family} \nG:	${Genus} \ns:	${species} \n" > "${processed}/${project}/${sample}/${sample}.tax"

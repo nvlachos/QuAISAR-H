@@ -7,9 +7,11 @@
 #$ -q all.q
 
 #Import the config file with shortcuts and settings
+if [[ ! -f "./config.sh" ]]; then
+	cp ./config_template.sh ./config.sh
+fi
 . ./config.sh
 #Import the module file that loads all necessary mods
-. "${mod_changers}/pipeline_mods"
 . "${mod_changers}/prep_srst2.sh"
 
 #

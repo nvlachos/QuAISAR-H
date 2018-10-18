@@ -7,6 +7,9 @@
 #$ -q all.q
 
 #Import the config file with shortcuts and settings
+if [[ ! -f "./config.sh" ]]; then
+	cp ./config_template.sh ./config.sh
+fi
 . ./config.sh
 
 # Runs the kraken classification tool which identifies the most likely taxonomic classification for the sample

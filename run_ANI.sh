@@ -7,8 +7,11 @@
 #$ -q all.q
 
 #Import the config file with shortcuts and settings
+if [[ ! -f "./config.sh" ]]; then
+	cp ./config_template.sh ./config.sh
+fi
 . ./config.sh
-${shareScript}/module_changers/list_modules.sh
+${mod_changers}/list_modules.sh
 
 #
 # Script to calculate the average nucleotide identity of a sample to numerous other samples from the same genus (genus dependent)
@@ -32,9 +35,9 @@ elif [[ "${1}" = "-h" ]]; then
 	echo "Output is saved to in ${processed}/sample_name/ANI"
 	exit 0
 elif [ -z "$2" ]; then
-	echo "Empty database name supplied to run_ANI.sh. Second argument should be a genus found in ${share}/DBs/ANI/  ...Exiting"
+	echo "Empty database name supplied to run_ANI.sh. Second argument should be a genus found in ${local_DBs}/ANI/  ...Exiting"
 	exit 1
-elif [ ! -s "${share}/DBs/aniDB/${2,}" ]; then
+elif [ ! -s "${local_DBs}/aniDB/${2,}" ]; then
 	echo "The genus does not exist in the ANI database. This will be noted and the curator of the database will be notified. However, since nothing can be done at the moment....exiting"
 	# Create a dummy folder to put non-results into (if it doesnt exist
 	if [ ! -d "${processed}/${4}/${1}/ANI" ]; then  #create outdir if absent
@@ -95,8 +98,8 @@ me=$(whoami)
 genus_in=${2}
 
 #Creates a local copy of the database folder
-echo "trying to copy ${share}/DBs/aniDB/${genus_in,}/"
-cp "${share}/DBs/aniDB/${genus_in,}/"*".fna" "${OUTDATADIR}/ANI/localANIDB/"
+echo "trying to copy ${local_DBs}/aniDB/${genus_in,}/"
+cp "${local_DBs}/aniDB/${genus_in,}/"*".fna" "${OUTDATADIR}/ANI/localANIDB/"
 
 #Copies the samples assembly contigs to the local ANI db folder
 cp "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" "${OUTDATADIR}/ANI/localANIDB/sample_${2}_${3}.fasta"
@@ -105,7 +108,7 @@ cp "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" "${OUTDATADIR}/ANI/loca
 
 # Add in all other assemblies to compare using list provided as argument
 if [[ "${others}" = "true" ]]; then
-	if [[ -f "${share}/${5}" ]]; then
+	if [[ -f "${5}" ]]; then
 		while IFS= read -r var; do
 			sample_name=$(echo "${var}" | cut -d'/' -f2 | tr -d '[:space:]')
 			project=$(echo "${var}" | cut -d'/' -f1 | tr -d '[:space:]')
@@ -115,9 +118,9 @@ if [[ "${others}" = "true" ]]; then
 			else
 				cp "${processed}/${project}/${sample_name}/Assembly/${sample_name}_scaffolds_trimmed.fasta" "${OUTDATADIR}/ANI/localANIDB/${temp}"
 			fi
-		done < ${share}/${5}
+		done < ${5}
 	else
-		echo "List file: ${share}/${5}, does not exist. Analysis will continue with only database samples"
+		echo "List file: ${5}, does not exist. Analysis will continue with only database samples"
 	fi
 else
 	echo "Analysis will be completed using only database isolates"
@@ -278,7 +281,7 @@ if [[ "${best_file}" = *"_scaffolds_trimmed" ]]; then
 					fi					
 				done < ${processed}/${project}/${sample_name}/${sample_name}_pipeline_stats.txt
 		fi
-	done < ${share}/${5}
+	done < ${5}
 # if the best hit cmoes from the aniDB then lookup the taxonomy on ncbi
 else
 	#Extracts the accession number from the definition line

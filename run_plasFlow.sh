@@ -7,6 +7,9 @@
 #$ -q all.q
 
 # Import the config file with shortcuts and settings
+if [[ ! -f "./config.sh" ]]; then
+	cp ./config_template.sh ./config.sh
+fi
 . ./config.sh
 #. "${mod_changers}/pipeline_mods"
 #. /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts/module_changers/pipeline_mods
