@@ -67,7 +67,7 @@ echo "Started ANI at ${start_time}"
 OUTDATADIR="${processed}/${4}/${1}"
 
 # Checks to see if an ANI folder already exists and creates it if not
-if [ ! -d "$OUTDATADIR/ANI" ]; then 
+if [ ! -d "$OUTDATADIR/ANI" ]; then
 	echo "Creating $OUTDATADIR/ANI"
 	mkdir -p "$OUTDATADIR/ANI"
 fi
@@ -127,7 +127,7 @@ else
 fi
 
 #Renames all files in the localANIDB folder by changing extension from fna to fasta (which pyani needs)
-for file in ${OUTDATADIR}/ANI/localANIDB/*.fna; 
+for file in ${OUTDATADIR}/ANI/localANIDB/*.fna;
 do
 	temp=$(basename "${file}" .fna).fasta
 	mv "${file}" "${OUTDATADIR}/ANI/localANIDB/${temp}"
@@ -204,7 +204,8 @@ fi
 
 #Calls pyani on local db folder
 python -V
-python "${shareScript}/pyani/average_nucleotide_identity.py" -i "${OUTDATADIR}/ANI/localANIDB" -o "${OUTDATADIR}/ANI/aniM" --write_excel
+#python "${shareScript}/pyani/average_nucleotide_identity.py" -i "${OUTDATADIR}/ANI/localANIDB" -o "${OUTDATADIR}/ANI/aniM" --write_excel
+python "/apps/x86_64/pyani/pyani/bin/average_nucleotide_identity.py" -i "${OUTDATADIR}/ANI/localANIDB" -o "${OUTDATADIR}/ANI/aniM" --write_excel
 
 #Calls pyani using scicomp module
 #. "${shareScript}/module_changers/load_python_3.6.sh"
@@ -212,7 +213,7 @@ python "${shareScript}/pyani/average_nucleotide_identity.py" -i "${OUTDATADIR}/A
 #. "${shareScript}/module_changers/unload_python_3.6.sh"
 
 #Extracts the query sample info line for percentage identity from the percent identity file
-while IFS='' read -r line; 
+while IFS='' read -r line;
 do
 #	echo "!-${line}"
 	if [[ ${line:0:7} = "sample_" ]]; then
@@ -238,11 +239,11 @@ IFS="	" read -r -a percents <<< "${sampleline}"
 n=${#samples[@]}
 
 #Extracts all %id against the query sample (excluding itself) and writes them to file
-for (( i=0; i<n; i++ )); 
+for (( i=0; i<n; i++ ));
 do
 #	echo ${i}-${samples[i]}
 	if [[ ${samples[i]:0:7} = "sample_" ]];
-	then 
+	then
 #		echo "Skipping ${i}"
 		continue
 	fi
@@ -255,7 +256,7 @@ done
 sort -nr -t' ' -k1 -o "${OUTDATADIR}/ANI/best_hits_ordered.txt" "${OUTDATADIR}/ANI/best_hits.txt"
 #Extracts the first line of the file (best hit)
 best=$(head -n 1 "${OUTDATADIR}/ANI/best_hits_ordered.txt")
-#Creates an array from the best hit 
+#Creates an array from the best hit
 IFS=' ' read -r -a def_array <<< "${best}"
 #echo -${def_array[@]}+
 #Captures the assembly file name that the best hit came from
@@ -278,7 +279,7 @@ if [[ "${best_file}" = *"_scaffolds_trimmed" ]]; then
 					if [[ "${tool}" = "weighted Classify " ]]; then
 						best_organism_guess=$(echo "${pstats_line}" | cut -d':' -f3 | cut -d' ' -f3,4)
 						break 2
-					fi					
+					fi
 				done < ${processed}/${project}/${sample_name}/${sample_name}_pipeline_stats.txt
 		fi
 	done < ${5}
@@ -291,7 +292,7 @@ else
 fi
 # Uncomment this if you want to restrict ID to only genus species, without more resolute definition
 #best_organism_guess_arr=($best_organism_guess})
-#best_organism_guess="${best_organism_guess_arr[@]:0:2}" 
+#best_organism_guess="${best_organism_guess_arr[@]:0:2}"
 
 #Creates a line at the top of the file to show the best match in an easily readable format that matches the style on the MMB_Seq log
 echo -e "${best_percent}%-${best_organism_guess}(${best_file}.fna)\\n$(cat "${OUTDATADIR}/ANI/best_hits_ordered.txt")" > "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${genus_in}).txt"

@@ -9,13 +9,13 @@
 hostname=$(hostname -f)
 host=$(echo ${hostname} | cut -d'.' -f1)
 #echo ${hostname}
-if [[ "${host}" = "scicomp-mue-01" ]]; 
+if [[ "${host}" = "scicomp-mue-01" ]];
 then
 	host="biolinux"
 elif [[ "${host}" =~ ^("login01"|"aspen"|"login.aspen"|"login02"|"login2.aspen") ]];
 then
 	host="aspen_login"
-elif [[ "${host:0:4}" = "node" ]]; 
+elif [[ "${host:0:4}" = "node" ]];
 then
 	host="cluster:${host}"
 else
@@ -27,7 +27,7 @@ fi
 
 #Parent Share Folder location
 share="/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR"
-#shortcut to processed samples folder 
+#shortcut to processed samples folder
 processed="/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles"
 # Locations of all scripts and necessary accessory files
 shareScript="$(pwd)"
@@ -35,7 +35,7 @@ shareScript="$(pwd)"
 mod_changers="${shareScript}/module_changers"
 # Local databases that are necessary for pipeline...ANI, BUSCO, star, adapters, phiX
 local_DBs="/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases"
-# Scicomp databases that are necessary for pipeline...eventually refseq, kraken, gottcha, 
+# Scicomp databases that are necessary for pipeline...eventually refseq, kraken, gottcha,
 scicomp_DBs="/scicomp/reference"
 # Maximum number of quaisar pipelines to be running concurrently
 max_quaisars=25
@@ -65,6 +65,8 @@ bbduk_mem=Xmx20g
 bbduk_k=31
 #hamming distance
 bbduk_hdist=1
+#location of phiX sequences
+phiX_location="${local_DBs}/phiX.fasta"
 
 #####Trimmomatic specific config options #####
 #Tells trimmomatic to use single or paired ends
@@ -140,7 +142,7 @@ csstar_plasmid_identity="o"
 # Will throw a warning flag during run summary if percent of unclassified reads are above this value
 unclass_flag=30
 # MiniKraken DB (smaller, but effective option)
-kraken_mini_db="$${local_DBs}/minikrakenDB/"
+kraken_mini_db="${local_DBs}/minikrakenDB/"
 kraken_full_db="${scicomp_DBs}/kraken/1.0.0/kraken_db/"
 ### MOVE THESE TO SHARE/DBS
 # Kraken normal, specially made by Tom with bacteria,archae, and viruses

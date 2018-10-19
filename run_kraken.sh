@@ -45,11 +45,11 @@ fi
 # Sets the parent output folder as the sample name folder in the processed samples folder in MMB_Data
 OUTDATADIR="${processed}/${4}/${1}"
 
-# Creates folder for output from kraken 
+# Creates folder for output from kraken
 if [ ! -d "$OUTDATADIR/kraken" ]; then
 	echo "Creating $OUTDATADIR/kraken"
 	mkdir -p "$OUTDATADIR/kraken/${2}Assembly"
-elif [ ! -d "$OUTDATADIR/kraken/{2}Assembly" ]; then 
+elif [ ! -d "$OUTDATADIR/kraken/{2}Assembly" ]; then
 	echo "Creating $OUTDATADIR/kraken/${2}Assembly"
 	mkdir -p "$OUTDATADIR/kraken/${2}Assembly"
 fi
@@ -67,7 +67,7 @@ elif [ "${3}" = "single" ]; then
 	kraken --db "${kraken_mini_db}" --preload --fastq-input --threads "${procs}" --output "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}.kraken" --classified-out "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}.classified ${OUTDATADIR}/FASTQs/${1}.single.fastq"
 # Runs kraken on the assembly
 elif [ "${3}" = "assembled" ]; then
-	kraken --db "${kraken_mini_db}" --preload --threads "${procs}" --output "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}.kraken" --classified-out "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}.classified" "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" 
+	kraken --db "${kraken_mini_db}" --preload --threads "${procs}" --output "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}.kraken" --classified-out "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}.classified" "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
 	# Attempting to weigh contigs and produce standard krona and list output using a modified version of Rich's weighting scripts (will also be done on pure contigs later)
 	echo "1"
 	python ${shareScript}/Kraken_Assembly_Converter_2_Exe.py "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}.kraken"
@@ -110,7 +110,7 @@ perl "${shareScript}/Methaplan_to_krona.pl" -p "${OUTDATADIR}/kraken/${2}Assembl
 # Change perl version to allow ktimporttext to work ( cant use anything but 5.12.3
 . "${shareScript}/module_changers/perl_5221_to_5123.sh"
 # Run the krona graph generator from krona output
-ktImportText "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}.krona" -o "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}.html" 
+ktImportText "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}.krona" -o "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}.html"
 # Return perl version back to 5.22.1
 . "${shareScript}/module_changers/perl_5123_to_5221.sh"
 

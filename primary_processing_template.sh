@@ -465,6 +465,7 @@ process_samples()	{
 	echo "SRST2 - ${time16s} seconds" >> "${time_summary}"
 	totaltime=$((totaltime + time16s))
 
+	# Get taxonomy from currently available files (Only ANI, has not been run...yet, will change after discussions)
 	"${shareScript}/determine_taxID.sh" "${filename}" "${project}"
 
 	# Capture the anticipated taxonomy of the sample using kraken on assembly output
@@ -541,7 +542,7 @@ process_samples()	{
 		mv "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed.fasta" "${OUTDATADIR}/${filename}/plasmid_Assembly/${filename}_plasmid_scaffolds_trimmed_original.fasta"
 		python3 "${shareScript}/fasta_headers.py" "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_scaffolds_trimmed_original.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta"
 	fi
-	
+
 	### Average Nucleotide Identity ###
 	echo "----- Running ANI for Species confirmation -----"
 	# ANI uses assembly and sample would have exited already if assembly did not complete, so no need to check
@@ -606,7 +607,7 @@ process_samples()	{
 	"${shareScript}/run_c-sstar_on_single_alternate_DB.sh" "${filename}" "${csstar_gapping}" "${csstar_identity}" "${project}" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
 	# Should the parameters be different when checking on plasmids specifically
 	"${shareScript}/run_c-sstar_on_single.sh" "${filename}" "${csstar_gapping}" "${csstar_plasmid_identity}" "${project}" "--plasmid"
-	"${shareScript}/run_c-sstar_on_single_alternate_DB.sh" "${filename}" "${csstar_gapping}" "${csstar_identity}" "${project}" "--plasmid" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
+	"${shareScript}/run_c-sstar_on_single_alternate_DB.sh" "${filename}" "${csstar_gapping}" "${csstar_plasmid_identity}" "${project}" "--plasmid" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
 
 	# Get end time of csstar and calculate run time and append to time summary (and sum to total time used
 	end=$SECONDS
