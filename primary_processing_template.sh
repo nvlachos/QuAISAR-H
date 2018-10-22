@@ -164,9 +164,9 @@ for ((i=1 ; i <= nopts ; i++)); do
 			;;
 		#Tells the script that only the single isolate needs to be run
 		-s | --single)
-			echo "$2/${3}" > "./tempList_${global_time}.txt"
+			echo "${2}/${3}" > "./tempList_${global_time}.txt"
 			list_path="./tempList_${global_time}.txt"
-			INDATADIR="${processed}/${3}" # NOT USED yet in single mode
+			INDATADIR="${processed}/${3}"
 			if [[ -z ${BASEDIR} ]]; then
 				BASEDIR="${processed}"
 			fi
@@ -539,7 +539,7 @@ process_samples()	{
 	mv "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed_original.fasta"
 	python3 "${shareScript}/fasta_headers.py" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed_original.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta"
 	if [[ -s "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed.fasta" ]]; then
-		mv "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed.fasta" "${OUTDATADIR}/${filename}/plasmid_Assembly/${filename}_plasmid_scaffolds_trimmed_original.fasta"
+		mv "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed.fasta" "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed_original.fasta"
 		python3 "${shareScript}/fasta_headers.py" "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_scaffolds_trimmed_original.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta"
 	fi
 
