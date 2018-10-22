@@ -25,7 +25,7 @@
 echo "${processed}/${1}/2019_MMBSeq_Log.xlsx"
 
 # Copy the newest log file to the local directory
-cp "${shareScript}/2019_MMBSeq_Log.xlsx" "${processed}/${1}/2019_MMBSeq_Log.xlsx"
+cp "${local_DBs}/Seqlog_copies/2019_MMBSeq_Log.xlsx" "${processed}/${1}/2019_MMBSeq_Log.xlsx"
 
 # Convert log file to csv format for searchability
 `soffice --headless --convert-to csv "${processed}/${1}/2019_MMBSeq_Log.xlsx" --outdir "${processed}/${1}/" > "${processed}/${1}/convert.out"`
