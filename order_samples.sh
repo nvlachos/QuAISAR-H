@@ -19,17 +19,17 @@
 #
 
 
-#### #copy MMBSEQLog to local 
+#### #copy MMBSEQLog to local
 > "${processed}/${1}/${1}_list_ordered.txt"
 
-echo "${processed}/${1}/2018_MMBSeq_Log.xlsx"
+echo "${processed}/${1}/2019_MMBSeq_Log.xlsx"
 
 # Copy the newest log file to the local directory
-cp "${shareScript}/2018_MMBSeq_Log.xlsx" "${processed}/${1}/2018_MMBSeq_Log.xlsx"
+cp "${shareScript}/2019_MMBSeq_Log.xlsx" "${processed}/${1}/2019_MMBSeq_Log.xlsx"
 
 # Convert log file to csv format for searchability
-`soffice --headless --convert-to csv "${processed}/${1}/2018_MMBSeq_Log.xlsx" --outdir "${processed}/${1}/" > "${processed}/${1}/convert.out"`
-echo "Excel file: 2018_MMBSeq_Log.xlsx has been converted to CSV"
+`soffice --headless --convert-to csv "${processed}/${1}/2019_MMBSeq_Log.xlsx" --outdir "${processed}/${1}/" > "${processed}/${1}/convert.out"`
+echo "Excel file: 2019_MMBSeq_Log.xlsx has been converted to CSV"
 
 # Parse log file csv until run_if matches
 while IFS= read -r var; do
@@ -44,7 +44,7 @@ while IFS= read -r var; do
 		#echo "doing else"
 		line_project=$(echo "${var}" | cut -d',' -f21)
 	fi
-	#echo "${line_project}:${1}" 
+	#echo "${line_project}:${1}"
 	# If the run_id matches, then add ID to list (automatically placing them in the proper order)
 	if [[ "${line_project}" = "${1}" ]]; then
 		line_id=$(echo "${var}" | cut -d',' -f3)
@@ -54,12 +54,12 @@ while IFS= read -r var; do
 		#echo "Not in ${1}"
 		:
 	fi
-done < ${processed}/${1}/2018_MMBSeq_Log.csv
+done < ${processed}/${1}/2019_MMBSeq_Log.csv
 
 # Remove intermediate files from sorting
 rm -r ${processed}/${1}/sorted_summaries.txt
-rm -r ${processed}/${1}/2018_MMBSeq_Log.csv
-rm -r ${processed}/${1}/2018_MMBSeq_Log.xlsx
+rm -r ${processed}/${1}/2019_MMBSeq_Log.csv
+rm -r ${processed}/${1}/2019_MMBSeq_Log.xlsx
 rm -r ${processed}/${1}/convert.out
 
 # Check if the sorted file has content, else delete it since something went wrong
