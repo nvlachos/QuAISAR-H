@@ -71,8 +71,7 @@ if [[ -s "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta" ]]
 	fi
 	#python "${shareScript}/quast/quast.py" -o "${OUTDATADIR}/Assembly_Stats_plasmid" "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta"
 	#python "/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts/quast/quast.py" -o "${OUTDATADIR}/Assembly_Stats_plasmid" "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta"
-	python "/apps/x86_64/quast/quast-4.3/quast.py" -o "${OUTDATADIR}/Assembly_Stats_plasmid" "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta"
-
+	python2 "quast.py" -o "${OUTDATADIR}/Assembly_Stats_plasmid" "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta"
 	mv "${OUTDATADIR}/Assembly_Stats_plasmid/report.txt" "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.txt"
 	mv "${OUTDATADIR}/Assembly_Stats_plasmid/report.tsv" "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.tsv"
 fi
