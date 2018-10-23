@@ -540,7 +540,7 @@ process_samples()	{
 	python3 "${shareScript}/fasta_headers.py" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed_original.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta"
 	if [[ -s "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed.fasta" ]]; then
 		mv "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed.fasta" "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed_original.fasta"
-		python3 "${shareScript}/fasta_headers.py" "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_scaffolds_trimmed_original.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta"
+		python3 "${shareScript}/fasta_headers.py" "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed_original.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta"
 	fi
 
 	### Average Nucleotide Identity ###
@@ -549,7 +549,7 @@ process_samples()	{
 	# Get start time of ANI
 	start=$SECONDS
 	# run ANI
-	"${shareScript}/run_ANI.sh" "${filename}" "${genus}" "${species}" "${project}"
+	"${shareScript}/run_ANI.sh" "${filename}" "${genus,}" "${species}" "${project}"
 	#"${shareScript}/run_ANI.sh" "${filename}" "All" "All" "${project}"
 	# Get end time of ANI and calculate run time and append to time summary (and sum to total time used
 	end=$SECONDS
@@ -571,7 +571,7 @@ process_samples()	{
 		do
 			if [ -d "${local_DBs}/BUSCO/${tax,}_odb9" ]
 			then
-				buscoDB="${tax}_odb9"
+				buscoDB="${tax,}_odb9"
 				busco_found=1
 				break
 			fi

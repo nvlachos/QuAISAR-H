@@ -82,8 +82,9 @@ cd "${processed}/${2}/${1}/MLST/srst2"
 
 echo "do"
 python2 "${shareScript}/srst2/scripts/getmlst.py" --species "${3} ${4}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
-echo "done"
+getmlst.py --species "${3} ${4}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
 
+echo "done"
 if [[ "${3}" == "Acinetobacter" ]]; then
 	echo "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
 	if [[ "${4}" == "baumannii#1" ]]; then
@@ -117,7 +118,7 @@ echo "--input_pe ${processed}/${2}/${1}/trimmed/${1}_S1_L001_R1_001.fastq.gz ${p
 
 python "${shareScript}/srst2/scripts/srst2.py" --input_pe "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" --output "${processed}/${2}/${1}/MLST/srst2/${1}" --mlst_db "${mlst_db}" --mlst_definitions "${mlst_defs}" --mlst_delimiter "${mlst_delimiter}"
 
-mv "${processed}/${2}/${1}/MLST/srst2/${1}__mlst__${3}_${4}__results.txt" "${processed}/${2}/${1}/MLST/${1}_srst2_${3}_${4}.mlst" 
+mv "${processed}/${2}/${1}/MLST/srst2/${1}__mlst__${3}_${4}__results.txt" "${processed}/${2}/${1}/MLST/${1}_srst2_${3}_${4}.mlst"
 rm -r "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz"
 rm -r "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz"
 #rm -r "${processed}/${2}/${1}/MLST/srst2/*.tfa"
