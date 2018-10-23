@@ -69,3 +69,4 @@ module load pyani
 module unload ncbi-blast+/2.2.26
 module load srst2
 module unload Python/2.7.11
+module load quast/4.3

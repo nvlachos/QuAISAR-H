@@ -9,6 +9,6 @@ fi
 # Would not clear mods properly so made this file to run on the cluster...sorry
 
 echo "Clearing modules" >&2
-module clear >&2
+module purge >&2
 echo "modules cleared" >&2
 module list

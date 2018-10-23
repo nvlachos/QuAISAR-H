@@ -61,7 +61,7 @@ cd "${OUTDATADIR}/Assembly_Stats"
 # Call QUAST
 #python "${shareScript}/quast/quast.py" -o "${OUTDATADIR}/Assembly_Stats" "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
 #python "/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts/quast/quast.py" -o "${OUTDATADIR}/Assembly_Stats" "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
-python  "/apps/x86_64/quast/quast-4.3/quast.py" -o "${OUTDATADIR}/Assembly_Stats" "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
+python2 "quast.py" -o "${OUTDATADIR}/Assembly_Stats" "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
 mv "${OUTDATADIR}/Assembly_Stats/report.txt" "${OUTDATADIR}/Assembly_Stats/${1}_report.txt"
 mv "${OUTDATADIR}/Assembly_Stats/report.tsv" "${OUTDATADIR}/Assembly_Stats/${1}_report.tsv"
 if [[ -s "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta" ]]; then
