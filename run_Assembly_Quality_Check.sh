@@ -12,6 +12,9 @@ if [[ ! -f "./config.sh" ]]; then
 fi
 . ./config.sh
 
+module load quast/4.3
+module load Python/2.7.15
+
 #
 # Checks the Assembly quality  using Toms tool and QUAST and comparing the output of both
 # Important stats are # of contigs, assembly length, n%0 and G/C content
@@ -78,6 +81,9 @@ fi
 
 # Return to original directory
 cd "${owd}"
+
+module unload quast/4.3
+module unload Python/2.7.15
 
 #Show that the script seemingly completed successfully
 exit 0
