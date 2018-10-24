@@ -16,7 +16,7 @@ fi
 #. "${mod_changers}/list_modules.sh"
 
 module load Python/2.7.15
-module load bowtie2/2.2.9
+module load bowtie2/2.2.4
 module load samtools/0.1.18
 
 #
