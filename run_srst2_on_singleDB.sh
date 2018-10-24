@@ -12,6 +12,7 @@ if [[ ! -f "./config.sh" ]]; then
 fi
 . ./config.sh
 #Import the module file that loads all necessary mods
+module clear
 . "${mod_changers}/prep_srst2.sh"
 #. "${mod_changers}/list_modules.sh"
 
