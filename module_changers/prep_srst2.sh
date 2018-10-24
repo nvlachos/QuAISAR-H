@@ -14,7 +14,7 @@ module unload python/3.5.2
 module unload perl/5.22.1
 
 module load Python/2.7.15
-module load bowtie2/2.2.9
+module load bowtie2/2.2.4
 module load samtools/0.1.18
 module load perl/5.16.1-MT
 module load srst2
