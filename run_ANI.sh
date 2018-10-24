@@ -205,7 +205,7 @@ fi
 #Calls pyani on local db folder
 python -V
 #python "${shareScript}/pyani/average_nucleotide_identity.py" -i "${OUTDATADIR}/ANI/localANIDB" -o "${OUTDATADIR}/ANI/aniM" --write_excel
-python "/apps/x86_64/pyani/pyani/bin/average_nucleotide_identity.py" -i "${OUTDATADIR}/ANI/localANIDB" -o "${OUTDATADIR}/ANI/aniM" --write_excel
+python "average_nucleotide_identity.py" -i "${OUTDATADIR}/ANI/localANIDB" -o "${OUTDATADIR}/ANI/aniM" --write_excel
 
 #Calls pyani using scicomp module
 #. "${shareScript}/module_changers/load_python_3.6.sh"
