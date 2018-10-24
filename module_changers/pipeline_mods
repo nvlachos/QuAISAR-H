@@ -7,16 +7,6 @@ fi
 
 # File sourced by primary_processing or any sub units if run independently to source modules or add links/shortcuts that are needed for analysis
 
-# User specific aliases and functions
-alias sharespace='cd /scicomp/groups/OID/NCEZID/DHQP/CEMB/'
-alias MiSeqM04765='cd /scicomp/instruments/17-4-4248_Illumina-MiSeq-M04765'
-alias MiSeqM01025='cd /scicomp/instruments/17-4-4248_Illumina-MiSeq-M01025'
-alias MiSeqM02103='cd /scicomp/instruments/17-4-4248_Illumina-MiSeq-M01025'
-alias pacbio='cd /scicomp/instruments/23-12-651_PacBio-RSII-RS42135/'
-alias scripts='cd /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts'
-alias samples='cd /scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles'
-alias phylo='cd /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/Phylogeny_analyses'
-
 export PATH=$PATH:$HOME/bin/
 export BLASTN="blastn"
 export MAKEBLASTDB="makeblastdb"
