@@ -13,7 +13,7 @@ fi
 . ./config.sh
 #Import the module file that loads all necessary mods
 . "${mod_changers}/prep_srst2.sh"
-
+bowtie2
 #
 # Usage ./run_srst2.sh   sample_name   run_ID
 #
