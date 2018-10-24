@@ -18,6 +18,8 @@ fi
 module load Python/2.7.15
 module load bowtie2/2.2.4
 module load samtools/0.1.18
+. "${mod_changers}/list_modules.sh"
+
 
 #
 # Usage ./run_srst2.sh   sample_name   run_ID
