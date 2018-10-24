@@ -15,3 +15,4 @@ module unload python/3.5.2
 module load Python/2.7.15
 module load bowtie2/2.2.4
 module load samtools/0.1.18
+module load srst2
