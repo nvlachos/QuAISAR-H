@@ -18,8 +18,10 @@ fi
 module load Python/2.7.15
 module load bowtie2/2.2.4
 module load samtools/0.1.18
+SRST2_BOWTIE2=/apps/x86_64/bowtie2/bowtie2-2.2.4/bowtie2
+export SRST2_BOWTIE2
 . "${mod_changers}/list_modules.sh"
-
+bowtie2 --version
 
 #
 # Usage ./run_srst2.sh   sample_name   run_ID
