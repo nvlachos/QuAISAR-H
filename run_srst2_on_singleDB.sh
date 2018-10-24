@@ -15,15 +15,15 @@ fi
 module clear
 . "${mod_changers}/prep_srst2.sh"
 #. "${mod_changers}/list_modules.sh"
-python2 -V
-module load Python/2.7.15
-module load bowtie2/2.2.9
-module load samtools/0.1.18
-module load srst2
-SRST2_BOWTIE2=/apps/x86_64/bowtie2/bowtie2-2.2.9/bowtie2
-export SRST2_BOWTIE2
+#python2 -V
+#module load Python/2.7.15
+#module load bowtie2/2.2.9
+#module load samtools/0.1.18
+#module load srst2
+#SRST2_BOWTIE2=/apps/x86_64/bowtie2/bowtie2-2.2.9/bowtie2
+#export SRST2_BOWTIE2
 . "${mod_changers}/list_modules.sh"
-python2 -V
+#python2 -V
 bowtie2
 
 #
