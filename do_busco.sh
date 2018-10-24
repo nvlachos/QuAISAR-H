@@ -37,6 +37,7 @@ elif [ -z "$2" ]; then
 	echo "Empty database name supplied to do_busco.sh, exiting"
 	exit 1
 elif [ ! -s "${local_DBs}/${2,}" ]; then
+	echo "Exists? - ${local_DBs}/${2,}"
 	echo "The taxon does not exist in the BUSCO database. This will be noted and the curator of the database will be notified. However, since nothing can be done at the moment....exiting"
 	# Create a dummy folder to put non-results into (if it doesnt exist)
 	if [ ! -d "${processed}/${4}/${1}/BUSCO" ]; then  #create outdir if absent
