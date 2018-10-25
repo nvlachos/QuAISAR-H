@@ -103,7 +103,6 @@ cp "${local_DBs}/aniDB/${genus_in,}/"*".fna" "${OUTDATADIR}/ANI/localANIDB/"
 
 #Copies the samples assembly contigs to the local ANI db folder
 cp "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" "${OUTDATADIR}/ANI/localANIDB/sample_${2}_${3}.fasta"
-#mv "${OUTDATADIR}/ANI/localANIDB/${1}_scaffolds_trimmed.fasta" "${OUTDATADIR}/ANI/localANIDB/sample_${2}_${3}.fasta"
 
 
 # Add in all other assemblies to compare using list provided as argument
@@ -116,7 +115,7 @@ if [[ "${others}" = "true" ]]; then
 			if [[ "${project}" == "${4}" ]] && [[ "${sample_name}" == "${1}" ]]; then
 				echo "Already in there as ref sample"
 			else
-				cp "${processed}/${project}/${sample_name}/Assembly/${sample_name}_scaffolds_trimmed.fasta" "${OUTDATADIR}/ANI/localANIDB/${temp}"
+				cp "${processed}/${project}/${sample_name}/Assembly/${sample_name}_scaffolds_trimmed.fasta" "${OUTDATADIR}/ANI/localANIDB/temp"
 			fi
 		done < ${5}
 	else
@@ -130,7 +129,7 @@ fi
 for file in ${OUTDATADIR}/ANI/localANIDB/*.fna;
 do
 	temp=$(basename "${file}" .fna).fasta
-	mv "${file}" "${OUTDATADIR}/ANI/localANIDB/${temp}"
+	mv "${file}" "${OUTDATADIR}/ANI/localANIDB/temp"
 done
 
 # Mashtree trimming to reduce run time for ANI
