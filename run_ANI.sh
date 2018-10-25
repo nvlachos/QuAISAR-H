@@ -128,8 +128,8 @@ fi
 #Renames all files in the localANIDB folder by changing extension from fna to fasta (which pyani needs)
 for file in ${OUTDATADIR}/ANI/localANIDB/*.fna;
 do
-	temp=$(basename "${file}" .fna).fasta
-	mv "${file}" "${OUTDATADIR}/ANI/localANIDB/temp"
+	fasta_name=$(basename "${file}" .fna)".fasta"
+	mv "${file}" "${OUTDATADIR}/ANI/localANIDB/${fasta_name}"
 done
 
 # Mashtree trimming to reduce run time for ANI
@@ -172,7 +172,7 @@ if [[ ${sample_count} -gt ${max_ani_samples} ]]; then
 				samples_trimmed=${samples[@]:$(( match - half_max )):${max_ani_samples}}
 			fi
 				#echo "${#samples_trimmed[@]}-${samples_trimmed[@]}"
-			break
+				break
 		fi
 				#echo ${filename}
 	done
@@ -184,7 +184,7 @@ if [[ ${sample_count} -gt ${max_ani_samples} ]]; then
 		echo "Moving ${filename}"
 		cp ${OUTDATADIR}/ANI/localANIDB/${filename} ${OUTDATADIR}/ANI/localANIDB_trimmed/
 	done
-	$(rm -r "${OUTDATADIR}/ANI/localANIDB")
+	# rm -r "${OUTDATADIR}/ANI/localANIDB"
 	mv "${OUTDATADIR}/ANI/localANIDB" "${OUTDATADIR}/ANI/localANIDB_full"
 	mv "${OUTDATADIR}/ANI/localANIDB_trimmed" "${OUTDATADIR}/ANI/localANIDB"
 # Continue without reducing the tree, as there are not enough samples to require reduction
