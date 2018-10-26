@@ -26,7 +26,7 @@ elif [[ "$1" = "-h" ]]; then
 	echo "Usage is ./run_csstar_proj_parser.sh path_to_list_file(single sample ID per line, e.g. B8VHY/1700128 (it must include project id also) gapped/ungapped 80/95/98/99/100 output_prefix plasmid_identity_cutoff(optional, default = 40)"
 	echo "Output location varies depending on which tasks are performed but will be found somewhere under ${share}"
 	exit 0
-elif [[ ! -f ${share}/${1} ]]; then
+elif [[ ! -f ${1} ]]; then
 	echo "list does not exit...exiting"
 	exit 1
 fi
