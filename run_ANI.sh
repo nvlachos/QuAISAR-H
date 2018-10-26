@@ -157,6 +157,7 @@ if [[ ${sample_count} -gt ${max_ani_samples} ]]; then
 	do
 		counter=$(( counter + 1 ))
 		filename=$(echo ${sample} | cut -d':' -f1)
+		echo "${filename}"
 		filename="${filename}.fasta"
 		if [[ "${filename}" == "sample_${2}_${3}.fasta" ]]; then
 			match=${counter}
