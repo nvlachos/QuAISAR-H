@@ -325,6 +325,6 @@ rename="true"
 	echo -e "${project}\t${sample_name}\t${mlst}" >> ${share}/${4}-mlst_summary.txt
 	#echo -e "${sample_name}\t${mlst}" >> ${share}/${4}-mlst_summary.txt
 
-done < ${share}/${1}
+done < ${1}
 
 python "${shareScript}/project_parser.py" "${share}/${4}-csstar_summary_full.txt" "${share}/${4}-plasmid_summary.txt" "${share}/${4}_AR_plasmid_report.csv"
