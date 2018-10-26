@@ -145,14 +145,15 @@ sample_count=$(find ${OUTDATADIR}/ANI/localANIDB/ -type f | wc -l)
 sample_count=$(( sample_count - 1 ))
 # Check if sample count is greater than the max samples for tree size, if so then reduce tree size to max closest samples balanced around submitted isolate
 if [[ ${sample_count} -gt ${max_ani_samples} ]]; then
+	sleep 2
 	tree=$(head -n 1 "${OUTDATADIR}/ANI/${genus_in}_and_${1}_mashtree.dnd")
-	#echo $tree
+	echo $tree
 	tree=$(echo "${tree}" | tr -d '()')
-	#echo $tree
+	echo $tree
 	IFS=',' read -r -a samples <<< "${tree}"
 	counter=0
 	half_max=$(( (max_ani_samples+1) / 2 ))
-	#echo "Halfsies = ${half_max}"
+	echo "Halfsies = ${half_max}"
 	for sample in ${samples[@]};
 	do
 		counter=$(( counter + 1 ))
