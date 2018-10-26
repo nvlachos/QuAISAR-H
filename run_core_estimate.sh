@@ -7,7 +7,7 @@
 #$ -q all.q
 
 #Import the config file with shortcuts and settings
-. /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts/config.sh
+. ./config.sh
 #Import list of mods used during pipeline analysis (or downstream)
 . "${mod_changers}/pipeline_mods"
 

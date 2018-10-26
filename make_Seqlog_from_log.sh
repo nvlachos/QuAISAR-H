@@ -7,7 +7,7 @@
 #$ -q all.q
 
 #Import the config file with shortcuts and settings
-. /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts/config.sh
+. ./config.sh
 # No MODS needed
 
 #

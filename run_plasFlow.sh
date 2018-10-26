@@ -12,8 +12,8 @@ if [[ ! -f "./config.sh" ]]; then
 fi
 . ./config.sh
 #. "${mod_changers}/pipeline_mods"
-#. /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts/module_changers/pipeline_mods
-#. /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts/module_changers/list_modules.sh
+#. ./module_changers/pipeline_mods
+#. ./module_changers/list_modules.sh
 
 #
 # Will attempt to find any plasmids in sample
@@ -39,7 +39,7 @@ fi
 
 module load PlasFlow/1.1
 module load Python/3.5.4
-. /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts/module_changers/list_modules.sh
+. ./module_changers/list_modules.sh
 
 if [[ ! -d "${processed}/${2}/${1}/plasFlow" ]]; then
 	mkdir "${processed}/${2}/${1}/plasFlow"
