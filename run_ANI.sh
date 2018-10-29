@@ -186,7 +186,7 @@ if [[ ${sample_count} -gt ${max_ani_samples} ]]; then
 		echo "Moving ${filename}"
 		cp ${OUTDATADIR}/ANI/localANIDB/${filename} ${OUTDATADIR}/ANI/localANIDB_trimmed/
 	done
-	# rm -r "${OUTDATADIR}/ANI/localANIDB"
+	rm -r "${OUTDATADIR}/ANI/localANIDB_full"
 	mv "${OUTDATADIR}/ANI/localANIDB" "${OUTDATADIR}/ANI/localANIDB_full"
 	mv "${OUTDATADIR}/ANI/localANIDB_trimmed" "${OUTDATADIR}/ANI/localANIDB"
 # Continue without reducing the tree, as there are not enough samples to require reduction
