@@ -29,10 +29,10 @@ cp "${local_DBs}/Seqlog_copies/2019_MMBSeq_Log.xlsx" "${processed}/${1}/2019_MMB
 
 # Convert log file to csv format for searchability
 #`soffice --headless --convert-to csv "${processed}/${1}/2019_MMBSeq_Log.xlsx" --outdir "${processed}/${1}/" > "${processed}/${1}/convert.out"`
-`soffice --headless --convert-to txt "${processed}/${1}/2019_MMBSeq_Log.xlsx" --outdir "${processed}/${1}/" > "${processed}/${1}/convert.out"`
+python2 ${shareScript}/xlsx_converter.py "${processed}/${1}/2019_MMBSeq_Log.xlsx" "FY19 Miseq Isolate Log"
 
 echo "Excel file: 2019_MMBSeq_Log.xlsx has been converted to CSV"
-
+exit
 
 # Parse log file csv until run_if matches
 while IFS= read -r var; do
