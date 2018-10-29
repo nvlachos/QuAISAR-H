@@ -34,17 +34,17 @@ echo "Excel file: 2019_MMBSeq_Log.xlsx has been converted to CSV"
 # Parse log file csv until run_if matches
 while IFS= read -r var; do
 	# Check the format of the city/state column in the log file to determine how many tabs need to be used to find run_id in line
-	#echo "checking ${var}"
-	city_state=$(echo "${var}" | cut -d',' -f16)
-	#echo "|^| "${#city_state}" : "${city_state}
+	echo "checking ${var}"
+	city_state=$(echo "${var}" | cut -d',' -f17)
+	echo "|^| "${#city_state}" : "${city_state}
 	if [[ ${#city_state} -eq 2 ]] || [[ ${city_state} = "unknown" ]] || [[ ${city_state} = "Unknown" ]] || [[ ${city_state} = "UNKNOWN" ]] || [[ "${city_state}" = "" ]]; then
-		#echo "Doing if"
-		line_project=$(echo "${var}" | cut -d',' -f20)
-	else
-		#echo "doing else"
+		echo "Doing if"
 		line_project=$(echo "${var}" | cut -d',' -f21)
+	else
+		echo "doing else"
+		line_project=$(echo "${var}" | cut -d',' -f22)
 	fi
-	#echo "${line_project}:${1}"
+	echo "${line_project}:${1}"
 	# If the run_id matches, then add ID to list (automatically placing them in the proper order)
 	if [[ "${line_project}" = "${1}" ]]; then
 		line_id=$(echo "${var}" | cut -d',' -f3)
