@@ -74,7 +74,7 @@ if [ ! -f "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" ]; then
 fi
 
 # Prints the command that will be submitted to use srst2 to find AR genes
-echo "--input_pe ${processed}/${2}/${1}/trimmed/${1}_S1_L001_R1_001.fastq.gz ${processed}/${2}/${1}/trimmed/${1}_S1_L001_R2_001.fastq.gz --output ${processed}/${2}/${1}/srst2/ResGANNOT --gene_db ${resGANNOT_srst2}"
+echo "--input_pe ${processed}/${2}/${1}/trimmed/${1}_S1_L001_R1_001.fastq.gz ${processed}/${2}/${1}/trimmed/${1}_S1_L001_R2_001.fastq.gz --output ${processed}/${2}/${1}/srst2/${1}_ResGANNOT --gene_db ${resGANNOT_srst2}"
 
 # Calls srst2 with the options for AR discovery
 #python2 "${shareScript}/srst2/scripts/srst2.py" --input_pe "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" --output "${processed}/${2}/${1}/srst2/${1}_ResGANNOT" --gene_db "${resGANNOT_srst2}"
@@ -88,7 +88,7 @@ rm -r "${processed}/${2}/${1}/srst2/"*".pileup"
 
 # Removes the extra ResGANNOT__ from all files created
 find ${processed}/${2}/${1}/srst2 -type f -name "*ResGANNOT__*" | while read FILE ; do
-    dirname=$(dirname $FILE)
+  dirname=$(dirname $FILE)
 	filename=$(basename $FILE)
 	filename="${filename/_ResGANNOT__/__}"
 	#echo "Found-${FILE}"

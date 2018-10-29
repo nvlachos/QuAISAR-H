@@ -31,6 +31,9 @@ elif [[ "$1" = "-h" ]]; then
 	exit 0
 fi
 
+alt_DB_path=${3}
+alt_DB=$(basename "${alt_DB_path}")
+
 mkdir "${processed}/${2}/${1}/srst2"
 
 if [ ! -f "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" ]; then
@@ -61,9 +64,9 @@ fi
 #cp "${argannot_srst2}" "${processed}/${2}/${1}/srst2/argannot.fna"
 #cp "${resFinder_srst2}" "${processed}/${2}/${1}/srst2/resFinder.fna"
 
-echo "--input_pe ${processed}/${2}/${1}/trimmed/${1}_S1_L001_R1_001.fastq.gz ${processed}/${2}/${1}/trimmed/${1}_S1_L001_R2_001.fastq.gz --output ${processed}/${2}/${1}/srst2/ResGANNOT --gene_db ${resGANNOT_srst2}"
+echo "--input_pe ${processed}/${2}/${1}/trimmed/${1}_S1_L001_R1_001.fastq.gz ${processed}/${2}/${1}/trimmed/${1}_S1_L001_R2_001.fastq.gz --output ${processed}/${2}/${1}/srst2/${alt_DB} --gene_db ${alt_DB_path}"
 
-python2 "${shareScript}/srst2/scripts/srst2.py" --input_pe "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" --output "${processed}/${2}/${1}/srst2/${1}_ResGANNOT" --gene_db "${3}"
+python2 "${shareScript}/srst2/scripts/srst2.py" --input_pe "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" --output "${processed}/${2}/${1}/srst2/${1}_${alt_DB}" --gene_db "${alt_DB_path}"
 #srst2 --input_pe "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" --output "${processed}/${2}/${1}/srst2/${1}_ResGANNOT" --gene_db "${3}"
 
 rm -r "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz"
@@ -73,7 +76,7 @@ rm -r "${processed}/${2}/${1}/srst2/"*".pileup"
 
 
 find ${processed}/${2}/${1}/srst2 -type f -name "*ResGANNOT__*" | while read FILE ; do
-    dirname=$(dirname $FILE)
+  dirname=$(dirname $FILE)
 	filename=$(basename $FILE)
 	filename="${filename/_ResGANNOT__/__}"
 	#echo "Found-${FILE}"
