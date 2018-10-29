@@ -29,9 +29,9 @@ cp "${local_DBs}/Seqlog_copies/2019_MMBSeq_Log.xlsx" "${processed}/${1}/2019_MMB
 
 # Convert log file to csv format for searchability
 #`soffice --headless --convert-to csv "${processed}/${1}/2019_MMBSeq_Log.xlsx" --outdir "${processed}/${1}/" > "${processed}/${1}/convert.out"`
-python2 ${shareScript}/xlsx_converter.py "${processed}/${1}/2019_MMBSeq_Log.xlsx" "FY19 Miseq Isolate Log"
+python2 ${shareScript}/xlsx_converter.py "${processed}/${1}/2019_MMBSeq_Log.xlsx" "FY19 Miseq Isolate Log" > "${processed}/${1}/2019_MMBSeq_Log.tsv"
 
-echo "Excel file: 2019_MMBSeq_Log.xlsx has been converted to CSV"
+echo "Excel file: 2019_MMBSeq_Log.xlsx has been converted to TSV"
 exit
 
 # Parse log file csv until run_if matches
@@ -47,11 +47,11 @@ while IFS= read -r var; do
 	# 	echo "doing else"
 	# 	line_project=$(echo "${var}" | cut -d',' -f22)
 	# fi
-	line_project=$(echo "${var}" | cut -d',' -f21)
+	line_project=$(echo "${var}" | cut -d'	' -f21)
 	echo "${line_project}:${1}"
 	# If the run_id matches, then add ID to list (automatically placing them in the proper order)
 	if [[ "${line_project}" = "${1}" ]]; then
-		line_id=$(echo "${var}" | cut -d',' -f3)
+		line_id=$(echo "${var}" | cut -d'	' -f3)
 		#echo "${1}/${line_id}"
 		echo "${1}/${line_id}" >> "${processed}/${1}/${1}_list_ordered.txt"
 	else
