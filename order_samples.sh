@@ -55,10 +55,10 @@ while IFS= read -r var; do
 		#echo "${1}/${line_id}"
 		echo "${1}/${line_id}" >> "${processed}/${1}/${1}_list_ordered.txt"
 	else
-		#echo "Not in ${1}"
+		echo "Not in ${1}"
 		:
 	fi
-done < ${processed}/${1}/2019_MMBSeq_Log.tsv
+done < "${processed}/${1}/2019_MMBSeq_Log.tsv"
 
 # Remove intermediate files from sorting
 rm -r ${processed}/${1}/sorted_summaries.txt
