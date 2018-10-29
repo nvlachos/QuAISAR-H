@@ -58,7 +58,7 @@ while IFS= read -r var; do
 		#echo "Not in ${1}"
 		:
 	fi
-done < ${processed}/${1}/2019_MMBSeq_Log.csv
+done < ${processed}/${1}/2019_MMBSeq_Log.tsv
 
 # Remove intermediate files from sorting
 rm -r ${processed}/${1}/sorted_summaries.txt
