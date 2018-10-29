@@ -36,7 +36,7 @@ echo "Excel file: 2019_MMBSeq_Log.xlsx has been converted to TSV"
 # Parse log file csv until run_if matches
 while IFS= read -r var; do
 	# Check the format of the city/state column in the log file to determine how many tabs need to be used to find run_id in line
-	echo "checking ${var}"
+	#echo "checking ${var}"
 	# city_state=$(echo "${var}" | cut -d',' -f17)
 	# echo "|^| "${#city_state}" : "${city_state}
 	# if [[ ${#city_state} -eq 2 ]] || [[ ${city_state} = "unknown" ]] || [[ ${city_state} = "Unknown" ]] || [[ ${city_state} = "UNKNOWN" ]] || [[ "${city_state}" = "" ]]; then
@@ -47,7 +47,7 @@ while IFS= read -r var; do
 	# 	line_project=$(echo "${var}" | cut -d',' -f22)
 	# fi
 	line_project=$(echo "${var}" | cut -d'	' -f21)
-	echo "${line_project}:${1}"
+	# echo "${line_project}:${1}"
 	# If the run_id matches, then add ID to list (automatically placing them in the proper order)
 	if [[ "${line_project}" = "${1}" ]]; then
 		line_id=$(echo "${var}" | cut -d'	' -f3)
@@ -62,7 +62,7 @@ done < ${processed}/${1}/2019_MMBSeq_Log.tsv
 
 # Remove intermediate files from sorting
 rm -r ${processed}/${1}/sorted_summaries.txt
-rm -r ${processed}/${1}/2019_MMBSeq_Log.csv
+rm -r ${processed}/${1}/2019_MMBSeq_Log.tsv
 rm -r ${processed}/${1}/2019_MMBSeq_Log.xlsx
 rm -r ${processed}/${1}/convert.out
 
