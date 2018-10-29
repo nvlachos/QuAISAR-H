@@ -32,7 +32,6 @@ cp "${local_DBs}/Seqlog_copies/2019_MMBSeq_Log.xlsx" "${processed}/${1}/2019_MMB
 python2 ${shareScript}/xlsx_converter.py "${processed}/${1}/2019_MMBSeq_Log.xlsx" "FY19 Miseq Isolate Log" > "${processed}/${1}/2019_MMBSeq_Log.tsv"
 
 echo "Excel file: 2019_MMBSeq_Log.xlsx has been converted to TSV"
-exit
 
 # Parse log file csv until run_if matches
 while IFS= read -r var; do
@@ -55,10 +54,11 @@ while IFS= read -r var; do
 		#echo "${1}/${line_id}"
 		echo "${1}/${line_id}" >> "${processed}/${1}/${1}_list_ordered.txt"
 	else
-		echo "Not in ${1}"
+		#echo "Not in ${1}"
 		:
 	fi
-done < "${processed}/${1}/2019_MMBSeq_Log.tsv"
+done < ${processed}/${1}/2019_MMBSeq_Log.tsv
+
 
 # Remove intermediate files from sorting
 rm -r ${processed}/${1}/sorted_summaries.txt
