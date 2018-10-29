@@ -28,8 +28,12 @@ echo "${processed}/${1}/2019_MMBSeq_Log.xlsx"
 cp "${local_DBs}/Seqlog_copies/2019_MMBSeq_Log.xlsx" "${processed}/${1}/2019_MMBSeq_Log.xlsx"
 
 # Convert log file to csv format for searchability
-`soffice --headless --convert-to csv "${processed}/${1}/2019_MMBSeq_Log.xlsx" --outdir "${processed}/${1}/" > "${processed}/${1}/convert.out"`
+#`soffice --headless --convert-to csv "${processed}/${1}/2019_MMBSeq_Log.xlsx" --outdir "${processed}/${1}/" > "${processed}/${1}/convert.out"`
+`soffice --headless --convert-to "txt:Text (encoded):UTF8" "${processed}/${1}/2019_MMBSeq_Log.xlsx" --outdir "${processed}/${1}/" > "${processed}/${1}/convert.out"`
+
+"txt:Text (encoded):UTF8"
 echo "Excel file: 2019_MMBSeq_Log.xlsx has been converted to CSV"
+exit
 
 # Parse log file csv until run_if matches
 while IFS= read -r var; do
