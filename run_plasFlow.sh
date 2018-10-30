@@ -29,8 +29,8 @@ elif [[ -z "${1}" ]]; then
 	echo "Empty sample name supplied to run_plasmidFinder.sh, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_plasmidFinder.sh  sample_name run_id output_folder(either plasmid or plasmid_on_plasmidAssembly) (-i number_minimum_identity, optional) (-f to force against all databases, optional)"
-	echo "Output by default is ${processed}/miseq_run_id/sample_name/plasmid"
+	echo "Usage is ./run_plasmFlow.sh  sample_name run_id"
+	echo "Output by default is ${processed}/miseq_run_id/sample_name/plasmFlow"
 	exit 0
 elif [[ -z "${2}" ]]; then
 	echo "Empty run_id supplied to run_plasFlow.sh, exiting"
@@ -46,7 +46,7 @@ if [[ ! -d "${processed}/${2}/${1}/plasFlow" ]]; then
 fi
 
 if [[ -s "${processed}/${2}/${1}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
-	perl "${shareScript}/removeShortContigs_2000.pl" "${processed}/${project}/${1}/Assembly/${1}_scaffolds_trimmed.fasta"
+	python2 "${shareScript}/removeShortContigs.py" "${processed}/${project}/${1}/Assembly/${1}_scaffolds_trimmed.fasta" "2000"
 	mv "${processed}/${project}/${1}/Assembly/${1}_scaffolds_trimmed.fasta.TRIMMED.fasta" "${processed}/${project}/${1}/plasFlow/${1}_scaffolds_trimmed_2000.fasta"
 	PlasFlow.py --input "${processed}/${2}/${1}/plasFlow/${1}_scaffolds_trimmed_2000.fasta" --output "${processed}/${2}/${1}/plasFlow/${1}_plasFlow.tsv"
 fi
