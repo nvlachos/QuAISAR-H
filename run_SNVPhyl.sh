@@ -70,11 +70,15 @@ if [[ -d "${OUTDATADIR}/output" ]]; then
 fi
 
 if [[ ! -f ${OUTDATADIR}/${1}.samples ]]; then
-	if [[ ! -f ${share}/Phylogeny_analyses/${1}.samples ]]; then
-		echo "No sample list found in ${share}/Phylogeny_analyses/${1}/ or ${share}/Phylogeny_analyses/   ...   exiting"
-		exit 1
+	if [[ ! -f ${share}/Phylogeny_analyses/${1}/${1}.samples ]]; then
+		if [[ ! -f ${share}/Phylogeny_analyses/${1}.samples ]]; then
+			echo "No sample list found in ${OUTDATADIR} or ${share}/Phylogeny_analyses/${1}/ or ${share}/Phylogeny_analyses/   ...   exiting"
+			exit 1
+		else
+			mv ${share}/Phylogeny_analyses/${1}.samples ${OUTDATADIR}/${1}.samples
+		fi
 	else
-		mv ${share}/Phylogeny_analyses/${1}.samples ${OUTDATADIR}/${1}.samples
+		mv ${share}/Phylogeny_analyses/${1}/${1}.samples ${OUTDATADIR}/${1}.samples
 	fi
 fi
 
