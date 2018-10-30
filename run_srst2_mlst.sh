@@ -81,8 +81,8 @@ fi
 cd "${processed}/${2}/${1}/MLST/srst2"
 
 echo "do"
-python2 "${shareScript}/srst2/scripts/getmlst.py" --species "${3} ${4}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
-#getmlst.py --species "${3} ${4}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
+#python2 "${shareScript}/srst2/scriptsgetmlst.py" --species "${3} ${4}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
+getmlst.py --species "${3} ${4}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
 
 echo "done"
 if [[ "${3}" == "Acinetobacter" ]]; then
