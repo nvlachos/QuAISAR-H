@@ -47,6 +47,7 @@ fi
 
 if [[ -s "${processed}/${2}/${1}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
 	python2 "${shareScript}/removeShortContigs.py" "${processed}/${project}/${1}/Assembly/scaffolds.fasta" "2000"
-	mv "${processed}/${project}/${1}/Assembly/scaffolds.fasta.TRIMMED.fasta" "${processed}/${project}/${1}/plasFlow/${1}_scaffolds_trimmed_2000.fasta"
+	${shareScript}/fasta_headers.py "${processed}/${project}/${1}/Assembly/scaffolds.fasta.TRIMMED.fasta" "${processed}/${project}/${1}/plasFlow/${1}_scaffolds_trimmed_2000.fasta"
+	rm -r "${processed}/${project}/${1}/Assembly/scaffolds.fasta.TRIMMED.fasta"
 	PlasFlow.py --input "${processed}/${2}/${1}/plasFlow/${1}_scaffolds_trimmed_2000.fasta" --output "${processed}/${2}/${1}/plasFlow/${1}_plasFlow.tsv"
 fi
