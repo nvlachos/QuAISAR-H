@@ -10,7 +10,7 @@
 . ./config.sh
 #Import list of modds used during pipeline analysis (or downstream)
 . "${mod_changers}/load_SNVPhyl.sh"
-#. ${mod_changers}/list_modules.sh
+. ${mod_changers}/list_modules.sh
 
 #
 # Runs LyveSET on a group of samples to determine relatedness
