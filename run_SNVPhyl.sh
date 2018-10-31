@@ -7,6 +7,9 @@
 #$ -q short.q
 
 #Import the config file with shortcuts and settings
+if [[ ! -f ./config.sh]]
+	cp config_template.sh config.sh
+fi
 . ./config.sh
 #Import list of modds used during pipeline analysis (or downstream)
 . "${mod_changers}/load_SNVPhyl.sh"
