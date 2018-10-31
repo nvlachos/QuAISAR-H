@@ -146,7 +146,7 @@ fi
 while IFS= read -r line;
 do
 	DB_genus=$(echo ${line} | cut -d"," -f1)
-	#echo "${Genus}:${DB_genus}"
+	echo "${Genus}:${DB_genus}"
 	if [[ "${Genus,}" = "${DB_genus}" ]]; then
 			tax_DB="${local_DBs}/taxes.csv"
 			Domain=$(echo "${line}" | cut -d"," -f2)
