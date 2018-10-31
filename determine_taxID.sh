@@ -146,7 +146,7 @@ fi
 while IFS= read -r line;
 do
 	DB_genus=$(echo ${line} | cut -d"," -f1)
-	echo ":${Genus}:${DB_genus}:"
+	#echo ":${Genus}:${DB_genus}:"
 	if [[ "${Genus,}" = "${DB_genus}" ]]; then
 			tax_DB="${local_DBs}/taxes.csv"
 			Domain=$(echo "${line}" | cut -d"," -f2)
@@ -154,7 +154,7 @@ do
 			Class=$(echo "${line}" | cut -d"," -f4)
 			Order=$(echo "${line}" | cut -d"," -f5)
 			Family=$(echo "${line}" | cut -d"," -f6 | tr -d '\r' )
-			echo ":${Family}:"
+			#echo ":${Family}:"
 			break
 	fi
 done < "${local_DBs}/taxes.csv"
