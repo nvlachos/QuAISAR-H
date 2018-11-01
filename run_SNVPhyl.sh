@@ -12,6 +12,7 @@ if [[ ! -f ./config.sh ]]; then
 fi
 . ./config.sh
 #Import list of modds used during pipeline analysis (or downstream)
+module purge
 . "${mod_changers}/load_SNVPhyl.sh"
 . ${mod_changers}/list_modules.sh
 
