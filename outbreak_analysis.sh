@@ -10,6 +10,8 @@
 . ./config.sh
 #Import the module file that loads all necessary mods
 . "${mod_changers}/pipeline_mods"
+. "${mod_changers}/list_mods.sh"
+
 
 #
 # Usage ./run_csstar_proj_parser.sh list_name gapped/ungapped (analysis ran) identity (80/95/98/99/100) output_name plasmid_identity(optional)
@@ -77,6 +79,8 @@ rename="true"
 	 sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
 	 project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
 	 OUTDATADIR="${processed}/${project}/${sample_name}"
+	 rm -r "${processed}/${project}/${sample_name}/c-sstar/${sample_name}
+	 rm -r "${processed}/${project}/${sample_name}/c-sstar/${sample_name}
 	 #echo "Checking for ${processed}/${project}/${sample_name}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt"
 	 if [[ -s ${processed}/${project}/${sample_name}/Assembly/${sample_name}_scaffolds_trimmed.fasta ]]; then
 		if [[ -f "${processed}/${project}/${sample_name}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]];
