@@ -101,8 +101,8 @@ genus_in=${2}
 echo "trying to copy ${local_DBs}/aniDB/${genus_in,}/"
 cp "${local_DBs}/aniDB/${genus_in,}/"*".fna" "${OUTDATADIR}/ANI/localANIDB/"
 # temp locale chnage
-cp "/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/DBs/aniDB/${genus_in,}/"*".fna" "${OUTDATADIR}/ANI/localANIDB/"
-
+cp "/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/DBs/aniDB/${genus_in,}/"*".fna.gz" "${OUTDATADIR}/ANI/localANIDB/"
+gunzip ${OUTDATADIR}/ANI/localANIDB/*.gz
 
 #Copies the samples assembly contigs to the local ANI db folder
 cp "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" "${OUTDATADIR}/ANI/localANIDB/sample_${2}_${3}.fasta"
