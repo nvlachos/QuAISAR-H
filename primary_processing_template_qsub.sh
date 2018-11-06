@@ -98,6 +98,23 @@ for ((i=1 ; i <= nopts ; i++)); do
 			echo -e "\\n\\n\\n"
 			exit 0
 			;;
+      #Gets output directory name of folder that all output files will be stored
+      # NOT TESTED
+      -o | --out-dir)
+        BASEDIR="$2"
+        if [[ ! -d ${BASEDIR} ]]; then
+            echo "Creating ${BASEDIR}"
+            mkdir -p ${BASEDIR}
+        fi
+        project="${requestor}_${global_time}_$3"
+        project=$(echo ${BASEDIR} | rev | cut -d'/' -f1 | rev)
+        BASEDIR=$(echo ${BASEDIR} | rev | cut -d'/' -f2- | rev)
+        shift 2
+
+        echo "processed=${BASEDIR}" >> "${shareScript}/config.sh"
+        . ${shareScript}/config.sh
+        echo "${processed}"
+        ;;
 		#Gets name of folder that FASTA files will be in
 		-i | --in-dir)
 			INDATADIR="$2"
@@ -114,24 +131,7 @@ for ((i=1 ; i <= nopts ; i++)); do
 			#echo "$INDATADIR $2"
 			shift 3
 			;;
-		#Gets output directory name of folder that all output files will be stored
-		# NOT TESTED
-		-o | --out-dir)
-			BASEDIR="$2"
-			if [[ ! -d ${BASEDIR} ]]; then
-					echo "Creating ${BASEDIR}"
-					mkdir -p ${BASEDIR}
-			fi
-			project="${requestor}_${global_time}_$3"
-			shift 3
 
-			echo "processed=${BASEDIR}" >> "${shareScript}/config.sh"
-			. ${shareScript}/config.sh
-			echo "${processed}"
-			if [[ ! -d ${BASEDIR} ]]; then
-				mkdir ${BASEDIR}
-			fi
-			;;
 		#Checks for (project) name of folder that all output files will be stored
 		-p | --project-name)
 			project="$2"
