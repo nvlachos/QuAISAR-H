@@ -399,6 +399,7 @@ while IFS= read -r var; do
 				failures=$(( failures + 1 ))
 			fi
 		elif [[ "${tool}" == "ANI" ]]; then
+			echo "${tool_details}"
 			if [[ "${tool_details}" == *"%-"* ]]; then
 				failure_flags="${failure_flags}-ANI_match_<95%"
 				failures=$(( failures + 1 ))
