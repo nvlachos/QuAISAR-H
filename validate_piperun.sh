@@ -853,7 +853,7 @@ do
 		mv "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${genusweighted,}).txt" "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${genusweighted^}).txt"
 		   #"${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${genusweighted^}).txt"
 	fi
-	if [[ "${file}" == *"best_ANI_hits_ordered(${1}_vs_"*").txt" ]]; then
+	if [[ "${file}" == *"best_ANI_hits_ordered(${1}_vs_"* ]]; then
 		filename=${file}
 		if [[ -f "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_All).txt" ]]; then
 			echo "ALL"
