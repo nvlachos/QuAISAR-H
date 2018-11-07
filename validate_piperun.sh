@@ -856,8 +856,10 @@ do
 	if [[ "${file}" == *"best_ANI_hits_ordered(${1}_vs_"*").txt" ]]; then
 		filename=${file}
 		if [[ -f "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_All).txt" ]]; then
+			echo "ALL"
 			ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_All).txt")
 		elif [[ -f "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${genusweighted^}).txt" ]]; then
+			echo "${genusweighted^}"
 			ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${genusweighted^}).txt")
 		fi
 		ani_found=true
