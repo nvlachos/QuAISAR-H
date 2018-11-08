@@ -80,7 +80,7 @@ rename="true"
 	 project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
 	 OUTDATADIR="${processed}/${project}/${sample_name}"
 	 #rm -r "${processed}/${project}/${sample_name}/c-sstar/${resGANNOT_srst2_filename}"
-	 echo "Checking for ${processed}/${project}/${sample_name}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt"
+	 #echo "Checking for ${processed}/${project}/${sample_name}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt"
 	 if [[ -s ${processed}/${project}/${sample_name}/Assembly/${sample_name}_scaffolds_trimmed.fasta ]]; then
 		if [[ -f "${processed}/${project}/${sample_name}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]];
 		then
