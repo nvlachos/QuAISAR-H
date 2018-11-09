@@ -84,6 +84,7 @@ fi
 #alt_database="${5##*/}"
 alt_database=$(basename -- "${5}")
 alt_database="${alt_database%.*}"
+alt_DB=${alt_DB//_srst2/}
 echo ${alt_database}
 
 # Creates the output c-sstar folder if it does not exist yet
@@ -114,7 +115,7 @@ elif [ "${2}" == "g" ]; then
 	cd "${OUTDATADIR}/${alt_database}_${suffix}"
 	echo "Running c-SSTAR on ResGANNOT DB"
 	python "${shareScript}/c-SSTAR_gapped.py" -g "${source_assembly}" -s "${sim}" -d "${5}" > "${OUTDATADIR}/${alt_database}_${suffix}/${1}.${alt_database}.${suffix}_${sim}.sstar"
-else	
+else
 	echo "Unknown run type set (only use 'g' or 'u' for gapped/ungapped analysis"
 	exit 1
 fi
@@ -180,9 +181,9 @@ done < "${OUTDATADIR}/${alt_database}_${suffix}/${1}.${alt_database}.${suffix}_$
 #echo "${OUTDATADIR}/${alt_database}_${suffix}/${1}.${alt_database}.${suffix}_${sim}.sstar_grouped"
 #echo "${OUTDATADIR}/${1}.${alt_database}.${suffix}_${sim}_sstar_summary.txt"
 sort -k7,7nr -k10,10nr -k8,8n "${OUTDATADIR}/${alt_database}_${suffix}/${1}.${alt_database}.${suffix}_${sim}.sstar_grouped" > "${OUTDATADIR}/${1}.${alt_database}.${suffix}_${sim}_sstar_summary.txt"
-#sort -k7,7nr -k10,10nr -k8,8n "/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/151217_M02103_0050_000000000-AKVY1/2013732586/c-sstar/ResGANNOT_20180608_gapped/2013732586.ResGANNOT_20180608.gapped_98.sstar_grouped" > "/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/151217_M02103_0050_000000000-AKVY1/2013732586/c-sstar/2013732586.ResGANNOT_20180608.gapped_98_sstar_summary.txt"							  
+#sort -k7,7nr -k10,10nr -k8,8n "/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/151217_M02103_0050_000000000-AKVY1/2013732586/c-sstar/ResGANNOT_20180608_gapped/2013732586.ResGANNOT_20180608.gapped_98.sstar_grouped" > "/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/151217_M02103_0050_000000000-AKVY1/2013732586/c-sstar/2013732586.ResGANNOT_20180608.gapped_98_sstar_summary.txt"
 
-# Catches an empty or missing file 
+# Catches an empty or missing file
 if [ ! -s "${OUTDATADIR}/${1}.${alt_database}.${suffix}_${sim}_sstar_summary.txt" ]; then
 	echo "No anti-microbial genes were found using c-SSTAR with both resFinder and ARG-ANNOT DBs" > "${OUTDATADIR}/${1}.${alt_database}.${suffix}_${sim}_sstar_summary.txt"
 fi

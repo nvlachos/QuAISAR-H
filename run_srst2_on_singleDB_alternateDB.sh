@@ -33,6 +33,7 @@ fi
 
 alt_DB_path=${3}
 alt_DB=$(basename "${alt_DB_path}")
+alt_DB=${alt_DB//_srst2/}
 
 mkdir "${processed}/${2}/${1}/srst2"
 
