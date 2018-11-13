@@ -14,7 +14,7 @@ if [[ -f "${shareScript}/config_template.sh" ]]; then
 		rm -r "${shareScript}/config.sh"
 	fi
 	echo "Trying to copy config_template.sh"
-	cp "${shareScript}/config_template.sh" "${shareScript}/config.sh"
+	cp config_template.sh config.sh
 fi
 
 #Import the config file with shortcuts and settings
@@ -395,12 +395,13 @@ make_list_from_folder() {
 }
 
 make_list_from_list() {
-counter=0
-while IFS= read -r var; do
-	project=$(echo "${var}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
-	sample_name=$(echo "${var}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
-	sample_names[${counter}]=${sample_name}
-done < ${list_path}
+	counter=0
+	while IFS= read -r var; do
+		project=$(echo "${var}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
+		sample_name=$(echo "${var}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
+		sample_names[${counter}]=${sample_name}
+	done < ${list_path}
+}
 
 # # Submit Loop 1 scripts
 submit_fastq_unzipper() {
