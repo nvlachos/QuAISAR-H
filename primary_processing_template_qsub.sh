@@ -109,6 +109,7 @@ for ((i=1 ; i <= nopts ; i++)); do
         project="$3"
         shift 3
 
+				processed=${BASEDIR}
         echo "processed=${BASEDIR}" >> "${shareScript}/config.sh"
         . ${shareScript}/config.sh
         echo "${processed}"
@@ -189,7 +190,7 @@ done
 
 # Short print out summary of run settings
 echo -e "Source folder: ${INDATADIR}\\nOutput folder: ${BASEDIR}\\nDownload fastqs(.gzs): ${do_download}\\nList based analysis:  ${list_path}"
-
+exit
 
 
 
@@ -241,7 +242,7 @@ do_download() {
 	check_time=$(date)
 	#echo "Downloading started at ${check_time} >> ${processed}/${project}/${project}.log"
 	echo "Downloading started at ${check_time}" >> "${processed}/${project}/${project}.log"
-	mkdir ${BASEDIR}/${project}
+	mkdir ${processed}/${project}
 	"${shareScript}/get_Reads_from_folder.sh" "${project}" "${INDATADIR}" "${postfix}"
 	echo "Done copying FASTQs from input directory"
 	# Remove Undetermined zip files
@@ -256,8 +257,8 @@ main_dir="${processed}/${project}"
 #echo "> ${main_dir}/${project}_list.txt"
 > "${main_dir}/${project}_list.txt"
 
-cp /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts/config_template.sh ${main_dir}/config.sh
-echo "shareScript=/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts" >> ${main_dir}/config.sh
+#cp /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts/config_template.sh ${main_dir}/config.sh
+#echo "shareScript=/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts" >> ${main_dir}/config.sh
 
 
 
@@ -1310,8 +1311,8 @@ report_completion() {
 if [[ "${do_download}" == "true" ]]; then
 	do_download
 fi
-#make_list_from_folder
-make_list_from_list
+make_list_from_folder
+#make_list_from_list
 # Loop 1
 make_fastq_unzipper
 submit_fastq_unzipper
