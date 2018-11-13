@@ -291,9 +291,9 @@ make_fastq_unzipper() {
 			echo -e "#$ -q short.q\n"  >> "${main_dir}/getFASTQR1_${sample_ID}_${start_time}.sh"
 			echo -e "echo $(date) > \"${main_dir}/${sample_ID}/logs/R1_unzipping_started.txt\"" >> "${main_dir}/getFASTQR1_${sample_ID}_${start_time}.sh"
 			echo -e "cp \"${reads}\" \"${main_dir}/${sample_ID}/FASTQs/${sample_ID}_R1_001.fastq.gz\"" >> "${main_dir}/getFASTQR1_${sample_ID}_${start_time}.sh"
-			echo -e "gunzip -c \"${main_dir}/${sample_ID}/FASTQs/${sample_ID}_R1_001.fastq.gz\"" >> "${main_dir}/getFASTQR1_${sample_ID}_${start_time}.sh"
-			echo -e "echo $(date) > \"${main_dir}/${sample_ID}/logs/R1_unzipping_complete.txt\"" >> "${main_dir}/getFASTQR1_${sample_ID}_${start_time}.sh"
+			echo -e "gunzip -c \"${main_dir}/${sample_ID}/FASTQs/${sample_ID}_R1_001.fastq.gz\" > \"${main_dir}/${sample_ID}/FASTQs/${sample_ID}_R1_001.fastq\"" >> "${main_dir}/getFASTQR1_${sample_ID}_${start_time}.sh"
 			echo -e "mv \"${reads}\" \"${main_dir}/${sample_ID}/FASTQs/${sample_ID}_R1_001.fastq.gz\"" >> "${main_dir}/getFASTQR1_${sample_ID}_${start_time}.sh"
+			echo -e "echo $(date) > \"${main_dir}/${sample_ID}/logs/R1_unzipping_complete.txt\"" >> "${main_dir}/getFASTQR1_${sample_ID}_${start_time}.sh"
 
 
 			# Add sample_ID to list of isolates to be run through other pipeline loops (backup to sample_names array)
