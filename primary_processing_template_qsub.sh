@@ -102,11 +102,11 @@ for ((i=1 ; i <= nopts ; i++)); do
       # NOT TESTED
       -o | --out-dir)
         BASEDIR="$2"
-        if [[ ! -d ${BASEDIR} ]]; then
-            echo "Creating ${BASEDIR}"
+				project="$3"
+        if [[ ! -d ${BASEDIR}/$3 ]]; then
+            echo "Creating ${BASEDIR}/$3"
             mkdir -p ${BASEDIR}
         fi
-        project="$3"
         shift 3
 
 				#processed=${BASEDIR}
@@ -232,8 +232,8 @@ do_download() {
 declare sample_names
 sample_index=0
 main_dir="${processed}/${project}"
-echo ="${main_dir}"
-exit
+echo "${main_dir}"
+
 #echo "> ${main_dir}/${project}_list.txt"
 > "${main_dir}/${project}_list.txt"
 
