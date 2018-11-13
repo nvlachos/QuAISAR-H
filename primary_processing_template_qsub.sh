@@ -177,15 +177,6 @@ done
 
 # Short print out summary of run settings
 echo -e "Source folder: ${INDATADIR}\\nOutput folder: ${BASEDIR}\\nDownload fastqs\(.gzs\): ${do_download}\\nList based analysis:  ${list_path}"
-exit
-
-
-
-
-
-
-
-
 
 
 
