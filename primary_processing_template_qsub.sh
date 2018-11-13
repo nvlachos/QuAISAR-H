@@ -109,11 +109,11 @@ for ((i=1 ; i <= nopts ; i++)); do
         project="$3"
         shift 3
 
-				processed=${BASEDIR}
+				#processed=${BASEDIR}
         echo "processed=${BASEDIR}" >> "${shareScript}/config.sh"
 				list_path="${BASEDIR}/${project}/${project}_list.txt"
         . ${shareScript}/config.sh
-        echo "${processed}"
+        echo "A - ${processed}"
         ;;
 		#Gets name of folder that FASTA files will be in
 		-i | --in-dir)
