@@ -31,6 +31,7 @@ share="/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR"
 processed="/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles"
 # Locations of all scripts and necessary accessory files
 shareScript="$(pwd)"
+echo "${shareScript}"
 # Location of any files being called that have an effect on loaded modules
 mod_changers="${shareScript}/module_changers"
 # Local databases that are necessary for pipeline...ANI, BUSCO, star, adapters, phiX
