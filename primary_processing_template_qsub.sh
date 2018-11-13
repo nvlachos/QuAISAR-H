@@ -111,6 +111,7 @@ for ((i=1 ; i <= nopts ; i++)); do
 
 				processed=${BASEDIR}
         echo "processed=${BASEDIR}" >> "${shareScript}/config.sh"
+				list_path=${BASEDIR}/${project}/${project}_list.txt"
         . ${shareScript}/config.sh
         echo "${processed}"
         ;;
@@ -152,32 +153,18 @@ for ((i=1 ; i <= nopts ; i++)); do
 			shift
 			;;
 		#Tells the script that only the files found in the attached list need to be run
-		-l | --list)
-			list_path="$2"
-			quick_list=$(echo "${2}" | cut -d'.' -f1)
-			INDATADIR="${processed}/${project}" # NOT USED yet in list mode
-			if [[ -z ${BASEDIR} ]]; then
-				BASEDIR="${processed}"
-			fi
-			do_download="false"
-			run_name="list_${quick_list}"
-			is_full_run="false"
-			shift 2
-			;;
-		#Tells the script that only the files found in the attached list need to be run
-		-s | --single)
-			echo "$2" > "./tempList.txt"
-			list_path="./tempList.txt"
-			#INDATADIR="${processed}/${project}" # NOT USED yet in single mode
-			if [[ -z ${BASEDIR} ]]; then
-				BASEDIR="${processed}"
-			fi
-			trn=$(echo "${2}" | sed 's/\//-/')
-			run_name="single_${trn}"
-			do_download="false"
-			is_full_run="false"
-			shift 2
-			;;
+#		-l | --list)
+#			list_path="$2"
+#			quick_list=$(echo "${2}" | cut -d'.' -f1)
+#			INDATADIR="${processed}/${project}" # NOT USED yet in list mode
+#			if [[ -z ${BASEDIR} ]]; then
+#				BASEDIR="${processed}"
+#			fi
+#			do_download="false"
+#			run_name="list_${quick_list}"
+#			is_full_run="false"
+#			shift 2
+#			;;
 		#Captures any other characters in the args
 		\?)
 			echo "ERROR: ${BOLD}$2${NORM}is not a valid argument" >&2
