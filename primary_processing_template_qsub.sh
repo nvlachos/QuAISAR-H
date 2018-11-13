@@ -232,6 +232,8 @@ do_download() {
 declare sample_names
 sample_index=0
 main_dir="${processed}/${project}"
+echo ="${main_dir}"
+exit
 #echo "> ${main_dir}/${project}_list.txt"
 > "${main_dir}/${project}_list.txt"
 
@@ -289,7 +291,7 @@ make_fastq_unzipper() {
 			echo -e "#$ -q short.q\n"  >> "${main_dir}/getFASTQR1_${sample_ID}_${start_time}.sh"
 			echo -e "echo $(date) > \"${main_dir}/${sample_ID}/logs/R1_unzipping_started.txt\"" >> "${main_dir}/getFASTQR1_${sample_ID}_${start_time}.sh"
 			echo -e "cp \"${reads}\" \"${main_dir}/${sample_ID}/FASTQs/${sample_ID}_R1_001.fastq.gz\"" >> "${main_dir}/getFASTQR1_${sample_ID}_${start_time}.sh"
-			echo -e "gunzip \"${main_dir}/${sample_ID}/FASTQs/${sample_ID}_R1_001.fastq.gz\"" >> "${main_dir}/getFASTQR1_${sample_ID}_${start_time}.sh"
+			echo -e "gunzip -c \"${main_dir}/${sample_ID}/FASTQs/${sample_ID}_R1_001.fastq.gz\"" >> "${main_dir}/getFASTQR1_${sample_ID}_${start_time}.sh"
 			echo -e "echo $(date) > \"${main_dir}/${sample_ID}/logs/R1_unzipping_complete.txt\"" >> "${main_dir}/getFASTQR1_${sample_ID}_${start_time}.sh"
 			echo -e "mv \"${reads}\" \"${main_dir}/${sample_ID}/FASTQs/${sample_ID}_R1_001.fastq.gz\"" >> "${main_dir}/getFASTQR1_${sample_ID}_${start_time}.sh"
 
@@ -534,7 +536,7 @@ make_relies_on_trimmed_fastqs() {
 		echo -e "module load SPAdes/3.12.0\n" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
 		echo -e "\"${shareScript}/run_SPAdes.sh\" \"${sample}\" normal \"${project}\"" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
 		echo -e "echo $(date) > \"${main_dir}/${sample}/logs/${sample}_full_assembling_complete.txt\"" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
-		echo -e "perl \"${shareScript}/removeShortContigs.pl\" \"${main_dir}/${sample}/Assembly/scaffolds.fasta\"" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
+		echo -e "perl \"${shareScript}/removeShortContigs.py\" \"${main_dir}/${sample}/Assembly/scaffolds.fasta\"" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
 		echo -e "mv \"${main_dir}/${sample}/Assembly/scaffolds.fasta.TRIMMED.fasta\" \"${main_dir}/${sample}/Assembly/${sample}_scaffolds_trimmed.fasta\"" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
 		echo -e "echo $(date) > \"${main_dir}/${sample}/logs/${sample}_full_assembly_trimming_complete.txt\"" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
 
@@ -549,7 +551,7 @@ make_relies_on_trimmed_fastqs() {
 		echo -e "module load SPAdes/3.12.0\n" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
 		echo -e "\"${shareScript}/run_SPAdes.sh\" \"${sample}\" plasmid \"${project}\"" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
 		echo -e "echo $(date) > \"${main_dir}/${sample}/logs/${sample}_plasmid_assembling_complete.txt\"" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
-		echo -e "perl \"${shareScript}/removeShortContigs.pl\" \"${main_dir}/${sample}/plasmidAssembly/scaffolds.fasta\"" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
+		echo -e "perl \"${shareScript}/removeShortContigs.py\" \"${main_dir}/${sample}/plasmidAssembly/scaffolds.fasta\"" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
 		echo -e "mv \"${main_dir}/${sample}/plasmidAssembly/scaffolds.fasta.TRIMMED.fasta\" \"${main_dir}/${sample}/plasmidAssembly/${sample}_plasmid_scaffolds_trimmed.fasta\"" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
 		echo -e "echo $(date) > \"${main_dir}/${sample}/logs/${sample}_plasmid_assembly_trimming_complete.txt\"" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
 	done
@@ -774,7 +776,7 @@ submit_relies_on_trimmed_assemblies() {
 			echo 'Cleaning L3-paired.fq_reliant scripts'
 			mv "${main_dir}/krakr_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/krakr_${sample}_${start_time}.sh"
 			mv "${main_dir}/gott_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/gott_${sample}_${start_time}.sh"
-			mv "${main_dir}/srst2_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/srst2_${sample}_${start_time}.sh"
+			mv "${main_dir}/srst2AR_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/srst2AR_${sample}_${start_time}.sh"
 			mv "${main_dir}/SPAdn_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/SPAdn_${sample}_${start_time}.sh"
 			mv "${main_dir}/SPAdp_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/SPAdp_${sample}_${start_time}.sh"
 			echo -e 'Trying to call L4-trimmed_assembly_reliant qsubs' #\n${main_dir}/QUAST_${sample}_${start_time}.sh\n${main_dir}/kraka_${sample}_${start_time}.sh\n${main_dir}/PROKK_${sample}_${start_time}.sh\n${main_dir}/MLST_${sample}_${start_time}.sh\n${main_dir}/blast16sID_${sample}_${start_time}.sh\n${main_dir}/csstn_${sample}_${start_time}.sh\n${main_dir}/pFinf_${sample}_${start_time}.sh\n${main_dir}/ANI_${sample}_${start_time}.sh\n${main_dir}/plasFlow_${sample}_${start_time}.sh\n(O)${main_dir}/pFinp_${sample}_${start_time}.sh\n(O)${main_dir}/csstp_${sample}_${start_time}.sh'
