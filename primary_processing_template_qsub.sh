@@ -9,16 +9,16 @@
 # Copy config file into working directory to allow changes to made to output directory if necessary
 shareScript=$(pwd)
 echo "${shareScript}"
-if [[ -f "${shareScript}/config_template.sh" ]]; then
-	if [[ -f "${shareScript}/config.sh" ]]; then
-		rm -r "${shareScript}/config.sh"
+if [[ -f config_template.sh ]]; then
+	if [[ -f config.sh ]]; then
+		rm -r config.sh
 	fi
 	echo "Trying to copy config_template.sh"
 	cp config_template.sh config.sh
 fi
 
 #Import the config file with shortcuts and settings
-. ${shareScript}/config.sh
+. config.sh
 
 #Import the module file that loads all necessary mods
 . ${mod_changers}/pipeline_mods
@@ -1236,7 +1236,7 @@ summarize() {
 			fi
 		done
 		echo "Checking that all samples are finished validating"
-		if [[ "${validation_success}"="true" ]]; then
+		if [[ "${validation_success}" == "true" ]]; then
 			echo -e 'Cleaning L7-validation scripts'
 			mv "${main_dir}/validate_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/validate_${sample}_${start_time}.sh"
 			ready="true"
