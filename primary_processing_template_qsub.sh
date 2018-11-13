@@ -111,7 +111,7 @@ for ((i=1 ; i <= nopts ; i++)); do
 
 				processed=${BASEDIR}
         echo "processed=${BASEDIR}" >> "${shareScript}/config.sh"
-				list_path=${BASEDIR}/${project}/${project}_list.txt"
+				list_path="${BASEDIR}/${project}/${project}_list.txt"
         . ${shareScript}/config.sh
         echo "${processed}"
         ;;
@@ -176,7 +176,7 @@ done
 
 
 # Short print out summary of run settings
-echo -e "Source folder: ${INDATADIR}\\nOutput folder: ${BASEDIR}\\nDownload fastqs(.gzs): ${do_download}\\nList based analysis:  ${list_path}"
+echo -e "Source folder: ${INDATADIR}\\nOutput folder: ${BASEDIR}\\nDownload fastqs\(.gzs\): ${do_download}\\nList based analysis:  ${list_path}"
 exit
 
 
