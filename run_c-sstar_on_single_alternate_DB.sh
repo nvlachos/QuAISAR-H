@@ -82,9 +82,9 @@ else
 fi
 
 #alt_database="${5##*/}"
-alt_database=$(basename -- "${5}")
-alt_database="${alt_database%.*}"
-alt_DB=${alt_DB//_srst2/}
+alt_database_path=$(basename -- "${5}")
+alt_database=$(echo ${alt_database_path##*/} | cut -d'.' -f1)
+alt_database=${alt_database//_srst2/}
 echo ${alt_database}
 
 # Creates the output c-sstar folder if it does not exist yet
