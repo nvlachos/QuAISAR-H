@@ -106,10 +106,8 @@ for ((i=1 ; i <= nopts ; i++)); do
             echo "Creating ${BASEDIR}"
             mkdir -p ${BASEDIR}
         fi
-        project="${requestor}_${global_time}_$3"
-        project=$(echo ${BASEDIR} | rev | cut -d'/' -f1 | rev)
-        BASEDIR=$(echo ${BASEDIR} | rev | cut -d'/' -f2- | rev)
-        shift 2
+        project="$3"
+        shift 3
 
         echo "processed=${BASEDIR}" >> "${shareScript}/config.sh"
         . ${shareScript}/config.sh
@@ -1337,4 +1335,7 @@ submit_validation_request
 
 #summarize
 #report_completion
+
+rm ${shareScript}/config.sh
+
 exit
