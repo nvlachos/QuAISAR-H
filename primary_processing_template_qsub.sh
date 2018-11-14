@@ -538,7 +538,7 @@ make_relies_on_trimmed_fastqs() {
 		echo -e "module load SPAdes/3.12.0\n" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
 		echo -e "\"${shareScript}/run_SPAdes.sh\" \"${sample}\" normal \"${project}\"" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
 		echo -e "echo $(date) > \"${main_dir}/${sample}/logs/${sample}_full_assembling_complete.txt\"" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
-		echo -e "python \"${shareScript}/removeShortContigs.py\" \"${main_dir}/${sample}/Assembly/scaffolds.fasta\"" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
+		echo -e "python \"${shareScript}/removeShortContigs.py\" \"${main_dir}/${sample}/Assembly/scaffolds.fasta\" 500" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
 		echo -e "mv \"${main_dir}/${sample}/Assembly/scaffolds.fasta.TRIMMED.fasta\" \"${main_dir}/${sample}/Assembly/${sample}_scaffolds_trimmed.fasta\"" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
 		echo -e "echo $(date) > \"${main_dir}/${sample}/logs/${sample}_full_assembly_trimming_complete.txt\"" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
 
@@ -553,7 +553,7 @@ make_relies_on_trimmed_fastqs() {
 		echo -e "module load SPAdes/3.12.0\n" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
 		echo -e "\"${shareScript}/run_SPAdes.sh\" \"${sample}\" plasmid \"${project}\"" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
 		echo -e "echo $(date) > \"${main_dir}/${sample}/logs/${sample}_plasmid_assembling_complete.txt\"" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
-		echo -e "python \"${shareScript}/removeShortContigs.py\" \"${main_dir}/${sample}/plasmidAssembly/scaffolds.fasta\"" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
+		echo -e "python \"${shareScript}/removeShortContigs.py\" \"${main_dir}/${sample}/plasmidAssembly/scaffolds.fasta\" 500" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
 		echo -e "mv \"${main_dir}/${sample}/plasmidAssembly/scaffolds.fasta.TRIMMED.fasta\" \"${main_dir}/${sample}/plasmidAssembly/${sample}_plasmid_scaffolds_trimmed.fasta\"" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
 		echo -e "echo $(date) > \"${main_dir}/${sample}/logs/${sample}_plasmid_assembly_trimming_complete.txt\"" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
 	done
