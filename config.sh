@@ -143,7 +143,8 @@ csstar_plasmid_identity="o"
 # Will throw a warning flag during run summary if percent of unclassified reads are above this value
 unclass_flag=30
 # MiniKraken DB (smaller, but effective option)
-kraken_mini_db="${local_DBs}/minikrakenDB/"
+#kraken_mini_db="${local_DBs}/minikrakenDB/"
+kraken_mini_db="/scicomp/agave/execution/database/public/references/organizations/CDC/NCEZID/kraken/cdc-20171227"
 kraken_full_db="${scicomp_DBs}/kraken/1.0.0/kraken_db/"
 ### MOVE THESE TO SHARE/DBS
 # Kraken normal, specially made by Tom with bacteria,archae, and viruses
