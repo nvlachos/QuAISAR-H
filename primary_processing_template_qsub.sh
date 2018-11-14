@@ -470,7 +470,9 @@ submit_relies_on_unzipped_fastqs() {
 		if [[ "${unzip_success}" = "true" ]]; then
 			echo -e 'Cleaning L1-Unzip/Move qsubs'
 			mv "${main_dir}/getFASTQR1_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/"
+			mv "${shareScript}/getFASTQR1_${sample}"* "${main_dir}/${sample}/scripts/"
 			mv "${main_dir}/getFASTQR2_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/"
+			mv "${shareScript}/getFASTQR2_${sample}"* "${main_dir}/${sample}/scripts/"
 			# Trying to submit QC and Trimming scripts"
 			echo -e 'Trying to call L2-QCBT qsubs' #\n${main_dir}/QC_${sample}_${start_time}.sh\n${main_dir}/BTQC_${sample}_${start_time}.sh'
 			qsub "${main_dir}/QC_${sample}_${start_time}.sh"
@@ -586,7 +588,9 @@ submit_relies_on_trimmed_fastqs() {
 			# Cleanup QC and BTQC scripts
 			echo 'Cleaning L2-QCBT scripts'
 			mv "${main_dir}/BTQC_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/"
+			mv "${shareScript}/BTQC_${sample}"* "${main_dir}/${sample}/scripts/"
 			mv "${main_dir}/QC_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/"
+			mv "${shareScript}/QC_${sample}"* "${main_dir}/${sample}/scripts/"
 			echo -e 'Trying to call L3-paired.fq_reliant qsubs' #\n${main_dir}/krakr_${sample}_${start_time}.sh\n${main_dir}/gott_${sample}_${start_time}.sh\n${main_dir}/srst2AR_${sample}_${start_time}.sh\n${main_dir}/SPAdn_${sample}_${start_time}.sh\n${main_dir}/SPAdp_${sample}_${start_time}.sh'
 			qsub "${main_dir}/krakr_${sample}_${start_time}.sh"
 			qsub "${main_dir}/gott_${sample}_${start_time}.sh"
@@ -775,10 +779,15 @@ submit_relies_on_trimmed_assemblies() {
 			# Cleanup L3 (paired.fq reliant) scripts
 			echo 'Cleaning L3-paired.fq_reliant scripts'
 			mv "${main_dir}/krakr_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/krakr_${sample}_${start_time}.sh"
+			mv "${shareScript}/krakr_${sample}"* "${main_dir}/${sample}/scripts/"
 			mv "${main_dir}/gott_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/gott_${sample}_${start_time}.sh"
+			mv "${shareScript}/gott_${sample}"* "${main_dir}/${sample}/scripts/"
 			mv "${main_dir}/srst2AR_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/srst2AR_${sample}_${start_time}.sh"
+			mv "${shareScript}/srst2AR_${sample}"* "${main_dir}/${sample}/scripts/"
 			mv "${main_dir}/SPAdn_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/SPAdn_${sample}_${start_time}.sh"
+			mv "${shareScript}/SPAdn_${sample}"* "${main_dir}/${sample}/scripts/"
 			mv "${main_dir}/SPAdp_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/SPAdp_${sample}_${start_time}.sh"
+			mv "${shareScript}/SPAdp_${sample}"* "${main_dir}/${sample}/scripts/"
 			echo -e 'Trying to call L4-trimmed_assembly_reliant qsubs' #\n${main_dir}/QUAST_${sample}_${start_time}.sh\n${main_dir}/kraka_${sample}_${start_time}.sh\n${main_dir}/PROKK_${sample}_${start_time}.sh\n${main_dir}/MLST_${sample}_${start_time}.sh\n${main_dir}/blast16sID_${sample}_${start_time}.sh\n${main_dir}/csstn_${sample}_${start_time}.sh\n${main_dir}/pFinf_${sample}_${start_time}.sh\n${main_dir}/ANI_${sample}_${start_time}.sh\n${main_dir}/plasFlow_${sample}_${start_time}.sh\n(O)${main_dir}/pFinp_${sample}_${start_time}.sh\n(O)${main_dir}/csstp_${sample}_${start_time}.sh'
 			qsub "${main_dir}/QUAST_${sample}_${start_time}.sh"
 			# Should we put a check here to prevent unnecessary calls for bad samples???
@@ -852,18 +861,30 @@ submit_relies_on_species_files() {
 			#Clean Loop 4 script files
 			echo 'Cleaning L4-assembly_reliant scripts'
 			mv "${main_dir}/QUAST_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/QUAST_${sample}_${start_time}.sh"
+			mv "${shareScript}/QUAST_${sample}"* "${main_dir}/${sample}/scripts/"
 			mv "${main_dir}/kraka_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/kraka_${sample}_${start_time}.sh"
+			mv "${shareScript}/kraka_${sample}"* "${main_dir}/${sample}/scripts/"
 			mv "${main_dir}/PROKK_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/PROKK_${sample}_${start_time}.sh"
+			mv "${shareScript}/PROKK_${sample}"* "${main_dir}/${sample}/scripts/"
 			mv "${main_dir}/krakf_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/krakf_${sample}_${start_time}.sh"
+			mv "${shareScript}/krakf_${sample}"* "${main_dir}/${sample}/scripts/"
 			mv "${main_dir}/MLST_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/MLST_${sample}_${start_time}.sh"
+			mv "${shareScript}/MLST_${sample}"* "${main_dir}/${sample}/scripts/"
 			mv "${main_dir}/blast16sID_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/blast16sID_${sample}_${start_time}.sh"
+			mv "${shareScript}/blast16sID_${sample}"* "${main_dir}/${sample}/scripts/"
 			mv "${main_dir}/csstn_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/ccstn_${sample}_${start_time}.sh"
+			mv "${shareScript}/csstn_${sample}"* "${main_dir}/${sample}/scripts/"
 			mv "${main_dir}/pFinf_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/pFinf_${sample}_${start_time}.sh"
+			mv "${shareScript}/pFinf_${sample}"* "${main_dir}/${sample}/scripts/"
 			mv "${main_dir}/ANI_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/ANI_${sample}_${start_time}.sh"
+			mv "${shareScript}/ANI_${sample}"* "${main_dir}/${sample}/scripts/"
 			mv "${main_dir}/plasFlow_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/plasFlow_${sample}_${start_time}.sh"
+			mv "${shareScript}/plasFlow_${sample}"* "${main_dir}/${sample}/scripts/"
 			if [[ -s "${main_dir}/${sample}/plasmidAssembly/${sample}_plasmid_scaffolds_trimmed.fasta}" ]]; then
 				mv "${main_dir}/pFinp_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/pFinp_${sample}_${start_time}.sh"
+				mv "${shareScript}/pFinp_${sample}"* "${main_dir}/${sample}/scripts/"
 				mv "${main_dir}/csstp_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/csstp_${sample}_${start_time}.sh"
+				mv "${shareScript}/csstp_${sample}"* "${main_dir}/${sample}/scripts/"
 			fi
 			echo -e 'Trying to call L5-species_determining qsubs' #\n${main_dir}/taxID_${sample}_${start_time}.sh'
 			qsub "${main_dir}/taxID_${sample}_${start_time}.sh"
@@ -1071,6 +1092,7 @@ submit_relies_on_species_confirmation() {
 		# Cleanup L5 scripts
 		echo 'Cleaning L5-species determining scripts'
 		mv "${main_dir}/taxID_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/taxID_${sample}_${start_time}.sh"
+		mv "${shareScript}/taxID_${sample}"* "${main_dir}/${sample}/scripts/"
 		echo -e 'Trying to call L6-species_dependant qsubs' #\n${main_dir}/BUSCO_${sample}_${start_time}.sh\n${main_dir}/srst2MLST_${sample}_${start_time}.sh\n(O)${main_dir}/serty_${sample}_${start_time}.sh'
 		if [[ ${prokka_success} == "true" ]]; then
 			qsub "${main_dir}/BUSCO_${sample}_${start_time}.sh"
@@ -1173,12 +1195,16 @@ submit_validation_request() {
 		if [[ "${Loop6_success}" == "true" ]]; then
 			echo 'Cleaning L6-species_dependant scripts'
 			mv "${main_dir}/BUSCO_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/BUSCO_${sample}_${start_time}.sh"
+			mv "${shareScript}/BUSCO_${sample}"* "${main_dir}/${sample}/scripts/"
 			mv "${main_dir}/srst2MLST_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/srst2MLST_${sample}_${start_time}.sh"
+			mv "${shareScript}/srst2MLST_${sample}"* "${main_dir}/${sample}/scripts/"
 			if [[ -f "${main_dir}/srst22MLST_${sample}_${start_time}.sh" ]]; then
 				mv "${main_dir}/srst22MLST_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/srst22MLST_${sample}_${start_time}.sh"
+				mv "${shareScript}/srst22MLST_${sample}"* "${main_dir}/${sample}/scripts/"
 			fi
 			if [[ -f "${main_dir}/serty_${sample}_${start_time}.sh" ]]; then
 				mv "${main_dir}/serty_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/serty_${sample}_${start_time}.sh"
+				mv "${shareScript}/serty_${sample}"* "${main_dir}/${sample}/scripts/"
 			fi
 			echo 'Trying to call L7-validation qsubs'
 			qsub "${main_dir}/validate_${sample}_${start_time}.sh"
@@ -1220,6 +1246,7 @@ summarize() {
 		if [[ "${validation_success}" == "true" ]]; then
 			echo -e 'Cleaning L7-validation scripts'
 			mv "${main_dir}/validate_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/validate_${sample}_${start_time}.sh"
+			mv "${shareScript}/validate_${sample}"* "${main_dir}/${sample}/scripts/"
 			ready="true"
 		else
 			echo "${sample} did not finish validation in 20 minutes"
@@ -1263,6 +1290,7 @@ summarize() {
 	if [[ "${summary_success}" == "true" ]]; then
 		runsum=$(${shareScript}/view_sum.sh ${project})
 		mv "${main_dir}/SUM_${sample}_${start_time}.sh" "${main_dir}/${sample}/scripts/SUM_${sample}_${start_time}.sh"
+		mv "${shareScript}/SUM_${sample}"* "${main_dir}/${sample}/scripts/"
 		echo "${runsum}"
 	else
 		echo "Summary did not complete"
