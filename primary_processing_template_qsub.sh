@@ -632,6 +632,8 @@ make_relies_on_trimmed_assemblies() {
 		echo -e "#$ -q short.q\n"  >> "${main_dir}/PROKK_${sample}_${start_time}.sh"
 		echo -e "module load prokka/1.12\n" >> "${main_dir}/PROKK_${sample}_${start_time}.sh"
 		echo -e "\"${shareScript}/run_prokka.sh\" \"${sample}\" \"${project}\"" >> "${main_dir}/PROKK_${sample}_${start_time}.sh"
+		echo -e "mv \"${main_dir}/${sample}/Assembly/scaffolds.fasta.TRIMMED.fasta\" \"${main_dir}/${sample}/Assembly/scaffolds.fasta.TRIMMED_original.fasta\""
+		echo -e "\"python3 ${shareScript}/fasta_headers.py\" \"${main_dir}/${sample}/Assembly/scaffolds.fasta.TRIMMED_original.fasta\" \"${main_dir}/${sample}/Assembly/scaffolds.fasta.TRIMMED.fasta\""
 		echo -e "echo $(date) > \"${main_dir}/${sample}/logs/${sample}_PROKK_complete.txt\"" >> "${main_dir}/PROKK_${sample}_${start_time}.sh"
 
 		# Create scripts for c-SSTAR
@@ -724,10 +726,13 @@ make_relies_on_trimmed_assemblies() {
 		echo -e "#$ -cwd"  >> "${main_dir}/plasFlow_${sample}_${start_time}.sh"
 		echo -e "#$ -q short.q\n"  >> "${main_dir}/plasFlow_${sample}_${start_time}.sh"
 		echo -e "module load PlasFlow/1.0\n" >> "${main_dir}/plasFlow_${sample}_${start_time}.sh"
-		#echo -e "\"${shareScript}/run_plasFlow.sh\" \"${sample}\" \"${project}\"" >> "${main_dir}/plasFlow_${sample}_${start_time}.sh"
+		echo -e "\"${shareScript}/run_plasFlow.sh\" \"${sample}\" \"${project}\"" >> "${main_dir}/plasFlow_${sample}_${start_time}.sh"
 
 		# Check if plasmid SPAdes produced any output...if so, make scripts to run csstar and plasmidFinder on it
 		if [[ -s "${main_dir}/${sample}/plasmidAssembly/${sample}_plasmid_scaffolds_trimmed.fasta}" ]]; then
+			echo -e "mv \"${main_dir}/${sample}/plasmidAssembly/${sample}_plasmid_scaffolds.fasta.TRIMMED.fasta\" \"${main_dir}/${sample}/plasmidAssembly/${sample}_plasmid_scaffolds.fasta.TRIMMED_original.fasta\""
+			echo -e "\"python3 ${shareScript}/fasta_headers.py\" \"${main_dir}/${sample}/Assembly/${sample}_plasmid_scaffolds.fasta.TRIMMED_original.fasta\" \"${main_dir}/${sample}/Assembly/${sample}_plasmid_scaffolds.fasta.TRIMMED.fasta\""
+
 			echo -e "#!/bin/bash -l\n" > "${main_dir}/csstp_${sample}_${start_time}.sh"
 			echo -e "#$ -o csstp_${sample}.out" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
 			echo -e "#$ -e csstp_${sample}.err" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
@@ -1330,6 +1335,7 @@ submit_relies_on_unzipped_fastqs
 # Loop 3
 make_relies_on_trimmed_fastqs
 submit_relies_on_trimmed_fastqs
+exit
 # Loop 4
 make_relies_on_trimmed_assemblies
 submit_relies_on_trimmed_assemblies
