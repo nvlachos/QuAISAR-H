@@ -335,4 +335,4 @@ rename="true"
 
 done < ${1}
 
-python "${shareScript}/project_parser.py" "${share}/${4}-csstar_summary_full.txt" "${share}/${4}-plasmid_summary.txt" "${share}/${4}_AR_plasmid_report.csv"
+python3 "${shareScript}/project_parser.py" "${share}/${4}-csstar_summary_full.txt" "${share}/${4}-plasmid_summary.txt" "${share}/${4}_AR_plasmid_report.csv"
