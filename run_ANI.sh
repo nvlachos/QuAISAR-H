@@ -101,7 +101,7 @@ genus_in=${2}
 echo "trying to copy ${local_DBs}/aniDB/${genus_in,}/"
 #cp "${local_DBs}/aniDB/${genus_in,}/"*".fna" "${OUTDATADIR}/ANI/localANIDB/"
 # temp locale chnage
-cp "${local_DBs}/aniDB/${genus_in,}/"*".fna.gz" "${OUTDATADIR}/ANI/localANIDB/"
+cp "${local_DBs}/aniDB/${genus_in,}/"*".fna" "${OUTDATADIR}/ANI/localANIDB/"
 gunzip ${OUTDATADIR}/ANI/localANIDB/*.gz
 
 #Copies the samples assembly contigs to the local ANI db folder
