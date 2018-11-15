@@ -11,7 +11,7 @@ if [[ ! -f "./config.sh" ]]; then
 	cp config_template.sh config.sh
 fi
 . ./config.sh
-${mod_changers}/list_modules.sh
+#${mod_changers}/list_modules.sh
 
 #
 # Script to calculate the average nucleotide identity of a sample to numerous other samples from the same genus (genus dependent)
@@ -101,7 +101,7 @@ genus_in=${2}
 echo "trying to copy ${local_DBs}/aniDB/${genus_in,}/"
 #cp "${local_DBs}/aniDB/${genus_in,}/"*".fna" "${OUTDATADIR}/ANI/localANIDB/"
 # temp locale chnage
-cp "${local_DBs}/${genus_in,}/"*".fna.gz" "${OUTDATADIR}/ANI/localANIDB/"
+cp "${local_DBs}/aniDB/${genus_in,}/"*".fna.gz" "${OUTDATADIR}/ANI/localANIDB/"
 gunzip ${OUTDATADIR}/ANI/localANIDB/*.gz
 
 #Copies the samples assembly contigs to the local ANI db folder
