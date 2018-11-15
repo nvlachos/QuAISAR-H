@@ -618,7 +618,8 @@ make_relies_on_trimmed_assemblies() {
 		echo -e "#$ -N QUAST_${sample}"   >> "${main_dir}/QUAST_${sample}_${start_time}.sh"
 		echo -e "#$ -cwd"  >> "${main_dir}/QUAST_${sample}_${start_time}.sh"
 		echo -e "#$ -q short.q\n"  >> "${main_dir}/QUAST_${sample}_${start_time}.sh"
-		# echo -e "module load quast/4.3" >> "${main_dir}/QUAST_${sample}_${start_time}.sh"
+		echo -e "module load quast/4.3" >> "${main_dir}/QUAST_${sample}_${start_time}.sh"
+		echo -e "module load Python/2.7.15" >> "${main_dir}/QUAST_${sample}_${start_time}.sh"
 		# No modules needed to run QUAST
 		echo -e "\"${shareScript}/run_Assembly_Quality_Check.sh\" \"${sample}\" \"${project}\"" >> "${main_dir}/QUAST_${sample}_${start_time}.sh"
 		echo -e "echo $(date) > \"${main_dir}/${sample}/logs/${sample}_QUAST_complete.txt\"" >> "${main_dir}/QUAST_${sample}_${start_time}.sh"
