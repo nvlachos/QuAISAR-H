@@ -646,6 +646,7 @@ check_for_Assemblies() {
 				echo "Says it did not finish in logs"
 			fi
 		fi
+	done
 }
 
 # Loop 4 - Make scripts for tools requiring trimmed assembly
