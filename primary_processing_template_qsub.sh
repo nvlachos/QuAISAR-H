@@ -609,8 +609,25 @@ submit_relies_on_trimmed_fastqs() {
 check_for_Assemblies() {
 	for sample in "${sample_name[@]}";
 	do
-		if [[ -s ${main_dir}/${sample}/Assembly/${sample} ]]; then
-
+		if [[ ! -s "${main_dir}/${sample}/Assembly/scaffolds.fasta" ]]; then
+			# Create script to call normal SPAdes
+			#re qusb Assembly
+			echo "$sample did not finish normal assembling"
+			if [[ -f "${main_dir}/${sample}/logs/${sample}_full_assembling_complete.txt" ]]; then
+				echo "Says it finished in logs"
+			else
+				echo "Says it did not finish in logs"
+			fi
+		fi
+		if [[ ! -s "${main_dir}/${sample}/plasmidAssembly/scaffolds.fasta" ]]; then
+			# Create script to call plasmid SPAdes
+			#re qsub plasmidAssembly
+			echo "$sample did not finish plamsid assembling"
+			if [[ -f "${main_dir}/${sample}/logs/${sample}_plasmid_assembing_complete.txt" ]]; then
+				echo "Says it finished in logs"
+			else
+				echo "Says it did not finish in logs"
+			fi
 		fi
 }
 
@@ -1334,17 +1351,19 @@ report_completion() {
 if [[ "${do_download}" == "true" ]]; then
 	do_download
 fi
-make_list_from_folder
-#make_list_from_list
+#make_list_from_folder
+make_list_from_list
 # Loop 1
-make_fastq_unzipper
-submit_fastq_unzipper
+#make_fastq_unzipper
+#submit_fastq_unzipper
 # Loop 2
-make_relies_on_unzipped_fastqs
-submit_relies_on_unzipped_fastqs
+#make_relies_on_unzipped_fastqs
+#submit_relies_on_unzipped_fastqs
 # Loop 3
-make_relies_on_trimmed_fastqs
-submit_relies_on_trimmed_fastqs
+#make_relies_on_trimmed_fastqs
+#submit_relies_on_trimmed_fastqs
+
+check_for_Assemblies
 exit
 # Loop 4
 
