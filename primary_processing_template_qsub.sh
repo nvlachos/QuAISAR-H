@@ -631,7 +631,7 @@ check_for_Assemblies() {
 	for sample in "${sample_names[@]}";
 	do
 		echo "Checking ${sample}"
-		if [[ ! -s "${main_dir}/${sample}/Assembly/scaffolds.fasta" ]]; then
+		if [[ -s "${main_dir}/${sample}/Assembly/scaffolds.fasta" ]]; then
 			# Create script to call normal SPAdes
 			#re qusb Assembly
 			echo "$sample did not finish normal assembling"
@@ -643,7 +643,7 @@ check_for_Assemblies() {
 		else
 			echo "${sample} scaffolds does not exist or is 0 size"
 		fi
-		if [[ ! -s "${main_dir}/${sample}/plasmidAssembly/scaffolds.fasta" ]]; then
+		if [[ -s "${main_dir}/${sample}/plasmidAssembly/scaffolds.fasta" ]]; then
 			# Create script to call plasmid SPAdes
 			#re qsub plasmidAssembly
 			echo "$sample did not finish plamsid assembling"
