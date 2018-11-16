@@ -624,8 +624,10 @@ submit_relies_on_trimmed_fastqs() {
 
 # Loop 3.5 - Check that SPAdes completed successfully
 check_for_Assemblies() {
+	echo "Entered checker"
 	for sample in "${sample_name[@]}";
 	do
+		echo "Checking ${sample}"
 		if [[ ! -s "${main_dir}/${sample}/Assembly/scaffolds.fasta" ]]; then
 			# Create script to call normal SPAdes
 			#re qusb Assembly
