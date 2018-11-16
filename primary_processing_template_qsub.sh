@@ -252,7 +252,7 @@ main_dir="${processed}/${project}"
 echo "${main_dir}"
 
 #echo "> ${main_dir}/${project}_list.txt"
-> "${main_dir}/${project}_list.txt"
+#> "${main_dir}/${project}_list.txt"
 
 #cp /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts/config_template.sh ${main_dir}/config.sh
 #echo "shareScript=/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts" >> ${main_dir}/config.sh
