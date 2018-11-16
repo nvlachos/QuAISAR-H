@@ -635,6 +635,8 @@ check_for_Assemblies() {
 			else
 				echo "Says it did not finish in logs"
 			fi
+		else
+			echo "${sample} scaffolds does not exist or is 0 size"
 		fi
 		if [[ ! -s "${main_dir}/${sample}/plasmidAssembly/scaffolds.fasta" ]]; then
 			# Create script to call plasmid SPAdes
@@ -645,6 +647,8 @@ check_for_Assemblies() {
 			else
 				echo "Says it did not finish in logs"
 			fi
+		else
+			echo "${sample} plasmid_scaffolds does not exist or is 0 size"
 		fi
 	done
 }
@@ -1370,7 +1374,8 @@ if [[ "${do_download}" == "true" ]]; then
 	if [[ "${assembly_on}" == "true" ]]; then
 		do_assembly_download
 	else
-		do_reads_download
+		#do_reads_download
+		:
 	fi
 fi
 
