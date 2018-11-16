@@ -605,6 +605,15 @@ submit_relies_on_trimmed_fastqs() {
 	echo "Loop 3 ended at ${check_time}" >> "${processed}/${project}/${project}.log"
 }
 
+# Loop 3.5 - Check that SPAdes completed successfully
+check_for_Assemblies() {
+	for sample in "${sample_name[@]}";
+	do
+		if [[ -s ${main_dir}/${sample}/Assembly/${sample} ]]; then
+
+		fi
+}
+
 # Loop 4 - Make scripts for tools requiring trimmed assembly
 make_relies_on_trimmed_assemblies() {
 	for sample in "${sample_names[@]}";
@@ -1338,6 +1347,7 @@ make_relies_on_trimmed_fastqs
 submit_relies_on_trimmed_fastqs
 exit
 # Loop 4
+
 make_relies_on_trimmed_assemblies
 submit_relies_on_trimmed_assemblies
 # Loop 5
