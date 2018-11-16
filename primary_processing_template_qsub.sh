@@ -125,9 +125,24 @@ for ((i=1 ; i <= nopts ; i++)); do
 					echo "${INDATADIR} does not exist...exiting"
 					exit 1
 			fi
-			indir_set="true"
 			postfix="$3"
 
+			#echo "$INDATADIR $2"
+			shift 3
+			;;
+
+		#Gets name of folder that FASTA files will be in
+		-a | --assemblies-dir)
+			INDATADIR="$2"
+			if [[ -d  ${INDATADIR} ]]; then
+				do_download="true"
+				assembly_on="true"
+				list_path="${BASEDIR}/${project}/${project}_list.txt"
+			else
+					echo "${INDATADIR} does not exist...exiting"
+					exit 1
+			fi
+			postfix="$3"
 			#echo "$INDATADIR $2"
 			shift 3
 			;;
@@ -144,7 +159,6 @@ for ((i=1 ; i <= nopts ; i++)); do
 			list_path="${processed}/${project}/${project}_list.txt"
 			run_name="project_${project}"
 			do_download="true"
-			is_full_run="true"
 			shift 2
 			;;
 		#Tells the script to run analyses from already downloaded fastq files
@@ -153,18 +167,31 @@ for ((i=1 ; i <= nopts ; i++)); do
 			shift
 			;;
 		#Tells the script that only the files found in the attached list need to be run
-#		-l | --list)
-#			list_path="$2"
-#			quick_list=$(echo "${2}" | cut -d'.' -f1)
-#			INDATADIR="${processed}/${project}" # NOT USED yet in list mode
-#			if [[ -z ${BASEDIR} ]]; then
-#				BASEDIR="${processed}"
-#			fi
-#			do_download="false"
-#			run_name="list_${quick_list}"
-#			is_full_run="false"
-#			shift 2
-#			;;
+		-lr | --list)
+			list_path="$2"
+			quick_list=$(echo "${2}" | cut -d'.' -f1)
+			INDATADIR="${processed}/${project}" # NOT USED yet in list mode
+			if [[ -z ${BASEDIR} ]]; then
+				BASEDIR="${processed}"
+			fi
+			do_download="false"
+			list_given="true"
+			run_name="list_${quick_list}"
+			shift 2
+			;;
+		#Tells the script that only the files found in the attached list need to be run
+		-la | --list)
+			list_path="$2"
+			quick_list=$(echo "${2}" | cut -d'.' -f1)
+			INDATADIR="${processed}/${project}" # NOT USED yet in list mode
+			if [[ -z ${BASEDIR} ]]; then
+				BASEDIR="${processed}"
+			fi
+			do_download="false"
+			list_given="true"
+			run_name="list_${quick_list}"
+			shift 2
+			;;
 		#Captures any other characters in the args
 		\?)
 			echo "ERROR: ${BOLD}$2${NORM}is not a valid argument" >&2
@@ -191,31 +218,21 @@ start_time=$(date "+%m-%d-%Y_at_%Hh_%Mm")
 #echo "${project} started at ${start_time} > ${processed}/${project}/${project}.log"
 echo "${project} started at ${start_time}" > "${processed}/${project}/${project}.log"
 
-do_download_old() {
-	echo "Starting copying of FASTQs"
+do_assembly_download() {
+	echo "Starting copying of Assemblies"
 	check_time=$(date)
 	#echo "Downloading started at ${check_time} >> ${processed}/${project}/${project}.log"
 	echo "Downloading started at ${check_time}" >> "${processed}/${project}/${project}.log"
 	mkdir /scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/${project}
-	if [[ -d /scicomp/instruments/17-4-4248_Illumina-MiSeq-M04765/${project} ]]; then
-		echo "Copying from M04765"
-		cp "/scicomp/instruments/17-4-4248_Illumina-MiSeq-M04765/${project}/Data/Intensities/BaseCalls/"*".gz" "/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/${project}"
-	elif [[ -d /scicomp/instruments/17-5-5248_Illumina-MiSeq-M02103/${project} ]]; then
-		echo "Copying from M02103"
-		cp "/scicomp/instruments/17-5-5248_Illumina-MiSeq-M02103/${project}/Data/Intensities/BaseCalls/"*".gz" "/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/${project}"
-	elif [[ -d /scicomp/instruments/17-4-4248_Illumina-MiSeq-M01025/${project} ]]; then
-		echo "Copying from M01025"
-		cp "/scicomp/instruments/17-4-4248_Illumina-MiSeq-M01025/${project}/Data/Intensities/BaseCalls/"*".gz" "/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/${project}"
-	fi
-	echo "Done copying FASTQs from Instruments"
+	"${shareScript}/get_Assemblies_from_folder.sh" "${project}" "${INDATADIR}"
+	echo "Done copying Assemblies from ${INDATADIR}"
 	# Remove Undetermined zip files
-	rm -r /scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/${project}/Undetermined*.gz
 	check_time=$(date)
 	echo "Downloading finished at ${check_time}" >> "${processed}/${project}/${project}.log"
 }
 
 
-do_download() {
+do_reads_download() {
 	echo "Starting copying of FASTQs"
 	check_time=$(date)
 	#echo "Downloading started at ${check_time} >> ${processed}/${project}/${project}.log"
@@ -1349,8 +1366,13 @@ report_completion() {
 }
 
 if [[ "${do_download}" == "true" ]]; then
-	do_download
+	if [[ "${assembly_on}" == "true" ]]; then
+		do_assembly_download
+	else
+		do_reads_download
+	fi
 fi
+
 #make_list_from_folder
 make_list_from_list
 # Loop 1
