@@ -630,7 +630,7 @@ check_for_Assemblies() {
 	echo "Entered checker"
 	for sample in "${sample_names[@]}";
 	do
-		echo "Checking ${sample}"
+		echo "Checking ${sample} at ${main_dir}/${sample}/(plasmid)Assembly/scaffolds.fasta"
 		if [[ -s "${main_dir}/${sample}/Assembly/scaffolds.fasta" ]]; then
 			# Create script to call normal SPAdes
 			#re qusb Assembly
