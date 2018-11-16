@@ -1379,22 +1379,29 @@ if [[ "${do_download}" == "true" ]]; then
 	if [[ "${assembly_on}" == "true" ]]; then
 		do_assembly_download
 	else
-		#do_reads_download
+		do_reads_download
 		:
 	fi
 fi
 
-#make_list_from_folder
-make_list_from_list
+if [[ "${list_given}" == "true" ]]; then
+	make_list_from_list
+else
+	make_list_from_folder
+	:
+fi
+
+
+
 # Loop 1
-#make_fastq_unzipper
-#submit_fastq_unzipper
+make_fastq_unzipper
+submit_fastq_unzipper
 # Loop 2
-#make_relies_on_unzipped_fastqs
-#submit_relies_on_unzipped_fastqs
+make_relies_on_unzipped_fastqs
+submit_relies_on_unzipped_fastqs
 # Loop 3
-#make_relies_on_trimmed_fastqs
-#submit_relies_on_trimmed_fastqs
+make_relies_on_trimmed_fastqs
+submit_relies_on_trimmed_fastqs
 
 check_for_Assemblies
 exit
