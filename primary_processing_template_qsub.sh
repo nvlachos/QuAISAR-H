@@ -400,6 +400,7 @@ make_list_from_list() {
 		sample_name=$(echo "${var}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
 		echo "Adding ${sample_name}"
 		sample_names[${counter}]=${sample_name}
+		counter=$(( counter + 1 ))
 	done < ${list_path}
 }
 
