@@ -630,11 +630,11 @@ check_for_Assemblies() {
 	echo "Entered checker"
 	for sample in "${sample_names[@]}";
 	do
-		echo "Checking ${sample} at ${main_dir}/${sample}/(plasmid)Assembly/scaffolds.fasta"
+		#echo "Checking ${sample} at ${main_dir}/${sample}/(plasmid)Assembly/scaffolds.fasta"
 		if [[ -s "${main_dir}/${sample}/Assembly/scaffolds.fasta" ]]; then
 			# Create script to call normal SPAdes
 			#re qusb Assembly
-			echo "$sample did not finish normal assembling"
+			echo "$sample finished normal assembling"
 			if [[ -f "${main_dir}/${sample}/logs/${sample}_full_assembling_complete.txt" ]]; then
 				echo "Says it finished in logs"
 			else
@@ -646,7 +646,7 @@ check_for_Assemblies() {
 		if [[ -s "${main_dir}/${sample}/plasmidAssembly/scaffolds.fasta" ]]; then
 			# Create script to call plasmid SPAdes
 			#re qsub plasmidAssembly
-			echo "$sample did not finish plamsid assembling"
+			echo "$sample did finished plamsid assembling"
 			if [[ -f "${main_dir}/${sample}/logs/${sample}_plasmid_assembing_complete.txt" ]]; then
 				echo "Says it finished in logs"
 			else
