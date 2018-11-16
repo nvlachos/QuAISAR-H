@@ -394,7 +394,7 @@ make_list_from_folder() {
 
 make_list_from_list() {
 	counter=0
-	echo "entering list from list"
+	echo "entering list from list at @ ${list_path}"
 	while IFS= read -r var; do
 		project=$(echo "${var}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
 		sample_name=$(echo "${var}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
