@@ -397,6 +397,7 @@ make_list_from_list() {
 	while IFS= read -r var; do
 		project=$(echo "${var}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
 		sample_name=$(echo "${var}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
+		echo "Adding ${sample_name}"
 		sample_names[${counter}]=${sample_name}
 	done < ${list_path}
 }
