@@ -15,7 +15,7 @@ fi
 #
 # Will find all fastq.gz files within the given folder
 #
-# Usage ./get_Reads_from_folder.sh run_id folder_with_fastqs postfix_for_reads(1: _SX_RX_00X.fastq.gz 2: _RX.fastq.gz 3: _X.fastq.gz)
+# Usage ./get_Reads_from_folder.sh run_id folder_with_fastqs postfix_for_reads(1: _SX_RX_00X.fastq.gz 2: _RX.fastq.gz 3: _X.fastq.gz 4: RX_001.fastq.gz)
 #
 
 # Checks for proper argumentation
@@ -105,6 +105,14 @@ do
 					echo -e "${1}/${short_name}" >> "${OUTDATADIR}/${1}_list.txt"
 				elif [[ "${postfix}" = *"2"* ]]; then
 					cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
+				fi
+			elif [[ "${match}" -eq 4 ]]; then
+				if [[ "${postfix}" = *"1"* ]]; then
+					echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
+					cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${full_name}"
+					echo -e "${1}/${short_name}" >> "${OUTDATADIR}/${1}_list.txt"
+				elif [[ "${postfix}" = *"2"* ]]; then
+					cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${full_name}"
 				fi
 			else
 				echo "Unrecognized postfix type, but how did it get this far?"
