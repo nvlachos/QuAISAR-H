@@ -1379,7 +1379,7 @@ if [[ "${do_download}" == "true" ]]; then
 	if [[ "${assembly_on}" == "true" ]]; then
 		do_assembly_download
 	else
-		do_reads_download
+		#do_reads_download
 		:
 	fi
 fi
