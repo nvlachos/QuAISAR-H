@@ -1391,9 +1391,6 @@ else
 	:
 fi
 
-echo "${sample_names[@]}"
-
-exit
 # Loop 1
 make_fastq_unzipper
 submit_fastq_unzipper
