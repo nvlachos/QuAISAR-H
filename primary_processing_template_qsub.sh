@@ -1392,14 +1392,14 @@ else
 fi
 
 # Loop 1
-make_fastq_unzipper
-submit_fastq_unzipper
+#make_fastq_unzipper
+#submit_fastq_unzipper
 # Loop 2
-make_relies_on_unzipped_fastqs
-submit_relies_on_unzipped_fastqs
+#make_relies_on_unzipped_fastqs
+#submit_relies_on_unzipped_fastqs
 # Loop 3
-make_relies_on_trimmed_fastqs
-submit_relies_on_trimmed_fastqs
+#make_relies_on_trimmed_fastqs
+#submit_relies_on_trimmed_fastqs
 
 check_for_Assemblies
 exit
