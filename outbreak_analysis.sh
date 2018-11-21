@@ -30,7 +30,7 @@ if [[ $# -eq 0 ]]; then
 	exit 1
 # Shows a brief uasge/help section if -h option used as first argument
 elif [[ "$1" = "-h" ]]; then
-	echo "Usage is ./run_csstar_proj_parser.sh path_to_list_file(single sample ID per line, e.g. B8VHY/1700128 (it must include project id also) gapped/ungapped 80/95/98/99/100 output_prefix plasmid_identity_cutoff(optional, default = 40)"
+	echo "Usage is ./run_csstar_proj_parser.sh path_to_list_file(single sample ID per line, e.g. B8VHY/1700128 (it must include project id also) gapped/ungapped 80/95/98/99/100 output_prefix output_directory plasmid_identity_cutoff(optional, default = 40)"
 	echo "Output location varies depending on which tasks are performed but will be found somewhere under ${share}"
 	exit 0
 elif [[ ! -f ${1} ]]; then
@@ -38,22 +38,26 @@ elif [[ ! -f ${1} ]]; then
 	exit 1
 fi
 
+output_directory=${5}
+if [[ ! -d ${output_directory} ]]; then
+	mkdir -p ${output_directory}
+fi
 
 # # Remove any pre-existing files from previous runs
-if [[ -f ${share}/${4}-mlst_summary.txt ]]; then
-	rm ${share}/${4}-mlst_summary.txt
+if [[ -f ${output_directory}/${4}-mlst_summary.txt ]]; then
+	rm ${output_directory}/${4}-mlst_summary.txt
 fi
-if [[ -f ${share}/${4}-csstar_summary.txt ]]; then
-	rm ${share}/${4}-csstar_summary.txt
+if [[ -f ${output_directory}/${4}-csstar_summary.txt ]]; then
+	rm ${output_directory}/${4}-csstar_summary.txt
 fi
-if [[ -f ${share}/${4}-plasmid_summary.txt ]]; then
-	rm ${share}/${4}-plasmid_summary.txt
+if [[ -f ${output_directory}/${4}-plasmid_summary.txt ]]; then
+	rm ${output_directory}/${4}-plasmid_summary.txt
 fi
-if [[ -f ${share}/${4}_AR_plasmid_report.csv ]]; then
-	rm ${share}/${4}_AR_plasmid_report.csv
+if [[ -f ${output_directory}/${4}_AR_plasmid_report.csv ]]; then
+	rm ${output_directory}/${4}_AR_plasmid_report.csv
 fi
-if [[ -f ${share}/${4}-csstar_summary_full.txt ]]; then
-	rm ${share}/${4}-csstar_summary_full.txt
+if [[ -f ${output_directory}/${4}-csstar_summary_full.txt ]]; then
+	rm ${output_directory}/${4}-csstar_summary_full.txt
 fi
 
 if [ "${3}" == 98 ]; then
@@ -69,10 +73,10 @@ elif [ "${3}" == 100 ]; then
 elif [ "${3}" == 40 ]; then
 	sim="o"
 fi
-if [[ -z "${5}" ]]; then
+if [[ -z "${6}" ]]; then
 	plaid=40
 else
-	plaid="${5}"
+	plaid="${6}"
 fi
 
 rename="true"
@@ -177,19 +181,19 @@ rename="true"
 		if [[ ${percent_length} -ge ${project_parser_Percent_length} ]] && [[ ${percent_ID} -ge ${project_parser_Percent_identity} ]] ; then
 			if [[ -z "${oar_list}" ]]; then
 			#	echo "First oar: ${gene}"
-				oar_list="${gene}(${conferred})"
+				oar_list="${gene}(${conferred})[${percent_ID}/${percent_length}]"
 			else
 				if [[ ${oar_list} == *"${gene}"* ]]; then
 				#	echo "${gene} already found in ${oar_list}"
 					:
 				else
 				#	echo "${gene} not found in ${oar_list}...adding it"
-					oar_list="${oar_list},${gene}(${conferred})"
+					oar_list="${oar_list},${gene}(${conferred})[${percent_ID}/${percent_length}]"
 				fi
 			fi
 		# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
 		else
-			echo -e "${project}\t${sample_name}\tfull_assembly\t${line}" >> ${share}/${4}-csstar_rejects.txt
+			echo -e "${project}\t${sample_name}\tfull_assembly\t${line}" >> ${output_directory}/${4}-csstar_rejects.txt
 		fi
 	done < ${ARDB_full}
 	# Changes list names if empty
@@ -207,7 +211,7 @@ rename="true"
 	species=$(tail -1 "${processed}/${project}/${sample_name}/${sample_name}.tax" | cut -d'	' -f2)
 	ANI="${genus} ${species}"
 #	echo "${ANI}"
-	echo -e "${project}\t${sample_name}\t${ANI}\t${mlst}\t${oar_list}" >> ${share}/${4}-csstar_summary_full.txt
+	echo -e "${project}\t${sample_name}\t${ANI}\t${mlst}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_full.txt
 
 	if [[ "${has_plasmidAssembly}" = "true" ]]; then
 		# Repeat the c-sstar output organization of the plasmidAssembly
@@ -253,25 +257,25 @@ rename="true"
 			if [[ ${percent_length} -ge ${project_parser_Percent_length} ]] && [[ ${percent_ID} -ge ${project_parser_plasmid_Percent_identity} ]] ; then
 				if [[ -z "${oar_list}" ]]; then
 				#	echo "First oar: ${gene}"+
-					oar_list="${gene}(${conferred})"
+					oar_list="${gene}(${conferred})[${percent_ID}/${percent_length}]"
 				else
 					if [[ ${oar_list} == *"${gene}"* ]]; then
 					#	echo "${gene} already found in ${oar_list}"
 						:
 					else
 					#	echo "${gene} not found in ${oar_list}...adding it"
-						oar_list="${oar_list},${gene}(${conferred})"
+						oar_list="${oar_list},${gene}(${conferred})[${percent_ID}/${percent_length}]"
 					fi
 				fi
 			# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
 			else
-				echo -e "${project}\t${sample_name}\t${line}" >> ${share}/${4}-csstar_rejects_plasmids.txt
+				echo -e "${project}\t${sample_name}\t${line}" >> ${output_directory}/${4}-csstar_rejects_plasmids.txt
 			fi
 		done < ${ARDB_plasmid}
 		if [[ -z "${oar_list}" ]]; then
 			oar_list="No other AR genes"
 		fi
-		echo -e "${project}\t${sample_name}\t${oxa_list}\t${oar_list}" >> ${share}/${4}-csstar_summary_plasmid.txt
+		echo -e "${project}\t${sample_name}\t${oxa_list}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_plasmid.txt
 	fi
 
 
@@ -290,12 +294,12 @@ rename="true"
 			# echo "Not using line: $plasmid"
 			:
 		else
-			echo -e "${project}\t${sample_name}\tfull_assembly\t${plasmid}" >> ${share}/${4}-plasmid_summary.txt
+			echo -e "${project}\t${sample_name}\tfull_assembly\t${plasmid}" >> ${output_directory}/${4}-plasmid_summary.txt
 			added=1
 		fi
 	done < ${processed}/${project}/${sample_name}/plasmid/${sample_name}_results_table_summary.txt
 	if [[ "${added}" -eq 0 ]]; then
-		echo -e "${project}\t${sample_name}\tfull_assembly\tNo_Plasmids_Found\t${full_contigs}_contigs-${components}_components" >> ${share}/${4}-plasmid_summary.txt
+		echo -e "${project}\t${sample_name}\tfull_assembly\tNo_Plasmids_Found\t${full_contigs}_contigs-${components}_components" >> ${output_directory}/${4}-plasmid_summary.txt
 	fi
 	plas_contigs=">"
 	plas_contigs=$(grep -c ${plas_contigs} "${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta")
@@ -314,13 +318,13 @@ rename="true"
 		if [[ "${line_in}" = "No" ]] || [[ "${line_in}" = "Enterococcus,Streptococcus,Staphylococcus" ]] || [[ "${line_in}" = "Enterobacteriaceae" ]] || [[ "${line_in}" = "Plasmid" ]]; then
 			:
 		else
-			echo -e "${project}\t${sample_name}\tplasmid_assembly\t${plasmid}" >> ${share}/${4}-plasmid_summary.txt
+			echo -e "${project}\t${sample_name}\tplasmid_assembly\t${plasmid}" >> ${output_directory}/${4}-plasmid_summary.txt
 			added=1
 		fi
 	done < ${processed}/${project}/${sample_name}/plasmid_on_plasmidAssembly/${sample_name}_results_table_summary.txt
 
 	if [[ "${added}" -eq 0 ]]; then
-		echo -e "${project}\t${sample_name}\tplasmid_assembly\tNo_Plasmids_Found\t${plas_contigs}_contigs-${components}_components" >> ${share}/${4}-plasmid_summary.txt
+		echo -e "${project}\t${sample_name}\tplasmid_assembly\tNo_Plasmids_Found\t${plas_contigs}_contigs-${components}_components" >> ${output_directory}/${4}-plasmid_summary.txt
 	fi
 
 	# Pulls MLST type for sample and adds it to the summary file
@@ -330,9 +334,9 @@ rename="true"
 	else
 		mlst="N/A"
 	fi
-	echo -e "${project}\t${sample_name}\t${mlst}" >> ${share}/${4}-mlst_summary.txt
+	echo -e "${project}\t${sample_name}\t${mlst}" >> ${output_directory}/${4}-mlst_summary.txt
 	#echo -e "${sample_name}\t${mlst}" >> ${share}/${4}-mlst_summary.txt
 
 done < ${1}
 
-python3 "${shareScript}/project_parser.py" "${share}/${4}-csstar_summary_full.txt" "${share}/${4}-plasmid_summary.txt" "${share}/${4}_AR_plasmid_report.csv"
+python3 "${shareScript}/project_parser.py" "${output_directory}/${4}-csstar_summary_full.txt" "${output_directory}/${4}-plasmid_summary.txt" "${output_directory}/${4}_AR_plasmid_report.csv"

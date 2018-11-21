@@ -1,5 +1,6 @@
 import sys
 import glob
+import math
 
 def do_AR(input_AR, input_plas, output_file):
 	all_ARs_in_file=[]
@@ -11,13 +12,17 @@ def do_AR(input_AR, input_plas, output_file):
 		#print(counter, line)
 		line_sections=line.split("	")
 		ar_list=line_sections[4].split(",")
+		ar_dict={}
+		for ar_gene in ar_list:
+			gene_name=ar_gene.split(")")[0]+")"
+			gene_stats=ar_gene.split(")")[1]
+			ar_dict[gene_name]=gene_stats
+			if gene_name not in all_ARs_in_file:
+				all_ARs_in_file.append(gene_name)
+				#print("Adding", gene)
 		#print("1:",line_sections[0])
 		#print("0:", line_sections[0], "1:", line_sections[1],"2:" , line_sections[2], "3:", line_sections[3])
-		samples.append([line_sections[0], line_sections[1], line_sections[2], line_sections[3], ar_list])
-		for gene in ar_list:
-			if gene not in all_ARs_in_file:
-				all_ARs_in_file.append(gene)
-				#print("Adding", gene)
+		samples.append([line_sections[0], line_sections[1], line_sections[2], line_sections[3], ar_dict])
 		#print("Total AR genes in sample set:", len(all_ARs_in_file)-1)
 		line = AR_file.readline().strip()
 	all_ARs_in_file.sort()
@@ -38,8 +43,8 @@ def do_AR(input_AR, input_plas, output_file):
 	all_plasmids_in_file=[]
 	plas_file=open(input_plas, 'r')
 	line = plas_file.readline().strip()
-	sample_p_plasmids=[]
-	sample_f_plasmids=[]
+	sample_p_plasmids_dict={}
+	sample_f_plasmids_dict={}
 	current_id=""
 	counter=0
 	while line != '':
@@ -54,21 +59,24 @@ def do_AR(input_AR, input_plas, output_file):
 				#print("Looking for", current_id, ", found", samples[sample_index][0].strip())
 				if current_id == samples[sample_index][0]+"/"+samples[sample_index][1].strip():
 					#print(samples[sample_index], "adding", sample_f_plasmids, "and", sample_p_plasmids)
-					samples[sample_index].append(sample_f_plasmids)
-					samples[sample_index].append(sample_p_plasmids)
+					samples[sample_index].append(sample_f_plasmids_dict)
+					samples[sample_index].append(sample_p_plasmids_dict)
 					break
 				#else:
 					#print("Sample", current_id, "does not exist")
 			current_id=line_sections[0]+"/"+line_sections[1].strip()
-			sample_f_plasmids=[]
-			sample_p_plasmids=[]
+			sample_f_plasmids_dict={}
+			sample_p_plasmids_dict={}
 		source_assembly=line_sections[2]
+		plas_%_id=math.floor(line_sections[4])
+		plas_%_length=math.(100*line_sections[5].split("/")[0]/line_sections[5].split("/")[1])
+
 		if source_assembly == "full_assembly":
 			#print("Adding:", line_sections[3], "to sample_f_plasmids")
-			sample_f_plasmids.append(line_sections[3])
+			sample_f_plasmids_dict[line_sections[3]]="["+plas_%_id+"/"+plas_%_length+"]")
 		elif source_assembly == "plasmid_assembly":
 			#print("Adding:", line_sections[3], "to sample_p_plasmids")
-			sample_p_plasmids.append(line_sections[3])
+			sample_p_plasmids_dict[line_sections[3]]="["+plas_%_id+"/"+plas_%_length+"]")
 		if len(line_sections) > 1:
 			if line_sections[3] not in all_plasmids_in_file:
 				all_plasmids_in_file.append(line_sections[3])
@@ -82,8 +90,8 @@ def do_AR(input_AR, input_plas, output_file):
 		#print("Looking for", current_id, ", found", samples[sample_index][0].strip())
 		if current_id == samples[sample_index][0]+"/"+samples[sample_index][1].strip():
 			#print(samples[sample_index], "adding", sample_f_plasmids, "and", sample_p_plasmids)
-			samples[sample_index].append(sample_f_plasmids)
-			samples[sample_index].append(sample_p_plasmids)
+			samples[sample_index].append(sample_f_plasmids_dict)
+			samples[sample_index].append(sample_p_plasmids_dict)
 			break
 		#else:
 			#print("Sample", current_id, "does not exist")
@@ -101,7 +109,7 @@ def do_AR(input_AR, input_plas, output_file):
 	#all_AR_to_write.insert(0,",")
 	#all_AR_to_write.insert(0,",")
 	#all_AR_to_write=','.join(map(str, all_AR_to_write))
-	header="Folder_ID, Isolate_ID, Species_by_ANI__autocolour, MLST__autocolour,"
+	header="id, Project__autocolour, Species__autocolour, MLST__autocolour,"
 	for thing in all_ar_and_plasmids:
 		header = header + " " + thing + "__autocolour,"
 	header = header[:-1]
@@ -113,22 +121,22 @@ def do_AR(input_AR, input_plas, output_file):
 	#	print ("2:",sample[0])
 	#return
 	for sample in samples:
-		sample_details=[sample[0], sample[1], sample[2], sample[3]]
+		sample_details=[sample[1], sample[0], sample[2], sample[3]]
 		#print("pre:",sample)
 		for gene in all_ar_and_plasmids:
 			status=" "
 			if gene == "|":
 				sample_details.append(gene)
 				continue
-			if gene in sample[4]:
-				status="X"
-			elif gene in sample[5]:
-				if gene in sample[6]:
-					status="F&P"
+			if sample[4].get(gene):
+				status=sample[4].get(gene)
+			elif sample[5].get(gene):
+				if sample[6].get(gene):
+					status="F:"+sample[5].get(gene)+"/P:"+sample[6].get(gene)
 				else:
-					status="F"
-			elif gene in sample[6]:
-				status="P"
+					status="F:"+sample[5].get(gene)
+			elif sample[6].get(gene):
+				status="P:"+sample[6].get(gene)
 			sample_details.append(status)
 		#print("Post Sample check", sample_details)
 		sample_details=','.join(map(str, sample_details))
