@@ -72,6 +72,7 @@ def do_AR(input_AR, input_plas, output_file):
 		if line_sections[4].find("_contigs-") >= 0:
     		line = plas_file.readline().strip()
 			continue
+
 		plas_perc_id=math.floor(line_sections[4])
 		plas_perc_length=math.floor(100*line_sections[5].split("/")[0]/line_sections[5].split("/")[1])
 		#plas_match_info="["+plas_perc_id+"/"+plas_percpercent_length+"]"
