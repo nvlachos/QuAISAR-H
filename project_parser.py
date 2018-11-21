@@ -70,6 +70,7 @@ def do_AR(input_AR, input_plas, output_file):
 		source_assembly=line_sections[2]
 		print("Test:"+line_sections[4]+":")
 		if line_sections[4].split("_")[1].split("-")[0] == "contigs":
+			line = plas_file.readline().strip()
 			continue
 		plas_perc_id=math.floor(line_sections[4])
 		plas_perc_length=math.floor(100*line_sections[5].split("/")[0]/line_sections[5].split("/")[1])
