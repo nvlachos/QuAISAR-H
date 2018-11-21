@@ -69,7 +69,7 @@ def do_AR(input_AR, input_plas, output_file):
 			sample_p_plasmids_dict={}
 		source_assembly=line_sections[2]
 		plas_%_id=math.floor(line_sections[4])
-		plas_%_length=math.(100*line_sections[5].split("/")[0]/line_sections[5].split("/")[1])
+		plas_%_length=math.floor(100*line_sections[5].split("/")[0]/line_sections[5].split("/")[1])
 
 		if source_assembly == "full_assembly":
 			#print("Adding:", line_sections[3], "to sample_f_plasmids")
