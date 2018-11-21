@@ -70,7 +70,7 @@ def do_AR(input_AR, input_plas, output_file):
 		source_assembly=line_sections[2]
 		print("Test:"+line_sections[4]+":")
 		if line_sections[4].find("_contigs-") >= 0:
-    		line = plas_file.readline().strip()
+			line = plas_file.readline().strip()
 			continue
 
 		plas_perc_id=math.floor(line_sections[4])
