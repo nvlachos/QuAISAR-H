@@ -68,6 +68,7 @@ def do_AR(input_AR, input_plas, output_file):
 			sample_f_plasmids_dict={}
 			sample_p_plasmids_dict={}
 		source_assembly=line_sections[2]
+		print("Test:"+line_sections[4]+":")
 		plas_%_id=math.floor(line_sections[4])
 		plas_%_length=math.floor(100*line_sections[5].split("/")[0]/line_sections[5].split("/")[1])
 		#plas_match_info="["+plas_%_id+"/"+plas_%percent_length+"]"
