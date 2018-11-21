@@ -70,13 +70,13 @@ def do_AR(input_AR, input_plas, output_file):
 		source_assembly=line_sections[2]
 		plas_%_id=math.floor(line_sections[4])
 		plas_%_length=math.floor(100*line_sections[5].split("/")[0]/line_sections[5].split("/")[1])
-
+		#plas_match_info="["+plas_%_id+"/"+plas_%percent_length+"]"
 		if source_assembly == "full_assembly":
 			#print("Adding:", line_sections[3], "to sample_f_plasmids")
-			sample_f_plasmids_dict[line_sections[3]]="["+plas_%_id+"/"+plas_%_length+"]")
+			sample_f_plasmids_dict[line_sections[3]]="["+plas_%_id+"/"+plas_%_length+"]"
 		elif source_assembly == "plasmid_assembly":
 			#print("Adding:", line_sections[3], "to sample_p_plasmids")
-			sample_p_plasmids_dict[line_sections[3]]="["+plas_%_id+"/"+plas_%_length+"]")
+			sample_p_plasmids_dict[line_sections[3]]="["+plas_%_id+"/"+plas_%_length+"]"
 		if len(line_sections) > 1:
 			if line_sections[3] not in all_plasmids_in_file:
 				all_plasmids_in_file.append(line_sections[3])
