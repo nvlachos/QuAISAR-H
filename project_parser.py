@@ -73,8 +73,8 @@ def do_AR(input_AR, input_plas, output_file):
 			line = plas_file.readline().strip()
 			continue
 
-		plas_perc_id=math.floor(line_sections[4])
-		plas_perc_length=math.floor(100*line_sections[5].split("/")[0]/line_sections[5].split("/")[1])
+		plas_perc_id=math.floor(float(line_sections[4]))
+		plas_perc_length=math.floor(float(100*line_sections[5].split("/")[0]/line_sections[5].split("/")[1]))
 		#plas_match_info="["+plas_perc_id+"/"+plas_percpercent_length+"]"
 		if source_assembly == "full_assembly":
 			#print("Adding:", line_sections[3], "to sample_f_plasmids")
