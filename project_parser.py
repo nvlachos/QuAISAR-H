@@ -14,8 +14,8 @@ def do_AR(input_AR, input_plas, output_file):
 		ar_list=line_sections[4].split(",")
 		ar_dict={}
 		for ar_gene in ar_list:
-			gene_name=ar_gene.split(")")[0]+")"
-			gene_stats=ar_gene.split(")")[1]
+			gene_name=ar_gene.split("[")[0]
+			gene_stats="["+ar_gene.split("[")[1]
 			ar_dict[gene_name]=gene_stats
 			if gene_name not in all_ARs_in_file:
 				all_ARs_in_file.append(gene_name)
