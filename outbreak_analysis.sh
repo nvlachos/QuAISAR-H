@@ -161,7 +161,11 @@ rename="true"
 		percent_ID="${ar_line[6]}"
 		percent_length="${ar_line[9]}"
 		conferred=$(echo "${ar_line[1]}" | cut -d'_' -f1)
-		gene="${ar_line[4]}"
+		if [[ "${ar_line[3]}" == *"trunc"*]] || [[ "${ar_line[3]}" == "trunc"*]] || [[ "${ar_line[3]}" == *"trunc"]] || [[ "${ar_line[3]}" == "trunc"]]; then
+			gene="TRUNC-${ar_line[4]}"
+		else
+			gene="${ar_line[4]}"
+		fi
 		#echo "norm:${sample_name}:${line}:${length_1}|${length_2}"
 		#percent_ID=$(echo ${line} | cut -d$'\t' -f7)
 		#percent_length=$(echo ${line} | cut -d$'\t' -f10)
@@ -245,6 +249,11 @@ rename="true"
 			percent_length="${ar_line[9]}"
 			conferred=$(echo "${ar_line[1]}" | cut -d'_' -f1)
 			gene="pla-${ar_line[4]}"
+			if [[ "${ar_line[3]}" == *"trunc"*]] || [[ "${ar_line[3]}" == "trunc"*]] || [[ "${ar_line[3]}" == *"trunc"]] || [[ "${ar_line[3]}" == "trunc"]]; then
+				gene="TRUNC-pla-${ar_line[4]}"
+			else
+				gene="pla-${ar_line[4]}"
+			fi
 			if [[ "${conferred}" == "macrolide," ]]; then
 				conferred="macrolide, lincosamide, streptogramin_B"
 			fi
