@@ -249,7 +249,7 @@ rename="true"
 			percent_length="${ar_line[9]}"
 			conferred=$(echo "${ar_line[1]}" | cut -d'_' -f1)
 			gene="pla-${ar_line[4]}"
-			if [[ "${ar_line[3]}" == *"trunc"*]] || [[ "${ar_line[3]}" == "trunc"*]] || [[ "${ar_line[3]}" == *"trunc"]] || [[ "${ar_line[3]}" == "trunc"]]; then
+			if [[ "${ar_line[3]}" == *"trunc"* ]] || [[ "${ar_line[3]}" == "trunc"* ]] || [[ "${ar_line[3]}" == *"trunc" ]] || [[ "${ar_line[3]}" == "trunc" ]]; then
 				gene="TRUNC-pla-${ar_line[4]}"
 			else
 				gene="pla-${ar_line[4]}"
