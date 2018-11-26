@@ -29,14 +29,14 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 					gene_name=srst2_ar_gene.split("[")[0]
 					gene_stats="["+srst2_ar_gene.split("[")[1]+"S"
 					if ar_dict.get(gene_name):
-						ar_dict[gene_name]=ar_dict.get(gene_name)+\n+gene_stats
+						ar_dict[gene_name]=ar_dict.get(gene_name)+\+gene_stats
 					else
 						ar_dict[gene_name]=gene_stats
 					if gene_name not in all_ARs_in_file:
 						all_ARs_in_file.append(gene_name)
 				break
 			srst2_line=srst2_file.readline().strip()
-		srst2_file.close()				
+		srst2_file.close()
 		#print("1:",csstar_line_sections[0])
 		#print("0:", csstar_line_sections[0], "1:", csstar_line_sections[1],"2:" , csstar_line_sections[2], "3:", csstar_line_sections[3])
 		samples.append([csstar_line_sections[0], csstar_line_sections[1], csstar_line_sections[2], csstar_line_sections[3], ar_dict])
