@@ -260,12 +260,14 @@ done < "${share}/DBs/star/group_defs.txt"
 			#ODD WAY to do this right now, must look into later, but
 			confers=$(echo "${line}" | cut -d'	' -f14 | cut -d';' -f3)
 			if [[ -z "${confers}" ]]; then
-				if [[ "${gene,,}" == "agly_flqn" ]]; then
-					confers="aminoglycoside_and_fluoroquinolone_resistance"
-				elif [[ "${gene,,}" == "tetracenomycinc" ]]; then
-					confers="tetracenomycinC_resistance"
-				else
-					confers=${groups[${gene:0:3}]}
+				if [[ ! -z ${gene} ]]; then
+					if [[ "${gene,,}" == "agly_flqn" ]]; then
+						confers="aminoglycoside_and_fluoroquinolone_resistance"
+					elif [[ "${gene,,}" == "tetracenomycinc" ]]; then
+						confers="tetracenomycinC_resistance"
+					else
+						confers=${groups[${gene:0:3}]}
+					fi
 				fi
 			fi
 			confers=${confers//_resistance/}
