@@ -255,6 +255,7 @@ done < "${share}/DBs/star/group_defs.txt"
 
 
 		while IFS= read -r line; do
+			echo "Test3"
 			gene=$(echo "${line}" | cut -d'	' -f3)
 			#ODD WAY to do this right now, must look into later, but
 			confers=$(echo "${line}" | cut -d'	' -f14 | cut -d';' -f3)
@@ -280,6 +281,7 @@ done < "${share}/DBs/star/group_defs.txt"
 			length=$(echo "${line}" | cut -d'	' -f10)
 			percent_length=$(echo "100 * $coverage / $length" | bc)
 			percent_ID=$(echo "100 - $divergence / 1" | bc)
+			echo "Test2"
 			if [[ "${percent_ID}" -gt 95 ]] && [[ "${percent_length}" -gt 90 ]]; then
 				info_line="${allele}(${confers})[${percent_ID}/${percent_length}]"
 				if [[ -z "${srst2_results}" ]]; then
@@ -295,6 +297,7 @@ done < "${share}/DBs/star/group_defs.txt"
 				fi
 			fi
 		done < "${processed}/${project}/${sample_name}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt"
+		echo "Test1"
 		if [[ -z "${srst2_results}" ]]; then
 			echo "No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
 		else
