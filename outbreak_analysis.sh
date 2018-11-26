@@ -288,7 +288,10 @@ done < "${share}/DBs/star/group_defs.txt"
 					srst2_results="${srst2_results},${info_line}"
 				fi
 			else
-				echo ${line} >> ${output_directory}/${4}-srst2_rejects.txt
+				if [[ ${line} = "Sample	DB	gene"* ]]; then
+					:
+				else
+					echo ${line} >> ${output_directory}/${4}-srst2_rejects.txt
 			fi
 		done < "${processed}/${project}/${sample_name}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt"
 		if [[ -z "${srst2_results}" ]]; then
