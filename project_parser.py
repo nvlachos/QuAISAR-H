@@ -6,7 +6,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 	all_ARs_in_file=[]
 	samples=[]
 	csstar_file=open(input_csstar_AR,'r')
-	line = csstar_file.readline().strip()
+	csstar_line = csstar_file.readline().strip()
 	counter=0
 	while csstar_line != '':
 		#print(counter, line)
