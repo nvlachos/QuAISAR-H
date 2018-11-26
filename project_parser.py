@@ -30,7 +30,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 					gene_stats="["+srst2_ar_gene.split("[")[1]+"S"
 					if ar_dict.get(gene_name):
 						ar_dict[gene_name]='ar_dict.get(gene_name) \n gene_stats'
-					else
+					else:
 						ar_dict[gene_name]=gene_stats
 					if gene_name not in all_ARs_in_file:
 						all_ARs_in_file.append(gene_name)
