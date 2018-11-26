@@ -88,6 +88,23 @@ fi
 rename="true"
 
 
+declare -A groups
+echo "Creating reference array"
+counter=0
+while IFS= read -r line;
+do
+	line=${line,,}
+	gene=$(echo "${line}" | cut -d ':' -f1)
+	first=${gene:0:1}
+	if [ "$first" == "#" ]; then
+		continue
+	fi
+	confers=$(echo "${line}" | cut -d ':' -f2)
+	groups[${gene}]="${confers}"
+	#echo "${counter}:${gene}:${confers}"
+	counter=$(( counter + 1))
+done < "${share}/DBs/star/group_defs.txt"
+
 # Loop through and act on each sample name in the passed/provided list
  echo -e "\nUsing AR Database - ${resGANNOT_srst2_filename}\n"
  while IFS= read -r line; do
@@ -235,22 +252,7 @@ rename="true"
 	#Adding in srst2 output internalSTOPcodon
 	if [[ -s "${processed}/${project}/${sample_name}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
 		srst2_results=""
-		declare -A groups
-		echo "Creating reference array"
-		counter=0
-		while IFS= read -r line;
-		do
-			line=${line,,}
-			gene=$(echo "${line}" | cut -d ':' -f1)
-			first=${gene:0:1}
-			if [ "$first" == "#" ]; then
-				continue
-			fi
-			confers=$(echo "${line}" | cut -d ':' -f2)
-			groups[${gene}]="${confers}"
-			#echo "${counter}:${gene}:${confers}"
-			counter=$(( counter + 1))
-		done < "${share}/DBs/star/group_defs.txt"
+
 
 		while IFS= read -r line; do
 			gene=$(echo "${line}" | cut -d'	' -f3)
@@ -276,8 +278,8 @@ rename="true"
 			uncertainty=$(echo "${line}" | cut -d'	' -f7)
 			divergence=$(echo "${line}" | cut -d'	' -f9)
 			length=$(echo "${line}" | cut -d'	' -f10)
-			percent_length=$(echo "scale=2 ; 100 * $coverage / $length" | bc)
-			percent_ID=$(echo "scale=2 ; 100 - $divergence" | bc)
+			percent_length=$(echo "100 * $coverage / $length" | bc)
+			percent_ID=$(echo "100 - $divergence / 1" | bc)
 			if [[ "${percent_ID}" -gt 95 ]] && [[ "${percent_length}" -gt 90 ]]; then
 				info_line="${allele}(${confers})[${percent_ID}/${percent_length}]"
 				if [[ -z "${srst2_results}" ]]; then
