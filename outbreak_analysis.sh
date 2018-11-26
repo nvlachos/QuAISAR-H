@@ -284,10 +284,11 @@ done < "${share}/DBs/star/group_defs.txt"
 			fi
 			uncertainty=$(echo "${line}" | cut -d'	' -f8)
 			divergence=$(echo "${line}" | cut -d'	' -f9)
+			``
 			length=$(echo "${line}" | cut -d'	' -f10)
-			percent_length=$(echo "100 * $coverage / $length" | bc)
-			percent_ID=$(echo "$divergence / 1" | bc)
-			percent_ID=$(( 100 - $percent_ID ))
+			percent_length=$(echo "$coverage * $length / 1" | bc)
+			percent_ID=$(echo "($divergence + $2 - 1)/$2" | bc
+
 			echo "${allele}/${coverage}/${depth}/${diffs}/${uncertainty}/${divergence}/${length}/${percent_ID}/${percent_length}"
 			if [[ "${percent_ID}" -gt 95 ]] && [[ "${percent_length}" -gt 90 ]]; then
 				info_line="${allele}(${confers})[${percent_ID}/${percent_length}]"
