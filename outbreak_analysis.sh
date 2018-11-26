@@ -290,7 +290,7 @@ done < "${share}/DBs/star/group_defs.txt"
 			if [[ "${divergence}" = "0.0" ]]; then
 				percent_ID=100
 			else
-				percent_ID=$(echo "($divergence + 1) / 1" | bc)
+				percent_ID=$(echo "100 - (($divergence + 1) / 1)" | bc)
 			fi
 			echo "${allele}/${coverage}/${depth}/${diffs}/${uncertainty}/${divergence}/${length}/${percent_ID}/${percent_length}"
 			if [[ "${percent_ID}" -gt 95 ]] && [[ "${percent_length}" -gt 90 ]]; then
