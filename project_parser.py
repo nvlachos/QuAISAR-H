@@ -26,14 +26,18 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 			print("Checking", srst2_line)
 			srst2_line_sections=srst2_line.split("	")
 			if csstar_line_sections[0] == srst2_line_sections[0] and csstar_line_sections[1] == srst2_line_sections[1]:
+				print("Found ID in srst2 summary file")
 				srst2_ar_list=srst2_line_sections[2].split(",")
 				for srst2_ar_gene in srst2_ar_list:
 					gene_name=srst2_ar_gene.split("[")[0]
 					gene_stats="["+srst2_ar_gene.split("[")[1]+"S"
 					if ar_dict.get(gene_name):
 						if ar_dict.get(gene_name) != "No Other AR genes":
+							print("Found", ar_dict.get(gene_name), "in both outputs")
 							ar_dict[gene_name]='ar_dict.get(gene_name) \n gene_stats'
+						print("Weirdness")
 					else:
+						print("New gene found in srst2")
 						ar_dict[gene_name]=gene_stats
 					if gene_name not in all_ARs_in_file:
 						all_ARs_in_file.append(gene_name)
