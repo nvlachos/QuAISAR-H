@@ -31,11 +31,13 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 				for srst2_ar_gene in srst2_ar_list:
 					gene_name=srst2_ar_gene.split("[")[0]
 					gene_stats="["+srst2_ar_gene.split("[")[1]+"S"
+					print("Looking up", gene_name, "in csstar dic")
 					if ar_dict.get(gene_name):
 						if ar_dict.get(gene_name) != "No Other AR genes":
 							print("Found", gene_name, "in both outputs")
 							ar_dict[gene_name]='ar_dict.get(gene_name) \n gene_stats'
-						print("Weirdness")
+						else:
+							print("No AR found in csstar for", gene_name)
 					else:
 						print("New gene", gene_name,"found in srst2")
 						ar_dict[gene_name]=gene_stats
