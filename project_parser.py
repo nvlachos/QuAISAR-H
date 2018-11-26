@@ -138,7 +138,7 @@ def do_AR(input_AR, input_plas, output_file):
 				status=sample[4].get(gene)
 			elif sample[5].get(gene):
 				if sample[6].get(gene):
-					status="F:"+sample[5].get(gene)+"/P:"+sample[6].get(gene)
+					status="F:"+sample[5].get(gene)+";P:"+sample[6].get(gene)
 				else:
 					status="F:"+sample[5].get(gene)
 			elif sample[6].get(gene):

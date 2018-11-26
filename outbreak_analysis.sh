@@ -90,6 +90,14 @@ rename="true"
 	 OUTDATADIR="${processed}/${project}/${sample_name}"
 	 #rm -r "${processed}/${project}/${sample_name}/c-sstar/${resGANNOT_srst2_filename}"
 	 #echo "Checking for ${processed}/${project}/${sample_name}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt"
+	 if [[ -s ${processed}/${project}/${sample_name}/FASTQs/${sample_name}_R1_001.fastq ]] && [[ ${processed}/${project}/${sample_name}/FASTQs/${sample_name}_R1_001.fastq ]] || [[ -s ${processed}/${project}/${sample_name}/FASTQs/${sample_name}_R1_001.fastq.gz ]] && [[ ${processed}/${project}/${sample_name}/FASTQs/${sample_name}_R1_001.fastq.gz ]]; then
+		 if [[ -f "${processed}/${project}/${sample_name}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]] || [[ -f "${processed}/${project}/${sample_name}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
+			 :
+		 else
+			 "${shareScript}/run_srst2_on_singleDB.sh" "${sample_name}" "${project}"
+		 fi
+	 fi
+
 	 if [[ -s ${processed}/${project}/${sample_name}/Assembly/${sample_name}_scaffolds_trimmed.fasta ]]; then
 		if [[ -f "${processed}/${project}/${sample_name}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]];
 		then
@@ -202,7 +210,7 @@ rename="true"
 	done < ${ARDB_full}
 	# Changes list names if empty
 	if [[ -z "${oar_list}" ]]; then
-		oar_list="No other AR genes"
+		oar_list="No AR genes discovered"
 	fi
 	mlst=$(head -n1 ${processed}/${project}/${sample_name}/MLST/${sample_name}.mlst)
 	mlst=$(echo "${mlst}" | cut -d'	' -f3)
@@ -216,6 +224,75 @@ rename="true"
 	ANI="${genus} ${species}"
 #	echo "${ANI}"
 	echo -e "${project}\t${sample_name}\t${ANI}\t${mlst}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_full.txt
+
+	#Adding in srst2 output internalSTOPcodon
+	if [[ -s "${processed}/${project}/${sample_name}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
+		srst2_results=""
+		declare -A groups
+		echo "Creating reference array"
+		counter=0
+		while IFS= read -r line;
+		do
+			line=${line,,}
+			gene=$(echo "${line}" | cut -d ':' -f1)
+			first=${gene:0:1}
+			if [ "$first" == "#" ]; then
+				continue
+			fi
+			confers=$(echo "${line}" | cut -d ':' -f2)
+			groups[${gene}]="${confers}"
+			#echo "${counter}:${gene}:${confers}"
+			counter=$(( counter + 1))
+		done < "${share}/DBs/star/group_defs.txt"
+
+		while IFS= read -r line; do
+			gene=$(echo "${line}" | cut -d'	' -f3)
+			#ODD WAY to do this right now, must look into later, but
+			confers=$(echo "${line}" | cut -d'	' -f14 | cut -d';' -f3)
+			if [[ -z "${confers}" ]]; then
+				if [[ "${gene,,}" == "agly_flqn" ]]; then
+					confers="aminoglycoside_and_fluoroquinolone_resistance"
+				elif [[ "${gene,,}" == "tetracenomycinc" ]]; then
+					confers="tetracenomycinC_resistance"
+				else
+					confers=${groups[${gene:0:3}]}
+				fi
+			fi
+			confers=${confers//_resistance/}
+			allele=$(echo "${line}" | cut -d'	' -f4 | cut -d'_' -f1)
+			coverage=$(echo "${line}" | cut -d'	' -f5)
+			depth=$(echo "${line}" | cut -d'	' -f6)
+			diffs=$(echo "${line}" | cut -d'	' -f7)
+			if [[ ${diffs} == *"trunc"* ]]; then
+				allele="TRUNC-${allele}"
+			uncertainty=$(echo "${line}" | cut -d'	' -f7)
+			divergence=$(echo "${line}" | cut -d'	' -f9)
+			length=$(echo "${line}" | cut -d'	' -f10)
+			percent_length=$(echo "scale=2 ; 100 * $coverage / $length" | bc)
+			percent_ID=$(echo "scale=2 ; 100 - $divergence" | bc)
+			if [[ "${percent_ID}" -gt 95 ]] && [[ "${percent_length}" -gt 90 ]]; then
+				info_line="${allele}(${confers})[${percent_ID}/${percent_length}]"
+				if [[ -z "srst2_results}" ]]; then
+					srst2_results=${info_line}
+				else
+					srst2_results="${srst2_results},${info_line}"
+				fi
+			else
+				echo ${line} >> ${output_directory}/${4}-srst2_rejects.txt
+			fi
+			if [[ -z ${srst2_results} ]]; then
+		done < "${processed}/${project}/${sample_name}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt"
+		if [[ -z "${srst2_results}" ]]; then
+			echo "No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
+		else
+			echo "${srst2_results}" >> ${output_directory}/${4}-srst2.txt
+		fi
+	else
+		echo "No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
+	fi
+
+
+
 
 	if [[ "${has_plasmidAssembly}" = "true" ]]; then
 		# Repeat the c-sstar output organization of the plasmidAssembly
@@ -282,7 +359,7 @@ rename="true"
 			fi
 		done < ${ARDB_plasmid}
 		if [[ -z "${oar_list}" ]]; then
-			oar_list="No other AR genes"
+			oar_list="No AR genes discovered"
 		fi
 		echo -e "${project}\t${sample_name}\t${oxa_list}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_plasmid.txt
 	fi
