@@ -280,7 +280,6 @@ rename="true"
 			else
 				echo ${line} >> ${output_directory}/${4}-srst2_rejects.txt
 			fi
-			if [[ -z ${srst2_results} ]]; then
 		done < "${processed}/${project}/${sample_name}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt"
 		if [[ -z "${srst2_results}" ]]; then
 			echo "No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
