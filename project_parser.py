@@ -20,7 +20,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 			if gene_name not in all_ARs_in_file:
 				all_ARs_in_file.append(gene_name)
 				#print("Adding", gene)
-		srst_file=open(input_srst2_AR,'r')
+		srst2_file=open(input_srst2_AR,'r')
 		srst2_line=srst2_file.readline().strip()
 		while srst2_line != '':
 			srst2_line_sections=srst2_line.split("	")
