@@ -305,7 +305,7 @@ done < "${share}/DBs/star/group_defs.txt"
 	fi
 
 #Test
-
+echo "Test"
 
 
 	if [[ "${has_plasmidAssembly}" = "true" ]]; then
@@ -438,7 +438,5 @@ done < "${share}/DBs/star/group_defs.txt"
 	#echo -e "${sample_name}\t${mlst}" >> ${share}/${4}-mlst_summary.txt
 
 done < ${1}
-
-echo "Test"
 
 python3 "${shareScript}/project_parser.py" "${output_directory}/${4}-csstar_summary_full.txt" "${output_directory}/${4}-plasmid_summary.txt" "${output_directory}/${4}_AR_plasmid_report.csv"
