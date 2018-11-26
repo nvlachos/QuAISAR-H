@@ -24,7 +24,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 		srst2_line=srst2_file.readline().strip()
 		while srst2_line != '':
 			srst2_line_sections=srst2_line.split("	")
-			if csstar_line_sections[0] == srst2srst2_line_sections[0] and csstar_line_sections[1] == srst2srst2_line_sections[1]:
+			if csstar_line_sections[0] == srst2_line_sections[0] and csstar_line_sections[1] == srst2_line_sections[1]:
 				srst2_ar_list=srst2_line_sections[2].split(",")
 				for srst2_ar_gene in srst2_ar_list:
 					gene_name=srst2_ar_gene.split("[")[0]
