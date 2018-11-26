@@ -261,12 +261,16 @@ done < "${share}/DBs/star/group_defs.txt"
 			confers=$(echo "${line}" | cut -d'	' -f14 | cut -d';' -f3)
 			echo "${gene}-${confers}"
 			if [[ -z "${confers}" ]]; then
-				if [[ ! -z ${gene} ]]; then
+				if [[ "${confers}" = "annotation"]]; then
+					break
+				elif [[ ! -z ${gene} ]]; then
 
 					if [[ "${gene,,}" == "agly_flqn" ]]; then
 						confers="aminoglycoside_and_fluoroquinolone_resistance"
 					elif [[ "${gene,,}" == "tetracenomycinc" ]]; then
 						confers="tetracenomycinC_resistance"
+					elif [[ condition ]]; then
+						#statements
 					else
 						confers=${groups[${gene:0:3}]}
 					fi
