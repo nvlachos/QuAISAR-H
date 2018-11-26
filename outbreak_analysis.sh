@@ -287,7 +287,7 @@ done < "${share}/DBs/star/group_defs.txt"
 			``
 			length=$(echo "${line}" | cut -d'	' -f10)
 			percent_length=$(echo "$coverage * $length / 1" | bc)
-			percent_ID=$(echo "($divergence + $2 - 1)/$2" | bc
+			percent_ID=$(echo "($divergence + $2 - 1)/$2" | bc)
 
 			echo "${allele}/${coverage}/${depth}/${diffs}/${uncertainty}/${divergence}/${length}/${percent_ID}/${percent_length}"
 			if [[ "${percent_ID}" -gt 95 ]] && [[ "${percent_length}" -gt 90 ]]; then
