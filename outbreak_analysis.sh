@@ -252,8 +252,6 @@ done < "${share}/DBs/star/group_defs.txt"
 	#Adding in srst2 output internalSTOPcodon
 	if [[ -s "${processed}/${project}/${sample_name}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
 		srst2_results=""
-
-
 		while IFS= read -r line; do
 			echo "Start"
 			gene=$(echo "${line}" | cut -d'	' -f3)
@@ -310,7 +308,7 @@ done < "${share}/DBs/star/group_defs.txt"
 		done < "${processed}/${project}/${sample_name}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt"
 		echo "Test1"
 		if [[ -z "${srst2_results}" ]]; then
-			echo "${project}	${sample_name}	No_AR_genes_discovered" >> ${output_directory}/${4}-srst2.txt
+			echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
 		else
 			echo "${project}	${sample_name}	${srst2_results}" >> ${output_directory}/${4}-srst2.txt
 		fi
@@ -453,4 +451,4 @@ echo "Test"
 
 done < ${1}
 
-python3 "${shareScript}/project_parser.py" "${output_directory}/${4}-csstar_summary_full.txt" "${output_directory}/${4}-plasmid_summary.txt" "${output_directory}/${4}_AR_plasmid_report.csv"
+python3 "${shareScript}/project_parser.py" "${output_directory}/${4}-csstar_summary_full.txt" "${output_directory}/${4}-plasmid_summary.txt" "${output_directory}/${4}_AR_plasmid_report.csv" "${output_directory}/${4}-srst2.txt"
