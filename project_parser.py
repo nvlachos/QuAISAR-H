@@ -2,29 +2,46 @@ import sys
 import glob
 import math
 
-def do_AR(input_AR, input_plas, output_file):
+def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 	all_ARs_in_file=[]
 	samples=[]
-	AR_file=open(input_AR,'r')
-	line = AR_file.readline().strip()
+	csstar_file=open(input_csstar_AR,'r')
+	line = csstar_file.readline().strip()
 	counter=0
-	while line != '':
+	while csstar_line != '':
 		#print(counter, line)
-		line_sections=line.split("	")
-		ar_list=line_sections[4].split(",")
+		csstar_line_sections=csstar_line.split("	")
+		ar_list=csstar_line_sections[4].split(",")
 		ar_dict={}
 		for ar_gene in ar_list:
 			gene_name=ar_gene.split("[")[0]
-			gene_stats="["+ar_gene.split("[")[1]
+			gene_stats="["+ar_gene.split("[")[1]+"C"
 			ar_dict[gene_name]=gene_stats
 			if gene_name not in all_ARs_in_file:
 				all_ARs_in_file.append(gene_name)
 				#print("Adding", gene)
-		#print("1:",line_sections[0])
-		#print("0:", line_sections[0], "1:", line_sections[1],"2:" , line_sections[2], "3:", line_sections[3])
-		samples.append([line_sections[0], line_sections[1], line_sections[2], line_sections[3], ar_dict])
+		srst_file=open(input_srst2_AR,'r')
+		while srst2_line != '':
+			srst2_line_sections=srst2_line.split("	")
+			if csstar_line_sections[0] == srst2srst2_line_sections[0] and csstar_line_sections[1] == srst2srst2_line_sections[1]:
+				srst2_ar_list=srst2_line_sections[2].split(",")
+				for srst2_ar_gene in srst2_ar_list:
+					gene_name=srst2_ar_gene.split("[")[0]
+					gene_stats="["+srst2_ar_gene.split("[")[1]+"S"
+					if ar_dict.get(gene_name):
+						ar_dict[gene_name]=ar_dict.get(gene_name)+\n+gene_stats
+					else
+						ar_dict[gene_name]=gene_stats
+					if gene_name not in all_ARs_in_file:
+						all_ARs_in_file.append(gene_name)
+				break
+			srst2_line=srst2_file.readline().strip()
+		srst2_file.close()				
+		#print("1:",csstar_line_sections[0])
+		#print("0:", csstar_line_sections[0], "1:", csstar_line_sections[1],"2:" , csstar_line_sections[2], "3:", csstar_line_sections[3])
+		samples.append([csstar_line_sections[0], csstar_line_sections[1], csstar_line_sections[2], csstar_line_sections[3], ar_dict])
 		#print("Total AR genes in sample set:", len(all_ARs_in_file)-1)
-		line = AR_file.readline().strip()
+		line = csstar_file.readline().strip()
 	all_ARs_in_file.sort()
 	if len(all_ARs_in_file) == 0:
 		print("\n")
@@ -36,7 +53,7 @@ def do_AR(input_AR, input_plas, output_file):
 			if gene != "No other AR genes":
 				print (gene)
 	print()
-	AR_file.close
+	csstar_file.close
 
 
 	#Parse plasmid summary file
@@ -49,11 +66,11 @@ def do_AR(input_AR, input_plas, output_file):
 	counter=0
 	while line != '':
 		#print(counter, line)
-		line_sections=line.split("	")
-		#print("Current id:", current_id, ":", line_sections[0])
+		plasmid_line_sections=line.split("	")
+		#print("Current id:", current_id, ":", plasmid_line_sections[0])
 		if current_id == "":
-			current_id = line_sections[0]+"/"+line_sections[1]
-		if line_sections[0]+"/"+line_sections[1] != current_id:
+			current_id = plasmid_line_sections[0]+"/"+plasmid_line_sections[1]
+		if plasmid_line_sections[0]+"/"+plasmid_line_sections[1] != current_id:
 			#print("New name!")
 			for sample_index in range(0,len(samples)):
 				#print("Looking for", current_id, ", found", samples[sample_index][0].strip())
@@ -64,31 +81,31 @@ def do_AR(input_AR, input_plas, output_file):
 					break
 				#else:
 					#print("Sample", current_id, "does not exist")
-			current_id=line_sections[0]+"/"+line_sections[1].strip()
+			current_id=plasmid_line_sections[0]+"/"+plasmid_line_sections[1].strip()
 			sample_f_plasmids_dict={}
 			sample_p_plasmids_dict={}
-		source_assembly=line_sections[2]
-		print("Test:"+line_sections[4]+":")
-		if line_sections[4].find("_contigs-") >= 0:
+		source_assembly=plasmid_line_sections[2]
+		print("Test:"+plasmid_line_sections[4]+":")
+		if plasmid_line_sections[4].find("_contigs-") >= 0:
 			line = plas_file.readline().strip()
 			continue
 
-		plas_perc_id=math.floor(float(line_sections[4]))
-		print("testing:", line_sections[5].split("/")[0], line_sections[5].split("/")[1])
-		plas_perc_length=(100*int(line_sections[5].split("/")[0])//int(line_sections[5].split("/")[1]))
+		plas_perc_id=math.floor(float(plasmid_line_sections[4]))
+		print("testing:", plasmid_line_sections[5].split("/")[0], plasmid_line_sections[5].split("/")[1])
+		plas_perc_length=(100*int(plasmid_line_sections[5].split("/")[0])//int(plasmid_line_sections[5].split("/")[1]))
 		#plas_match_info="["+plas_perc_id+"/"+plas_percpercent_length+"]"
 		if source_assembly == "full_assembly":
-			#print("Adding:", line_sections[3], "to sample_f_plasmids")
-			sample_f_plasmids_dict[line_sections[3]]="["+str(plas_perc_id)+"/"+str(plas_perc_length)+"]"
+			#print("Adding:", plasmid_line_sections[3], "to sample_f_plasmids")
+			sample_f_plasmids_dict[plasmid_line_sections[3]]="["+str(plas_perc_id)+"/"+str(plas_perc_length)+"]"
 		elif source_assembly == "plasmid_assembly":
-			#print("Adding:", line_sections[3], "to sample_p_plasmids")
-			sample_p_plasmids_dict[line_sections[3]]="["+str(plas_perc_id)+"/"+str(plas_perc_length)+"]"
-		if len(line_sections) > 1:
-			if line_sections[3] not in all_plasmids_in_file:
-				all_plasmids_in_file.append(line_sections[3])
-				#print("Adding to project list", line_sections[3])
+			#print("Adding:", plasmid_line_sections[3], "to sample_p_plasmids")
+			sample_p_plasmids_dict[plasmid_line_sections[3]]="["+str(plas_perc_id)+"/"+str(plas_perc_length)+"]"
+		if len(plasmid_line_sections) > 1:
+			if plasmid_line_sections[3] not in all_plasmids_in_file:
+				all_plasmids_in_file.append(plasmid_line_sections[3])
+				#print("Adding to project list", plasmid_line_sections[3])
 		#else:
-			#print("Line length:", len(line_sections))
+			#print("Line length:", len(csstar_plasmid_line_sections))
 		#print()
 		line = plas_file.readline().strip()
 		counter=counter+1
@@ -148,4 +165,4 @@ def do_AR(input_AR, input_plas, output_file):
 		sample_details=','.join(map(str, sample_details))
 		summary_out.write(sample_details+"\n")
 	summary_out.close
-do_AR(sys.argv[1], sys.argv[2], sys.argv[3])
+do_AR(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
