@@ -262,7 +262,7 @@ done < "${share}/DBs/star/group_defs.txt"
 			echo "${gene}-${confers}"
 			if [[ -z "${confers}" ]]; then
 				if [[ "${confers}" = "annotation" ]]; then
-					break
+					continue
 				elif [[ ! -z ${gene} ]]; then
 					if [[ "${gene,,}" == "agly_flqn" ]]; then
 						confers="aminoglycoside_and_fluoroquinolone_resistance"
@@ -281,7 +281,7 @@ done < "${share}/DBs/star/group_defs.txt"
 			if [[ ${diffs} == *"trunc"* ]]; then
 				allele="TRUNC-${allele}"
 			fi
-			uncertainty=$(echo "${line}" | cut -d'	' -f7)
+			uncertainty=$(echo "${line}" | cut -d'	' -f8)
 			divergence=$(echo "${line}" | cut -d'	' -f9)
 			length=$(echo "${line}" | cut -d'	' -f10)
 			percent_length=$(echo "100 * $coverage / $length" | bc)
