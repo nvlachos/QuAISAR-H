@@ -294,9 +294,9 @@ done < "${share}/DBs/star/group_defs.txt"
 			if [[ "${percent_ID}" -gt 95 ]] && [[ "${percent_length}" -gt 90 ]]; then
 				info_line="${allele}(${confers})[${percent_ID}/${percent_length}]"
 				if [[ -z "${srst2_results}" ]]; then
-					srst2_results=${info_line}
+					srst2_results=${info_line,,}
 				else
-					srst2_results="${srst2_results},${info_line}"
+					srst2_results="${srst2_results},${info_line,,}"
 				fi
 			else
 				if [[ ${line} = "Sample	DB	gene"* ]]; then
