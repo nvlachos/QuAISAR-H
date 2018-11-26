@@ -268,8 +268,6 @@ done < "${share}/DBs/star/group_defs.txt"
 						confers="aminoglycoside_and_fluoroquinolone_resistance"
 					elif [[ "${gene,,}" == "tetracenomycinc" ]]; then
 						confers="tetracenomycinC_resistance"
-					elif [[ condition ]]; then
-						#statements
 					else
 						confers=${groups[${gene:0:3}]}
 					fi
