@@ -265,6 +265,7 @@ rename="true"
 			diffs=$(echo "${line}" | cut -d'	' -f7)
 			if [[ ${diffs} == *"trunc"* ]]; then
 				allele="TRUNC-${allele}"
+			fi
 			uncertainty=$(echo "${line}" | cut -d'	' -f7)
 			divergence=$(echo "${line}" | cut -d'	' -f9)
 			length=$(echo "${line}" | cut -d'	' -f10)
@@ -272,7 +273,7 @@ rename="true"
 			percent_ID=$(echo "scale=2 ; 100 - $divergence" | bc)
 			if [[ "${percent_ID}" -gt 95 ]] && [[ "${percent_length}" -gt 90 ]]; then
 				info_line="${allele}(${confers})[${percent_ID}/${percent_length}]"
-				if [[ -z "srst2_results}" ]]; then
+				if [[ -z "${srst2_results}" ]]; then
 					srst2_results=${info_line}
 				else
 					srst2_results="${srst2_results},${info_line}"
