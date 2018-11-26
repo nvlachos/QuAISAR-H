@@ -24,7 +24,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 		srst2_line=srst2_file.readline().strip()
 		while srst2_line != '':
 			for i in ar_dict:
-    			print ar_dict.keys(i), ar_dict.values(i)
+    			print(ar_dict.keys(i), ar_dict.values(i))
 			print("Checking", srst2_line)
 			srst2_line_sections=srst2_line.split("	")
 			if csstar_line_sections[0] == srst2_line_sections[0] and csstar_line_sections[1] == srst2_line_sections[1]:
