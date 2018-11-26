@@ -59,6 +59,12 @@ fi
 if [[ -f ${output_directory}/${4}-csstar_summary_full.txt ]]; then
 	rm ${output_directory}/${4}-csstar_summary_full.txt
 fi
+if [[ -f ${output_directory}/${4}-srst2.txt ]]; then
+	rm ${output_directory}/${4}-srst2.txt
+fi
+if [[ -f ${output_directory}/${4}-srst2_rejects.txt ]]; then
+	rm ${output_directory}/${4}-srst2_rejects.txt
+fi
 
 if [ "${3}" == 98 ]; then
 	sim="h"
