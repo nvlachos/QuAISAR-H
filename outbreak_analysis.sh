@@ -94,7 +94,8 @@ rename="true"
 		 if [[ -f "${processed}/${project}/${sample_name}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]] || [[ -f "${processed}/${project}/${sample_name}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
 			 :
 		 else
-			 "${shareScript}/run_srst2_on_singleDB.sh" "${sample_name}" "${project}"
+			 echo "It thinks it needs to put ${sample_name} through srst2"
+			 #"${shareScript}/run_srst2_on_singleDB.sh" "${sample_name}" "${project}"
 		 fi
 	 fi
 
