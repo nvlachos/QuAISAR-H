@@ -21,6 +21,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 				all_ARs_in_file.append(gene_name)
 				#print("Adding", gene)
 		srst_file=open(input_srst2_AR,'r')
+		srst2_line=srst2_file.readline().strip()
 		while srst2_line != '':
 			srst2_line_sections=srst2_line.split("	")
 			if csstar_line_sections[0] == srst2srst2_line_sections[0] and csstar_line_sections[1] == srst2srst2_line_sections[1]:
@@ -29,7 +30,8 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 					gene_name=srst2_ar_gene.split("[")[0]
 					gene_stats="["+srst2_ar_gene.split("[")[1]+"S"
 					if ar_dict.get(gene_name):
-						ar_dict[gene_name]='ar_dict.get(gene_name) \n gene_stats'
+						if ar_dict.get(gene_name) != "No Other AR genes":
+							ar_dict[gene_name]='ar_dict.get(gene_name) \n gene_stats'
 					else:
 						ar_dict[gene_name]=gene_stats
 					if gene_name not in all_ARs_in_file:
