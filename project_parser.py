@@ -29,8 +29,11 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 			if counter == 4:
 				exit()
 			print("Start srst2 loop")
+			spot_count=0
 			for k, v in ar_dict.items():
+				print(spot_count)
 				print(k, v)
+				spot_count+=1
 			print("Checking", srst2_line)
 			srst2_line_sections=srst2_line.split("	")
 			if csstar_line_sections[0] == srst2_line_sections[0] and csstar_line_sections[1] == srst2_line_sections[1]:
