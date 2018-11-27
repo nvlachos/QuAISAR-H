@@ -8,8 +8,10 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 	csstar_file=open(input_csstar_AR,'r')
 	csstar_line = csstar_file.readline().strip()
 	counter=0
+	print("Start")
 	while csstar_line != '':
 		#print(counter, line)
+		print("Start csstar loop")
 		csstar_line_sections=csstar_line.split("	")
 		ar_list=csstar_line_sections[4].split(",")
 		ar_dict={}
@@ -23,6 +25,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 		srst2_file=open(input_srst2_AR,'r')
 		srst2_line=srst2_file.readline().strip()
 		while srst2_line != '':
+			print("Start srst2 loop")
 			for k, v in ar_dict.items():
 				print(k, v)
 			print("Checking", srst2_line)
@@ -56,6 +59,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 		samples.append([csstar_line_sections[0], csstar_line_sections[1], csstar_line_sections[2], csstar_line_sections[3], ar_dict])
 		#print("Total AR genes in sample set:", len(all_ARs_in_file)-1)
 		csstar_line = csstar_file.readline().strip()
+	csstar_file.close
 	all_ARs_in_file.sort()
 	if len(all_ARs_in_file) == 0:
 		print("\n")
@@ -67,7 +71,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 			if gene != "No other AR genes":
 				print (gene)
 	print()
-	csstar_file.close
+
 
 
 	#Parse plasmid summary file
