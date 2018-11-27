@@ -58,9 +58,8 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 			srst2_line=srst2_file.readline().strip()
 			counter+=1
 		srst2_file.close()
-		while srst2_line != '':
-			for k, v in ar_dict.items():
-				print(k, v)
+		for k, v in ar_dict.items():
+			print(k, v)
 		#print("1:",csstar_line_sections[0])
 		#print("0:", csstar_line_sections[0], "1:", csstar_line_sections[1],"2:" , csstar_line_sections[2], "3:", csstar_line_sections[3])
 		samples.append([csstar_line_sections[0], csstar_line_sections[1], csstar_line_sections[2], csstar_line_sections[3], ar_dict])
