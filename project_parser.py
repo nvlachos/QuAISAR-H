@@ -24,7 +24,10 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 				#print("Adding", gene)
 		srst2_file=open(input_srst2_AR,'r')
 		srst2_line=srst2_file.readline().strip()
+		counter=0
 		while srst2_line != '':
+			if counter == 4:
+				exit()
 			print("Start srst2 loop")
 			for k, v in ar_dict.items():
 				print(k, v)
@@ -40,7 +43,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 					if ar_dict.get(gene_name):
 						if ar_dict.get(gene_name) != "No Other AR genes":
 							print("Found", gene_name, "in both outputs")
-							ar_dict[gene_name]=""+ar_dict.get(gene_name)+"\n"+gene_stats
+							ar_dict[gene_name]=""+ar_dict.get(gene_name)+":"+gene_stats
 						else:
 							print("No AR found in csstar for", gene_name)
 					else:
@@ -50,6 +53,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 						all_ARs_in_file.append(gene_name)
 				break
 			srst2_line=srst2_file.readline().strip()
+			counter+=1
 		srst2_file.close()
 		while srst2_line != '':
 			for k, v in ar_dict.items():
