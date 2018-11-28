@@ -274,7 +274,7 @@ done < "${share}/DBs/star/group_defs.txt"
 			fi
 			confers=${confers//_resistance/}
 			allele=$(echo "${line}" | cut -d'	' -f4 | cut -d'_' -f1)
-			if [[ "${allele}" = "zn-dependent" ]]; then
+			if [[ "${allele}" = "Zn-dependent" ]]; then
 				allele="${allele}_hydrolase"
 			fi
 			coverage=$(echo "${line}" | cut -d'	' -f5)
