@@ -117,7 +117,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 
 		plas_perc_id=math.floor(float(plasmid_line_sections[4]))
 		print("testing:", plasmid_line_sections[5].split("/")[0], plasmid_line_sections[5].split("/")[1])
-		plas_perc_length=(100*int(plasmid_line_sections[5].split("/")[0])//int(plasmid_line_sections[5].split("/")[1]))
+		plas_perc_length=(100*int(plasmid_line_sections[5].split("/")[1])//int(plasmid_line_sections[5].split("/")[0]))
 		#plas_match_info="["+plas_perc_id+"/"+plas_percpercent_length+"]"
 		if source_assembly == "full_assembly":
 			#print("Adding:", plasmid_line_sections[3], "to sample_f_plasmids")
