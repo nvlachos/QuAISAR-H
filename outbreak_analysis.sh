@@ -204,8 +204,8 @@ done < "${share}/DBs/star/group_defs.txt"
 		# gets the name of the gene
 		#gene=$(echo ${line} | cut -d$'\t' -f5)
 		#conferred=$(echo ${line} | cut -d$'\t' -f2 | cut -d'_' -f1)
-		if [[ "${conferred}" == "macrolide," ]]; then
-			conferred="macrolide,_lincosamide,_streptogramin_B"
+		if [[ "${conferred}" == "macrolide_" ]] || [[ "${conferred}" == "macrolide," ]]; then
+			conferred="macrolide_lincosamide_streptogramin_B"
 		fi
 		# gets the difference in length of the match vs total length
 		#alength=$((length_2 - length_1))
