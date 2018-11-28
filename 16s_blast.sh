@@ -10,6 +10,8 @@
 . ./config.sh
 . "${shareScript}/module_changers/perl_5221_to_5123.sh"
 . ./module_changers/list_modules.sh
+#test
+
 
 #
 # Creates a  a 16s prediction to blast for another species identification tool
@@ -37,7 +39,7 @@ fi
 
 # Creates new output folder based on the universally set processed location from config.sh
 OUTDATADIR=${processed}/${2}/${1}
-if [ ! -d "${OUTDATADIR}/16s" ]; then  
+if [ ! -d "${OUTDATADIR}/16s" ]; then
 	echo "Creating $OUTDATADIR/16s"
 	mkdir "${OUTDATADIR}/16s"
 fi
@@ -54,7 +56,7 @@ make_fasta() {
 	clength=$(( cstop - cstart + 1))
 	match=0
 	# Finds the matching contig and extracts sequence
-	while IFS='' read -r line; 
+	while IFS='' read -r line;
 	do
 #		echo "test before-${line}=${header}?"
 		if [ "$line" == "${header}" ]; then
@@ -75,9 +77,9 @@ make_fasta() {
 #	echo "short_seq=$rna"
 	# Adds new fasta entry to the file
 	echo -e "${header}\n${rna_seq:$cstart:$clength}" >> ${processed}/${2}/${1}/16s/${1}_16s_rna_seqs.txt
-			
+
 }
-	
+
 owd=$(pwd)
 cd ${OUTDATADIR}/16s
 
@@ -96,7 +98,7 @@ fi
 # Checks brrnap output and finds all 16s hits and creates a fasta sequence to add to list of possible hits
 lines=0
 found_16s="false"
-while IFS='' read -r line; 
+while IFS='' read -r line;
 do
 	if [ ${lines} -gt 0 ]; then
 		contig=$(echo ${line} | cut -d' ' -f1)
@@ -122,7 +124,7 @@ fi
 blastn -word_size 10 -task blastn -remote -db nt -max_hsps 1 -max_target_seqs 1 -query ${processed}/${2}/${1}/16s/${1}_16s_rna_seqs.txt -out ${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen ssciname";
 sort -k4 -n "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN" --reverse > "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN.sorted"
 
-# Gets taxon info from the best (literal top) hit from the blast list 
+# Gets taxon info from the best (literal top) hit from the blast list
 if [[ -s "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN" ]]; then
 	me=$(whoami)
 	accessions=$(head -n 1 "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN")
@@ -130,14 +132,14 @@ if [[ -s "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN" ]]; then
 	gb_acc=$(echo "${accessions}" | cut -d' ' -f2 | cut -d'|' -f4)
 	echo ${gb_acc}
 	blast_id=$(python ${shareScript}/entrez_get_taxon_from_accession.py "${gb_acc}" "${me}@cdc.gov")
-	echo ${blast_id}	
+	echo ${blast_id}
 	#blast_id=$(echo ${blast_id} | tr -d '\n')
 	echo -e "best_hit	${1}	${blast_id}" > "${OUTDATADIR}/16s/${1}_16s_blast_id.txt"
 else
 	echo "No remote blast file"
 fi
 
-# Gets taxon info from the largest hit from the blast list 
+# Gets taxon info from the largest hit from the blast list
 if [[ -s "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN.sorted" ]]; then
 	me=$(whoami)
 	accessions=$(head -n 1 "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN.sorted")
