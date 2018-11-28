@@ -47,7 +47,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 						if ar_dict.get(gene_name) != "No Other AR genes":
 							print("Found", gene_name, "in both outputs")
 							print("New value: "+ar_dict.get(gene_name)+":"+gene_stats)
-							ar_dict[gene_name]=""+ar_dict.get(gene_name)+":"+gene_stats
+							ar_dict[gene_name]=""+ar_dict.get(gene_name)+"\n"+gene_stats
 						else:
 							print("No AR found in csstar for", gene_name)
 					else:
