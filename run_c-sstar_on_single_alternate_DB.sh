@@ -135,7 +135,7 @@ do
 	info1=""
 	#info2=""
 	#echo "R1;${label1}-${label2}"
-	if [[ "${label1}" = *"tr" ]] && [[ "${label1}" != "str" ]]; then
+	if [[ "${label1}" = *"TRUNC" ]] && [[ "${label1}" != "str" ]]; then
 		#echo "Label 1 was truncated"
 		label1="${label1:0:${#label1} - 2}"
 		info1="${info1}trunc-"

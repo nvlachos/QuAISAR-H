@@ -193,11 +193,11 @@ done < "${share}/DBs/star/group_defs.txt"
 		percent_ID="${ar_line[6]}"
 		percent_length="${ar_line[9]}"
 		conferred=$(echo "${ar_line[1]}" | cut -d'_' -f1)
-		if [[ "${ar_line[3]}" == *"trunc"* ]] || [[ "${ar_line[3]}" == "trunc"* ]] || [[ "${ar_line[3]}" == *"trunc" ]] || [[ "${ar_line[3]}" == "trunc" ]]; then
-			gene="TRUNC-${ar_line[4]}"
-		else
-			gene="${ar_line[4]}"
-		fi
+		#if [[ "${ar_line[3]}" == *"trunc"* ]] || [[ "${ar_line[3]}" == "trunc"* ]] || [[ "${ar_line[3]}" == *"trunc" ]] || [[ "${ar_line[3]}" == "trunc" ]]; then
+		#	gene="TRUNC-${ar_line[4]}"
+		#else
+		#	gene="${ar_line[4]}"
+		#fi
 		#echo "norm:${sample_name}:${line}:${length_1}|${length_2}"
 		#percent_ID=$(echo ${line} | cut -d$'\t' -f7)
 		#percent_length=$(echo ${line} | cut -d$'\t' -f10)

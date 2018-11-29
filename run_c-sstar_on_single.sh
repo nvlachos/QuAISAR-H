@@ -133,7 +133,7 @@ do
 	# Determine what flags were thrown for this gene by csstar
 	info1=""
 	# Truncated allele
-	if [[ "${label1}" = *"tr" ]] && [[ "${label1}" != "str" ]]; then
+	if [[ "${label1}" = *"TRUNC" ]] && [[ "${label1}" != "str" ]]; then
 		#echo "Label 1 was truncated"
 		label1="${label1:0:${#label1} - 2}"
 		info1="${info1}trunc-"
