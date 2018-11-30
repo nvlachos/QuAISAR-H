@@ -158,4 +158,4 @@ do
 			break
 	fi
 done < "${local_DBs}/taxes.csv"
-printf "(${source}) \nD:	${Domain} \nP:	${Phylum} \nC:	${Class} \nO:	${Order} \nF:	${Family} \nG:	${Genus} \ns:	${species} \n" > "${processed}/${project}/${sample}/${sample}.tax"
+printf "(${source}) \nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n" > "${processed}/${project}/${sample}/${sample}.tax"

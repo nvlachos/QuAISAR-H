@@ -131,8 +131,8 @@ fi
 #Renames all files in the localANIDB folder by changing extension from fna to fasta (which pyani needs)
 for file in ${OUTDATADIR}/ANI/localANIDB/*.fna;
 do
-	fasta_name=$(basename "${file}" .fna)".fasta"
-	mv "${file}" "${OUTDATADIR}/ANI/localANIDB/${fasta_name}"
+	#fasta_name=$(basename "${file}" .fna)".fasta"
+	mv "${file}" "$(basename "${file}" .fna).fasta"
 done
 
 # Mashtree trimming to reduce run time for ANI
