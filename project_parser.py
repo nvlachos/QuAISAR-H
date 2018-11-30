@@ -8,10 +8,10 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 	csstar_file=open(input_csstar_AR,'r')
 	csstar_line = csstar_file.readline().strip()
 	counter=0
-	print("Start")
+	#print("Start")
 	while csstar_line != '':
 		#print(counter, line)
-		print("Start csstar loop")
+		#print("Start csstar loop")
 		csstar_line_sections=csstar_line.split("	")
 		ar_list=csstar_line_sections[4].split(",")
 		ar_dict={}
@@ -26,38 +26,40 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 		srst2_line=srst2_file.readline().strip()
 		counter=0
 		while srst2_line != '':
-			#if counter == 4:
-			#	exit()
-			print("Start srst2 loop")
+			if counter == 4:
+				exit()
+			#print("Start srst2 loop")
 			spot_count=0
 			for k, v in ar_dict.items():
 				print(spot_count)
 				print(k, v)
 				spot_count+=1
-			print("Checking", srst2_line)
+			#print("Checking", srst2_line)
 			srst2_line_sections=srst2_line.split("	")
 			if csstar_line_sections[0] == srst2_line_sections[0] and csstar_line_sections[1] == srst2_line_sections[1]:
-				print("Found",  csstar_line_sections[1], "in srst2 summary file")
+				#print("Found",  csstar_line_sections[1], "in srst2 summary file")
 				srst2_ar_list=srst2_line_sections[2].split(",")
 				for srst2_ar_gene in srst2_ar_list:
 					gene_name=srst2_ar_gene.split("[")[0]
 					gene_stats="["+srst2_ar_gene.split("[")[1]+"S"
-					print("Looking up", gene_name, "in csstar dic")
+					#print("Looking up", gene_name, "in csstar dic")
 					if ar_dict.get(gene_name):
 						if ar_dict.get(gene_name) != "No Other AR genes":
-							print("Found", gene_name, "in both outputs")
-							print("New value: "+ar_dict.get(gene_name)+":"+gene_stats)
+							#print("Found", gene_name, "in both outputs")
+							#print("New value: "+ar_dict.get(gene_name)+":"+gene_stats)
 							ar_dict[gene_name]=""+ar_dict.get(gene_name)+":"+gene_stats
 						else:
-							print("No AR found in csstar for", gene_name)
+							#print("No AR found in csstar for", gene_name)
+							:
 					else:
-						print("New gene", gene_name,"found in srst2")
+						#print("New gene", gene_name,"found in srst2")
 						ar_dict[gene_name]=gene_stats
 					if gene_name not in all_ARs_in_file:
 						all_ARs_in_file.append(gene_name)
 				break
 			else:
-				print(csstar_line_sections[1], "C does not equal S", srst2_line_sections[1])
+				#print(csstar_line_sections[1], "C does not equal S", srst2_line_sections[1])
+				:
 			srst2_line=srst2_file.readline().strip()
 			counter+=1
 		srst2_file.close()
@@ -112,13 +114,13 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 			sample_f_plasmids_dict={}
 			sample_p_plasmids_dict={}
 		source_assembly=plasmid_line_sections[2]
-		print("Test:"+plasmid_line_sections[4]+":")
+		#print("Test:"+plasmid_line_sections[4]+":")
 		if plasmid_line_sections[4].find("_contigs-") >= 0:
 			line = plas_file.readline().strip()
 			continue
 
 		plas_perc_id=math.floor(float(plasmid_line_sections[4]))
-		print("testing:", plasmid_line_sections[5].split("/")[0], plasmid_line_sections[5].split("/")[1])
+		#print("testing:", plasmid_line_sections[5].split("/")[0], plasmid_line_sections[5].split("/")[1])
 		plas_perc_length=(100*int(plasmid_line_sections[5].split("/")[1])//int(plasmid_line_sections[5].split("/")[0]))
 		#plas_match_info="["+plas_perc_id+"/"+plas_percpercent_length+"]"
 		if source_assembly == "full_assembly":
@@ -172,7 +174,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 	#return
 	for sample in samples:
 		sample_details=[sample[1], sample[0], sample[2], sample[3]]
-		print("pre:",sample)
+		#print("pre:",sample)
 		for gene in all_ar_and_plasmids:
 			status=" "
 			if gene == "|":

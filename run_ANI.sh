@@ -11,7 +11,7 @@ if [[ ! -f "./config.sh" ]]; then
 	cp config_template.sh config.sh
 fi
 . ./config.sh
-${mod_changers}/list_modules.sh
+#${mod_changers}/list_modules.sh
 
 #
 # Script to calculate the average nucleotide identity of a sample to numerous other samples from the same genus (genus dependent)
@@ -131,8 +131,8 @@ fi
 #Renames all files in the localANIDB folder by changing extension from fna to fasta (which pyani needs)
 for file in ${OUTDATADIR}/ANI/localANIDB/*.fna;
 do
-	#fasta_name=$(basename "${file}" .fna)".fasta"
-	mv "${file}" "$(basename "${file}" .fna).fasta"
+	fasta_name=$(basename "${file}" .fna)".fasta"
+	mv "${file}" "${OUTDATADIR}/ANI/localANIDB/${fasta_name}"
 done
 
 # Mashtree trimming to reduce run time for ANI

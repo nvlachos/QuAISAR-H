@@ -48,7 +48,7 @@ if [ ! -f "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" ]; then
 		#gzip < "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq" > "${processed}/${2}/${1}/trimmed/${1}_S1_L001_R1_001.fastq.gz"
 	fi
 else
-	echo "Found 'random' zipped R1"
+	echo "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz already exists"
 fi
 if [ ! -f "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" ]; then
 	if [ -f "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq.gz" ]; then
@@ -60,7 +60,7 @@ if [ ! -f "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" ]; then
 		#gzip < "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq" > "${processed}/${2}/${1}/trimmed/${1}_S1_L001_R2_001.fastq.gz"
 	fi
 else
-	echo "Found 'random' zipped R2"
+	echo "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz already exists"
 fi
 
 #cp "${argannot_srst2}" "${processed}/${2}/${1}/srst2/argannot.fna"
