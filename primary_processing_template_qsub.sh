@@ -169,7 +169,7 @@ for ((i=1 ; i <= nopts ; i++)); do
 		#Tells the script that only the files found in the attached list need to be run
 		-lr | --list)
 			list_path="$2"
-			quick_list=$(echo "${2}" | cut -d'.' -f1)
+			quick_list=$(basename ${list_path})
 			INDATADIR="${processed}/${project}" # NOT USED yet in list mode
 			if [[ -z ${BASEDIR} ]]; then
 				BASEDIR="${processed}"
@@ -182,7 +182,7 @@ for ((i=1 ; i <= nopts ; i++)); do
 		#Tells the script that only the files found in the attached list need to be run
 		-la | --list)
 			list_path="$2"
-			quick_list=$(echo "${2}" | cut -d'.' -f1)
+			quick_list=$(basename ${list_path})
 			INDATADIR="${processed}/${project}" # NOT USED yet in list mode
 			if [[ -z ${BASEDIR} ]]; then
 				BASEDIR="${processed}"
