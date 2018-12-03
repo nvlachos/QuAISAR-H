@@ -76,7 +76,7 @@ do
 		#echo "Does ${full_sample_name} match *${match}"
 
 		# Skip file if it happens to be undetermined
-		if [[ "${short_name}" == "Undetermined" ]]; then
+    if [[ "${short_name}" == "Undetermined" ]]; then
 			echo "found undetermined (${file})"
 			continue
 		# If the file matches the postfix given in the arguments proceed with moving and unzipping to the output directory
@@ -108,6 +108,7 @@ do
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 						gzip -c "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 					fi
+				fi
 			elif [[ "${match}" -eq 3 ]]; then
 				if [[ "${postfix}" = *"1"* ]]; then
 					if [[ "${full_sample_name}" = *".fasta.gz" ]]; then
