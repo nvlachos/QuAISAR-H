@@ -46,7 +46,7 @@ while IFS= read -r var; do
 	# 	line_project=$(echo "${var}" | cut -d',' -f22)
 	# fi
 	line_project=$(echo "${var}" | cut -d'	' -f21)
-	 echo "${line_project}:${1}"
+	# echo "${line_project}:${1}"
 	# If the run_id matches, then add ID to list (automatically placing them in the proper order)
 	if [[ "${line_project}" = "${1}" ]]; then
 		line_id=$(echo "${var}" | cut -d'	' -f3)
@@ -60,9 +60,9 @@ done < ${processed}/${1}/2019_MMBSeq_Log.tsv
 
 
 # Remove intermediate files from sorting
-#rm -r ${processed}/${1}/sorted_summaries.txt
-#rm -r ${processed}/${1}/2019_MMBSeq_Log.tsv
-#rm -r ${processed}/${1}/2019_MMBSeq_Log.xlsx
+rm -r ${processed}/${1}/sorted_summaries.txt
+rm -r ${processed}/${1}/2019_MMBSeq_Log.tsv
+rm -r ${processed}/${1}/2019_MMBSeq_Log.xlsx
 
 # Check if the sorted file has content, else delete it since something went wrong
 if [[ ! -s "${processed}/${1}/${1}_list_ordered.txt" ]]; then
