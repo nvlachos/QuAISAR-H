@@ -28,7 +28,6 @@ echo "${processed}/${1}/2019_MMBSeq_Log.xlsx"
 cp "${local_DBs}/Seqlog_copies/2019_MMBSeq_Log.xlsx" "${processed}/${1}/2019_MMBSeq_Log.xlsx"
 
 # Convert log file to csv format for searchability
-#`soffice --headless --convert-to csv "${processed}/${1}/2019_MMBSeq_Log.xlsx" --outdir "${processed}/${1}/" > "${processed}/${1}/convert.out"`
 python2 ${shareScript}/xlsx_converter.py "${processed}/${1}/2019_MMBSeq_Log.xlsx" "FY19 Miseq Isolate Log" > "${processed}/${1}/2019_MMBSeq_Log.tsv"
 
 echo "Excel file: 2019_MMBSeq_Log.xlsx has been converted to TSV"
@@ -61,10 +60,9 @@ done < ${processed}/${1}/2019_MMBSeq_Log.tsv
 
 
 # Remove intermediate files from sorting
-rm -r ${processed}/${1}/sorted_summaries.txt
-rm -r ${processed}/${1}/2019_MMBSeq_Log.tsv
-rm -r ${processed}/${1}/2019_MMBSeq_Log.xlsx
-rm -r ${processed}/${1}/convert.out
+#rm -r ${processed}/${1}/sorted_summaries.txt
+#rm -r ${processed}/${1}/2019_MMBSeq_Log.tsv
+#rm -r ${processed}/${1}/2019_MMBSeq_Log.xlsx
 
 # Check if the sorted file has content, else delete it since something went wrong
 if [[ ! -s "${processed}/${1}/${1}_list_ordered.txt" ]]; then
