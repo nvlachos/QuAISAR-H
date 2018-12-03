@@ -53,7 +53,7 @@ echo "${2}"
 for file in ${2}/*
 do
 	# Check if file is a zipped reads file
-	if [[ "${file}" = *.gz ]] || [[ "${file}" = *.fasta ]]; then
+	if [[ "${file}" = *.gz ]] || [[ "${file}" = *.fastq ]]; then
 		echo "filename: ${file}"
 		# Gets full file name from path
 		full_sample_name=${file##*/}
@@ -92,57 +92,57 @@ do
 			echo "Copying ${source_path}/${full_sample_name}"
 			if [[ "${match}" -eq 1 ]] || [[ "${match}" -eq 2 ]]; then
 				if [[ "${postfix}" = *"R1"* ]]; then
-					if [[ "${full_sample_name}" = *".fasta.gz" ]]; then
+					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
-					elif [[ "${full_sample_name}" = *".fasta" ]]; then
+					elif [[ "${full_sample_name}" = *".fastq" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 						gzip -c "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 					fi
 					echo -e "${1}/${short_name}" >> "${OUTDATADIR}/${1}_list.txt"
 				elif [[ "${postfix}" = *"R2"* ]]; then
-					if [[ "${full_sample_name}" = *".fasta.gz" ]]; then
+					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
-					elif [[ "${full_sample_name}" = *".fasta" ]]; then
+					elif [[ "${full_sample_name}" = *".fastq" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 						gzip -c "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 					fi
 				fi
 			elif [[ "${match}" -eq 3 ]]; then
 				if [[ "${postfix}" = *"1"* ]]; then
-					if [[ "${full_sample_name}" = *".fasta.gz" ]]; then
+					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
-					elif [[ "${full_sample_name}" = *".fasta" ]]; then
+					elif [[ "${full_sample_name}" = *".fastq" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 						gzip -c "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 					fi
 					echo -e "${1}/${short_name}" >> "${OUTDATADIR}/${1}_list.txt"
 				elif [[ "${postfix}" = *"2"* ]]; then
-					if [[ "${full_sample_name}" = *".fasta.gz" ]]; then
+					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
-					elif [[ "${full_sample_name}" = *".fasta" ]]; then
+					elif [[ "${full_sample_name}" = *".fastq" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 						gzip -c "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 					fi
 				fi
 			elif [[ "${match}" -eq 4 ]]; then
 				if [[ "${postfix}" = *"1"* ]]; then
-					if [[ "${full_sample_name}" = *".fasta.gz" ]]; then
+					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
-					elif [[ "${full_sample_name}" = *".fasta" ]]; then
+					elif [[ "${full_sample_name}" = *".fastq" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 						gzip -c "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 					fi
 					echo -e "${1}/${short_name}" >> "${OUTDATADIR}/${1}_list.txt"
 				elif [[ "${postfix}" = *"2"* ]]; then
-					if [[ "${full_sample_name}" = *".fasta.gz" ]]; then
+					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
-					elif [[ "${full_sample_name}" = *".fasta" ]]; then
+					elif [[ "${full_sample_name}" = *".fastq" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 						gzip -c "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 					fi
