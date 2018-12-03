@@ -46,7 +46,7 @@ while IFS= read -r var; do
 	# 	line_project=$(echo "${var}" | cut -d',' -f22)
 	# fi
 	line_project=$(echo "${var}" | cut -d'	' -f21)
-	# echo "${line_project}:${1}"
+	 echo "${line_project}:${1}"
 	# If the run_id matches, then add ID to list (automatically placing them in the proper order)
 	if [[ "${line_project}" = "${1}" ]]; then
 		line_id=$(echo "${var}" | cut -d'	' -f3)
