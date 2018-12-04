@@ -313,7 +313,7 @@ done < "${share}/DBs/star/group_defs.txt"
 		if [[ -z "${srst2_results}" ]]; then
 			echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
 		else
-		#	echo "${project}	${sample_name}	${srst2_results}" >> ${output_directory}/${4}-srst2.txt
+			echo "${project}	${sample_name}	${srst2_results}" >> ${output_directory}/${4}-srst2.txt
 		fi
 	else
 		echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
