@@ -30,10 +30,10 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 				exit()
 			#print("Start srst2 loop")
 			spot_count=0
-			for k, v in ar_dict.items():
-				print(spot_count)
-				print(k, v)
-				spot_count+=1
+			#for k, v in ar_dict.items():
+			#	print(spot_count)
+			#	print(k, v)
+			#	spot_count+=1
 			#print("Checking", srst2_line)
 			srst2_line_sections=srst2_line.split("	")
 			if csstar_line_sections[0] == srst2_line_sections[0] and csstar_line_sections[1] == srst2_line_sections[1]:
@@ -48,9 +48,9 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 							#print("Found", gene_name, "in both outputs")
 							#print("New value: "+ar_dict.get(gene_name)+":"+gene_stats)
 							ar_dict[gene_name]=""+ar_dict.get(gene_name)+":"+gene_stats
-						else:
+						#else:
 							#print("No AR found in csstar for", gene_name)
-							:
+						#	:
 					else:
 						#print("New gene", gene_name,"found in srst2")
 						ar_dict[gene_name]=gene_stats
@@ -63,8 +63,8 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 			srst2_line=srst2_file.readline().strip()
 			counter+=1
 		srst2_file.close()
-		for k, v in ar_dict.items():
-			print(k, v)
+		#for k, v in ar_dict.items():
+		#	print(k, v)
 		#print("1:",csstar_line_sections[0])
 		#print("0:", csstar_line_sections[0], "1:", csstar_line_sections[1],"2:" , csstar_line_sections[2], "3:", csstar_line_sections[3])
 		samples.append([csstar_line_sections[0], csstar_line_sections[1], csstar_line_sections[2], csstar_line_sections[3], ar_dict])
