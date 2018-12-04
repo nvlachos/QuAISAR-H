@@ -148,7 +148,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 		#else:
 			#print("Sample", current_id, "does not exist")
 	all_plasmids_in_file.sort()
-	if len(all_plasmids_in_file) == 1:
+	if len(all_plasmids_in_file) == 0:
 		#print("\n")
 		print("Total plasmid replicons in sample set: 0")
 	else:

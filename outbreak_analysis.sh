@@ -89,7 +89,7 @@ rename="true"
 
 
 declare -A groups
-echo "Creating reference array"
+echo "Creating AR Lookup List from ${local_DBs}/star/group_defs.txt"
 counter=0
 while IFS= read -r line;
 do
@@ -103,7 +103,7 @@ do
 	groups[${gene}]="${confers}"
 	#echo "${counter}:${gene}:${confers}"
 	counter=$(( counter + 1))
-done < "${share}/DBs/star/group_defs.txt"
+done < "${local_DBs}/star/group_defs.txt"
 
 # Loop through and act on each sample name in the passed/provided list
  echo -e "\nUsing AR Database - ${resGANNOT_srst2_filename}\n"
@@ -320,7 +320,7 @@ done < "${share}/DBs/star/group_defs.txt"
 	fi
 
 #Test
-echo "Test"
+#echo "Test"
 
 
 	if [[ "${has_plasmidAssembly}" = "true" ]]; then
