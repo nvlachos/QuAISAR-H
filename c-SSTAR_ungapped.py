@@ -81,7 +81,7 @@ def tagHit(l, edge):
 			l = [ l[0], l[1]+'$', l[2]+'$', l[3], l[4], l[5], l[6], l[7], l[8], l[9], l[10], l[11], l[12], l[13], l[14], l[15] ]
 	(prot, numSTOP) = internalSTOPcodon(l)
 	if int(numSTOP) > 0:  #TR indicates 'truncated protein translation'
-		l = [ l[0], l[1]+'TRUNC', l[2]+'TRUNC', l[3], l[4], l[5], l[6], l[7], l[8], l[9], l[10], l[11], l[12], l[13], l[14], l[15] ]
+		l = [ l[0], l[1]+'-TRUNC', l[2]+'-TRUNC', l[3], l[4], l[5], l[6], l[7], l[8], l[9], l[10], l[11], l[12], l[13], l[14], l[15] ]
 	return l
 
 def main(args=None):
