@@ -192,7 +192,7 @@ done < "${share}/DBs/star/group_defs.txt"
 		length_2="${ar_line[8]}"
 		percent_ID="${ar_line[6]}"
 		percent_length="${ar_line[9]}"
-		conferred=$(echo "${ar_line[1]}" | cut -d'_' -f1)
+		conferred=$(echo "${ar_line[1]}" | rev | cut -d'_' -f2- | rev)
 		#if [[ "${ar_line[3]}" == *"trunc"* ]] || [[ "${ar_line[3]}" == "trunc"* ]] || [[ "${ar_line[3]}" == *"trunc" ]] || [[ "${ar_line[3]}" == "trunc" ]]; then
 		#	gene="TRUNC-${ar_line[4]}"
 		#else
@@ -204,9 +204,9 @@ done < "${share}/DBs/star/group_defs.txt"
 		# gets the name of the gene
 		#gene=$(echo ${line} | cut -d$'\t' -f5)
 		#conferred=$(echo ${line} | cut -d$'\t' -f2 | cut -d'_' -f1)
-		if [[ "${conferred}" == "macrolide_" ]] || [[ "${conferred}" == "macrolide," ]]; then
-			conferred="macrolide_lincosamide_streptogramin_B"
-		fi
+		#if [[ "${conferred}" == "macrolide_"* ]] || [[ "${conferred}" == "macrolide,"* ]]; then
+		#	conferred="macrolide_lincosamide_streptogramin_B"
+		#fi
 		# gets the difference in length of the match vs total length
 		#alength=$((length_2 - length_1))
 #		echo "$sample_name --- l1=${length_1};l2=${length_2} --- ${gene}"
