@@ -89,7 +89,8 @@ rename="true"
 
 
 declare -A groups
-echo "\nCreating AR lookup list from ${local_DBs}/star/group_defs.txt"
+echo ""
+echo "Creating AR lookup list from ${local_DBs}/star/group_defs.txt"
 counter=0
 while IFS= read -r line;
 do
