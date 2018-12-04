@@ -142,7 +142,7 @@ def main(args=None):
 				#print("\n\n\n\n\n")
 				#candidate = [clusterNr, enzymeParts[1], enzymeParts[2], blastOut[1] , pident, blastOut[3], bitscore, blastOut[12], blastOut[6], blastOut[7], blastOut[13], blastOut[14].rstrip(), enzymeParts[4] , enzymeParts[5], round(100*(int(blastOut[12])/int(blastOut[3]))), blastOut[4], ]
 				# For use with reporting SNPs
-				candidate = [clusterNr, enzymeParts[1], enzymeParts[2], blastOut[1] , pident, blastOut[3], bitscore, blastOut[12], blastOut[6], blastOut[7], blastOut[13], blastOut[14].rstrip(), enzymeParts[4] , enzymeParts[5], 100*int(blastOut[3])//int(blastOut[12])), blastOut[4]]
+				candidate = [clusterNr, enzymeParts[1], enzymeParts[2], blastOut[1] , pident, blastOut[3], bitscore, blastOut[12], blastOut[6], blastOut[7], blastOut[13], blastOut[14].rstrip(), enzymeParts[4] , enzymeParts[5], int(100*(int(blastOut[3])/int(blastOut[12]))), blastOut[4]]
 
 				if clusterNr == currentClusterNr:
 					if float(best[6]) < float(candidate[6]):
