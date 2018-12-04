@@ -253,11 +253,11 @@ done < "${share}/DBs/star/group_defs.txt"
 	if [[ -s "${processed}/${project}/${sample_name}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
 		srst2_results=""
 		while IFS= read -r line; do
-			echo "Start"
+		#	echo "Start"
 			gene=$(echo "${line}" | cut -d'	' -f3)
 			#ODD WAY to do this right now, must look into later, but
 			confers=$(echo "${line}" | cut -d'	' -f14 | cut -d';' -f3)
-			echo "${gene}-${confers}"
+		#	echo "${gene}-${confers}"
 			if [[ "${confers}" = "annotation" ]]; then
 				continue
 			fi
@@ -293,7 +293,7 @@ done < "${share}/DBs/star/group_defs.txt"
 			else
 				percent_ID=$(echo "100 - (($divergence + 1) / 1)" | bc)
 			fi
-			echo "${allele}/${coverage}/${depth}/${diffs}/${uncertainty}/${divergence}/${length}/${percent_ID}/${percent_length}"
+		#	echo "${allele}/${coverage}/${depth}/${diffs}/${uncertainty}/${divergence}/${length}/${percent_ID}/${percent_length}"
 			if [[ "${percent_ID}" -gt 95 ]] && [[ "${percent_length}" -gt 90 ]]; then
 				info_line="${allele}(${confers})[${percent_ID}/${percent_length}]"
 				if [[ -z "${srst2_results}" ]]; then
@@ -309,11 +309,11 @@ done < "${share}/DBs/star/group_defs.txt"
 				fi
 			fi
 		done < "${processed}/${project}/${sample_name}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt"
-		echo "Test1"
+		#echo "Test1"
 		if [[ -z "${srst2_results}" ]]; then
 			echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
 		else
-			echo "${project}	${sample_name}	${srst2_results}" >> ${output_directory}/${4}-srst2.txt
+		#	echo "${project}	${sample_name}	${srst2_results}" >> ${output_directory}/${4}-srst2.txt
 		fi
 	else
 		echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
