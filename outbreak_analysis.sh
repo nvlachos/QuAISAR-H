@@ -196,7 +196,7 @@ done < "${share}/DBs/star/group_defs.txt"
 		#if [[ "${ar_line[3]}" == *"trunc"* ]] || [[ "${ar_line[3]}" == "trunc"* ]] || [[ "${ar_line[3]}" == *"trunc" ]] || [[ "${ar_line[3]}" == "trunc" ]]; then
 		#	gene="TRUNC-${ar_line[4]}"
 		#else
-		#	gene="${ar_line[4]}"
+		gene="${ar_line[4]}"
 		#fi
 		#echo "norm:${sample_name}:${line}:${length_1}|${length_2}"
 		#percent_ID=$(echo ${line} | cut -d$'\t' -f7)
