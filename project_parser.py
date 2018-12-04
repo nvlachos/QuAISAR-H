@@ -57,9 +57,9 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 					if gene_name not in all_ARs_in_file:
 						all_ARs_in_file.append(gene_name)
 				break
-			else:
-				#print(csstar_line_sections[1], "C does not equal S", srst2_line_sections[1])
-				:
+			#else:
+			#	#print(csstar_line_sections[1], "C does not equal S", srst2_line_sections[1])
+			#	:
 			srst2_line=srst2_file.readline().strip()
 			counter+=1
 		srst2_file.close()
