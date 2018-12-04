@@ -106,7 +106,7 @@ do
 done < "${local_DBs}/star/group_defs.txt"
 
 # Loop through and act on each sample name in the passed/provided list
- echo -e "\nUsing AR Database - ${resGANNOT_srst2_filename}\n"
+ echo -e "\nMaking sure all isolates use the latest AR Database - ${resGANNOT_srst2_filename}\n"
  while IFS= read -r line; do
 	 sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
 	 project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
