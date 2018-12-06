@@ -629,6 +629,12 @@ process_samples()	{
 	echo "----- Running MLST -----"
 	start=$SECONDS
 	"${shareScript}/run_MLST.sh" "${filename}" "${project}"
+	if [[ "${genus}_${species}" = "Acinetobacter_baumannii" ]]; then
+		"${shareScript}/run_MLST.sh" "${filename}" "${project}" "-f" "abaumannii"
+	elif [[ "${genus}_${species}" = "Escherichia_coli" ]]; then
+		# Verify that ecoli_2 is default and change accordingly
+		"${shareScript}/run_MLST.sh" "${filename}" "${project}" "-f" "ecoli_2"
+	fi
 	end=$SECONDS
 	timeMLST=$((end - start))
 	echo "MLST - ${timeMLST} seconds" >> "${time_summary}"

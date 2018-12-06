@@ -93,6 +93,7 @@ do
 			if [[ "${match}" -eq 1 ]] || [[ "${match}" -eq 2 ]]; then
 				if [[ "${postfix}" = *"R1"* ]]; then
 					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
+						clumpify.sh 
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 					elif [[ "${full_sample_name}" = *".fastq" ]]; then
