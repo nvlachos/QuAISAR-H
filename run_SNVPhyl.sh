@@ -33,9 +33,9 @@ elif [[ -z "${1}" ]] || ([ ! -f ${share}/Phylogeny_analyses/${1}/${1}.samples ] 
 	exit 1
 # Gives the user a brief usage and help section if requested with the -h option argument
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_LyveSET.sh group_name (to identify the different groups analyzed)"
+	echo "Usage is ./run_LyveSET.sh group_name (to identify the different groups analyzed) Alternate_output)folder_name(optional)"
 	echo "Phylogeny_analyses folder must contain list of samples (in format of project_id/sample_name) to be compared labelled by group_name.samples. First sample on list will be reference"
-	echo "Output is saved to ${share}/Phylogeny_analyses/group_name/SNVPhyl"
+	echo "Output is saved to ${share}/Phylogeny_analyses/group_name/SNVPhyl(or alt_name)"
 	exit 0
 elif [[ -z "${2}" ]]; then
 	echo "Empty output directory name, using SNVPhyl"
