@@ -93,7 +93,6 @@ do
 			if [[ "${match}" -eq 1 ]] || [[ "${match}" -eq 2 ]]; then
 				if [[ "${postfix}" = *"R1"* ]]; then
 					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
-						clumpify.sh 
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 					elif [[ "${full_sample_name}" = *".fastq" ]]; then
@@ -162,11 +161,16 @@ do
 	else
 		echo "${file} is not a zipped read file, not acting on it"
 	fi
-	# Invert list so that the important isolates (for us at least) get run first
-	if [[ -f "${OUTDATADIR}/${1}_list.txt" ]]; then
-		sort -k2,2 -t'/' -r "${OUTDATADIR}/${1}_list.txt" -o "${OUTDATADIR}/${1}_list.txt"
-	fi
+	if [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" ]] || [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"]]; then
+		mv "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz"
+		mv "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001_unclumped.fastq.gz"
+		clumpify.sh in1="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz" in2="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001_unclumped.fastq.gz" out1="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" out2="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" 
 done
+
+# Invert list so that the important isolates (for us at least) get run first
+if [[ -f "${OUTDATADIR}/${1}_list.txt" ]]; then
+	sort -k2,2 -t'/' -r "${OUTDATADIR}/${1}_list.txt" -o "${OUTDATADIR}/${1}_list.txt"
+fi
 
 #Script exited gracefully (unless something else inside failed)
 exit 0
