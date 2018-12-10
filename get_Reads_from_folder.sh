@@ -90,7 +90,7 @@ do
 			fi
 			# Announces name of file being unzipped and then unzips it to the FASTQs folder for the matching sample name. Files are shortened to just name_R1_001.fastq or name_R2_001.fastq
 			echo "Copying ${source_path}/${full_sample_name}"
-			if [[ "${match}" -eq 1 ]] || [[ "${match}" -eq 4 ]] || ; then
+			if [[ "${match}" -eq 1 ]] || [[ "${match}" -eq 4 ]]; then
 				if [[ "${postfix}" = *"R1_001.fast"* ]]; then
 					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
