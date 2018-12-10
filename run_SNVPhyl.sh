@@ -145,10 +145,12 @@ cd ${OUTDATADIR}/
 snvphyl --fastq-dir ./FASTQs --reference-file "./reference(${ref}).fasta" --output-dir ./output --relative-snv-abundance 0.75 --min-coverage 10 --min-mean-mapping 30 --filter-density-threshold 2 --filter-density-window 11 --workflow-id "f2db41e1fa331b3e"
 #snvphyl --fastq-dir ./FASTQs --reference-file "./reference(${ref}).fasta" --output-dir ./output --relative-snv-abundance 0.75 --min-coverage 10 --min-mean-mapping 30 --filter-density-threshold 2 --filter-density-window 11
 
-${shareScript}/run_core_estimate.sh ${1} "-SNVPhyl" > "${OUTDATADIR}/output/core_estimate.txt"
-snv_est=$(tail -n 1 "${OUTDATADIR}/output/snvMatrix.tsv")
+#${shareScript}/run_core_estimate.sh ${1} "-SNVPhyl" > "${OUTDATADIR}/output/core_estimate.txt"
 
-echo -e "\nSNVPhyl estimate:\n\n${snv_est}\n" >> "${OUTDATADIR}/output/core_estimate.txt"
+snv_all_est=$(tail -n 1 "${OUTDATADIR}/output/vcf2core.tsv")
+snv_est=$(echo "${snv_all_est}" | cut -d '	' -f7)
+
+echo -e "\nSNVPhyl core estimate:\t${snv_est}%\n" >> "${OUTDATADIR}/output/snvMatrix.txt"
 
 
 
