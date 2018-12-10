@@ -15,7 +15,7 @@ fi
 #
 # Will find all fastq.gz files within the given folder
 #
-# Usage ./get_Reads_from_folder.sh run_id folder_with_fastqs postfix_for_reads(1: _SX_RX_00X.fastq.gz 2: _RX.fastq.gz 3: _X.fastq.gz 4: RX_001.fastq.gz)
+# Usage ./get_Reads_from_folder.sh run_id folder_with_fastqs postfix_for_reads(1:_l001_SX_RX_00X.fastq.gz 2: _RX.fastq.gz 3: _X.fastq.gz 4: _RX_00X.fastq.gz)
 #
 
 # Checks for proper argumentation
@@ -90,8 +90,8 @@ do
 			fi
 			# Announces name of file being unzipped and then unzips it to the FASTQs folder for the matching sample name. Files are shortened to just name_R1_001.fastq or name_R2_001.fastq
 			echo "Copying ${source_path}/${full_sample_name}"
-			if [[ "${match}" -eq 1 ]] || [[ "${match}" -eq 2 ]]; then
-				if [[ "${postfix}" = *"R1"* ]]; then
+			if [[ "${match}" -eq 1 ]] || [[ "${match}" -eq 4 ]] || ; then
+				if [[ "${postfix}" = *"R1_001.fast"* ]]; then
 					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz"
@@ -103,7 +103,7 @@ do
 
 					fi
 					echo -e "${1}/${short_name}" >> "${OUTDATADIR}/${1}_list.txt"
-				elif [[ "${postfix}" = *"R2"* ]]; then
+				elif [[ "${postfix}" = *"R2_001.fast"* ]]; then
 					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001_unclumped.fastq.gz"
@@ -115,7 +115,7 @@ do
 					fi
 				fi
 			elif [[ "${match}" -eq 3 ]]; then
-				if [[ "${postfix}" = *"1"* ]]; then
+				if [[ "${postfix}" = *"1.fast"* ]]; then
 					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz"
@@ -126,7 +126,7 @@ do
 						clumpify.sh in="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 					fi
 					echo -e "${1}/${short_name}" >> "${OUTDATADIR}/${1}_list.txt"
-				elif [[ "${postfix}" = *"2"* ]]; then
+				elif [[ "${postfix}" = *"2.fast"* ]]; then
 					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001_unclumped.fastq.gz"
@@ -137,8 +137,8 @@ do
 						clumpify.sh in="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001_unclumped.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 					fi
 				fi
-			elif [[ "${match}" -eq 4 ]]; then
-				if [[ "${postfix}" = *"1"* ]]; then
+			elif [[ "${match}" -eq 2 ]]; then
+				if [[ "${postfix}" = *"R1.fast"* ]]; then
 					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz"
@@ -149,7 +149,7 @@ do
 						clumpify.sh in="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 					fi
 					echo -e "${1}/${short_name}" >> "${OUTDATADIR}/${1}_list.txt"
-				elif [[ "${postfix}" = *"2"* ]]; then
+				elif [[ "${postfix}" = *"R2.fast"* ]]; then
 					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001_unclumped.fastq.gz"

@@ -74,7 +74,8 @@ do
 						mkdir -p "${OUTDATADIR}/${short_name}"
 						mkdir -p "${OUTDATADIR}/${short_name}/FASTQs"
 					fi
-					clumpify.sh in1="${source_path}/${long_name}_L001_R1_001.fastq.gz" in2="${source_path}/${long_name}_L001_R2_001.fastq.gz" out1="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" out2="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
+					clumpify.sh in="${source_path}/${long_name}_L001_R1_001.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
+					clumpify.sh in="${source_path}/${long_name}_L001_R2_001.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 					gunzip -c "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq"
 					gunzip -c "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq"
 					# Add sample to list for current 'project' as it will be used by the pipeline to complete all downstream analyses
