@@ -95,76 +95,77 @@ do
 					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
+						clumpify.sh in="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 					elif [[ "${full_sample_name}" = *".fastq" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 						gzip -c "${source_path}/${full_sample_name}" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
+						clumpify.sh in="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
+
 					fi
 					echo -e "${1}/${short_name}" >> "${OUTDATADIR}/${1}_list.txt"
 				elif [[ "${postfix}" = *"R2"* ]]; then
 					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
+						clumpify.sh in="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001_unclumped.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 					elif [[ "${full_sample_name}" = *".fastq" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 						gzip -c "${source_path}/${full_sample_name}" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
+						clumpify.sh in="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001_unclumped.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 					fi
 				fi
 			elif [[ "${match}" -eq 3 ]]; then
 				if [[ "${postfix}" = *"1"* ]]; then
 					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
-						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
+						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz"
+						clumpify.sh in="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 					elif [[ "${full_sample_name}" = *".fastq" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
-						gzip -c "${source_path}/${full_sample_name}" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
+						gzip -c "${source_path}/${full_sample_name}" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz"
+						clumpify.sh in="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 					fi
 					echo -e "${1}/${short_name}" >> "${OUTDATADIR}/${1}_list.txt"
 				elif [[ "${postfix}" = *"2"* ]]; then
 					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
-						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
+						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001_unclumped.fastq.gz"
+						clumpify.sh in="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001_unclumped.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 					elif [[ "${full_sample_name}" = *".fastq" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
-						gzip -c "${source_path}/${full_sample_name}" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
+						gzip -c "${source_path}/${full_sample_name}" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001_unclumped.fastq.gz"
+						clumpify.sh in="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001_unclumped.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 					fi
 				fi
 			elif [[ "${match}" -eq 4 ]]; then
 				if [[ "${postfix}" = *"1"* ]]; then
 					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
-						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
+						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz"
+						clumpify.sh in="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 					elif [[ "${full_sample_name}" = *".fastq" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
-						gzip -c "${source_path}/${full_sample_name}" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
+						gzip -c "${source_path}/${full_sample_name}" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz"
+						clumpify.sh in="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 					fi
 					echo -e "${1}/${short_name}" >> "${OUTDATADIR}/${1}_list.txt"
 				elif [[ "${postfix}" = *"2"* ]]; then
 					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
-						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
+						cp "${source_path}/${full_sample_name}" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001_unclumped.fastq.gz"
+						clumpify.sh in="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001_unclumped.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 					elif [[ "${full_sample_name}" = *".fastq" ]]; then
 						echo "${source_path}/${full_sample_name} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
-						gzip -c "${source_path}/${full_sample_name}" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
+						gzip -c "${source_path}/${full_sample_name}" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001_unclumped.fastq.gz"
+						clumpify.sh in="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001_unclumped.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 					fi
 				fi
 			else
 				echo "Unrecognized postfix type, but how did it get this far?"
 			fi
-			# gunzip -c "${source_path}/${long_name}_R1_001.fastq.gz" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq"
-			#cp "${source_path}/${long_name}_R1_001.fastq.gz" "${OUTDATADIR}/FASTQs/${short_name}_R1_001.fastq.gz"
-			#echo "Unzipping ${long_name}_R2_001.fastq.gz"
-			# gunzip -c "${source_path}/${long_name}_R2_001.fastq.gz" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq"
-			#cp "${source_path}/${long_name}_R2_001.fastq.gz" "${OUTDATADIR}/FASTQs/${short_name}_R2_001.fastq.gz"
-			# Add sample to list for current 'project' as it will be used by primary_processing to complete all downstream analyses
-			#echo -e "${1}/${short_name}" >> "${OUTDATADIR}/${1}_list.txt"
 		fi
 	else
 		echo "${file} is not a zipped read file, not acting on it"
-	fi
-	if [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" ]] || [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" ]]; then
-		mv "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz"
-		mv "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001_unclumped.fastq.gz"
-		clumpify.sh in1="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz" in2="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001_unclumped.fastq.gz" out1="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" out2="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 	fi
 done
 
