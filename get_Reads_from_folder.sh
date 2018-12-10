@@ -165,6 +165,7 @@ do
 		mv "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz"
 		mv "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001_unclumped.fastq.gz"
 		clumpify.sh in1="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001_unclumped.fastq.gz" in2="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001_unclumped.fastq.gz" out1="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" out2="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
+	fi
 done
 
 # Invert list so that the important isolates (for us at least) get run first
