@@ -34,6 +34,7 @@ while IFS= read -r line || [[ "$line" ]];  do
 done < ${1}
 
 arr_size="${#arr[@]}"
+last_index=$(( arr_size -1 ))
 echo "-${arr_size}:${arr[@]}-"
 
 if [[ ! -z "${2}" ]]; then
@@ -75,7 +76,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 				# Defaulting to gapped/98, change if you want to include user preferences
 				echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g h \"${project}\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
 				echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarn_complete.txt\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
-				qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
+				qsub -sync y "${main_dir}/csstn_${sample}_${start_time}.sh"
 			#else
 			#	echo "${project}/${sample} already has ${resGANNOT_srst2_filename}"
 			#	echo "$(date)" > "${main_dir}/complete/${sample}_csstarn_complete.txt"
@@ -95,7 +96,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 					#echo -e "\"${shareScript}/fix_node_rename.sh\" \"${sample}\" \"${project}\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
 					echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g o \"${project}\" \"--plasmid\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
 					echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarp_complete.txt\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-					qsub "${main_dir}/csstp_${sample}_${start_time}.sh"
+					qsub -sync y "${main_dir}/csstp_${sample}_${start_time}.sh"
 				#else
 				#	echo "${project}/${sample} already has ${resGANNOT_srst2_filename} PLASMID"
 				#	echo "$(date)" > "${main_dir}/complete/${sample}_csstarp_complete.txt"
@@ -127,7 +128,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 						# Defaulting to gapped/98, change if you want to include user preferences
 						echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g h \"${project}\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
 						echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarn_complete.txt\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
-						qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
+						qsub -sync y "${main_dir}/csstn_${sample}_${start_time}.sh"
 					#else
 					#	echo "${project}/${sample} already has ${resGANNOT_srst2_filename}"
 					#	echo "$(date)" > "${main_dir}/complete/${sample}_csstarn_complete.txt"
@@ -145,7 +146,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 							# Defaulting to gapped/98, change if you want to include user preferences
 							echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g o \"${project}\" \"--plasmid\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
 							echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarp_complete.txt\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-							qsub "${main_dir}/csstp_${sample}_${start_time}.sh"
+							qsub -sync y "${main_dir}/csstp_${sample}_${start_time}.sh"
 						#else
 						#	echo "${project}/${sample} already has ${resGANNOT_srst2_filename} PLASMID"
 						#	echo "$(date)" > "${main_dir}/complete/${sample}_csstarp_complete.txt"
@@ -163,8 +164,25 @@ while [ ${counter} -lt ${arr_size} ] ; do
 	counter=$(( counter + 1 ))
 done
 
-echo "All isolates completed"
-global_end_time=$(date "+%m-%d-%Y @ %Hh_%Mm_%Ss")
-#Script exited gracefully (unless something else inside failed)
-printf "%s %s" "Act_by_list.sh has completed ${2}" "${global_end_time}" | mail -s "act_by_list complete" nvx4@cdc.gov
-exit 0
+# Check for completion of last sample
+finish_counter=0
+waiting_for_index=${last_index}
+waiting_sample=$(echo "${arr[${last_index}]}" | cut -d'/' -f2)
+timer=0
+while :
+do
+	if [[ ${timer} -gt 3600 ]]; then
+		echo "Timer exceeded limit of 3600 seconds = 60 minutes"
+		break
+	fi
+	if [[ -f "${main_dir}/complete/${waiting_sample}_csstarn_complete.txt" ]] || [[ ! -s "${processed}/${project}/${waiting_sample}/Assembly/${waiting_sample}_scaffolds_trimmed.fasta" ]]; then
+		echo "All isolates completed"
+		printf "%s %s" "Act_by_list.sh has completed ${2}" "${global_end_time}" | mail -s "act_by_list complete" nvx4@cdc.gov
+		exit 0
+	else
+		counter+$(( counter + 1))
+		timer=$(( timer + 5 ))
+		echo "sleeping for 5 seconds, so far slept for ${timer}"
+		sleep 5
+	fi
+done
