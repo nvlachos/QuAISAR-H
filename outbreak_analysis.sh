@@ -120,6 +120,8 @@ done < "${local_DBs}/star/group_defs.txt"
 		 else
 			 echo "It thinks it needs to put ${sample_name} through srst2"
 			 "${shareScript}/run_srst2_on_singleDB.sh" "${sample_name}" "${project}"
+			 # Or create a list of ones not finished to run through mass_qsub
+			 echo "${project}/${sample_name}" >> "${output_directory}/${4}_srst2_todo.txt"
 		 fi
 	 fi
 
@@ -134,6 +136,8 @@ done < "${local_DBs}/star/group_defs.txt"
 			gapping=${gapping:0:1}
 			echo -e "Doing ResGANNOT as ${shareScript}/run_c-sstar_on_single.sh ${sample_name} ${gapping} ${sim} ${project}"
 			"${shareScript}/run_c-sstar_on_single.sh" "${sample_name}" "${gapping}" "${sim}" "${project}"
+			# Or create list to do mass_qsubs
+			echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
 		fi
 	fi
 	if [[ -s ${processed}/${project}/${sample_name}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta ]]; then
@@ -160,6 +164,9 @@ done < "${local_DBs}/star/group_defs.txt"
 			fi
 			echo -e "Doing ResGANNOT on plasmidAssembly as \n${shareScript}/run_c-sstar_on_single.sh ${sample_name} ${gapping} ${run_plaid} ${project} --plasmid"
 			"${shareScript}/run_c-sstar_on_single.sh" "${sample_name}" "${gapping}" "${run_plaid}" "${project}" "--plasmid"
+			echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
+			sort -u "${output_directory}/${4}_csstar_todo.txt" > "${output_directory}/${4}_csstar_todo_no_dups.txt"
+			mv "${output_directory}/${4}_csstar_todo_no_dups.txt" "${output_directory}/${4}_csstar_todo.txt"
 		fi
 	else
 		#echo "${project}/${sample_name} has no plasmid Assembly"
@@ -167,6 +174,15 @@ done < "${local_DBs}/star/group_defs.txt"
 	fi
 
 	#ls ${processed}/${project}/${sample_name}/c-sstar_plasmid/
+
+
+	# Submit qsub jobs for csstar and srst2
+		qsub ./abl_mass_qsub_csstar.sh "${output_directory}/${4}_csstar_todo.txt" 25
+		qsub ./abl_mass_qsub_csstar.sh "${output_directory}/${4}_srst2_todo.txt" 25
+
+
+
+	#Check for completion of mass_qsubbed jobs
 
 	sample_index=0
 	oar_list=""
