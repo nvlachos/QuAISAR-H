@@ -77,7 +77,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 				echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g h \"${project}\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
 				echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarn_complete.txt\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
 				if [[ "${counter}" -lt "${last_index}" ]]; then
-					qsub -sync y "${main_dir}/csstn_${sample}_${start_time}.sh"
+					qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
 				else
 					if [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
 						qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
@@ -141,7 +141,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 						echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g h \"${project}\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
 						echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarn_complete.txt\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
 						if [[ "${counter}" -lt "${last_index}" ]]; then
-							qsub -sync y "${main_dir}/csstn_${sample}_${start_time}.sh"
+							qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
 						else
 							if [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
 								qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
