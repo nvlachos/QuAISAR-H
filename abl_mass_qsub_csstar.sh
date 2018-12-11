@@ -76,10 +76,14 @@ while [ ${counter} -lt ${arr_size} ] ; do
 				# Defaulting to gapped/98, change if you want to include user preferences
 				echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g h \"${project}\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
 				echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarn_complete.txt\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
-				if [[ "${counter}" -lt "${last_index}" ]] && [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
-					qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
-				else
+				if [[ "${counter}" -lt "${last_index}" ]]; then
 					qsub -sync y "${main_dir}/csstn_${sample}_${start_time}.sh"
+				else
+					if [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
+						qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
+					else
+						qsub -sync y "${main_dir}/csstn_${sample}_${start_time}.sh"
+					fi
 				fi
 			#else
 			#	echo "${project}/${sample} already has ${resGANNOT_srst2_filename}"
@@ -136,10 +140,14 @@ while [ ${counter} -lt ${arr_size} ] ; do
 						# Defaulting to gapped/98, change if you want to include user preferences
 						echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g h \"${project}\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
 						echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarn_complete.txt\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
-						if [[ "${counter}" -lt "${last_index}" ]] && [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
-							qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
-						else
+						if [[ "${counter}" -lt "${last_index}" ]]; then
 							qsub -sync y "${main_dir}/csstn_${sample}_${start_time}.sh"
+						else
+							if [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
+								qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
+							else
+								qsub -sync y "${main_dir}/csstn_${sample}_${start_time}.sh"
+							fi
 						fi
 					#else
 					#	echo "${project}/${sample} already has ${resGANNOT_srst2_filename}"
