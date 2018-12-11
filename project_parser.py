@@ -17,7 +17,10 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 		ar_dict={}
 		for ar_gene in ar_list:
 			gene_name=ar_gene.split("[")[0]
-			gene_stats="["+ar_gene.split("[")[1]+"C"
+			if gene_name == "No AR genes doscovered"
+				gene_stats="[0/0]C"
+			else:
+				gene_stats="["+ar_gene.split("[")[1]+"C"
 			ar_dict[gene_name]=gene_stats
 			if gene_name not in all_ARs_in_file:
 				all_ARs_in_file.append(gene_name)

@@ -119,7 +119,7 @@ done < "${local_DBs}/star/group_defs.txt"
 			 :
 		 else
 			 echo "It thinks it needs to put ${sample_name} through srst2"
-			 #"${shareScript}/run_srst2_on_singleDB.sh" "${sample_name}" "${project}"
+			 "${shareScript}/run_srst2_on_singleDB.sh" "${sample_name}" "${project}"
 		 fi
 	 fi
 
@@ -127,7 +127,7 @@ done < "${local_DBs}/star/group_defs.txt"
 		if [[ -f "${processed}/${project}/${sample_name}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]];
 		then
 			:
-			#echo "ResGANNOT file already exists for assembly of ${project}/${sample_name}"
+			echo "ResGANNOT file already exists for assembly of ${project}/${sample_name}"
 		else
 			#echo "${project}/${sample_name} - ${resGANNOT_srst_filename} - Not found"
 			gapping=${2}
