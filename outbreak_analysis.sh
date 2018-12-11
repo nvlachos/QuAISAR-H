@@ -108,6 +108,9 @@ done < "${local_DBs}/star/group_defs.txt"
 
 run_csstar="false"
 run_srst2="false"
+> "${output_directory}/${4}_csstar_todo.txt"
+> "${output_directory}/${4}_srst2_todo.txt"
+
 
 echo -e "\nMaking sure all isolates use the latest AR Database - ${resGANNOT_srst2_filename}\n"
 while IFS= read -r line; do
@@ -122,7 +125,7 @@ while IFS= read -r line; do
 	if [[ ! -f "${processed}/${project}/${sample_name}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]]; then
 		echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
 		sort -u "${output_directory}/${4}_csstar_todo.txt" > "${output_directory}/${4}_csstar_todo_no_dups.txt"
-		mv "${output_directory}/${4}_csstar_todo_no_dups.txt" "${output_directory}/${4}_csstar_todo.txt"
+		cp "${output_directory}/${4}_csstar_todo_no_dups.txt" "${output_directory}/${4}_csstar_todo.txt"
 		run_csstar="true"
 	fi
 	if [[ -s ${processed}/${project}/${sample_name}/FASTQs/${sample_name}_R1_001.fastq ]] && [[ ${processed}/${project}/${sample_name}/FASTQs/${sample_name}_R1_001.fastq ]] || [[ -s ${processed}/${project}/${sample_name}/FASTQs/${sample_name}_R1_001.fastq.gz ]] && [[ ${processed}/${project}/${sample_name}/FASTQs/${sample_name}_R1_001.fastq.gz ]]; then
@@ -134,33 +137,35 @@ while IFS= read -r line; do
 done < ${1}
 
 if [[ "${run_srst2}" = "true" ]]; then
+	echo "Submitting list for srst2 qsub analysis"
 	qsub ./abl_mass_qsub_srst2.sh "${output_directory}/${4}_srst2_todo.txt" 25
 fi
 if [[ "${run_csstar}" = "true" ]]; then
+	echo "Submitting list for csstar qsub analysis"
 	qsub ./abl_mass_qsub_csstar.sh "${output_directory}/${4}_csstar_todo.txt" 25
 fi
 
 
 # Loop through and act on each sample name in the passed/provided list
- echo -e "\nMaking sure all isolates use the latest AR Database - ${resGANNOT_srst2_filename}\n"
- while IFS= read -r line; do
-	 sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
-	 project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
-	 OUTDATADIR="${processed}/${project}/${sample_name}"
-	 #rm -r "${processed}/${project}/${sample_name}/c-sstar/${resGANNOT_srst2_filename}"
-	 #echo "Checking for ${processed}/${project}/${sample_name}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt"
-	 if [[ -s ${processed}/${project}/${sample_name}/FASTQs/${sample_name}_R1_001.fastq ]] && [[ ${processed}/${project}/${sample_name}/FASTQs/${sample_name}_R1_001.fastq ]] || [[ -s ${processed}/${project}/${sample_name}/FASTQs/${sample_name}_R1_001.fastq.gz ]] && [[ ${processed}/${project}/${sample_name}/FASTQs/${sample_name}_R1_001.fastq.gz ]]; then
-		 if [[ -f "${processed}/${project}/${sample_name}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]] || [[ -f "${processed}/${project}/${sample_name}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
-			 :
-		 else
-			 echo "It STILL thinks it needs to put ${sample_name} through srst2"
-			 #"${shareScript}/run_srst2_on_singleDB.sh" "${sample_name}" "${project}"
-			 # Or create a list of ones not finished to run through mass_qsub
-			 #echo "${project}/${sample_name}" >> "${output_directory}/${4}_srst2_todo.txt"
-		 fi
+echo -e "\nMaking sure all isolates use the latest AR Database - ${resGANNOT_srst2_filename}\n"
+while IFS= read -r line; do
+	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
+	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
+	OUTDATADIR="${processed}/${project}/${sample_name}"
+	#rm -r "${processed}/${project}/${sample_name}/c-sstar/${resGANNOT_srst2_filename}"
+	#echo "Checking for ${processed}/${project}/${sample_name}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt"
+	if [[ -s ${processed}/${project}/${sample_name}/FASTQs/${sample_name}_R1_001.fastq ]] && [[ ${processed}/${project}/${sample_name}/FASTQs/${sample_name}_R1_001.fastq ]] || [[ -s ${processed}/${project}/${sample_name}/FASTQs/${sample_name}_R1_001.fastq.gz ]] && [[ ${processed}/${project}/${sample_name}/FASTQs/${sample_name}_R1_001.fastq.gz ]]; then
+	 if [[ -f "${processed}/${project}/${sample_name}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]] || [[ -f "${processed}/${project}/${sample_name}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
+		 :
+	 else
+		 echo "It STILL thinks it needs to put ${sample_name} through srst2"
+		 #"${shareScript}/run_srst2_on_singleDB.sh" "${sample_name}" "${project}"
+		 # Or create a list of ones not finished to run through mass_qsub
+		 #echo "${project}/${sample_name}" >> "${output_directory}/${4}_srst2_todo.txt"
 	 fi
+	fi
 
-	 if [[ -s ${processed}/${project}/${sample_name}/Assembly/${sample_name}_scaffolds_trimmed.fasta ]]; then
+	if [[ -s ${processed}/${project}/${sample_name}/Assembly/${sample_name}_scaffolds_trimmed.fasta ]]; then
 		if [[ -f "${processed}/${project}/${sample_name}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]];
 		then
 			:
