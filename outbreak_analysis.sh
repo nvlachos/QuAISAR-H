@@ -142,15 +142,15 @@ while IFS= read -r line; do
 	fi
 done < ${1}
 
-if [[ "${run_srst2}" = "true" ]]; then
-	echo "Submitting list for srst2 qsub analysis"
-	qsub ./abl_mass_qsub_srst2.sh "${output_directory}/${4}_srst2_todo.txt" 25
-fi
+
 if [[ "${run_csstar}" = "true" ]]; then
 	echo "Submitting list for csstar qsub analysis"
 	qsub ./abl_mass_qsub_csstar.sh "${output_directory}/${4}_csstar_todo.txt" 25
 fi
-
+if [[ "${run_srst2}" = "true" ]]; then
+	echo "Submitting list for srst2 qsub analysis"
+	qsub -sync y ./abl_mass_qsub_srst2.sh "${output_directory}/${4}_srst2_todo.txt" 25
+fi
 
 # Loop through and act on each sample name in the passed/provided list
 echo -e "\nMaking sure all isolates use the latest AR Database - ${resGANNOT_srst2_filename}\n"
