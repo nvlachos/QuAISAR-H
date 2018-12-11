@@ -106,6 +106,24 @@ do
 	counter=$(( counter + 1))
 done < "${local_DBs}/star/group_defs.txt"
 
+echo -e "\nMaking sure all isolates use the latest AR Database - ${resGANNOT_srst2_filename}\n"
+while IFS= read -r line; do
+	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
+	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
+	OUTDATADIR="${processed}/${project}/${sample_name}"
+	if [[ ! -f "${processed}/${project}/${sample_name}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]];
+	then
+		echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
+	fi
+	if [[ ! -f "${processed}/${project}/${sample_name}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]]; then
+		echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
+		sort -u "${output_directory}/${4}_csstar_todo.txt" > "${output_directory}/${4}_csstar_todo_no_dups.txt"
+		mv "${output_directory}/${4}_csstar_todo_no_dups.txt" "${output_directory}/${4}_csstar_todo.txt"
+	fi
+
+done < ${1}
+
+
 # Loop through and act on each sample name in the passed/provided list
  echo -e "\nMaking sure all isolates use the latest AR Database - ${resGANNOT_srst2_filename}\n"
  while IFS= read -r line; do
@@ -118,10 +136,10 @@ done < "${local_DBs}/star/group_defs.txt"
 		 if [[ -f "${processed}/${project}/${sample_name}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]] || [[ -f "${processed}/${project}/${sample_name}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
 			 :
 		 else
-			 echo "It thinks it needs to put ${sample_name} through srst2"
+			 echo "It STILL thinks it needs to put ${sample_name} through srst2"
 			 #"${shareScript}/run_srst2_on_singleDB.sh" "${sample_name}" "${project}"
 			 # Or create a list of ones not finished to run through mass_qsub
-			 echo "${project}/${sample_name}" >> "${output_directory}/${4}_srst2_todo.txt"
+			 #echo "${project}/${sample_name}" >> "${output_directory}/${4}_srst2_todo.txt"
 		 fi
 	 fi
 
@@ -134,10 +152,11 @@ done < "${local_DBs}/star/group_defs.txt"
 			#echo "${project}/${sample_name} - ${resGANNOT_srst_filename} - Not found"
 			gapping=${2}
 			gapping=${gapping:0:1}
-			echo -e "Doing ResGANNOT as ${shareScript}/run_c-sstar_on_single.sh ${sample_name} ${gapping} ${sim} ${project}"
+			echo "It still thinks it needs to put ${sample_name} through normal csstar"
+			#echo -e "Doing ResGANNOT as ${shareScript}/run_c-sstar_on_single.sh ${sample_name} ${gapping} ${sim} ${project}"
 			#"${shareScript}/run_c-sstar_on_single.sh" "${sample_name}" "${gapping}" "${sim}" "${project}"
 			# Or create list to do mass_qsubs
-			echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
+			#echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
 		fi
 	fi
 	if [[ -s ${processed}/${project}/${sample_name}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta ]]; then
@@ -162,11 +181,11 @@ done < "${local_DBs}/star/group_defs.txt"
 			elif [ "${plaid}" -eq 40 ]; then
 				run_plaid="o"
 			fi
-			echo -e "Doing ResGANNOT on plasmidAssembly as \n${shareScript}/run_c-sstar_on_single.sh ${sample_name} ${gapping} ${run_plaid} ${project} --plasmid"
-			"${shareScript}/run_c-sstar_on_single.sh" "${sample_name}" "${gapping}" "${run_plaid}" "${project}" "--plasmid"
-			echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
-			sort -u "${output_directory}/${4}_csstar_todo.txt" > "${output_directory}/${4}_csstar_todo_no_dups.txt"
-			mv "${output_directory}/${4}_csstar_todo_no_dups.txt" "${output_directory}/${4}_csstar_todo.txt"
+			echo "It still thinks it needs to put ${sample_name} through plasmid csstar"
+			#echo -e "Doing ResGANNOT on plasmidAssembly as \n${shareScript}/run_c-sstar_on_single.sh ${sample_name} ${gapping} ${run_plaid} ${project} --plasmid"
+			#"${shareScript}/run_c-sstar_on_single.sh" "${sample_name}" "${gapping}" "${run_plaid}" "${project}" "--plasmid"
+			#echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
+
 		fi
 	else
 		#echo "${project}/${sample_name} has no plasmid Assembly"
@@ -190,8 +209,9 @@ done < "${local_DBs}/star/group_defs.txt"
 	if [[ -f "${processed}/${project}/${sample_name}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]]; then
 		ARDB_full="${processed}/${project}/${sample_name}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
 	else
-		${shareScript}/run_c-sstar_on_single.sh "${sample_name}" "${gapping}" "${sim}" "${project}"
-		ARDB_full="${processed}/${project}/${sample_name}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
+		echo "IT STILL STILL thinks it needs to run ${sample_name} through normal csstar"
+		#${shareScript}/run_c-sstar_on_single.sh "${sample_name}" "${gapping}" "${sim}" "${project}"
+		#ARDB_full="${processed}/${project}/${sample_name}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
 	fi
 	#echo "${ARDB_full}"
 	while IFS= read -r line; do
@@ -347,8 +367,9 @@ done < "${local_DBs}/star/group_defs.txt"
 		if [[ -f "${processed}/${project}/${sample_name}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]]; then
 			ARDB_plasmid="${processed}/${project}/${sample_name}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
 		else
-			${shareScript}/run_c-sstar_on_single.sh "${sample_name}" "${gapping}" "${sim}" "${project}" "--plasmid"
-			ARDB_plasmid="${processed}/${project}/${sample_name}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
+			echo "It STILL STILL thinks it needs to put ${sample_name} trhough plasmid csstar"
+			#${shareScript}/run_c-sstar_on_single.sh "${sample_name}" "${gapping}" "${sim}" "${project}" "--plasmid"
+			#ARDB_plasmid="${processed}/${project}/${sample_name}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
 		fi
 		while IFS= read -r line; do
 			# exit if no genes were found for the sample

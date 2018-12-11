@@ -32,69 +32,74 @@ if [[ ${1} -eq 1 ]] || [[ ${1} -eq 3 ]]; then
 fi
 
 if [[ ${1} -eq 2 ]] || [[ ${1} -eq 3 ]]; then
-	rm -r blast16sID_*.out
-	rm -r blast16sID_*.err
-	rm -r blast16s_*.out
-	rm -r blast16s_*.err
-	rm -r ani_*.out
-	rm -r ani_*.err
-	rm -r ANI_*.out
-	rm -r ANI_*.err
-	rm -r BTQC_*.out
-	rm -r BTQC_*.err
-	rm -r BUSCO_*.out
-	rm -r BUSCO_*.err
-	rm -r getFASTQR1_*.out
-	rm -r getFASTQR1_*.err
-	rm -r getFASTQR2_*.out
-	rm -r getFASTQR2_*.err
-	rm -r csstn_*.out
-	rm -r csstn_*.err
-	rm -r csstp_*.out
-	rm -r csstp_*.err
-	rm -r kraka_*.out
-	rm -r kraka_*.err
-	rm -r krakr_*.out
-	rm -r krakr_*.err
-	rm -r gott_*.out
-	rm -r gott_*.err
-	rm -r mlst_*.out
-	rm -r mlst_*.err
-	rm -r pFinf_*.out
-	rm -r pFinf_*.err
-	rm -r pFinp_*.out
-	rm -r pFinp_*.err
-	rm -r SPAdn_*.out
-	rm -r SPAdn_*.err
-	rm -r SPAdp_*.out
-	rm -r SPAdp_*.err
-	rm -r plasFlow_*.out
-	rm -r plasFlow_*.err
-	rm -r pFinf_*.out
-	rm -r pFinf_*.err
-	rm -r PROKK_*.out
-	rm -r PROKK_*.err
-	rm -r PROKK_*.e*
-	rm -r srst2AR_*.out
-	rm -r srst2AR_*.err
-	rm -r srst2MLST_*.out
-	rm -r srst2MLST_*.err
-	rm -r srst22MLST_*.out
-	rm -r srst22MLST_*.err
-	rm -r QUAST_*.out
-	rm -r QUAST_*.err
-	rm -r QC_*.out
-	rm -r QC_*.err
-	rm -r MLST_*.out
-	rm -r MLST_*.err
-	rm -r taxID_*.out
-	rm -r taxID_*.err
-	rm -r validate_*.out
-	rm -r validate_*.err
-	rm -r sum_*.out
-	rm -r sum_*.err
-	rm -r pFn_*.out
-	rm -r pFn_*.err
-	rm -r pFp_*.out
-	rm -r pFp_*.err
+	rm  blast16sID_*.out
+	rm  blast16sID_*.err
+	rm  blast16s_*.out
+	rm  blast16s_*.err
+	rm  ani_*.out
+	rm  ani_*.err
+	rm  ANI_*.out
+	rm  ANI_*.err
+	rm  BTQC_*.out
+	rm  BTQC_*.err
+	rm  BUSCO_*.out
+	rm  BUSCO_*.err
+	rm  getFASTQR1_*.out
+	rm  getFASTQR1_*.err
+	rm  getFASTQR2_*.out
+	rm  getFASTQR2_*.err
+	rm  csstn_*.out
+	rm  csstn_*.err
+	rm  csstp_*.out
+	rm  csstp_*.err
+	rm  kraka_*.out
+	rm  kraka_*.err
+	rm  krakr_*.out
+	rm  krakr_*.err
+	rm  gott_*.out
+	rm  gott_*.err
+	rm  mlst_*.out
+	rm  mlst_*.err
+	rm  pFinf_*.out
+	rm  pFinf_*.err
+	rm  pFinp_*.out
+	rm  pFinp_*.err
+	rm  SPAdn_*.out
+	rm  SPAdn_*.err
+	rm  SPAdp_*.out
+	rm  SPAdp_*.err
+	rm  plasFlow_*.out
+	rm  plasFlow_*.err
+	rm  pFinf_*.out
+	rm  pFinf_*.err
+	rm  PROKK_*.out
+	rm  PROKK_*.err
+	rm  PROKK_*.e*
+	rm  srst2AR_*.out
+	rm  srst2AR_*.err
+	rm  srst2MLST_*.out
+	rm  srst2MLST_*.err
+	rm  srst22MLST_*.out
+	rm  srst22MLST_*.err
+	rm  QUAST_*.out
+	rm  QUAST_*.err
+	rm  QC_*.out
+	rm  QC_*.err
+	rm  MLST_*.out
+	rm  MLST_*.err
+	rm  taxID_*.out
+	rm  taxID_*.err
+	rm  validate_*.out
+	rm  validate_*.err
+	rm  sum_*.out
+	rm  sum_*.err
+	rm  pFn_*.out
+	rm  pFn_*.err
+	rm  pFp_*.out
+	rm  pFp_*.err
+	rm aniB_*.out
+	rm aniB_*.err
+	rm aniM_*.out
+	rm aniM_*.err
+	rm core.*
 fi
