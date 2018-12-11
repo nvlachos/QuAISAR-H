@@ -105,6 +105,7 @@ do
 		#echo "Setting reference as ${sample} from ${project}"
 		ref=${sample}
 		ref_proj=${project}
+		continue
 	fi
 	echo "Copying: ${sample} from ${project}"
 	# Copy over standard FASTQs not compressed
@@ -148,7 +149,7 @@ snvphyl --fastq-dir ./FASTQs --reference-file "./reference(${ref}).fasta" --outp
 snv_all_est=$(tail -n 1 "${OUTDATADIR}/output/vcf2core.tsv")
 snv_est=$(echo "${snv_all_est}" | cut -d '	' -f7)
 
-echo -e "\nSNVPhyl core estimate:\t${snv_est}%\n" >> "${OUTDATADIR}/output/snvMatrix.txt"
+echo -e "\nSNVPhyl core estimate:\t${snv_est}%\n" >> "${OUTDATADIR}/output/snvMatrix.tsv"
 
 
 
