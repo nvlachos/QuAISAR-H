@@ -106,6 +106,9 @@ do
 	counter=$(( counter + 1))
 done < "${local_DBs}/star/group_defs.txt"
 
+run_csstar="false"
+run_srst2="false"
+
 echo -e "\nMaking sure all isolates use the latest AR Database - ${resGANNOT_srst2_filename}\n"
 while IFS= read -r line; do
 	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
@@ -114,14 +117,28 @@ while IFS= read -r line; do
 	if [[ ! -f "${processed}/${project}/${sample_name}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]];
 	then
 		echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
+		run_csstar="true"
 	fi
 	if [[ ! -f "${processed}/${project}/${sample_name}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]]; then
 		echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
 		sort -u "${output_directory}/${4}_csstar_todo.txt" > "${output_directory}/${4}_csstar_todo_no_dups.txt"
 		mv "${output_directory}/${4}_csstar_todo_no_dups.txt" "${output_directory}/${4}_csstar_todo.txt"
+		run_csstar="true"
 	fi
-
+	if [[ -s ${processed}/${project}/${sample_name}/FASTQs/${sample_name}_R1_001.fastq ]] && [[ ${processed}/${project}/${sample_name}/FASTQs/${sample_name}_R1_001.fastq ]] || [[ -s ${processed}/${project}/${sample_name}/FASTQs/${sample_name}_R1_001.fastq.gz ]] && [[ ${processed}/${project}/${sample_name}/FASTQs/${sample_name}_R1_001.fastq.gz ]]; then
+		if [[ ! -f "${processed}/${project}/${sample_name}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]] || [[ ! -f "${processed}/${project}/${sample_name}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
+			echo "${project}/${sample_name}" >> "${output_directory}/${4}_srst2_todo.txt"
+			run_srst2="true"
+		fi
+	fi
 done < ${1}
+
+if [[ "${run_srst2}" = "true" ]]; then
+	qsub ./abl_mass_qsub_srst2.sh "${output_directory}/${4}_srst2_todo.txt" 25
+fi
+if [[ "${run_csstar}" = "true" ]]; then
+	qsub ./abl_mass_qsub_csstar.sh "${output_directory}/${4}_csstar_todo.txt" 25
+fi
 
 
 # Loop through and act on each sample name in the passed/provided list
@@ -286,7 +303,7 @@ done < ${1}
 #	echo "${ANI}"
 	echo -e "${project}\t${sample_name}\t${ANI}\t${mlst}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_full.txt
 
-	#Adding in srst2 output internalSTOPcodon
+	#Adding in srst2 output
 	if [[ -s "${processed}/${project}/${sample_name}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
 		srst2_results=""
 		while IFS= read -r line; do
