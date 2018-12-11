@@ -119,7 +119,7 @@ done < "${local_DBs}/star/group_defs.txt"
 			 :
 		 else
 			 echo "It thinks it needs to put ${sample_name} through srst2"
-			 "${shareScript}/run_srst2_on_singleDB.sh" "${sample_name}" "${project}"
+			 #"${shareScript}/run_srst2_on_singleDB.sh" "${sample_name}" "${project}"
 			 # Or create a list of ones not finished to run through mass_qsub
 			 echo "${project}/${sample_name}" >> "${output_directory}/${4}_srst2_todo.txt"
 		 fi
@@ -135,7 +135,7 @@ done < "${local_DBs}/star/group_defs.txt"
 			gapping=${2}
 			gapping=${gapping:0:1}
 			echo -e "Doing ResGANNOT as ${shareScript}/run_c-sstar_on_single.sh ${sample_name} ${gapping} ${sim} ${project}"
-			"${shareScript}/run_c-sstar_on_single.sh" "${sample_name}" "${gapping}" "${sim}" "${project}"
+			#"${shareScript}/run_c-sstar_on_single.sh" "${sample_name}" "${gapping}" "${sim}" "${project}"
 			# Or create list to do mass_qsubs
 			echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
 		fi
