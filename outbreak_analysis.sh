@@ -117,7 +117,7 @@ while IFS= read -r line; do
 	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
 	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
 	OUTDATADIR="${processed}/${project}/${sample_name}"
-	echo "checking for ${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
+	#echo "checking for ${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
 	if [[ -s "${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]];
 	then
 		echo "${project}/${sample_name} has newest ResGANNOT for normal csstar already"
@@ -125,7 +125,7 @@ while IFS= read -r line; do
 		echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
 		run_csstar="true"
 	fi
-	echo "checking for ${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
+	#echo "checking for ${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
 	if [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]] || [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_40_sstar_summary.txt" ]]; then
 		echo "${project}/${sample_name} has newest ResGANNOT for plasmid csstar already"
 	else
@@ -134,9 +134,9 @@ while IFS= read -r line; do
 		cp "${output_directory}/${4}_csstar_todo_no_dups.txt" "${output_directory}/${4}_csstar_todo.txt"
 		run_csstar="true"
 	fi
-	echo "checking for ${OUTDATADIR}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt"
+	#echo "checking for ${OUTDATADIR}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt"
 	if [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] && [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] || [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]] && [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]]; then
-		echo "FASTQs exist"
+		#echo "FASTQs exist"
 		if [[ -f "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]] || [[ -f "${OUTDATADIR}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
 				echo "${project}/${sample_name} has newest ResGANNOT for srst2 already"
 			else
