@@ -126,13 +126,17 @@ while IFS= read -r line; do
 		run_csstar="true"
 	fi
 	#echo "checking for ${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
-	if [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]] || [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_40_sstar_summary.txt" ]]; then
-		echo "${project}/${sample_name} has newest ResGANNOT for plasmid csstar already"
+	if [[ -s "${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta" ]]; then
+		if [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]] || [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_40_sstar_summary.txt" ]]; then
+			echo "${project}/${sample_name} has newest ResGANNOT for plasmid csstar already"
+		else
+			echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
+			sort -u "${output_directory}/${4}_csstar_todo.txt" > "${output_directory}/${4}_csstar_todo_no_dups.txt"
+			cp "${output_directory}/${4}_csstar_todo_no_dups.txt" "${output_directory}/${4}_csstar_todo.txt"
+			run_csstar="true"
+		fi
 	else
-		echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
-		sort -u "${output_directory}/${4}_csstar_todo.txt" > "${output_directory}/${4}_csstar_todo_no_dups.txt"
-		cp "${output_directory}/${4}_csstar_todo_no_dups.txt" "${output_directory}/${4}_csstar_todo.txt"
-		run_csstar="true"
+		echo "No plasmid Assembly found, no need for csstar plasmid"
 	fi
 	#echo "checking for ${OUTDATADIR}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt"
 	if [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] && [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] || [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]] && [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]]; then
