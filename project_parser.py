@@ -8,7 +8,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 	csstar_file=open(input_csstar_AR,'r')
 	csstar_line = csstar_file.readline().strip()
 	counter=0
-	#print("Start")
+	print("Start")
 	while csstar_line != '':
 		#print(counter, line)
 		#print("Start csstar loop")
