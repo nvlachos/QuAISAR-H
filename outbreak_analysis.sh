@@ -227,8 +227,8 @@ while IFS= read -r line; do
 
 
 	# Submit qsub jobs for csstar and srst2
-		qsub ./abl_mass_qsub_csstar.sh "${output_directory}/${4}_csstar_todo.txt" 25
-		qsub ./abl_mass_qsub_csstar.sh "${output_directory}/${4}_srst2_todo.txt" 25
+	#	qsub ./abl_mass_qsub_csstar.sh "${output_directory}/${4}_csstar_todo.txt" 25
+	#	qsub ./abl_mass_qsub_csstar.sh "${output_directory}/${4}_srst2_todo.txt" 25
 
 
 
