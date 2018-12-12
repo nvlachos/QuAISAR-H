@@ -160,84 +160,84 @@ if [[ "${run_srst2}" = "true" ]]; then
 	qsub -sync y ./abl_mass_qsub_srst2.sh "${output_directory}/${4}_srst2_todo.txt" 25
 fi
 
-# Loop through and act on each sample name in the passed/provided list
-echo -e "\nMaking sure all isolates use the latest AR Database - ${resGANNOT_srst2_filename}\n"
-while IFS= read -r line; do
-	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
-	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
-	OUTDATADIR="${processed}/${project}/${sample_name}"
-	#rm -r "${OUTDATADIR}/c-sstar/${resGANNOT_srst2_filename}"
-	#echo "Checking for ${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt"
-	if [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] && [[ ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] || [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]] && [[ ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]]; then
-	 if [[ -f "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]] || [[ -f "${OUTDATADIR}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
-		 :
-	 else
-		 echo "It STILL thinks it needs to put ${sample_name} through srst2"
-		 #"${shareScript}/run_srst2_on_singleDB.sh" "${sample_name}" "${project}"
-		 # Or create a list of ones not finished to run through mass_qsub
-		 #echo "${project}/${sample_name}" >> "${output_directory}/${4}_srst2_todo.txt"
-	 fi
-	fi
-
-	if [[ -s ${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta ]]; then
-		if [[ -f "${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]];
-		then
-			:
-			echo "ResGANNOT file already exists for assembly of ${project}/${sample_name}"
-		else
-			#echo "${project}/${sample_name} - ${resGANNOT_srst_filename} - Not found"
-			gapping=${2}
-			gapping=${gapping:0:1}
-			echo "It still thinks it needs to put ${sample_name} through normal csstar"
-			#echo -e "Doing ResGANNOT as ${shareScript}/run_c-sstar_on_single.sh ${sample_name} ${gapping} ${sim} ${project}"
-			#"${shareScript}/run_c-sstar_on_single.sh" "${sample_name}" "${gapping}" "${sim}" "${project}"
-			# Or create list to do mass_qsubs
-			#echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
-		fi
-	fi
-	if [[ -s ${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta ]]; then
-		#echo "Checking for - ${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${plaid}_sstar_summary.txt"
-		if [[ -f "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${plaid}_sstar_summary.txt" ]];
-		then
-			:
-			#echo "ResGANNOT file already exists for plasmidAssembly of ${project}/${sample_name}"
-		else
-			gapping=${2}
-			gapping=${gapping:0:1}
-			if [ "${plaid}" -eq 98 ]; then
-				run_plaid="h"
-			elif [ "${plaid}" -eq 80 ]; then
-				run_plaid="l"
-			elif [ "${plaid}" -eq 99 ]; then
-				run_plaid="u"
-			elif [ "${plaid}" -eq 95 ]; then
-				run_plaid="m"
-			elif [ "${plaid}" -eq 100 ]; then
-				run_plaid="p"
-			elif [ "${plaid}" -eq 40 ]; then
-				run_plaid="o"
-			fi
-			echo "It still thinks it needs to put ${sample_name} through plasmid csstar"
-			#echo -e "Doing ResGANNOT on plasmidAssembly as \n${shareScript}/run_c-sstar_on_single.sh ${sample_name} ${gapping} ${run_plaid} ${project} --plasmid"
-			#"${shareScript}/run_c-sstar_on_single.sh" "${sample_name}" "${gapping}" "${run_plaid}" "${project}" "--plasmid"
-			#echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
-
-		fi
-	else
-		#echo "${project}/${sample_name} has no plasmid Assembly"
-		:
-	fi
-
-	#ls ${OUTDATADIR}/c-sstar_plasmid/
-
-
-	# Submit qsub jobs for csstar and srst2
-	#	qsub ./abl_mass_qsub_csstar.sh "${output_directory}/${4}_csstar_todo.txt" 25
-	#	qsub ./abl_mass_qsub_csstar.sh "${output_directory}/${4}_srst2_todo.txt" 25
-
-
-
-	#Check for completion of mass_qsubbed jobs
+# # Loop through and act on each sample name in the passed/provided list
+# echo -e "\nMaking sure all isolates use the latest AR Database - ${resGANNOT_srst2_filename}\n"
+# while IFS= read -r line; do
+# 	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
+# 	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
+# 	OUTDATADIR="${processed}/${project}/${sample_name}"
+# 	#rm -r "${OUTDATADIR}/c-sstar/${resGANNOT_srst2_filename}"
+# 	#echo "Checking for ${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt"
+# 	if [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] && [[ ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] || [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]] && [[ ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]]; then
+# 	 if [[ -f "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]] || [[ -f "${OUTDATADIR}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
+# 		 :
+# 	 else
+# 		 echo "It STILL thinks it needs to put ${sample_name} through srst2"
+# 		 #"${shareScript}/run_srst2_on_singleDB.sh" "${sample_name}" "${project}"
+# 		 # Or create a list of ones not finished to run through mass_qsub
+# 		 #echo "${project}/${sample_name}" >> "${output_directory}/${4}_srst2_todo.txt"
+# 	 fi
+# 	fi
+#
+# 	if [[ -s ${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta ]]; then
+# 		if [[ -f "${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]];
+# 		then
+# 			:
+# 			echo "ResGANNOT file already exists for assembly of ${project}/${sample_name}"
+# 		else
+# 			#echo "${project}/${sample_name} - ${resGANNOT_srst_filename} - Not found"
+# 			gapping=${2}
+# 			gapping=${gapping:0:1}
+# 			echo "It still thinks it needs to put ${sample_name} through normal csstar"
+# 			#echo -e "Doing ResGANNOT as ${shareScript}/run_c-sstar_on_single.sh ${sample_name} ${gapping} ${sim} ${project}"
+# 			#"${shareScript}/run_c-sstar_on_single.sh" "${sample_name}" "${gapping}" "${sim}" "${project}"
+# 			# Or create list to do mass_qsubs
+# 			#echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
+# 		fi
+# 	fi
+# 	if [[ -s ${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta ]]; then
+# 		#echo "Checking for - ${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${plaid}_sstar_summary.txt"
+# 		if [[ -f "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${plaid}_sstar_summary.txt" ]];
+# 		then
+# 			:
+# 			#echo "ResGANNOT file already exists for plasmidAssembly of ${project}/${sample_name}"
+# 		else
+# 			gapping=${2}
+# 			gapping=${gapping:0:1}
+# 			if [ "${plaid}" -eq 98 ]; then
+# 				run_plaid="h"
+# 			elif [ "${plaid}" -eq 80 ]; then
+# 				run_plaid="l"
+# 			elif [ "${plaid}" -eq 99 ]; then
+# 				run_plaid="u"
+# 			elif [ "${plaid}" -eq 95 ]; then
+# 				run_plaid="m"
+# 			elif [ "${plaid}" -eq 100 ]; then
+# 				run_plaid="p"
+# 			elif [ "${plaid}" -eq 40 ]; then
+# 				run_plaid="o"
+# 			fi
+# 			echo "It still thinks it needs to put ${sample_name} through plasmid csstar"
+# 			#echo -e "Doing ResGANNOT on plasmidAssembly as \n${shareScript}/run_c-sstar_on_single.sh ${sample_name} ${gapping} ${run_plaid} ${project} --plasmid"
+# 			#"${shareScript}/run_c-sstar_on_single.sh" "${sample_name}" "${gapping}" "${run_plaid}" "${project}" "--plasmid"
+# 			#echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
+#
+# 		fi
+# 	else
+# 		#echo "${project}/${sample_name} has no plasmid Assembly"
+# 		:
+# 	fi
+#
+# 	#ls ${OUTDATADIR}/c-sstar_plasmid/
+#
+#
+# 	# Submit qsub jobs for csstar and srst2
+# 	#	qsub ./abl_mass_qsub_csstar.sh "${output_directory}/${4}_csstar_todo.txt" 25
+# 	#	qsub ./abl_mass_qsub_csstar.sh "${output_directory}/${4}_srst2_todo.txt" 25
+#
+#
+#
+# 	#Check for completion of mass_qsubbed jobs
 
 	sample_index=0
 	oar_list=""
