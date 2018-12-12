@@ -10,7 +10,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 	counter=0
 	print("Start")
 	while csstar_line != '':
-		#print(counter, line)
+		print(counter, line)
 		#print("Start csstar loop")
 		csstar_line_sections=csstar_line.split("	")
 		ar_list=csstar_line_sections[4].split(",")
