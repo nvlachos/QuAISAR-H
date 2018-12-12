@@ -29,8 +29,6 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 		srst2_line=srst2_file.readline().strip()
 		counter=0
 		while srst2_line != '':
-			if counter == 4:
-				exit()
 			print("Start srst2 loop")
 			spot_count=0
 			#for k, v in ar_dict.items():
