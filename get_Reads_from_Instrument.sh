@@ -74,10 +74,10 @@ do
 						mkdir -p "${OUTDATADIR}/${short_name}"
 						mkdir -p "${OUTDATADIR}/${short_name}/FASTQs"
 					fi
-					clumpify.sh in="${source_path}/${long_name}_L001_R1_001.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
-					clumpify.sh in="${source_path}/${long_name}_L001_R2_001.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
-					gunzip -c "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq"
-					gunzip -c "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq"
+					#clumpify.sh in="${source_path}/${long_name}_L001_R1_001.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
+					#clumpify.sh in="${source_path}/${long_name}_L001_R2_001.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
+					gunzip -c "${source_path}/${long_name}_L001_R1_001.fastq.gz" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq"
+					gunzip -c "${source_path}/${long_name}_L001_R2_001.fastq.gz" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq"
 					# Add sample to list for current 'project' as it will be used by the pipeline to complete all downstream analyses
 					echo -e "${1}/${short_name}" >> "${processed}/${1}/${1}_list.txt"
 				# If only the R2 is present, then create sample and FASTQs folder to download into...also notify maintenance that there is a problem
@@ -100,8 +100,8 @@ do
 
 
 					"
-					clumpify.sh in="${source_path}/${long_name}_L001_R2_001.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
-					gunzip -c "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq"
+					#clumpify.sh in="${source_path}/${long_name}_L001_R2_001.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
+					gunzip -c "${source_path}/${long_name}_L001_R2_001.fastq.gz" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq"
 					#gunzip -c "${source_path}/${long_name}_L001_R2_001.fastq.gz" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq"
 					# Add sample to list for current 'project' as it will be used by primary_processing to complete all downstream analyses
 					echo -e "${1}/${short_name} - R2 ONLY from ${file}" >> "${processed}/${1}/${1}_list.txt"
@@ -124,8 +124,8 @@ do
 
 
 					"
-					clumpify.sh in="${source_path}/${long_name}_L001_R1_001.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
-					gunzip -c "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq"
+					#clumpify.sh in="${source_path}/${long_name}_L001_R1_001.fastq.gz" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
+					gunzip -c "${source_path}/${long_name}_L001_R1_001.fastq.gz" > "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq"
 					# Add sample to list for current 'project' as it will be used by primary_processing to complete all downstream analyses
 					echo -e "${1}/${short_name} - R1 ONLY" >> "${processed}/${1}/${1}_list.txt"
 					echo -e "${1}/${short_name} - R1 ONLY from ${file}" >> "${shareScript}/maintenance_To_Do.txt"
