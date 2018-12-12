@@ -38,7 +38,7 @@ elif [[ ! -f ${1} ]]; then
 	exit 1
 fi
 
-output_directory=${5}
+output_directory=${5}/${4}
 if [[ ! -d ${output_directory} ]]; then
 	mkdir -p ${output_directory}
 fi
