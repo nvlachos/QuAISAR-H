@@ -162,10 +162,10 @@ fi
 
 # # Loop through and act on each sample name in the passed/provided list
 # echo -e "\nMaking sure all isolates use the latest AR Database - ${resGANNOT_srst2_filename}\n"
-# while IFS= read -r line; do
-# 	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
-# 	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
-# 	OUTDATADIR="${processed}/${project}/${sample_name}"
+ while IFS= read -r line; do
+ 	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
+ 	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
+ 	OUTDATADIR="${processed}/${project}/${sample_name}"
 # 	#rm -r "${OUTDATADIR}/c-sstar/${resGANNOT_srst2_filename}"
 # 	#echo "Checking for ${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt"
 # 	if [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] && [[ ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] || [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]] && [[ ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]]; then
