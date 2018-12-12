@@ -117,14 +117,14 @@ while IFS= read -r line; do
 	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
 	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
 	OUTDATADIR="${processed}/${project}/${sample_name}"
-	if [[ -s "${OUTDATDIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]];
+	if [[ -s "${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]];
 	then
 		echo "${project}/${sample_name} has newest ResGANNOT for normal csstar already"
 	else
 		echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
 		run_csstar="true"
 	fi
-	if [[ -s "${OUTDATDIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]]; then
+	if [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]]; then
 		echo "${project}/${sample_name} has newest ResGANNOT for plasmid csstar already"
 	else
 		echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
@@ -132,8 +132,8 @@ while IFS= read -r line; do
 		cp "${output_directory}/${4}_csstar_todo_no_dups.txt" "${output_directory}/${4}_csstar_todo.txt"
 		run_csstar="true"
 	fi
-	if [[ -s ${OUTDATDIR}/FASTQs/${sample_name}_R1_001.fastq ]] && [[ ${OUTDATDIR}/FASTQs/${sample_name}_R1_001.fastq ]] || [[ -s ${OUTDATDIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]] && [[ ${OUTDATDIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]]; then
-		if [[ ! -f "${OUTDATDIR}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]] || [[ ! -f "${OUTDATDIR}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
+	if [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] && [[ ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] || [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]] && [[ ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]]; then
+		if [[ ! -f "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]] || [[ ! -f "${OUTDATADIR}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
 				echo "${project}/${sample_name} has newest ResGANNOT for srst2 already"
 			else
 				echo "${project}/${sample_name}" >> "${output_directory}/${4}_srst2_todo.txt"
@@ -158,10 +158,10 @@ while IFS= read -r line; do
 	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
 	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
 	OUTDATADIR="${processed}/${project}/${sample_name}"
-	#rm -r "${OUTDATDIR}/c-sstar/${resGANNOT_srst2_filename}"
-	#echo "Checking for ${OUTDATDIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt"
-	if [[ -s ${OUTDATDIR}/FASTQs/${sample_name}_R1_001.fastq ]] && [[ ${OUTDATDIR}/FASTQs/${sample_name}_R1_001.fastq ]] || [[ -s ${OUTDATDIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]] && [[ ${OUTDATDIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]]; then
-	 if [[ -f "${OUTDATDIR}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]] || [[ -f "${OUTDATDIR}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
+	#rm -r "${OUTDATADIR}/c-sstar/${resGANNOT_srst2_filename}"
+	#echo "Checking for ${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt"
+	if [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] && [[ ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] || [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]] && [[ ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]]; then
+	 if [[ -f "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]] || [[ -f "${OUTDATADIR}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
 		 :
 	 else
 		 echo "It STILL thinks it needs to put ${sample_name} through srst2"
@@ -171,8 +171,8 @@ while IFS= read -r line; do
 	 fi
 	fi
 
-	if [[ -s ${OUTDATDIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta ]]; then
-		if [[ -f "${OUTDATDIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]];
+	if [[ -s ${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta ]]; then
+		if [[ -f "${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]];
 		then
 			:
 			echo "ResGANNOT file already exists for assembly of ${project}/${sample_name}"
@@ -187,9 +187,9 @@ while IFS= read -r line; do
 			#echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
 		fi
 	fi
-	if [[ -s ${OUTDATDIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta ]]; then
-		#echo "Checking for - ${OUTDATDIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${plaid}_sstar_summary.txt"
-		if [[ -f "${OUTDATDIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${plaid}_sstar_summary.txt" ]];
+	if [[ -s ${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta ]]; then
+		#echo "Checking for - ${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${plaid}_sstar_summary.txt"
+		if [[ -f "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${plaid}_sstar_summary.txt" ]];
 		then
 			:
 			#echo "ResGANNOT file already exists for plasmidAssembly of ${project}/${sample_name}"
@@ -220,7 +220,7 @@ while IFS= read -r line; do
 		:
 	fi
 
-	#ls ${OUTDATDIR}/c-sstar_plasmid/
+	#ls ${OUTDATADIR}/c-sstar_plasmid/
 
 
 	# Submit qsub jobs for csstar and srst2
@@ -234,13 +234,13 @@ while IFS= read -r line; do
 	sample_index=0
 	oar_list=""
 	# Looks at all the genes found for a sample
-	echo "looking for ${OUTDATDIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
-	if [[ -f "${OUTDATDIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]]; then
-		ARDB_full="${OUTDATDIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
+	echo "looking for ${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
+	if [[ -f "${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]]; then
+		ARDB_full="${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
 	else
 		echo "IT STILL STILL thinks it needs to run ${sample_name} through normal csstar"
 		#${shareScript}/run_c-sstar_on_single.sh "${sample_name}" "${gapping}" "${sim}" "${project}"
-		#ARDB_full="${OUTDATDIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
+		#ARDB_full="${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
 	fi
 	#echo "${ARDB_full}"
 	while IFS= read -r line; do
@@ -302,21 +302,21 @@ while IFS= read -r line; do
 	if [[ -z "${oar_list}" ]]; then
 		oar_list="No AR genes discovered"
 	fi
-	mlst=$(head -n1 ${OUTDATDIR}/MLST/${sample_name}.mlst)
+	mlst=$(head -n1 ${OUTDATADIR}/MLST/${sample_name}.mlst)
 	mlst=$(echo "${mlst}" | cut -d'	' -f3)
-	if [[ ! -f "${OUTDATDIR}/${sample_name}.txt" ]]; then
+	if [[ ! -f "${OUTDATADIR}/${sample_name}.txt" ]]; then
 		"${shareScript}/determine_taxID.sh" "${sample_name}" "${project}"
 	fi
-	tax_file="${OUTDATDIR}/${sample_name}.txt"
-	#echo "Looking at ${OUTDATDIR}/${sample_name}.tax"
-	genus=$(tail -2 "${OUTDATDIR}/${sample_name}.tax"| head -n1 | cut -d'	' -f2)
-	species=$(tail -1 "${OUTDATDIR}/${sample_name}.tax" | cut -d'	' -f2)
+	tax_file="${OUTDATADIR}/${sample_name}.txt"
+	#echo "Looking at ${OUTDATADIR}/${sample_name}.tax"
+	genus=$(tail -2 "${OUTDATADIR}/${sample_name}.tax"| head -n1 | cut -d'	' -f2)
+	species=$(tail -1 "${OUTDATADIR}/${sample_name}.tax" | cut -d'	' -f2)
 	ANI="${genus} ${species}"
 #	echo "${ANI}"
 	echo -e "${project}\t${sample_name}\t${ANI}\t${mlst}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_full.txt
 
 	#Adding in srst2 output
-	if [[ -s "${OUTDATDIR}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
+	if [[ -s "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
 		srst2_results=""
 		while IFS= read -r line; do
 		#	echo "Start"
@@ -374,7 +374,7 @@ while IFS= read -r line; do
 					echo ${line} >> ${output_directory}/${4}-srst2_rejects.txt
 				fi
 			fi
-		done < "${OUTDATDIR}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt"
+		done < "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt"
 		#echo "Test1"
 		if [[ -z "${srst2_results}" ]]; then
 			echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
@@ -393,12 +393,12 @@ while IFS= read -r line; do
 		# Repeat the c-sstar output organization of the plasmidAssembly
 		oar_list=""
 		# Looks at all the genes found on the plasmid assembly for a sample
-		if [[ -f "${OUTDATDIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]]; then
-			ARDB_plasmid="${OUTDATDIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
+		if [[ -f "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]]; then
+			ARDB_plasmid="${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
 		else
 			echo "It STILL STILL thinks it needs to put ${sample_name} trhough plasmid csstar"
 			#${shareScript}/run_c-sstar_on_single.sh "${sample_name}" "${gapping}" "${sim}" "${project}" "--plasmid"
-			#ARDB_plasmid="${OUTDATDIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
+			#ARDB_plasmid="${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
 		fi
 		while IFS= read -r line; do
 			# exit if no genes were found for the sample
@@ -463,7 +463,7 @@ while IFS= read -r line; do
 
 	# Goes through the plasmid file of the sample and adds all found plasmids to the summary file
 	#echo "Starting plasmid extraction"
-	if [[ -f ${OUTDATDIR}/plasmid/${sample_name}_results_table_summary.txt ]]; then
+	if [[ -f ${OUTDATADIR}/plasmid/${sample_name}_results_table_summary.txt ]]; then
 		#echo "Found plasmid file"
 		:
 	fi
@@ -479,7 +479,7 @@ while IFS= read -r line; do
 			echo -e "${project}\t${sample_name}\tfull_assembly\t${plasmid}" >> ${output_directory}/${4}-plasmid_summary.txt
 			added=1
 		fi
-	done < ${OUTDATDIR}/plasmid/${sample_name}_results_table_summary.txt
+	done < ${OUTDATADIR}/plasmid/${sample_name}_results_table_summary.txt
 	if [[ "${added}" -eq 0 ]]; then
 		echo -e "${project}\t${sample_name}\tfull_assembly\tNo_Plasmids_Found\t${full_contigs}_contigs-${components}_components" >> ${output_directory}/${4}-plasmid_summary.txt
 	fi
@@ -493,7 +493,7 @@ while IFS= read -r line; do
 				components="${components_temp}"
 			fi
 		fi
-	done < ${OUTDATDIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta
+	done < ${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta
 	components=$(( components + 1 ))
 	while IFS= read -r plasmid; do
 		line_in=$(echo ${plasmid} | cut -d' ' -f1)
@@ -503,15 +503,15 @@ while IFS= read -r line; do
 			echo -e "${project}\t${sample_name}\tplasmid_assembly\t${plasmid}" >> ${output_directory}/${4}-plasmid_summary.txt
 			added=1
 		fi
-	done < ${OUTDATDIR}/plasmid_on_plasmidAssembly/${sample_name}_results_table_summary.txt
+	done < ${OUTDATADIR}/plasmid_on_plasmidAssembly/${sample_name}_results_table_summary.txt
 
 	if [[ "${added}" -eq 0 ]]; then
 		echo -e "${project}\t${sample_name}\tplasmid_assembly\tNo_Plasmids_Found\t${plas_contigs}_contigs-${components}_components" >> ${output_directory}/${4}-plasmid_summary.txt
 	fi
 
 	# Pulls MLST type for sample and adds it to the summary file
-	if [[ -f "${OUTDATDIR}/MLST/${sample_name}.mlst" ]]; then
-		mlst=$(head -n 1 ${OUTDATDIR}/MLST/${sample_name}.mlst)
+	if [[ -f "${OUTDATADIR}/MLST/${sample_name}.mlst" ]]; then
+		mlst=$(head -n 1 ${OUTDATADIR}/MLST/${sample_name}.mlst)
 		mlst=$(echo "${mlst}" | cut -d'	' -f3-)
 	else
 		mlst="N/A"
