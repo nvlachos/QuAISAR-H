@@ -105,6 +105,7 @@ do
 		#echo "Setting reference as ${sample} from ${project}"
 		ref=${sample}
 		ref_proj=${project}
+		counter=$(( counter + 1))
 		continue
 	fi
 	echo "Copying: ${sample} from ${project}"
