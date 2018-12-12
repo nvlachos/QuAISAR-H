@@ -177,7 +177,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 	#return
 	for sample in samples:
 		sample_details=[sample[1], sample[0], sample[2], sample[3]]
-		#print("pre:",sample)
+		print("pre:",sample)
 		for gene in all_ar_and_plasmids:
 			status=" "
 			if gene == "|":
