@@ -115,13 +115,14 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 			sample_f_plasmids_dict={}
 			sample_p_plasmids_dict={}
 		source_assembly=plasmid_line_sections[2]
-		#print("Test:"+plasmid_line_sections[4]+":")
-		if plasmid_line_sections[4].find("_contigs-") >= 0:
-			line = plas_file.readline().strip()
-			continue
+		print("Test:"+plasmid_line_sections[4]+":")
+		#if plasmid_line_sections[4].find("_contigs-") >= 0:
+		#	line = plas_file.readline().strip()
+		#	continue
 
-		if plasmid_line_sections[4] == "No_Plasmids_Found":
-			plas_perc_id="No_Plasmids_Found"
+		if plasmid_line_sections[3] == "No_Plasmids_Found":
+			plas_perc_id="-"
+			plas_perc_length="-"
 		else:
 			plas_perc_id=math.floor(float(plasmid_line_sections[4]))
 			#print("testing:", plasmid_line_sections[5].split("/")[0], plasmid_line_sections[5].split("/")[1])
@@ -129,16 +130,10 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 		#plas_match_info="["+plas_perc_id+"/"+plas_percpercent_length+"]"
 		if source_assembly == "full_assembly":
 			#print("Adding:", plasmid_line_sections[3], "to sample_f_plasmids")
-			if plas_perc_id == "No_Plasmids_Found":
-				sample_f_plasmids_dict[plasmid_line_sections[3]]="[No_Plasmids_Found]"
-			else:
-				sample_f_plasmids_dict[plasmid_line_sections[3]]="["+str(plas_perc_id)+"/"+str(plas_perc_length)+"]"
+			sample_f_plasmids_dict[plasmid_line_sections[3]]="["+str(plas_perc_id)+"/"+str(plas_perc_length)+"]"
 		elif source_assembly == "plasmid_assembly":
 			#print("Adding:", plasmid_line_sections[3], "to sample_p_plasmids")
-			if plas_perc_id == "No_Plasmids_Found":
-				sample_p_plasmids_dict[plasmid_line_sections[3]]="[No_Plasmids_Found]"
-			else:
-				sample_p_plasmids_dict[plasmid_line_sections[3]]="["+str(plas_perc_id)+"/"+str(plas_perc_length)+"]"
+			sample_p_plasmids_dict[plasmid_line_sections[3]]="["+str(plas_perc_id)+"/"+str(plas_perc_length)+"]"
 		if len(plasmid_line_sections) > 1:
 			if plasmid_line_sections[3] not in all_plasmids_in_file:
 				all_plasmids_in_file.append(plasmid_line_sections[3])
