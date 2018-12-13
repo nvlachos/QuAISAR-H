@@ -150,7 +150,10 @@ snvphyl --fastq-dir ./FASTQs --reference-file "./reference(${ref}).fasta" --outp
 snv_all_est=$(tail -n 1 "${OUTDATADIR}/output/vcf2core.tsv")
 snv_est=$(echo "${snv_all_est}" | cut -d '	' -f7)
 
-echo -e "\nSNVPhyl core estimate:\t${snv_est}%\n" >> "${OUTDATADIR}/output/snvMatrix.tsv"
+sed -i "s/reference/${ref}/g" "${OUTDATADIR}/output/snvMatrix.tsv"
+sed -i "s/reference/${ref}/g" "${OUTDATADIR}/output/phylogeneticTree.newick"
+
+echo -e "\nReference:\t${ref}\nSNVPhyl core estimate:\t${snv_est}%\n" >> "${OUTDATADIR}/output/snvMatrix.tsv"
 
 
 
