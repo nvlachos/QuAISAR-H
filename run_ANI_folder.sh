@@ -11,7 +11,7 @@ if [[ ! -f "./config.sh" ]]; then
 	cp config_template.sh config.sh
 fi
 . ./config.sh
-#${mod_changers}/list_modules.sh
+# ${mod_changers}/list_modules.sh
 #
 # #
 # # Script to calculate the average nucleotide identity of a sample to numerous other samples from the same genus (genus dependent)
