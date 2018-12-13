@@ -79,7 +79,6 @@ while [ ${counter} -lt ${arr_size} ] ; do
 			# Can we somehow consolidate into one srst2 analysis to do MLST/AR/SEROTYPE
 			echo -e "\"${shareScript}/run_srst2_on_singleDB.sh\" \"${sample}\" \"${project}\"" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 			echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_srst2_complete.txt\"" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
-			qsub -sync y "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 			if [[ "${counter}" -lt "${last_index}" ]]; then
 				qsub "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 			else
