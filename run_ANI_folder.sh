@@ -11,8 +11,8 @@ if [[ ! -f "./config.sh" ]]; then
 	cp config_template.sh config.sh
 fi
 . ./config.sh
-# ${mod_changers}/list_modules.sh
-#
+ ${mod_changers}/pipeline_mods
+
 # #
 # # Script to calculate the average nucleotide identity of a sample to numerous other samples from the same genus (genus dependent)
 # # The most similar match is identified and provided for confirmation
@@ -208,8 +208,9 @@ fi
 
 #Calls pyani on local db folder
 python -V
+echo "Running ALL vs ALL aniM on ${1} and placing results in ${1}/aniM"
 #python "${shareScript}/pyani/average_nucleotide_identity.py" -i "${OUTDATADIR}/ANI/localANIDB" -o "${OUTDATADIR}/ANI/aniM" --write_excel
-average_nucleotide_identity.py -i "${1}" -o "${1}/ANI/aniM" --write_excel
+average_nucleotide_identity.py -i "${1}" -o "${1}/aniM"
 #
 # #Calls pyani using scicomp module
 # #. "${shareScript}/module_changers/load_python_3.6.sh"
