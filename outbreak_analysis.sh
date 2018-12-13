@@ -150,6 +150,8 @@ while IFS= read -r line; do
 	fi
 done < ${1}
 
+echo "Creating mashtree of all samples"
+${shareScript}/mashtree_of_list.sh "${1}" "${OUTDATADIR}/mashtree" "${4}"
 
 if [[ "${run_csstar}" = "true" ]]; then
 	echo "Submitting list for csstar qsub analysis"
