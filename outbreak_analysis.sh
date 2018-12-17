@@ -19,9 +19,9 @@ fi
 
 
 #
-# Usage ./run_csstar_proj_parser.sh list_name gapped/ungapped (analysis ran) identity (80/95/98/99/100) output_name plasmid_identity(optional)
+# Usage ./outbreak_analysis.sh path_to_list gapped/ungapped (analysis ran) identity (80/95/98/99/100) analysis_identifier(e.g. outbreak identifier) output_directory(will create a folder at this location with nam of analysis_identifier) plasmid_identity(optional)
 #
-# Pulls out MLST, AR genes, and plasmid for the listed samples and consolidates them into one sheet (per category)
+# Pulls out MLST, AR genes, and plasmid repicons and creates a mashtree for the listed samples and consolidates them into one sheet
 #
 
 # Checks for proper argumentation
@@ -30,14 +30,23 @@ if [[ $# -eq 0 ]]; then
 	exit 1
 # Shows a brief uasge/help section if -h option used as first argument
 elif [[ "$1" = "-h" ]]; then
-	echo "Usage is ./run_csstar_proj_parser.sh path_to_list_file(single sample ID per line, e.g. B8VHY/1700128 (it must include project id also) gapped/ungapped 80/95/98/99/100 output_prefix output_directory plasmid_identity_cutoff(optional, default = 40)"
-	echo "Output location varies depending on which tasks are performed but will be found somewhere under ${share}"
+	echo "Usage is ./outbreak_analysis.sh path_to_list_file gapped/ungapped 80/95/98/99/100 output_prefix output_directory plasmid_identity_cutoff(optional, default = 40)"
 	exit 0
 elif [[ ! -f ${1} ]]; then
 	echo "list does not exit...exiting"
 	exit 1
 fi
-
+# Checks that the gapping is set to one of the csstar presets
+if [[ "${2}" != "gapped" ]] && [[ "${2}" != "ungapped" ]]; then
+	echo "gapping does not equal; gapped or ungapped...exiting"
+	exit 1
+fi
+# Checks that value given for % Identity is one of the presets for csstar
+if [[ "${3}" != 80 ]] && [[ "${3}" != 95 ]] && [[ "${3}" != 98 ]] && [[ "${3}" != 99 ]] && [[ "${3}" != 100 ]]; then
+	echo "Identity is not one of the presets for csstar and therefore will fail, exiting..."
+	exit 1
+fi
+# Creates the output directory if it does not exist
 output_directory=${5}/${4}
 if [[ ! -d ${output_directory} ]]; then
 	mkdir -p ${output_directory}
@@ -85,9 +94,7 @@ else
 	plaid="${6}"
 fi
 
-rename="true"
-
-
+# Creates a dictionary to match genes to AR conferred when parsing srst files
 declare -A groups
 echo ""
 echo "Creating AR lookup list from ${local_DBs}/star/group_defs.txt"
@@ -106,12 +113,13 @@ do
 	counter=$(( counter + 1))
 done < "${local_DBs}/star/group_defs.txt"
 
+# Set defaults for checking if all isolates have been compared to the newest ResGANNOT DB file . If any isolates are not up-to-date, they will be submitted with the appropriate abl_mass_qsub.
 run_csstar="false"
 run_srst2="false"
 > "${output_directory}/${4}_csstar_todo.txt"
 > "${output_directory}/${4}_srst2_todo.txt"
 
-
+# Check that each isolate has been comparde to the newest ResGANNOT DB file
 echo -e "\nMaking sure all isolates use the latest AR Database - ${resGANNOT_srst2_filename}\n"
 while IFS= read -r line; do
 	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
@@ -150,99 +158,28 @@ while IFS= read -r line; do
 	fi
 done < ${1}
 
+# Creating mashtree of all isolates in list
 echo "Creating mashtree of all samples"
 ${shareScript}/mashtree_of_list.sh "${1}" "${output_directory}/mashtree" "${4}"
 cp "${output_directory}/mashtree/${4}.dnd" "${output_directory}"
 rm -r ${output_directory}/mashtree
 
+# Submits the list of isolates that need the newest ResGANNOT file for csstar
 if [[ "${run_csstar}" = "true" ]]; then
 	echo "Submitting list for csstar qsub analysis"
 	qsub ./abl_mass_qsub_csstar.sh "${output_directory}/${4}_csstar_todo.txt" 25
 fi
+# Submits the list of isolates that need the newest ResGANNOT file for srst2
 if [[ "${run_srst2}" = "true" ]]; then
 	echo "Submitting list for srst2 qsub analysis"
 	qsub -sync y ./abl_mass_qsub_srst2.sh "${output_directory}/${4}_srst2_todo.txt" 25
 fi
 
-# # Loop through and act on each sample name in the passed/provided list
-# echo -e "\nMaking sure all isolates use the latest AR Database - ${resGANNOT_srst2_filename}\n"
- while IFS= read -r line; do
+# # Loop through and extracts and formats AR genes found in all isolates, as well as the primary MLST type and plasmid replicons. Each are output to separate files. Any AR genes that do not meet the length or % identity are copied to the rejects file.
+while IFS= read -r line; do
  	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
  	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
  	OUTDATADIR="${processed}/${project}/${sample_name}"
-# 	#rm -r "${OUTDATADIR}/c-sstar/${resGANNOT_srst2_filename}"
-# 	#echo "Checking for ${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt"
-# 	if [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] && [[ ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] || [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]] && [[ ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]]; then
-# 	 if [[ -f "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]] || [[ -f "${OUTDATADIR}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
-# 		 :
-# 	 else
-# 		 echo "It STILL thinks it needs to put ${sample_name} through srst2"
-# 		 #"${shareScript}/run_srst2_on_singleDB.sh" "${sample_name}" "${project}"
-# 		 # Or create a list of ones not finished to run through mass_qsub
-# 		 #echo "${project}/${sample_name}" >> "${output_directory}/${4}_srst2_todo.txt"
-# 	 fi
-# 	fi
-#
-# 	if [[ -s ${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta ]]; then
-# 		if [[ -f "${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]];
-# 		then
-# 			:
-# 			echo "ResGANNOT file already exists for assembly of ${project}/${sample_name}"
-# 		else
-# 			#echo "${project}/${sample_name} - ${resGANNOT_srst_filename} - Not found"
-# 			gapping=${2}
-# 			gapping=${gapping:0:1}
-# 			echo "It still thinks it needs to put ${sample_name} through normal csstar"
-# 			#echo -e "Doing ResGANNOT as ${shareScript}/run_c-sstar_on_single.sh ${sample_name} ${gapping} ${sim} ${project}"
-# 			#"${shareScript}/run_c-sstar_on_single.sh" "${sample_name}" "${gapping}" "${sim}" "${project}"
-# 			# Or create list to do mass_qsubs
-# 			#echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
-# 		fi
-# 	fi
-# 	if [[ -s ${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta ]]; then
-# 		#echo "Checking for - ${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${plaid}_sstar_summary.txt"
-# 		if [[ -f "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${plaid}_sstar_summary.txt" ]];
-# 		then
-# 			:
-# 			#echo "ResGANNOT file already exists for plasmidAssembly of ${project}/${sample_name}"
-# 		else
-# 			gapping=${2}
-# 			gapping=${gapping:0:1}
-# 			if [ "${plaid}" -eq 98 ]; then
-# 				run_plaid="h"
-# 			elif [ "${plaid}" -eq 80 ]; then
-# 				run_plaid="l"
-# 			elif [ "${plaid}" -eq 99 ]; then
-# 				run_plaid="u"
-# 			elif [ "${plaid}" -eq 95 ]; then
-# 				run_plaid="m"
-# 			elif [ "${plaid}" -eq 100 ]; then
-# 				run_plaid="p"
-# 			elif [ "${plaid}" -eq 40 ]; then
-# 				run_plaid="o"
-# 			fi
-# 			echo "It still thinks it needs to put ${sample_name} through plasmid csstar"
-# 			#echo -e "Doing ResGANNOT on plasmidAssembly as \n${shareScript}/run_c-sstar_on_single.sh ${sample_name} ${gapping} ${run_plaid} ${project} --plasmid"
-# 			#"${shareScript}/run_c-sstar_on_single.sh" "${sample_name}" "${gapping}" "${run_plaid}" "${project}" "--plasmid"
-# 			#echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
-#
-# 		fi
-# 	else
-# 		#echo "${project}/${sample_name} has no plasmid Assembly"
-# 		:
-# 	fi
-#
-# 	#ls ${OUTDATADIR}/c-sstar_plasmid/
-#
-#
-# 	# Submit qsub jobs for csstar and srst2
-# 	#	qsub ./abl_mass_qsub_csstar.sh "${output_directory}/${4}_csstar_todo.txt" 25
-# 	#	qsub ./abl_mass_qsub_csstar.sh "${output_directory}/${4}_srst2_todo.txt" 25
-#
-#
-#
-# 	#Check for completion of mass_qsubbed jobs
-
 	sample_index=0
 	oar_list=""
 	# Looks at all the genes found for a sample
@@ -250,48 +187,25 @@ fi
 	if [[ -f "${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]]; then
 		ARDB_full="${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
 	else
-		echo "IT STILL STILL thinks it needs to run ${sample_name} through normal csstar"
+		echo "IT STILL thinks it needs to run ${sample_name} through normal csstar"
 		#${shareScript}/run_c-sstar_on_single.sh "${sample_name}" "${gapping}" "${sim}" "${project}"
 		#ARDB_full="${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
 	fi
 	#echo "${ARDB_full}"
+	# Extracts all AR genes from normal csstar output file and creates a lits of all genes that pass the filtering steps
 	while IFS= read -r line; do
 		# exit if no genes were found for the sample
 		if [[ -z "${line}" ]] || [[ "${line}" == *"No anti-microbial genes were found"* ]]; then
 			break
 		fi
 		IFS='	' read -r -a ar_line <<< "$line"
-		#echo "ls-${line_squeezed} in ${sample_name}.ResGANNOT.${2}_${3}_sstar_summary.txt"
-		# gets the match length of the gene to the database
-		#length_1=$(echo ${line} | cut -d$'\t' -f8)
-		# gets the total length of the gene from the database
-		#length_2=$(echo ${line} | cut -d$'\t' -f9)
 		length_1="${ar_line[7]}"
 		length_2="${ar_line[8]}"
 		percent_ID="${ar_line[6]}"
 		percent_length="${ar_line[9]}"
 		conferred=$(echo "${ar_line[1]}" | rev | cut -d'_' -f2- | rev)
-		#if [[ "${ar_line[3]}" == *"trunc"* ]] || [[ "${ar_line[3]}" == "trunc"* ]] || [[ "${ar_line[3]}" == *"trunc" ]] || [[ "${ar_line[3]}" == "trunc" ]]; then
-		#	gene="TRUNC-${ar_line[4]}"
-		#else
 		gene="${ar_line[4]}"
-		#fi
-		#echo "norm:${sample_name}:${line}:${length_1}|${length_2}"
-		#percent_ID=$(echo ${line} | cut -d$'\t' -f7)
-		#percent_length=$(echo ${line} | cut -d$'\t' -f10)
-		# gets the name of the gene
-		#gene=$(echo ${line} | cut -d$'\t' -f5)
-		#conferred=$(echo ${line} | cut -d$'\t' -f2 | cut -d'_' -f1)
-		#if [[ "${conferred}" == "macrolide_"* ]] || [[ "${conferred}" == "macrolide,"* ]]; then
-		#	conferred="macrolide_lincosamide_streptogramin_B"
-		#fi
-		# gets the difference in length of the match vs total length
-		#alength=$((length_2 - length_1))
-#		echo "$sample_name --- l1=${length_1};l2=${length_2} --- ${gene}"
-		#percent_length=$(( 100 * length_1 / length_2 ))
-#		echo "cutoff length of ${length_2} is ${percent_length}"
-		# Checks to see if it is one of the genes that have multiple representations. If found it is changed to match the one accepted version
-		#echo "pf_l-${percent_length}>=${project_parser_Percent_length}---pf_id-${percent_ID}>=${project_parser_Percent_identity}"
+		# Ensure that the gene passes % identity and % length threhsolds for reporting
 		if [[ ${percent_length} -ge ${project_parser_Percent_length} ]] && [[ ${percent_ID} -ge ${project_parser_Percent_identity} ]] ; then
 			if [[ -z "${oar_list}" ]]; then
 			#	echo "First oar: ${gene}"
@@ -314,8 +228,12 @@ fi
 	if [[ -z "${oar_list}" ]]; then
 		oar_list="No AR genes discovered"
 	fi
+
+	# Extracts the MLST type
 	mlst=$(head -n1 ${OUTDATADIR}/MLST/${sample_name}.mlst)
 	mlst=$(echo "${mlst}" | cut -d'	' -f3)
+
+	# Extracts taxonomic info
 	if [[ ! -f "${OUTDATADIR}/${sample_name}.txt" ]]; then
 		"${shareScript}/determine_taxID.sh" "${sample_name}" "${project}"
 	fi
@@ -325,9 +243,10 @@ fi
 	species=$(tail -1 "${OUTDATADIR}/${sample_name}.tax" | cut -d'	' -f2)
 	ANI="${genus} ${species}"
 #	echo "${ANI}"
+# Print all extracted info to primary file
 	echo -e "${project}\t${sample_name}\t${ANI}\t${mlst}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_full.txt
 
-	#Adding in srst2 output
+	# Adding in srst2 output in a similar fashion as to how the csstar genes are output to the file.
 	if [[ -s "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
 		srst2_results=""
 		while IFS= read -r line; do
@@ -372,7 +291,8 @@ fi
 				percent_ID=$(echo "100 - (($divergence + 1) / 1)" | bc)
 			fi
 		#	echo "${allele}/${coverage}/${depth}/${diffs}/${uncertainty}/${divergence}/${length}/${percent_ID}/${percent_length}"
-			if [[ "${percent_ID}" -gt 95 ]] && [[ "${percent_length}" -gt 90 ]]; then
+		# Filter genes based on thresholds for length and percent identity
+			if [[ "${percent_ID}" -gt ${project_parser_Percent_identity} ]] && [[ "${percent_length}" -gt ${project_parser_Percent_length} ]]; then
 				info_line="${allele}(${confers})[${percent_ID}/${percent_length}]"
 				if [[ -z "${srst2_results}" ]]; then
 					srst2_results=${info_line,,}
@@ -400,7 +320,7 @@ fi
 #Test
 #echo "Test"
 
-
+	# Parse through plasmid Assembly, although it is not used in the final report
 	if [[ "${has_plasmidAssembly}" = "true" ]]; then
 		# Repeat the c-sstar output organization of the plasmidAssembly
 		oar_list=""
@@ -418,36 +338,16 @@ fi
 				break
 			fi
 			IFS='	' read -r -a ar_line <<< "$line"
-			# gets the match length of the gene to the database
-			#length_1=$(echo ${line} | cut -d'	' -f8)
-			# gets the total length of the gene from the database
-			#length_2=$(echo ${line} | cut -d'	' -f9)
-	#		echo "plas:${sample_name}:${line_squeezed}:${length_1}|${length_2}"
-			#percent_ID=$(echo ${line} | cut -d'	' -f7)
-			#percent_length=$(echo ${line} | cut -d'	' -f10)
-			# gets the name of the gene
-			#gene=$(echo ${line} | cut -d'	' -f5)
-			#conferred=$(echo ${line} | cut -d'	' -f2 | cut -d'_' -f1)
 			length_1="${ar_line[7]}"
 			length_2="${ar_line[8]}"
 			percent_ID="${ar_line[6]}"
 			percent_length="${ar_line[9]}"
 			conferred=$(echo "${ar_line[1]}" | cut -d'_' -f1)
 			gene="pla-${ar_line[4]}"
-			if [[ "${ar_line[3]}" == *"trunc"* ]] || [[ "${ar_line[3]}" == "trunc"* ]] || [[ "${ar_line[3]}" == *"trunc" ]] || [[ "${ar_line[3]}" == "trunc" ]]; then
-				gene="TRUNC-pla-${ar_line[4]}"
-			else
-				gene="pla-${ar_line[4]}"
-			fi
 			if [[ "${conferred}" == "macrolide," ]]; then
 				conferred="macrolide, lincosamide, streptogramin_B"
 			fi
-			# gets the difference in length of the match vs total length
-			#alength=$((length_2 - length_1))
-	#		echo "$sample_name --- l1=${length_1};l2=${length_2} --- ${gene}"
-			#percent_length=$(( 100 * length_1 / length_2 ))
-	#		echo "cutoff length of ${length_2} is ${percent_length}"
-			# Checks to see if it is one of the genes that have multiple representations. If found it is changed to match the one accepted version
+			# Checks to see if gene passes the threshold rquirements for identity and length
 			if [[ ${percent_length} -ge ${project_parser_Percent_length} ]] && [[ ${percent_ID} -ge ${project_parser_plasmid_Percent_identity} ]] ; then
 				if [[ -z "${oar_list}" ]]; then
 				#	echo "First oar: ${gene}"+
@@ -466,14 +366,17 @@ fi
 				echo -e "${project}\t${sample_name}\t${line}" >> ${output_directory}/${4}-csstar_rejects_plasmids.txt
 			fi
 		done < ${ARDB_plasmid}
+		# Adds generic output saying nothing was found if the list was empty
 		if [[ -z "${oar_list}" ]]; then
+
 			oar_list="No AR genes discovered"
 		fi
+		# Adds info to plasmid csstar summary file
 		echo -e "${project}\t${sample_name}\t${oxa_list}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_plasmid.txt
 	fi
 
 
-	# Goes through the plasmid file of the sample and adds all found plasmids to the summary file
+	# Goes through the plasmid file of the sample and adds all found plasmid replicons to the summary file
 	#echo "Starting plasmid extraction"
 	if [[ -f ${OUTDATADIR}/plasmid/${sample_name}_results_table_summary.txt ]]; then
 		#echo "Found plasmid file"
@@ -530,7 +433,7 @@ fi
 	fi
 	echo -e "${project}\t${sample_name}\t${mlst}" >> ${output_directory}/${4}-mlst_summary.txt
 	#echo -e "${sample_name}\t${mlst}" >> ${share}/${4}-mlst_summary.txt
-
 done < ${1}
 
+# Calls script that sorts and formats all isolates info into a atrix for easy viewing
 python3 "${shareScript}/project_parser.py" "${output_directory}/${4}-csstar_summary_full.txt" "${output_directory}/${4}-plasmid_summary.txt" "${output_directory}/${4}_AR_plasmid_report.csv" "${output_directory}/${4}-srst2.txt"

@@ -2,6 +2,7 @@ import sys
 import glob
 import math
 
+# main function that sorts and formats all AR genes found using csstar and srst2 that have already been filtered for % identity and % length
 def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 	all_ARs_in_file=[]
 	samples=[]
@@ -200,5 +201,8 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 		summary_out.write(sample_details+"\n")
 	summary_out.close
 #print (sys.argv[1:])
-print("Parsing AR files ...\n")
+
+
+
+print("Parsing project AR files ...\n")
 do_AR(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])

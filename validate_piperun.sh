@@ -855,14 +855,14 @@ do
 	fi
 	if [[ "${file}" == *"best_ANI_hits_ordered(${1}_vs_"* ]]; then
 		filename=${file}
-		#echo "${OUTDATADIR}"
-		#echo "${file}"
-		#echo "${genusweighted^}"
+		echo "${OUTDATADIR}"
+		echo "${file}"
+		echo "${genusweighted^}"
 		if [[ -f "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_All).txt" ]]; then
-			#echo "ALL"
+			echo "ALL"
 			ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_All).txt")
 		elif [[ -f "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${genusweighted^}).txt" ]]; then
-			#echo "${genusweighted^}"
+			echo "${genusweighted^}"
 			ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${genusweighted^}).txt")
 		fi
 		ani_found=true
@@ -873,7 +873,7 @@ done
 if [[ "${ani_found}" = true ]]; then
 	genusDB=$(echo "${filename##*/}" | cut -d'_' -f6 | cut -d')' -f1)
 	percent_match="${ani_info:0:2}"
-	#echo "${percent_match--}"
+	echo "${percent_match--}"
 	if [[ "${percent_match}" -ge 95 ]]; then
 		printf "%-20s: %-8s : %s\\n" "ANI" "SUCCESS" "${ani_info} against ${genusDB}"
 	else
