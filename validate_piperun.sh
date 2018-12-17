@@ -295,18 +295,6 @@ else
 	status="FAILED"
 fi
 
-# Removed gottcha genus analysis as only a single analysis is necessary and the species report provides better info
-#Check gottcha_G output (temporary chessy check, will improve it later after the bext_hit-from_gottcha.sh is created)
-#if [[ -s "${OUTDATADIR}/gottcha/gottcha_G/${1}.gottcha_full.tsv" ]] && [[ -s "${OUTDATADIR}/gottcha/${1}_genus.krona.html" ]]; then
-#	printf "%-20s: %-8s : %s\\n" "GOTTCHA_G" "SUCCESS" "Found"
-#elif [[ -s "${OUTDATADIR}/gottcha/gottcha_G/${1}.gottcha_full.tsv" ]]; then
-#	printf "%-20s: %-8s : %s\\n" "GOTTCHA_G" "WARNING" "No Krona output found"
-#elif [[ -s "${OUTDATADIR}/gottcha/${1}_genus.krona.html" ]]; then
-#	printf "%-20s: %-8s : %s\\n" "GOTTCHA_G" "WARNING" "No TSV file found"
-#else
-#	printf "%-20s: %-8s : %s\\n" "GOTTCHA_G" "FAILED" "/gottcha/gottcha_S/${1}.gottcha_full.tsv & /gottcha/${1}_species.krona.html not found"
-#fi
-
 #Check extraction of gottcha id
 if [[ -s "${OUTDATADIR}/gottcha/${1}_gottcha_species_summary.txt" ]]; then
 	# Extracts many elements of the summary file to report unclassified and species classified reads and percentages
@@ -690,6 +678,25 @@ if [[ "${plasmidsFoundviaplasmidSPAdes}" -eq 1 ]]; then
 	fi
 fi
 
+if [[ -s "${OUTDATADIR}/${1}.tax" ]]; then
+	while IFS= read -r line;
+	do
+		# Grab first letter of line (indicating taxonomic level)
+		first=${line:0:1}
+		# Assign taxonomic level value from 4th value in line (1st-classification level,2nd-% by kraken, 3rd-true % of total reads, 4th-identifier)
+		if [ "${first}" = "s" ]
+		then
+			dec_species=$(echo "${line}" | awk -F ' ' '{print $2}')
+		elif [ "${first}" = "G" ]
+		then
+			dec_genus=$(echo "${line}" | awk -F ' ' '{print $2}')
+		fi
+	done < "${OUTDATADIR}/${1}.tax"
+else
+	dec_genus=${genusweighted^}
+	dec_species=${speciesweighted}
+fi
+
 # Check Assembly ratio
 declare -A mmb_bugs
 while IFS= read -r bug_lines; do
@@ -702,9 +709,9 @@ while IFS= read -r bug_lines; do
 	#echo "Should be adding ${bug_size} for ${bug_name}"
 	mmb_bugs["${bug_name}"]="${bug_size}"
 done < ${local_DBs}/MMB_Bugs.txt
-genus_initial="${genusweighted^}"
-genus_initial="${genusweighted:0:1}"
-ass_ID="${genus_initial}.${speciesweighted}"
+genus_initial="${dec_genus}"
+genus_initial="${genusw_initial:0:1}"
+ass_ID="${genus_initial}.${dec_species}"
 #echo "${mmb_bugs[@]}"
 #echo "${ass_ID}"
 if [[ ! -z "${mmb_bugs[${ass_ID}]}" ]]; then
@@ -848,22 +855,22 @@ ani_found=false
 for file in "${OUTDATADIR}/ANI/"*
 do
 	# If filename matches format, grabs best hit info (first line) and note that a match was found
-	#echo "Checking for ${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${genusweighted,}).txt"
-	if [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${genusweighted,}).txt" ]]; then
-		mv "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${genusweighted,}).txt" "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${genusweighted^}).txt"
-		   #"${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${genusweighted^}).txt"
+	#echo "Checking for ${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${${dec_genus},}).txt"
+	if [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${${dec_genus},}).txt" ]]; then
+		mv "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${${dec_genus},}).txt" "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${${dec_genus}^}).txt"
+		   #"${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${${dec_genus}^}).txt"
 	fi
 	if [[ "${file}" == *"best_ANI_hits_ordered(${1}_vs_"* ]]; then
 		filename=${file}
 		echo "${OUTDATADIR}"
 		echo "${file}"
-		echo "${genusweighted^}"
+		echo "${${dec_genus}^}"
 		if [[ -f "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_All).txt" ]]; then
 			echo "ALL"
 			ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_All).txt")
-		elif [[ -f "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${genusweighted^}).txt" ]]; then
-			echo "${genusweighted^}"
-			ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${genusweighted^}).txt")
+		elif [[ -f "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${${dec_genus}^}).txt" ]]; then
+			echo "${${dec_genus}^}"
+			ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${${dec_genus}^}).txt")
 		fi
 		ani_found=true
 		break
@@ -885,7 +892,7 @@ else
 		printf "%-20s: %-8s : %s\\n" "ANI" "FAILED" "/ANI/ does not exist"
 		status="FAILED"
 	else
-		printf "%-20s: %-8s : %s\\n" "ANI" "FAILED" "Attempted to compare to ${genusweighted} but /ANI/ does not have a best_ANI_hits file"
+		printf "%-20s: %-8s : %s\\n" "ANI" "FAILED" "Attempted to compare to ${${dec_genus}} but /ANI/ does not have a best_ANI_hits file"
 		status="FAILED"
 	fi
 fi
@@ -1030,8 +1037,8 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 		mlstdb=$(echo "${info}" | cut -d'	' -f2)
 		#echo "'${mlstdb}:${mlstype}'"
 		if [ "${mlstdb}" = "-" ]; then
-			if [ "${genusweighted}" ] && [ "${speciesweighted}" ]; then
-				printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no scheme found, check pubmlst for ${genusweighted} ${speciesweighted}"
+			if [ "${${dec_genus}}" ] && [ "${${dec_species}}" ]; then
+				printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no scheme found, check pubmlst for ${${dec_genus}} ${${dec_species}}"
 				if [[ "${status}" = "SUCCESS" ]] || [[ "${status}" = "ALERT" ]]; then
 					status="WARNING"
 				fi
