@@ -256,6 +256,9 @@ while IFS= read -r var; do
 		elif [[ "${tool}" == "gottchaContam." ]]; then
 			warning_flags="${warning_flags}-Multiple_species_found_above_contamination_threshold(${contamination_threshold})_gottcha"
 			warnings=$(( warnings + 1 ))
+		elif [[ "${tool}" == "Taxa" ]]; then
+			warning_flags="${warning_flags}-NO_species_was_determined"
+			warnings=$(( warnings + 1 ))
 		fi
 	elif [[ "${tool_status}" == "FAILED" ]]; then
 		#echo "Found failure-${tool}-${tool_details}"
@@ -468,6 +471,9 @@ while IFS= read -r var; do
 		elif [[ "${tool}" == "srst2" ]]; then
 			failure_flags="${failure_flags}-NO_srst2_output"
 			failures=$(( failures + 1 ))
+		elif [[ "${tool}" == "Taxa" ]]; then
+			warning_flags="${warning_flags}-NO_taxonomy_was_determined"
+			warnings=$(( warnings + 1 ))
 		fi
 	fi
 done < "${sum_file}"

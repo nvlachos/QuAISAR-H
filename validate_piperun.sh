@@ -678,23 +678,32 @@ if [[ "${plasmidsFoundviaplasmidSPAdes}" -eq 1 ]]; then
 	fi
 fi
 
-if [[ -s "${OUTDATADIR}/${1}.tax" ]]; then
-	while IFS= read -r line;
-	do
-		# Grab first letter of line (indicating taxonomic level)
-		first=${line:0:1}
-		# Assign taxonomic level value from 4th value in line (1st-classification level,2nd-% by kraken, 3rd-true % of total reads, 4th-identifier)
-		if [ "${first}" = "s" ]
-		then
-			dec_species=$(echo "${line}" | awk -F ' ' '{print $2}')
-		elif [ "${first}" = "G" ]
-		then
-			dec_genus=$(echo "${line}" | awk -F ' ' '{print $2}')
-		fi
-	done < "${OUTDATADIR}/${1}.tax"
-else
-	dec_genus=${genusweighted^}
-	dec_species=${speciesweighted}
+# Get determinde taxonomy
+if [[ ! -s "${OUTDATADIR}/${1}.tax" ]]; then
+	"${shareScript}/determine_taxID.sh ${1} ${2}"
+fi
+
+source_call=$(head -n1 "${OUTDATADIR}/${1}.tax")
+while IFS= read -r line;
+do
+	# Grab first letter of line (indicating taxonomic level)
+	first=${line:0:1}
+	# Assign taxonomic level value from 4th value in line (1st-classification level,2nd-% by kraken, 3rd-true % of total reads, 4th-identifier)
+	if [ "${first}" = "s" ]
+	then
+		dec_species=$(echo "${line}" | awk -F ' ' '{print $2}')
+	elif [ "${first}" = "G" ]
+	then
+		dec_genus=$(echo "${line}" | awk -F ' ' '{print $2}')
+	fi
+done < "${OUTDATADIR}/${1}.tax"
+
+if [[ "$dec_genus" != "Not_assigned" ]] && [[ "$dec_species" != "Not_assigned" ]]; then
+	printf "%-20s: %-8s : %s\\n" "Taxa" "SUCCESS" "${dec_genus} ${dec_species}"
+elif [[ "$dec_genus" != "Not_assigned" ]]; then
+	printf "%-20s: %-8s : %s\\n" "Taxa" "FAILED" "None of the classifiers completed successfully"
+elif [[ "$dec_species" != "Not_assigned" ]]; then
+	printf "%-20s: %-8s : %s\\n" "Taxa" "WARNING" "No Species was able to be determined"
 fi
 
 # Check Assembly ratio
@@ -861,14 +870,14 @@ do
 	fi
 	if [[ "${file}" == *"best_ANI_hits_ordered(${1}_vs_"* ]]; then
 		filename=${file}
-		echo "${OUTDATADIR}"
-		echo "${file}"
-		echo "${dec_genus^}"
+		#echo "${OUTDATADIR}"
+		#echo "${file}"
+		#echo "${dec_genus^}"
 		if [[ -f "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_All).txt" ]]; then
-			echo "ALL"
+			#echo "ALL"
 			ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_All).txt")
 		elif [[ -f "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus^}).txt" ]]; then
-			echo "${dec_genus^}"
+			e#cho "${dec_genus^}"
 			ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus^}).txt")
 		fi
 		ani_found=true
@@ -879,7 +888,7 @@ done
 if [[ "${ani_found}" = true ]]; then
 	genusDB=$(echo "${filename##*/}" | cut -d'_' -f6 | cut -d')' -f1)
 	percent_match="${ani_info:0:2}"
-	echo "${percent_match--}"
+	#echo "${percent_match--}"
 	if [[ "${percent_match}" -ge 95 ]]; then
 		printf "%-20s: %-8s : %s\\n" "ANI" "SUCCESS" "${ani_info} against ${genusDB}"
 	else
@@ -895,6 +904,7 @@ else
 		status="FAILED"
 	fi
 fi
+
 #Check c-SSTAR
 if [[ -d "${OUTDATADIR}/c-sstar/" ]]; then
 	if [[ ! -z "${3}" ]]; then

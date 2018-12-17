@@ -39,13 +39,13 @@ fi
 sample=${1}
 project=${2}
 
-Domain="Not assigned"
-Phylum="Not assigned"
-Class="Not assigned"
-Order="Not assigned"
-Family="Not assigned"
-Genus="Not assigned"
-species="Not assigned"
+Domain="Not_assigned"
+Phylum="Not_assigned"
+Class="Not_assigned"
+Order="Not_assigned"
+Family="Not_assigned"
+Genus="Not_assigned"
+species="Not_assigned"
 
 if [[ -s "${processed}/${project}/${sample}/ANI/best_ANI_hits_ordered(${sample}_vs_All).txt" ]]; then
 	source="ANI"
