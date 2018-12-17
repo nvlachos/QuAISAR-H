@@ -111,9 +111,9 @@ while IFS= read -r var; do
 	tool=$(echo "${var}" | cut -d':' -f1 | tr -d ' ')
 	tool_status=$(echo "${var}" | cut -d':' -f2 | tr -d ' ')
 	tool_details=$(echo "${var}" | cut -d':' -f3)
-	if [[ "${tool}" = "weightedClassify" ]]; then
-		species=$(echo "${tool_details}" | cut -d' ' -f4)
-		genus=$(echo "${tool_details}" | cut -d' ' -f3)
+	if [[ "${tool}" = "Taxa" ]]; then
+		species=$(echo "${tool_details}" | cut -d' ' -f2)
+		genus=$(echo "${tool_details}" | cut -d' ' -f1)
 	fi
 	#echo "TOOL:${tool}:${tool_status}:${tool_details}"
 	if [[ "${tool_status}" == "ALERT" ]]; then
