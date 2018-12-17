@@ -137,9 +137,6 @@ while IFS= read -r var; do
 				notes="${notes},"
 			fi
 			if [[ "${tool_details}" = *"NO KNOWN AMR genes"* ]]; then
-				if [[ "${notes}" != "" ]]; then
-					notes="${notes},"
-				fi
 				if [[ "${tool_details}" = *"(DB NOT up to date!"* ]]; then
 					notes="${notes}No AMR found AND OLD ResGANNOT DB used in c-sstar"
 				else
@@ -405,7 +402,7 @@ while IFS= read -r var; do
 			failure_flags="${failure_flags}-NO_PROKKA_GBF_file"
 			failures=$(( failures + 1 ))
 		elif [[ "${tool}" == "BUSCO" ]]; then
-			echo "${processed}/${1}/${sample_name}/BUSCO/short_summary_${sample_name}.txt"
+			#echo "${processed}/${1}/${sample_name}/BUSCO/short_summary_${sample_name}.txt"
 			if [[ -s "${processed}/${1}/${sample_name}/BUSCO/short_summary_${sample_name}.txt" ]]; then
 				failure_flags="${failure_flags}-BUSCO_<90%"
 				failures=$(( failures + 1 ))
