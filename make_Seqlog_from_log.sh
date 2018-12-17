@@ -8,12 +8,13 @@
 
 #Import the config file with shortcuts and settings
 . ./config.sh
-# No MODS needed
 
 #
 # Creates a tsv file that matches the output for the MMB_Seq log
 #
 # Usage ./make_Seqlog_from_log.sh MiSeq_Run_ID
+#
+# No modules needed
 #
 
 # Checks for proper argumentation
@@ -80,10 +81,10 @@ while IFS= read -r var; do
 	project="${1}"
 	sample_name=$(echo "${var}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
 	OUTDATADIR="${processed}/${project}/${sample_name}"
-	
+
 	#echo "P:${project}:     S:${sample_name}:"
 	#echo "O:${OUTDATADIR}:"
-		
+
 	# Creates default values in case they are not filled in later
 	g_s_assembly="Unidentified"
 	genus_post="not_assigned"
@@ -136,7 +137,25 @@ while IFS= read -r var; do
 		g_s_16s="${genus_16s} ${species_16s}"
 #		echo "g_s_16-${g_s_16s}"
 	fi
-	# Pulls QC count info from counts file (Order is as follows Q20_Total_[bp]	Q30_Total_[bp]	Q20_R1_[bp]	Q20_R2_[bp]	Q20_R1_[%]	Q20_R2_[%]	Q30_R1_[bp]	Q30_R2_[bp]	
+
+
+	source_call=$(head -n1 "${OUTDATADIR}/${1}.tax")
+	while IFS= read -r line;
+	do
+		# Grab first letter of line (indicating taxonomic level)
+		first=${line:0:1}
+		# Assign taxonomic level value from 4th value in line (1st-classification level,2nd-% by kraken, 3rd-true % of total reads, 4th-identifier)
+		if [ "${first}" = "s" ]
+		then
+			dec_species=$(echo "${line}" | awk -F ' ' '{print $2}')
+		elif [ "${first}" = "G" ]
+		then
+			dec_genus=$(echo "${line}" | awk -F ' ' '{print $2}')
+		fi
+	done < "${OUTDATADIR}/${1}.tax"
+
+
+	# Pulls QC count info from counts file (Order is as follows Q20_Total_[bp]	Q30_Total_[bp]	Q20_R1_[bp]	Q20_R2_[bp]	Q20_R1_[%]	Q20_R2_[%]	Q30_R1_[bp]	Q30_R2_[bp]
 	# Q30_R1_[%]	Q30_R2_[%]	Total_Sequenced_[bp]	Total_Sequenced_[reads]
 	read_qc_info="N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A"
 	# If the counts file exists take the header line (the only one) and copy all but the first entry (which is the sample name) and store in an array
@@ -159,17 +178,16 @@ while IFS= read -r var; do
 			then
 				ass_length=$(sed -n '16p' "${OUTDATADIR}/Assembly_Stats/${sample_name}_report.tsv" | sed -r 's/[\t]+/ /g' | cut -d' ' -f3)
 				#Check Assembly ratio against expected size to see if it is missing a large portion or if there is contamination/double genome
-				genus_post_initial="${genus_post^}"
-				genus_post_initial="${genus_post_initial:0:1}"
-				ass_ID="${genus_post_initial}.${species_post}"
+				dec_genus_initial="${dec_genus:0:1}"
+				ass_ID="${dec_genus_initial}.${species_post}"
 				echo "About to check mmb_bugs[${ass_ID}]"
 				if [[ ${ass_length} -eq 0 ]]; then
 					ass_ratio="No Assembly"
-				else 
+				else
 					if [[ ! -z "${mmb_bugs[${ass_ID}]}" ]]; then
 						#echo "Found Bug in DB: ${ass_ID}-${mmb_bugs[${ass_ID}]}"
 						ass_ratio=$(awk -v p="${ass_length}" -v q="${mmb_bugs[${ass_ID}]}" 'BEGIN{printf("%.2f",p/q)}')
-					else 
+					else
 						ass_ratio="Not_in_DB"
 					fi
 				fi
@@ -204,20 +222,29 @@ while IFS= read -r var; do
 		done < ${OUTDATADIR}/BUSCO/short_summary_${sample_name}.txt
 		busco_info="${found_buscos}/${total_buscos}(${db})"
 	fi
-	# Pulls ANI info from best_ANI_hits file
+
+
+
+
+
+
+
+
+
+	# Pulls ANI info from
 	ani_info="No ANI performed"
 	# Count the number of matching format files for the current sample
 	file_count=$(find "${OUTDATADIR}/ANI/" -name *"${sample_name}"*"_vs_"*".txt" | wc -l)
 	# Rename files in old formating convention
 	if [[ -s "${OUTDATADIR}/ANI/best_hits_ordered.txt" ]]; then
-		mv "${OUTDATADIR}/ANI/best_hits_ordered.txt" "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus}).txt"
+		mv "${OUTDATADIR}/ANI/best_hits_ordered.txt" "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${dec_genus}).txt"
 	fi
 	# If 1 and only 1 file exists pull the first line as the best hit information
-	# echo "test-${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus_post^}).txt"
+	# echo "test-${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${dec_genus}).txt"
 	if [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_All).txt" ]]; then
 		ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_All).txt")
-	elif [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus_post^}).txt" ]]; then
-		ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus_post^}).txt")
+	elif [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${dec_genus}).txt" ]]; then
+		ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${dec_genus}).txt")
 	# Report that more than one file exists
 	elif [[ ${file_count} -gt 1 ]]; then
 		ani_info="More than one ANI file exists"

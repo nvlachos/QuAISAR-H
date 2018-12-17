@@ -8,12 +8,13 @@
 
 #Import the config file with shortcuts and settings
 . ./config.sh
-# No MODS needed
 
 #
 # Creates a tsv file that matches the output for the MMB_Seq log
 #
 # Usage ./make_Seqlog_from_list.sh path_to_list
+#
+# No modules needed
 #
 
 # Checks for proper argumentation
@@ -46,16 +47,16 @@ output_folder=$(dirname ${1})
 
 # Goes through each item on the list and pulls all relevant info
 while IFS= read -r var; do
-	# Current (8/16/17) order of expected run output
+	# Current (12/17/18) order of expected run output
 	#  kraken - QC - estimated coverage - #contigs - cumulative length assembly - BUSCO - ANI
-	
+
 	project=$(echo "${var}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
 	sample_name=$(echo "${var}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
 	OUTDATADIR="${processed}/${project}/${sample_name}"
-	
+
 	#echo "P:${project}:     S:${sample_name}:"
 	#echo "O:${OUTDATADIR}:"
-		
+
 	# Creates default values in case they are not filled in later
 	g_s_assembly="Unidentified"
 	genus_post="not_assigned"
@@ -76,7 +77,7 @@ while IFS= read -r var; do
 		g_s_assembled="${genus_post} ${species_post}"
 		#echo "${g_s_assembly}"
 	fi
-	
+
 	g_s_reads="Unidentified"
 	genus_reads="not_assigned"
 	species_reads="not_assigned"
@@ -109,7 +110,7 @@ while IFS= read -r var; do
 		g_s_16s="${genus_16s} ${species_16s}"
 #		echo "g_s_16-${g_s_16s}"
 	fi
-	# Pulls QC count info from counts file (Order is as follows Q20_Total_[bp]	Q30_Total_[bp]	Q20_R1_[bp]	Q20_R2_[bp]	Q20_R1_[%]	Q20_R2_[%]	Q30_R1_[bp]	Q30_R2_[bp]	
+	# Pulls QC count info from counts file (Order is as follows Q20_Total_[bp]	Q30_Total_[bp]	Q20_R1_[bp]	Q20_R2_[bp]	Q20_R1_[%]	Q20_R2_[%]	Q30_R1_[bp]	Q30_R2_[bp]
 	# Q30_R1_[%]	Q30_R2_[%]	Total_Sequenced_[bp]	Total_Sequenced_[reads]
 	read_qc_info="N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A"
 	# If the counts file exists take the header line (the only one) and copy all but the first entry (which is the sample name) and store in an array
@@ -139,7 +140,7 @@ while IFS= read -r var; do
 				if [[ ! -z "${mmb_bugs[${ass_ID}]}" ]]; then
 					#echo "Found Bug in DB: ${ass_ID}-${mmb_bugs[${ass_ID}]}"
 					ass_ratio=$(awk -v p="${ass_length}" -v q="${mmb_bugs[${ass_ID}]}" 'BEGIN{printf("%.2f",p/q)}')
-				else 
+				else
 					ass_ratio="Not_in_DB"
 				fi
 			elif [ ${counter} -eq 3 ]
@@ -152,7 +153,7 @@ while IFS= read -r var; do
 		#with N50 size
 		#contig_info=$(echo -e "${num_contigs}(${n50_length})\\t${ass_length}")
 	fi
-		
+
 	# Pulls busco info from summary file
 	busco_info="No BUSCO performed"
 	if [[ -s "${OUTDATADIR}/BUSCO/short_summary_${sample_name}.txt" ]]; then
@@ -202,7 +203,7 @@ while IFS= read -r var; do
 	fi
 	# Replace all spaces in qc_info as tabs
 	read_qc_info=$(echo "${read_qc_info}" | tr '[:blank:]' \\t)
-	
+
 	# Get the date to show when the log was made
 	NOW=$(date +"%m/%d/%Y")
 	
