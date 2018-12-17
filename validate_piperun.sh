@@ -855,22 +855,22 @@ ani_found=false
 for file in "${OUTDATADIR}/ANI/"*
 do
 	# If filename matches format, grabs best hit info (first line) and note that a match was found
-	#echo "Checking for ${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${${dec_genus},}).txt"
-	if [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${${dec_genus},}).txt" ]]; then
-		mv "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${${dec_genus},}).txt" "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${${dec_genus}^}).txt"
-		   #"${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${${dec_genus}^}).txt"
+	#echo "Checking for ${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus,}).txt"
+	if [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus,}).txt" ]]; then
+		mv "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus,}).txt" "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus^}).txt"
+		   #"${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus^}).txt"
 	fi
 	if [[ "${file}" == *"best_ANI_hits_ordered(${1}_vs_"* ]]; then
 		filename=${file}
 		echo "${OUTDATADIR}"
 		echo "${file}"
-		echo "${${dec_genus}^}"
+		echo "${dec_genus^}"
 		if [[ -f "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_All).txt" ]]; then
 			echo "ALL"
 			ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_All).txt")
-		elif [[ -f "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${${dec_genus}^}).txt" ]]; then
-			echo "${${dec_genus}^}"
-			ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${${dec_genus}^}).txt")
+		elif [[ -f "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus^}).txt" ]]; then
+			echo "${dec_genus^}"
+			ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus^}).txt")
 		fi
 		ani_found=true
 		break
@@ -892,7 +892,7 @@ else
 		printf "%-20s: %-8s : %s\\n" "ANI" "FAILED" "/ANI/ does not exist"
 		status="FAILED"
 	else
-		printf "%-20s: %-8s : %s\\n" "ANI" "FAILED" "Attempted to compare to ${${dec_genus}} but /ANI/ does not have a best_ANI_hits file"
+		printf "%-20s: %-8s : %s\\n" "ANI" "FAILED" "Attempted to compare to ${dec_genus} but /ANI/ does not have a best_ANI_hits file"
 		status="FAILED"
 	fi
 fi
@@ -1037,8 +1037,8 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 		mlstdb=$(echo "${info}" | cut -d'	' -f2)
 		#echo "'${mlstdb}:${mlstype}'"
 		if [ "${mlstdb}" = "-" ]; then
-			if [ "${${dec_genus}}" ] && [ "${${dec_species}}" ]; then
-				printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no scheme found, check pubmlst for ${${dec_genus}} ${${dec_species}}"
+			if [ "${dec_genus}" ] && [ "${dec_species}" ]; then
+				printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no scheme found, check pubmlst for ${dec_genus} ${dec_species}"
 				if [[ "${status}" = "SUCCESS" ]] || [[ "${status}" = "ALERT" ]]; then
 					status="WARNING"
 				fi
