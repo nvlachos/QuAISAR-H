@@ -709,8 +709,7 @@ while IFS= read -r bug_lines; do
 	#echo "Should be adding ${bug_size} for ${bug_name}"
 	mmb_bugs["${bug_name}"]="${bug_size}"
 done < ${local_DBs}/MMB_Bugs.txt
-genus_initial="${dec_genus}"
-genus_initial="${genusw_initial:0:1}"
+genus_initial="${dec_genus:0:1}"
 ass_ID="${genus_initial}.${dec_species}"
 #echo "${mmb_bugs[@]}"
 #echo "${ass_ID}"
