@@ -139,7 +139,7 @@ while IFS= read -r var; do
 	fi
 
 
-	source_call=$(head -n1 "${OUTDATADIR}/${1}.tax")
+	source_call=$(head -n1 "${OUTDATADIR}/${sample_name}.tax")
 	while IFS= read -r line;
 	do
 		# Grab first letter of line (indicating taxonomic level)
@@ -152,7 +152,7 @@ while IFS= read -r var; do
 		then
 			dec_genus=$(echo "${line}" | awk -F ' ' '{print $2}')
 		fi
-	done < "${OUTDATADIR}/${1}.tax"
+	done < "${OUTDATADIR}/${sample_name}.tax"
 
 
 	# Pulls QC count info from counts file (Order is as follows Q20_Total_[bp]	Q30_Total_[bp]	Q20_R1_[bp]	Q20_R2_[bp]	Q20_R1_[%]	Q20_R2_[%]	Q30_R1_[bp]	Q30_R2_[bp]
