@@ -137,6 +137,9 @@ while IFS= read -r var; do
 				notes="${notes},"
 			fi
 			if [[ "${tool_details}" = *"NO KNOWN AMR genes"* ]]; then
+				if [[ "${notes}" != "" ]]; then
+					notes="${notes},"
+				fi
 				if [[ "${tool_details}" = *"(DB NOT up to date!"* ]]; then
 					notes="${notes}No AMR found AND OLD ResGANNOT DB used in c-sstar"
 				else
@@ -147,6 +150,9 @@ while IFS= read -r var; do
 			fi
 		elif [[ "${tool}" == "c-SSTAR_plasmid" ]] || [[ "${tool}" == "c-sstar_plasmid" ]]; then
 			if [[ "${tool_details}" = *"NO KNOWN AMR genes"* ]]; then
+				if [[ "${notes}" != "" ]]; then
+					notes="${notes},"
+				fi
 				if [[ "${tool_details}" = *"(DB NOT up to date!"* ]]; then
 					notes="${notes}No plasmid AMR found AND OLD ResGANNOT DB used in c-sstar plasmid"
 				else
@@ -156,6 +162,9 @@ while IFS= read -r var; do
 				notes="${notes}OLD ResGANNOT DB used in c-sstar plasmid"
 			fi
 		elif [[ "${tool}" == "srst2" ]]; then
+			if [[ "${notes}" != "" ]]; then
+				notes="${notes},"
+			fi
 			if [[ "${tool_details}" = *"NO KNOWN AMR genes"* ]]; then
 				if [[ "${tool_details}" = *"(DB NOT up to date!"* ]]; then
 					notes="${notes}No srst2 AMR found AND OLD ResGANNOT DB used in srst2"
@@ -166,6 +175,9 @@ while IFS= read -r var; do
 				notes="${notes}OLD ResGANNOT DB used in srst2"
 			fi
 		elif [[ "${tool}" == "preClassContam." ]]; then
+			if [[ "${notes}" != "" ]]; then
+				notes="${notes},"
+			fi
 			notes="${notes}<>1 Species found in kraken list file above ${contamination_threshold}"
 		fi
 	elif [[ "${tool_status}" == "WARNING" ]]; then
