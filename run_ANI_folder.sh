@@ -28,8 +28,7 @@ elif [[ -z "${1}" ]]; then
 	exit 1
 # Gives the user a brief usage and help section if requested with the -h option argument
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_ANI.sh sample_name ani_database(which is also genus) species run_id list_of_samples_to_include(optional)"
-	echo "Output is saved to in ${processed}/sample_name/ANI"
+	echo "Usage is ./run_ANI_folder.sh path_to_folder"
 	exit 0
 fi
 

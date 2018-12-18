@@ -16,7 +16,7 @@ fi
 # Script to find mlst profile using tseeman's mlst script and pubmlst
 # The most similar match is identified and provided for confirmation
 #
-# Usage ./run_MLST.sh sample_name run_id 
+# Usage ./run_MLST.sh sample_name run_id -f(force to certain DB) DB_to force_comparison_to
 #
 # mlst/2.9
 #
@@ -42,7 +42,7 @@ fi
 OUTDATADIR="${processed}/${2}/${1}"
 
 # Checks to see if a mlst folder already exists and creates it if not
-if [ ! -d "$OUTDATADIR/MLST" ]; then 
+if [ ! -d "$OUTDATADIR/MLST" ]; then
 	echo "Creating $OUTDATADIR/MLST"
 	mkdir -p "$OUTDATADIR/MLST"
 fi
