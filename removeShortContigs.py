@@ -2,6 +2,9 @@ import sys
 import glob
 import fileinput
 
+
+# Script that will trim fasta files of any sequences that are smaller than the threshold
+
 def trim_assembly(input_assembly, trim_threshold):
 	assembly=open(input_assembly,'r')
 	trimmed_assembly=input_assembly+".TRIMMED.fasta"

@@ -8,13 +8,13 @@
 
 #Import the config file with shortcuts and settings
 . ./config.sh
-. "${shareScript}/module_changers/perl_5221_to_5123.sh"
-. ./module_changers/list_modules.sh
-#test
-
+#. "${shareScript}/module_changers/perl_5221_to_5123.sh"
+#. ./module_changers/list_modules.sh
+module unload perl/5.22.1
+module load perl 5.12.3
 
 #
-# Creates a  a 16s prediction to blast for another species identification tool
+# Creates a species prediction based on blasting the largest and also best hit of the suggested 16s sequences found using barrnap
 # Usage ./16s_blast.sh   sample_name   run_id
 #
 # barrnap/0.8
@@ -77,7 +77,6 @@ make_fasta() {
 #	echo "short_seq=$rna"
 	# Adds new fasta entry to the file
 	echo -e "${header}\n${rna_seq:$cstart:$clength}" >> ${processed}/${2}/${1}/16s/${1}_16s_rna_seqs.txt
-
 }
 
 owd=$(pwd)
@@ -114,6 +113,7 @@ do
 	lines=$((lines + 1))
 done < "${OUTDATADIR}/16s/${1}_scaffolds_trimmed.fasta_rRNA_seqs.fasta"
 
+# Adds No hits found to output file in the case where no 16s ribosomal sequences were found
 if [[ "${found_16s}" == "false" ]]; then
 	echo -e "best_hit	${1}	No 16s" > "${OUTDATADIR}/16s/${1}_16s_blast_id.txt"
 	echo -e "largest_hit	${1}	No 16s" >> "${OUTDATADIR}/16s/${1}_16s_blast_id.txt"
@@ -121,7 +121,9 @@ if [[ "${found_16s}" == "false" ]]; then
 fi
 
 # Blasts the NCBI database to find the closest hit to every entry in the 16s fasta list
+###### MAX_TARGET_SEQS POSSIBLE ERROR
 blastn -word_size 10 -task blastn -remote -db nt -max_hsps 1 -max_target_seqs 1 -query ${processed}/${2}/${1}/16s/${1}_16s_rna_seqs.txt -out ${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen ssciname";
+# Sorts the list based on sequence match length to find the largest hit
 sort -k4 -n "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN" --reverse > "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN.sorted"
 
 # Gets taxon info from the best (literal top) hit from the blast list
@@ -155,5 +157,4 @@ fi
 cd ${owd}
 
 #Script exited gracefully (unless something else inside failed)
-. "${shareScript}/module_changers/perl_5123_to_5221.sh"
 exit 0

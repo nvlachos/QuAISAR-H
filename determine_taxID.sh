@@ -13,16 +13,17 @@ fi
 . ./config.sh
 
 #
-# Creates a summary file for the run and prints out a one word status for each sample in the run
+# Creates a single file that attempts to pull the best taxonomic information from the isolate. Currently, it operates in a linera fashion, e.g. 1.ANI, 2.kraken, 3.Gottcha, 4.16s
+# The taxon is chosen based on the highest ranked classifier first
 #
-# Usage ./run_sum.sh run_id
+# Usage ./determine_texID.sh sample_name project_ID
 #
 # No modules required
 #
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
-	echo "No argument supplied to run_sum.sh, exiting"
+	echo "No argument supplied todetermine_taxID.sh, exiting"
 	exit 1
 elif [[ -z "${1}" ]]; then
 	echo "Empty sample_id supplied to determine_taxID.sh, exiting"
@@ -36,6 +37,7 @@ elif [[ -z "${2}" ]]; then
 	exit 1
 fi
 
+# Set default values after setting variables
 sample=${1}
 project=${2}
 
@@ -72,25 +74,6 @@ elif [[ -s "${processed}/${project}/${sample}/kraken/postAssembly/${sample}_krak
 		then
 			Genus=$(echo "${line}" | awk -F ' ' '{print $4}')
 		fi
-	#	elif [ "${first}" = "F" ]
-	#	then
-	#		family=$(echo "${line}" | awk -F ' ' '{print $4}')
-	#	elif [ "${first}" = "O" ]
-	#	then
-	#		order=$(echo "${line}" | awk -F ' ' '{print $4}')
-	#	elif [ "${first}" = "C" ]
-	#	then
-	#		class=$(echo "${line}" | awk -F ' ' '{print $4}')
-	#	elif [ "${first}" = "P" ]
-	#	then
-	#		phylum=$(echo "${line}" | awk -F ' ' '{print $4}')
-	#	elif [ "${first}" = "K" ]
-	#	then
-	#		domain=$(echo "${line}" | awk -F ' ' '{print $4}')
-	#	elif [ "${first}" = "D" ]
-	#	then
-	#		domain=$(echo "${line}" | awk -F ' ' '{print $4}')
-	#	fi
 	done < "${processed}/${project}/${sample}/kraken/postAssembly/${sample}_kraken_summary_assembled_BP_data.txt"
 elif [[ -s "${processed}/${project}/${sample}/gottcha/${sample}_gottcha_species_summary.txt" ]]; then
 	source="GOTTCHA"
@@ -107,25 +90,6 @@ elif [[ -s "${processed}/${project}/${sample}/gottcha/${sample}_gottcha_species_
 		then
 			Genus=$(echo "${line}" | awk -F ' ' '{print $4}')
 		fi
-	#	elif [ "${first}" = "F" ]
-	#	then
-	#		family=$(echo "${line}" | awk -F ' ' '{print $4}')
-	#	elif [ "${first}" = "O" ]
-	#	then
-	#		order=$(echo "${line}" | awk -F ' ' '{print $4}')
-	#	elif [ "${first}" = "C" ]
-	#	then
-	#		class=$(echo "${line}" | awk -F ' ' '{print $4}')
-	#	elif [ "${first}" = "P" ]
-	#	then
-	#		phylum=$(echo "${line}" | awk -F ' ' '{print $4}')
-	#	elif [ "${first}" = "K" ]
-	#	then
-	#		domain=$(echo "${line}" | awk -F ' ' '{print $4}')
-	#	elif [ "${first}" = "D" ]
-	#	then
-	#		domain=$(echo "${line}" | awk -F ' ' '{print $4}')
-	#	fi
 	done < "${processed}/${project}/${sample}/gottcha/${sample}_gottcha_species_summary.txt"
 elif [[ -s "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt" ]]; then
 	source="16s"

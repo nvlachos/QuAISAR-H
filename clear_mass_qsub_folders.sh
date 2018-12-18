@@ -14,8 +14,10 @@
 #
 # Usage ./clear_mass_qsub_fodlers [1,2,3] (1-qsub folders, 2-qsub outs/errs, 3-Both)
 #
-# script changes naming structure of SPAdes output to include isolate name for every contig and removes coverage info
+# script that removes scripts made to parallelize submission of multiple qsub jobs at once and any output completion files that were associated
 #
+
+# Remove all completion txt and submission scripts made during mass qsub submission
 if [[ ${1} -eq 1 ]] || [[ ${1} -eq 3 ]]; then
 	for folder in ${share}/mass_subs/*
 	do
@@ -31,6 +33,7 @@ if [[ ${1} -eq 1 ]] || [[ ${1} -eq 3 ]]; then
 	done
 fi
 
+# Remove all out and err files
 if [[ ${1} -eq 2 ]] || [[ ${1} -eq 3 ]]; then
 	rm  blast16sID_*.out
 	rm  blast16sID_*.err

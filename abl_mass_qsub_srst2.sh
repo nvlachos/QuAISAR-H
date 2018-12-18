@@ -12,22 +12,23 @@
 . "${mod_changers}/pipeline_mods"
 
 #
-# Usage ./act_by_list.sh list_name(currently has to be placed in /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR folder) description of list function
-#
-# script changes depending on what needs to be run through the list
+# Usage ./abl_mass_qsub_srst2.sh path_to_list max_concurrent_submissions
 #
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
-	echo "No argument supplied to act_by_list.sh, exiting"
+	echo "No argument supplied to ./abl_mass_qsub_srst2.sh, exiting"
 	exit 1
 # Shows a brief uasge/help section if -h option used as first argument
 elif [[ "$1" = "-h" ]]; then
-	echo "Usage is ./abl_mass_qsub_template.sh path_to_list_file(single sample ID per line, e.g. B8VHY/1700128 (it must include project id also)) max_submissions"
-	echo "Output location varies depending on which tasks are performed but will be found somewhere under ${processed}"
-	exit 0
+	echo "Usage is ./abl_mass_qsub_srst2.sh path_to_list_file(single sample ID per line, e.g. B8VHY/1700128 (it must include project id also)) max_submissions"
+	exit 1
+elif [[ ! -f "${1}" ]]; then
+	echo "${1} (list) does not exist...exiting"
+	exit 1
 fi
 
+# create an array of all samples in the list
 arr=()
 while IFS= read -r line || [[ "$line" ]];  do
   arr+=("$line")
@@ -37,14 +38,11 @@ arr_size="${#arr[@]}"
 last_index=$(( arr_size -1 ))
 echo "-${arr_size}:${arr[@]}-"
 
-if [[ -z ${2} ]]; then
-	max_subs=10
-else
-	max_subs=${2}
-fi
-
-# Loop through and act on each sample name in the passed/provided list
+# Create counter and set max number of concurrent submissions
 counter=0
+max_subs=${2}
+
+# Set script directory
 main_dir="${share}/mass_subs/srst2_subs"
 if [[ ! -d "${share}/mass_subs/srst2_subs" ]]; then
 	mkdir "${share}/mass_subs/srst2_subs"
@@ -55,6 +53,7 @@ fi
 
 start_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 
+# Creates and submits qsub scripts to check all isolates on the list against the newest ResGANNOT DB
 while [ ${counter} -lt ${arr_size} ] ; do
 	sample=$(echo "${arr[${counter}]}" | cut -d'/' -f2)
 	project=$(echo "${arr[${counter}]}" | cut -d'/' -f1)
@@ -139,25 +138,5 @@ while [ ${counter} -lt ${arr_size} ] ; do
 	counter=$(( counter + 1 ))
 done
 
-# Check for completion of last sample
-finish_counter=0
-waiting_for_index=${last_index}
-waiting_sample=$(echo "${arr[${last_index}]}" | cut -d'/' -f2)
-timer=0
-while :
-do
-	if [[ ${timer} -gt 3600 ]]; then
-		echo "Timer exceeded limit of 3600 seconds = 60 minutes"
-		break
-	fi
-	if [[ -f "${main_dir}/complete/${waiting_sample}_csstarn_complete.txt" ]] || [[ ! -s "${processed}/${project}/${waiting_sample}/Assembly/${waiting_sample}_scaffolds_trimmed.fasta" ]]; then
-		echo "All isolates completed"
-		printf "%s %s" "Act_by_list.sh has completed ${2}" "${global_end_time}" | mail -s "act_by_list complete" nvx4@cdc.gov
-		exit 0
-	else
-		counter+$(( counter + 1))
-		timer=$(( timer + 5 ))
-		echo "sleeping for 5 seconds, so far slept for ${timer}"
-		sleep 5
-	fi
-done
+echo "All isolates completed"
+exit 0

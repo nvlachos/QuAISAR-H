@@ -15,7 +15,7 @@ fi
 #
 # Will find all fastq.gz files matching run ID on any of our machines (listed in config.sh)
 #
-# Usage ./get_Reads_from_Instruments.sh project_name (Maybe add sample name or list functionality later)
+# Usage ./get_Reads_from_Instruments.sh project_name
 #
 
 # Checks for proper argumentation

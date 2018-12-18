@@ -20,10 +20,10 @@ fi
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
-	echo "No argument supplied to get_Reads_from_folder.sh, exiting"
+	echo "No argument supplied to ./get_Assemblies_from_folder.sh, exiting"
 	exit 1
 elif [[ -z "${1}" ]]; then
-	echo "Empty project name supplied to get_Reads_from_folder.sh, exiting"
+	echo "Empty project name supplied to ./get_Assemblies_from_folder.sh, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
 	echo "Usage is ./get_Assemblies_from_folder.sh  run_id location_of_Assemblies"
@@ -45,9 +45,6 @@ fi
 if [ -f "${OUTDATADIR}/${1}_list.txt" ]; then
 	rm "${OUTDATADIR}/${1}_list.txt"
 fi
-
-####### Set trailing match pattern (everything after R in filename, to call unzip once for each pair) ######
-match="${3}"
 
 # Goes through given folder
 echo "${2}"

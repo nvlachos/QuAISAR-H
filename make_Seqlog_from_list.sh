@@ -120,6 +120,24 @@ while IFS= read -r var; do
 		read_qc_info=${qcs[@]:1}
 		#echo "${read_qc_info}"
 	fi
+
+	source_call=$(head -n1 "${OUTDATADIR}/${sample_name}.tax")
+	while IFS= read -r line;
+	do
+		# Grab first letter of line (indicating taxonomic level)
+		first=${line:0:1}
+		# Assign taxonomic level value from 4th value in line (1st-classification level,2nd-% by kraken, 3rd-true % of total reads, 4th-identifier)
+		if [ "${first}" = "s" ]
+		then
+			dec_species=$(echo "${line}" | awk -F ' ' '{print $2}')
+		elif [ "${first}" = "G" ]
+		then
+			dec_genus=$(echo "${line}" | awk -F ' ' '{print $2}')
+		fi
+	done < "${OUTDATADIR}/${sample_name}.tax"
+
+
+
 	# Pulls contig info from toms qc analysis file
 	contig_info="0(0)\\t0"
 		if [[ -s "${OUTDATADIR}/Assembly_Stats/${sample_name}_report.tsv" ]]; then
@@ -133,9 +151,8 @@ while IFS= read -r var; do
 			then
 				ass_length=$(sed -n '16p' "${OUTDATADIR}/Assembly_Stats/${sample_name}_report.tsv" | sed -r 's/[\t]+/ /g' | cut -d' ' -f3)
 				#Check Assembly ratio against expected size to see if it is missing a large portion or if there is contamination/double genome
-				genus_post_initial="${genus_post^}"
-				genus_post_initial="${genus_post_initial:0:1}"
-				ass_ID="${genus_post_initial}.${species_post}"
+				dec_genus_initial="${dec_genus:0:1}"
+				ass_ID="${dec_genus_initial}.${species_post}"
 				echo "About to check mmb_bugs[${ass_ID}]"
 				if [[ ! -z "${mmb_bugs[${ass_ID}]}" ]]; then
 					#echo "Found Bug in DB: ${ass_ID}-${mmb_bugs[${ass_ID}]}"
@@ -184,11 +201,11 @@ while IFS= read -r var; do
 		mv "${OUTDATADIR}/ANI/best_hits_ordered.txt" "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus}).txt"
 	fi
 	# If 1 and only 1 file exists pull the first line as the best hit information
-	# echo "test-${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus_post^}).txt"
+	# echo "test-${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${dec_genus}).txt"
 	if [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_All.txt" ]]; then
 		ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_All).txt")
-	elif [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus_post^}).txt" ]]; then
-		ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus_post^}).txt")
+	elif [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${dec_genus}).txt" ]]; then
+		ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${dec_genus}).txt")
 	# Report that more than one file exists
 	elif [[ ${file_count} -gt 1 ]]; then
 		ani_info="More than one ANI file exists"
@@ -206,7 +223,7 @@ while IFS= read -r var; do
 
 	# Get the date to show when the log was made
 	NOW=$(date +"%m/%d/%Y")
-	
+
 	# Add all pertinent info to the output file in the correct formatting to add to MMB_Seq log
 	echo -e "${sample_name}\\t${NOW}\\t${g_s_reads}\\t${g_s_assembled}\\t${g_s_16s}\\t${read_qc_info}\\t${avg_coverage}\\t${contig_info}\\t${busco_info}\\t${ani_info}\\r" >> "${output_folder}/Seqlog_output.txt"
  done < ${1}

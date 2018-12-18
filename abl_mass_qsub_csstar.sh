@@ -12,22 +12,23 @@
 . "${mod_changers}/pipeline_mods"
 
 #
-# Usage ./act_by_list.sh list_name(currently has to be placed in /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR folder) description of list function
-#
-# script changes depending on what needs to be run through the list
+# Usage ./abl_mass_qsub_csstar.sh path_to_list max_concurrent_submissions
 #
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
-	echo "No argument supplied to act_by_list.sh, exiting"
+	echo "No argument supplied to ./abl_mass_qsub_csstar.sh, exiting"
 	exit 1
 # Shows a brief uasge/help section if -h option used as first argument
 elif [[ "$1" = "-h" ]]; then
-	echo "Usage is ./abl_mass_qsub_template.sh path_to_list_file(single sample ID per line, e.g. B8VHY/1700128 (it must include project id also)) max_submissions"
-	echo "Output location varies depending on which tasks are performed but will be found somewhere under ${processed}"
-	exit 0
+	echo "Usage is ./abl_mass_qsub_csstar.sh path_to_list_file(single sample ID per line, e.g. B8VHY/1700128 (it must include project id also)) max_submissions"
+	exit 1
+elif [[ ! -f "${1}" ]]; then
+	echo "${1} (list) does not exist...exiting"
+	exit 1
 fi
 
+# create an array of all samples in the list
 arr=()
 while IFS= read -r line || [[ "$line" ]];  do
   arr+=("$line")
@@ -37,15 +38,21 @@ arr_size="${#arr[@]}"
 last_index=$(( arr_size -1 ))
 echo "-${arr_size}:${arr[@]}-"
 
-if [[ ! -z "${2}" ]]; then
-	max_subs="${2}"
-else
-	max_subs=10
-fi
 
-# Loop through and act on each sample name in the passed/provided list
+# Create direcory to hold all temporary qsub scripts
 counter=0
 max_subs=${2}
+
+# Set script directory
+main_dir="${share}/mass_subs/csstar_alt_subs"
+if [[ ! -d "${share}/mass_subs/csstar_alt_subs" ]]; then
+	mkdir "${share}/mass_subs/csstar_alt_subs"
+	mkdir "${share}/mass_subs/csstar_alt_subs/complete"
+elif [[ ! -d  "${share}/mass_subs/csstar_alt_subs/complete" ]]; then
+	mkdir "${share}/mass_subs/csstar_alt_subs/complete"
+fi
+
+# format name being extracted from alt database
 main_dir="${share}/mass_subs/csstar_subs"
 if [[ ! -d "${share}/mass_subs/csstar_subs" ]]; then
 	mkdir -p "${share}/mass_subs/csstar_subs/complete"
@@ -55,6 +62,7 @@ fi
 
 start_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 
+# Create and submit scripts to run default csstar on all samples on the list
 while [ ${counter} -lt ${arr_size} ] ; do
 	sample=$(echo "${arr[${counter}]}" | cut -d'/' -f2)
 	project=$(echo "${arr[${counter}]}" | cut -d'/' -f1)

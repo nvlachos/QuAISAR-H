@@ -8,7 +8,6 @@
 
 #Import the config file with shortcuts and settings
 . ./config.sh
-# No MODS needed
 
 #
 # Creates a txt list file that contains run and samples for a given MiSeq run that matches the order of the output for the MMB_Seq log
@@ -16,6 +15,8 @@
 # Usage ./order_samples.sh MiSeq_Run_ID
 #
 # Output will be /MiseqAnalysisFiles/Run_ID/Run_ID_list_ordered.txt
+#
+# No modules needed
 #
 
 

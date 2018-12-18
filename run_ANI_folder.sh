@@ -14,9 +14,9 @@ fi
 . ${mod_changers}/pipeline_mods
 
 #
-# Script to calculate the average nucleotide identity of a folder of fasta files
+# Script to calculate the All vs. All average nucleotide identity of a folder of fasta files
 #
-# Usage ./run_ANI.sh sample_name   path_to_folder_of_FASTAs
+# Usage ./run_ANI_folder.sh path_to_folder
 #
 
 # Checks for proper argumentation

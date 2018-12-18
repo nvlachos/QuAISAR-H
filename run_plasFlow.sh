@@ -41,10 +41,13 @@ module load PlasFlow/1.1
 module load Python/3.5.4
 . ./module_changers/list_modules.sh
 
+# Create output directory
 if [[ ! -d "${processed}/${2}/${1}/plasFlow" ]]; then
 	mkdir "${processed}/${2}/${1}/plasFlow"
 fi
 
+# Trim contigs a little to 2000 and larger and put through plasflow.
+# The remaining analysis steps have not yet been completed
 if [[ -s "${processed}/${2}/${1}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
 	python2 "${shareScript}/removeShortContigs.py" "${processed}/${2}/${1}/Assembly/scaffolds.fasta" "2000"
 	${shareScript}/fasta_headers.py "${processed}/${2}/${1}/Assembly/scaffolds.fasta.TRIMMED.fasta" "${processed}/${2}/${1}/plasFlow/${1}_scaffolds_trimmed_2000.fasta"
