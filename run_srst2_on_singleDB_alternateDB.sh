@@ -15,9 +15,9 @@ fi
 . "${mod_changers}/prep_srst2.sh"
 
 #
-# Usage ./run_srst2.sh   sample_name   MiSeq_Run_ID
+# Usage ./run_srst2_on_singleDB_alternateDB.sh.sh   sample_name   MiSeq_Run_ID
 #
-# script uses srst2 to find AR genes from resFinder and ARGANNOT DBs.
+# script uses srst2 to find AR genes from a custom srst2 formatted DB.
 #
 
 # Checks for proper argumentation
@@ -26,7 +26,7 @@ if [[ $# -eq 0 ]]; then
 	exit 1
 # Shows a brief uasge/help section if -h option used as first argument
 elif [[ "$1" = "-h" ]]; then
-	echo "Usage is ./run_srst2.sh  sample_name MiSeq_Run_ID path_to_alt_DB"
+	echo "Usage is ./run_srst2_on_singleDB_alternateDB.sh.sh  sample_name MiSeq_Run_ID path_to_alt_DB"
 	echo "Output location is ${processed}/run_ID/srst2"
 	exit 0
 fi

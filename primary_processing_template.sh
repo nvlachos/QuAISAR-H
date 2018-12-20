@@ -469,7 +469,7 @@ process_samples()	{
 	"${shareScript}/determine_taxID.sh" "${filename}" "${project}"
 
 	# Capture the anticipated taxonomy of the sample using kraken on assembly output
-	echo "----- Extracting Taxonomy from Kraken Summary -----"
+	echo "----- Extracting Taxonomy from Taxon Summary -----"
 	# Checks to see if the kraken on assembly completed successfully
 	if [ -s "${OUTDATADIR}/${filename}/${filename}.tax" ]; then
 		# Read each line of the kraken summary file and pull out each level  taxonomic unit and store for use later in busco and ANI

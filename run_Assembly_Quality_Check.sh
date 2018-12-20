@@ -21,8 +21,6 @@ module load Python/2.7.15
 #
 # Usage ./run_Assembly_Quality_Check.sh   sample_name   run_id
 #
-# Perl v5.12.3 (No other modules required as QUAST is locally installed in Nick_DIR)
-#
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -49,13 +47,6 @@ if [ ! -d "$OUTDATADIR/Assembly_Stats" ]; then
 	echo "Creating $OUTDATADIR/Assembly_Stats"
 	mkdir -p "$OUTDATADIR/Assembly_Stats"
 fi
-	#echo "Checking Assembly QC with TOMs script"
-	# Run TOMS Assembly QC
-	# Uses perl 5.12.3
-	#. "${mod_changers}/perl_5221_to_5123.sh"
-	#perl "${shareScript}/calc_N50_GC_genomesize.pl" -o "${OUTDATADIR}/Assembly_Stats/${1}_toms_assembly_report.txt" -i "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
-	# Reload perl 5.22.1
-	#. "${mod_changers}/perl_5123_to_5221.sh"
 echo "Checking Assembly QC with QUAST"
 # Run QUAST
 # Save current directory and move to output directory because it doesnt know how to redirect output

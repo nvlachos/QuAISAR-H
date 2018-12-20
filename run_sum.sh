@@ -15,7 +15,7 @@ fi
 #
 # Creates a summary file for the run and prints out a one word status for each sample in the run
 #
-# Usage ./run_sum.sh run_id output_location
+# Usage ./run_sum.sh run_id
 #
 # No modules required
 #
@@ -62,7 +62,7 @@ fi
 
 echo "${list}"
 
-while IFS= read -r samples; 
+while IFS= read -r samples;
 do
 	echo ${file}
 	file=$(echo "${samples}" | awk -F/ '{ print $2}' | tr -d '[:space:]')

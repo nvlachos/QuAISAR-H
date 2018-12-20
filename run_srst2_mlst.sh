@@ -17,9 +17,9 @@
 
 
 #
-# Usage ./run_srst2.sh   sample_name   MiSeq_Run_ID
+# Usage ./run_srst2_mlst.sh   sample_name   MiSeq_Run_ID
 #
-# script uses srst2 to find AR genes from resFinder and ARGANNOT DBs.
+# script uses srst2 to find MLST types
 #
 
 # Checks for proper argumentation

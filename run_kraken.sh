@@ -35,7 +35,7 @@ elif [ -z "$2" ]; then
 	echo "Empty assembly relativity supplied to run_kraken.sh. Second argument should be 'pre' or 'post' (no quotes). Exiting"
 	exit 1
 elif [ -z "$3" ]; then
-	echo "Empty read types supplied to run_kraken.sh. Third argument should be 'paired','single','R1','R2', or 'assembled' (no quotes). Exiting"
+	echo "Empty read types supplied to run_kraken.sh. Third argument should be 'paired','single', or 'assembled' (no quotes). Exiting"
 	exit 1
 elif [ -z "$4" ]; then
 	echo "Empty project_id supplied to run_kraken.sh. Fourth argument should be the id of the miseq run. Exiting"
