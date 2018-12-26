@@ -40,24 +40,36 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 			srst2_line_sections=srst2_line.split("	")
 			if csstar_line_sections[0] == srst2_line_sections[0] and csstar_line_sections[1] == srst2_line_sections[1]:
 				print("Found",  csstar_line_sections[1], "in srst2 summary file")
-				srst2_ar_list=srst2_line_sections[2].split(",")
-				for srst2_ar_gene in srst2_ar_list:
-					gene_name=srst2_ar_gene.split("[")[0]
-					gene_stats="["+srst2_ar_gene.split("[")[1]+"S"
+				if srst2_line_sections[2] == "No AR genes discovered":
+					gene_name="No AR genes discovered"
+					gene_stats=[0/0]S
 					print("Looking up", gene_name, "in csstar dic")
 					if ar_dict.get(gene_name):
-						if ar_dict.get(gene_name) != "No Other AR genes":
-							print("Found", gene_name, "in both outputs")
-							print("New value: "+ar_dict.get(gene_name)+":"+gene_stats)
-							ar_dict[gene_name]=""+ar_dict.get(gene_name)+":"+gene_stats
-						#else:
-							#print("No AR found in csstar for", gene_name)
-						#	:
+						ar_dict[gene_name]=""+ar_dict.get(gene_name)+":"+gene_stats
 					else:
-						print("New gene", gene_name,"found in srst2")
+						print("New AR-less isolate found in srst2")
 						ar_dict[gene_name]=gene_stats
 					if gene_name not in all_ARs_in_file:
 						all_ARs_in_file.append(gene_name)
+				else:
+					srst2_ar_list=srst2_line_sections[2].split(",")
+					for srst2_ar_gene in srst2_ar_list:
+						gene_name=srst2_ar_gene.split("[")[0]
+						gene_stats="["+srst2_ar_gene.split("[")[1]+"S"
+						print("Looking up", gene_name, "in csstar dic")
+						if ar_dict.get(gene_name):
+							if ar_dict.get(gene_name) != "No Other AR genes":
+								print("Found", gene_name, "in both outputs")
+								print("New value: "+ar_dict.get(gene_name)+":"+gene_stats)
+								ar_dict[gene_name]=""+ar_dict.get(gene_name)+":"+gene_stats
+							#else:
+								#print("No AR found in csstar for", gene_name)
+							#	:
+						else:
+							print("New gene", gene_name,"found in srst2")
+							ar_dict[gene_name]=gene_stats
+						if gene_name not in all_ARs_in_file:
+							all_ARs_in_file.append(gene_name)
 				break
 			#else:
 			#	#print(csstar_line_sections[1], "C does not equal S", srst2_line_sections[1])
