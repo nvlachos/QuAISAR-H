@@ -42,7 +42,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 				print("Found",  csstar_line_sections[1], "in srst2 summary file")
 				if srst2_line_sections[2] == "No AR genes discovered":
 					gene_name="No AR genes discovered"
-					gene_stats=[0/0]S
+					gene_stats="[0/0]S"
 					print("Looking up", gene_name, "in csstar dic")
 					if ar_dict.get(gene_name):
 						ar_dict[gene_name]=""+ar_dict.get(gene_name)+":"+gene_stats
