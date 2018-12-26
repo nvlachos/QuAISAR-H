@@ -30,7 +30,7 @@ if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to run_SNVPhyl.sh, exiting"
 	exit 1
 # elif [[ -z "${1}" ]] || ([ ! -f ${share}/Phylogeny_analyses/${1}/${1}.samples ] && [ ! -f ${share}/Phylogeny_analyses/${1}.samples ] && [ ! -f ${share}/Phylogeny_analyses/${1}/${2}/${1}.samples ] && [ ! -f ${share}/Phylogeny_analyses/${1}/SNVPhyl/${1}.samples ] && [ "${1}" != "-h" ] ); then
-elif [[ -z "${1}" ]] || ([ ! -f ${1} ] ; then
+elif [[ -z "${1}" ]] || [[ ! -f ${1} ]] ; then
 	echo "Empty group name or non-existent sample list file supplied to run_SNVPhyl.sh, exiting"
 	exit 1
 # Gives the user a brief usage and help section if requested with the -h option argument
@@ -40,12 +40,11 @@ elif [[ "${1}" = "-h" ]]; then
 	echo "Output is saved to ${share}/Phylogeny_analyses/group_name/SNVPhyl(or alt_name)"
 	exit 0
 elif [[ -z "${2}" ]]; then
-	echo "Empty output directory name, using SNVPhyl"
-	out_folder="SNVPhyl"
-elif [[ ! -z "${2}" ]]; then
-	out_folder="${2}"
+	echo "Empty output directory name, exiting"
+	exit 1
 elif [[ -z "${3}" ]]; then
-
+	echo "Empty analysis identifier, exiting"
+	exit 1
 fi
 
 # Not being run on cluster=no run
