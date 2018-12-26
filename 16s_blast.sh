@@ -115,8 +115,8 @@ done < "${OUTDATADIR}/16s/${1}_scaffolds_trimmed.fasta_rRNA_seqs.fasta"
 
 # Adds No hits found to output file in the case where no 16s ribosomal sequences were found
 if [[ "${found_16s}" == "false" ]]; then
-	echo -e "best_hit	${1}	No 16s" > "${OUTDATADIR}/16s/${1}_16s_blast_id.txt"
-	echo -e "largest_hit	${1}	No 16s" >> "${OUTDATADIR}/16s/${1}_16s_blast_id.txt"
+	echo -e "best_hit	${1}	Unidentified" > "${OUTDATADIR}/16s/${1}_16s_blast_id.txt"
+	echo -e "largest_hit	${1}	Unidentified" >> "${OUTDATADIR}/16s/${1}_16s_blast_id.txt"
 	exit
 fi
 

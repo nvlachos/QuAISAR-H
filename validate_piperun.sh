@@ -1062,17 +1062,41 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 				status="WARNING"
 			fi
 		else
+				if [[ "${mlstdb}" = "abaumannii_2" ]]; then
+					mlstdb="${mlstdb}(Pasteur)"
+				fi
 			printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
 		fi
 	else
 		printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "${1}.mlst does not exist"
 		status="FAILED"
 	fi
-# No MLST folder exists (pipeline must have failed as it would create a default one otherwise)
-else
-	printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "/MLST/ does not exist"
-	status="FAILED"
-fi
+	if [[ "${dec_genus}" = "Acinetobacter" ]]; then
+		if [[ -s "${OUTDATADIR}/MLST/${1}_abaumannii.mlst" ]]; then
+			info=$(tail -n 1 "${OUTDATADIR}/MLST/${1}_abaumannii.mlst")
+			mlstype=$(echo "${info}" | cut -d'	' -f3)
+			mlstdb=$(echo "${info}" | cut -d'	' -f2)
+			#echo "'${mlstdb}:${mlstype}'"
+			if [ "${mlstdb}" = "abaumannii" ]; then
+				if [ "${mlstype}" = "-" ]; then
+					printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
+					report_info=$(echo "${info}" | cut -d' ' -f2-)
+					echo "${2}/${1}: Possible new MLST type - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
+					if [[ "${status}" = "SUCCESS" ]] || [[ "${status}" = "ALERT" ]]; then
+						status="WARNING"
+					fi
+				else
+					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}(Oxford)"
+				fi
+			else
+				eco "Not reporting as name and analyis expected do not match"
+			fi
+		fi
+	# No MLST folder exists (pipeline must have failed as it would create a default one otherwise)
+	else
+		printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "/MLST/ does not exist"
+		status="FAILED"
+	fi
 # check 16s Identification
 if [[ -d "${OUTDATADIR}/16s/" ]]; then
 	if [[ -s "${OUTDATADIR}/16s/${1}_16s_blast_id.txt" ]]; then
