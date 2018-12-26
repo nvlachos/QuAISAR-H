@@ -1062,9 +1062,9 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 				status="WARNING"
 			fi
 		else
-				if [[ "${mlstdb}" = "abaumannii_2" ]]; then
-					mlstdb="${mlstdb}(Pasteur)"
-				fi
+			if [[ "${mlstdb}" = "abaumannii_2" ]]; then
+				mlstdb="${mlstdb}(Pasteur)"
+			fi
 			printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
 		fi
 	else
@@ -1092,11 +1092,12 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 				eco "Not reporting as name and analyis expected do not match"
 			fi
 		fi
-	# No MLST folder exists (pipeline must have failed as it would create a default one otherwise)
-	else
-		printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "/MLST/ does not exist"
-		status="FAILED"
 	fi
+	# No MLST folder exists (pipeline must have failed as it would create a default one otherwise)
+else
+	printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "/MLST/ does not exist"
+	status="FAILED"
+fi
 # check 16s Identification
 if [[ -d "${OUTDATADIR}/16s/" ]]; then
 	if [[ -s "${OUTDATADIR}/16s/${1}_16s_blast_id.txt" ]]; then
