@@ -49,8 +49,8 @@ if [[ -z "${2}" ]]; then
 		if [[ "${third}" = "201"* ]]; then
 			new_name="${pre_info}_${third}_${first}_${second}"
 			mv ${summary} ${new_name}
+			echo "Tried moving ${summary} to ${new_name}"
 		fi
-		echo "Tried moving ${summary} to ${new_name}"
 	done
 	sum_name=$(find ${processed}/${proj}/*.sum -maxdepth 1 -type f -printf '%h\0%d\0%p\n' | sort -rt '\0' -n ) #| head -n 1)
 	#sum_name=$(find ${processed}/${proj}/*.sum -maxdepth 1 -type f -printf '%h\0%d\0%p\n' | sort -rt '\0' -n)
