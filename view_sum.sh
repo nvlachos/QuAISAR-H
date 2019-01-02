@@ -39,14 +39,13 @@ if [[ -z "${2}" ]]; then
 		third=$(echo "${summary}" | rev | cut -d'_' -f4 | rev)
 		second=$(echo "${summary}" | rev | cut -d'_' -f5 | rev)
 		first=$(echo "${summary}" | rev | cut -d'_' -f6 | rev)
-		pre_info=$(echo "${summary}" | rev | cut -d'_' -f1,2,3 | rev)
-		post_info=$(echo "${summary}" | rev | cut -d'_' -f7- | rev)
-		echo "Moving ${summary} to ${new_name}"
+		post_info=$(echo "${summary}" | rev | cut -d'_' -f1,2,3 | rev)
+		pre_info=$(echo "${summary}" | rev | cut -d'_' -f7- | rev)
 		if [[ "${third}" = "201"* ]]; then
 			new_name="${pre_info}_${third}_${first}_${second}"
 			mv ${summary} ${new_name}
 		fi
-		echo "Moving ${summary} to ${new_name}"
+		echo "Tried moving ${summary} to ${new_name}"
 	done
 	sum_name=$(find ${processed}/${proj}/*.sum -maxdepth 1 -type f -printf '%h\0%d\0%p\n' | sort -rt '\0' -n ) #| head -n 1)
 	#sum_name=$(find ${processed}/${proj}/*.sum -maxdepth 1 -type f -printf '%h\0%d\0%p\n' | sort -rt '\0' -n)
