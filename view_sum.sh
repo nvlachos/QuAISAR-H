@@ -41,6 +41,11 @@ if [[ -z "${2}" ]]; then
 		first=$(echo "${summary}" | rev | cut -d'_' -f6 | rev)
 		post_info=$(echo "${summary}" | rev | cut -d'_' -f1,2,3 | rev)
 		pre_info=$(echo "${summary}" | rev | cut -d'_' -f7- | rev)
+		echo "Pre-${pre_info}"
+		echo "Post-${post_info}"
+		echo "1st-${first}"
+		echo "2nd-${second}"
+		echo "3rd-${third}"
 		if [[ "${third}" = "201"* ]]; then
 			new_name="${pre_info}_${third}_${first}_${second}"
 			mv ${summary} ${new_name}
