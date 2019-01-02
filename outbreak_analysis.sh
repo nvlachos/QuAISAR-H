@@ -162,7 +162,7 @@ done < ${1}
 echo "Creating mashtree of all samples"
 ${shareScript}/mashtree_of_list.sh "${1}" "${output_directory}/mashtree" "${4}"
 cp "${output_directory}/mashtree/${4}.dnd" "${output_directory}/${4}.nwk"
-sed -i "s/_scaffolds_trimmed//g" ${thing}
+sed -i "s/_scaffolds_trimmed//g" "${output_directory}/${4}.nwk"
 rm -r ${output_directory}/mashtree
 
 # Submits the list of isolates that need the newest ResGANNOT file for csstar
