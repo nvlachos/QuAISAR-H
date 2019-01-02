@@ -47,7 +47,7 @@ if [[ -z "${2}" ]]; then
 		echo "2nd-${second}"
 		echo "3rd-${third}"
 		if [[ "${third}" = "201"* ]]; then
-			new_name="${pre_info}_${third}_${first}_${second}"
+			new_name="${pre_info}_${third}_${first}_${second}_${post_info}"
 			mv ${summary} ${new_name}
 			echo "Tried moving ${summary} to ${new_name}"
 		fi
