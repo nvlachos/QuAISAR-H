@@ -680,7 +680,7 @@ fi
 
 # Get determinde taxonomy
 if [[ ! -s "${OUTDATADIR}/${1}.tax" ]]; then
-	"${shareScript}/determine_taxID.sh ${1} ${2}"
+	"${shareScript}/determine_taxID.sh" "${1}" "${2}"
 fi
 
 source_call=$(head -n1 "${OUTDATADIR}/${1}.tax")
