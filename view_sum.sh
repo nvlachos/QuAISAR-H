@@ -33,22 +33,21 @@ elif [[ "${1}" = "-h" ]]; then
 	exit 0
 fi
 
-for summary in ${processed}/${proj}/*.sum; do
-	third=$(echo "${summary}" | rev | cut -d'_' -f4 | rev)
-	second=$(echo "${summary}" | rev | cut -d'_' -f5 | rev)
-	first=$(echo "${summary}" | rev | cut -d'_' -f6 | rev)
-	pre_info=$(echo "${summary}" | rev | cut -d'_' -f1,2,3 | rev)
-	post_info=$(echo "${summary}" | rev | cut -d'_' -f7- | rev)
-	echo "Moving ${summary} to ${new_name}"
-	if [[ "${third}" = "201"* ]]; then
-		new_name="${pre_info}_${third}_${first}_${second}"
-		mv ${summary} ${new_name}
-	fi
-	echo "Moving ${summary} to ${new_name}"
-done
-
 if [[ -z "${2}" ]]; then
 	proj="${1}"
+	for summary in ${processed}/${proj}/*.sum; do
+		third=$(echo "${summary}" | rev | cut -d'_' -f4 | rev)
+		second=$(echo "${summary}" | rev | cut -d'_' -f5 | rev)
+		first=$(echo "${summary}" | rev | cut -d'_' -f6 | rev)
+		pre_info=$(echo "${summary}" | rev | cut -d'_' -f1,2,3 | rev)
+		post_info=$(echo "${summary}" | rev | cut -d'_' -f7- | rev)
+		echo "Moving ${summary} to ${new_name}"
+		if [[ "${third}" = "201"* ]]; then
+			new_name="${pre_info}_${third}_${first}_${second}"
+			mv ${summary} ${new_name}
+		fi
+		echo "Moving ${summary} to ${new_name}"
+	done
 	sum_name=$(find ${processed}/${proj}/*.sum -maxdepth 1 -type f -printf '%h\0%d\0%p\n' | sort -rt '\0' -n ) #| head -n 1)
 	#sum_name=$(find ${processed}/${proj}/*.sum -maxdepth 1 -type f -printf '%h\0%d\0%p\n' | sort -rt '\0' -n)
 	echo "${sum_name}"
