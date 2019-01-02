@@ -37,6 +37,8 @@ if [[ -z "${2}" ]]; then
 	proj="${1}"
 	sum_name=$(find ${processed}/${proj}/*.sum -maxdepth 1 -type f -printf '%h\0%d\0%p\n') # | sort -rt '\0' -n | head -n 1)
 	#sum_name=$(find ${processed}/${proj}/*.sum -maxdepth 1 -type f -printf '%h\0%d\0%p\n' | sort -rt '\0' -n)
+	echo "${sum_name}"
+	exit
 	sum_name=$(basename ${sum_name})
 	sum_file="${processed}/${1}/${sum_name}"
 	if [[ -f "${processed}/${1}/${sum_name}" ]]; then
@@ -44,7 +46,6 @@ if [[ -z "${2}" ]]; then
 	else
 		echo "No summary file detected, please execute run_sum.sh ${1} to create it"
 	fi
-	exit
 else
 	runsumdate=$(date "+%m_%d_%Y_at_%Hh_%Mm")
 	echo "Creating run summary at ${runsumdate}"
