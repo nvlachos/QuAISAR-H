@@ -44,6 +44,7 @@ if [[ -z "${2}" ]]; then
 	else
 		echo "No summary file detected, please execute run_sum.sh ${1} to create it"
 	fi
+	exit
 else
 	runsumdate=$(date "+%m_%d_%Y_at_%Hh_%Mm")
 	echo "Creating run summary at ${runsumdate}"
