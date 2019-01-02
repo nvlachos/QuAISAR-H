@@ -41,11 +41,11 @@ if [[ -z "${2}" ]]; then
 		first=$(echo "${summary}" | rev | cut -d'_' -f6 | rev)
 		post_info=$(echo "${summary}" | rev | cut -d'_' -f1,2,3 | rev)
 		pre_info=$(echo "${summary}" | rev | cut -d'_' -f7- | rev)
-		echo "Pre-${pre_info}"
-		echo "Post-${post_info}"
-		echo "1st-${first}"
-		echo "2nd-${second}"
-		echo "3rd-${third}"
+		#echo "Pre-${pre_info}"
+		#echo "Post-${post_info}"
+		#echo "1st-${first}"
+		#echo "2nd-${second}"
+		#echo "3rd-${third}"
 		if [[ "${third}" = "201"* ]]; then
 			new_name="${pre_info}_${third}_${first}_${second}_${post_info}"
 			mv ${summary} ${new_name}
@@ -55,7 +55,6 @@ if [[ -z "${2}" ]]; then
 	sum_name=$(find ${processed}/${proj}/*.sum -maxdepth 1 -type f -printf '%h\0%d\0%p\n' | sort -rt '\0' -n ) #| head -n 1)
 	#sum_name=$(find ${processed}/${proj}/*.sum -maxdepth 1 -type f -printf '%h\0%d\0%p\n' | sort -rt '\0' -n)
 	echo "${sum_name}"
-	exit
 	sum_name=$(basename ${sum_name})
 	sum_file="${processed}/${1}/${sum_name}"
 	if [[ -f "${processed}/${1}/${sum_name}" ]]; then

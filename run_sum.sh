@@ -49,7 +49,7 @@ else
 	type="list"
 	list=${1}
 fi
-runsumdate=$(date "+%m_%d_%Y_at_%Hh_%Mm")
+runsumdate=$(date "+%Y_%m_%d_at_%Hh_%Mm")
 echo "Creating run summary at ${runsumdate}"
 # Status of each individual sample is updated in its own folder and the run_summary file
 if [[ "${type}" = "project" ]]; then
