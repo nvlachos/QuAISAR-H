@@ -235,10 +235,10 @@ while IFS= read -r line; do
 	mlst=$(echo "${mlst}" | cut -d'	' -f3)
 
 	# Extracts taxonomic info
-	if [[ ! -f "${OUTDATADIR}/${sample_name}.txt" ]]; then
+	if [[ ! -f "${OUTDATADIR}/${sample_name}.tax" ]]; then
 		"${shareScript}/determine_taxID.sh" "${sample_name}" "${project}"
 	fi
-	tax_file="${OUTDATADIR}/${sample_name}.txt"
+	tax_file="${OUTDATADIR}/${sample_name}.tax"
 	#echo "Looking at ${OUTDATADIR}/${sample_name}.tax"
 	genus=$(tail -2 "${OUTDATADIR}/${sample_name}.tax"| head -n1 | cut -d'	' -f2)
 	species=$(tail -1 "${OUTDATADIR}/${sample_name}.tax" | cut -d'	' -f2)
