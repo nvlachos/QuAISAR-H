@@ -557,6 +557,9 @@ process_samples()	{
 	echo "autoANI - ${timeANI} seconds" >> "${time_summary}"
 	totaltime=$((totaltime + timeANI))
 
+	# Get taxonomy from currently available files (Only ANI, has not been run...yet, will change after discussions)
+	"${shareScript}/determine_taxID.sh" "${filename}" "${project}"
+
 	### BUSCO on prokka output ###
 	echo "----- Running BUSCO on Assembly -----"
 	# Check to see if prokka finished successfully
