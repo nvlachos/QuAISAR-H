@@ -49,32 +49,23 @@ Family="Not_assigned"
 Genus="Not_assigned"
 species="Not_assigned"
 
-if [[ -s "${processed}/${project}/${sample}/ANI/best_ANI_hits_ordered(${sample}_vs_All).txt" ]]; then
+if [[ -s "${processed}/${project}/${sample}/ANI/best_ANI_hits_ordered(${sample}_vs_Acinetobacter).txt" ]]; then
 	source="ANI"
 	#echo "${source}"
 	# Lookup Taxonomy
   #echo "${processed}/${project}/${sample}/ANI/best_ANI_hits_ordered(${sample}_vs_All).txt"
-	header=$(head -n 1 "${processed}/${project}/${sample}/ANI/best_ANI_hits_ordered(${sample}_vs_All).txt")
+	header=$(head -n 1 "${processed}/${project}/${sample}/ANI/best_ANI_hits_ordered(${sample}_vs_Acinetobacter).txt")
 	#echo "${header}"
 	Genus=$(echo "${header}" | cut -d' ' -f1 | cut -d'-' -f2)
 	species=$(echo "${header}" | cut -d' ' -f2 | cut -d'(' -f1)
 	echo "${Genus}-${species}"
-elif [[ -s "${processed}/${project}/${sample}/kraken/postAssembly/${sample}_kraken_summary_assembled_BP_data.txt" ]]; then
-	source="Kraken"
+elif [[ -s "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt" ]]; then
+	source="16s"
 	#echo "${source}"
-	while IFS= read -r line;
-	do
-		# Grab first letter of line (indicating taxonomic level)
-		first=${line::1}
-		# Assign taxonomic level value from 4th value in line (1st-classification level,2nd-% by kraken, 3rd-true % of total reads, 4th-identifier)
-		if [ "${first}" = "S" ]
-		then
-			species=$(echo "${line}" | awk -F ' ' '{print $4}')
-		elif [ "${first}" = "G" ]
-		then
-			Genus=$(echo "${line}" | awk -F ' ' '{print $4}')
-		fi
-	done < "${processed}/${project}/${sample}/kraken/postAssembly/${sample}_kraken_summary_assembled_BP_data.txt"
+		# Lookup Taxonomy
+		line=$(tail -n 1 "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt")
+		Genus=$(echo "${line}" | cut -d"	" -f3 | cut -d" " -f1)
+		species=$(echo "${line}" | cut -d"	" -f3 | cut -d" " -f2)
 elif [[ -s "${processed}/${project}/${sample}/gottcha/${sample}_gottcha_species_summary.txt" ]]; then
 	source="GOTTCHA"
 	#echo "${source}"
@@ -91,13 +82,22 @@ elif [[ -s "${processed}/${project}/${sample}/gottcha/${sample}_gottcha_species_
 			Genus=$(echo "${line}" | awk -F ' ' '{print $4}')
 		fi
 	done < "${processed}/${project}/${sample}/gottcha/${sample}_gottcha_species_summary.txt"
-elif [[ -s "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt" ]]; then
-	source="16s"
+elif [[ -s "${processed}/${project}/${sample}/kraken/postAssembly/${sample}_kraken_summary_assembled_BP_data.txt" ]]; then
+	source="Kraken"
 	#echo "${source}"
-		# Lookup Taxonomy
-		line=$(tail -n 1 "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt")
-		Genus=$(echo "${line}" | cut -d"	" -f3 | cut -d" " -f1)
-		species=$(echo "${line}" | cut -d"	" -f3 | cut -d" " -f2)
+	while IFS= read -r line;
+	do
+		# Grab first letter of line (indicating taxonomic level)
+		first=${line::1}
+		# Assign taxonomic level value from 4th value in line (1st-classification level,2nd-% by kraken, 3rd-true % of total reads, 4th-identifier)
+		if [ "${first}" = "S" ]
+		then
+			species=$(echo "${line}" | awk -F ' ' '{print $4}')
+		elif [ "${first}" = "G" ]
+		then
+			Genus=$(echo "${line}" | awk -F ' ' '{print $4}')
+		fi
+	done < "${processed}/${project}/${sample}/kraken/postAssembly/${sample}_kraken_summary_assembled_BP_data.txt"
 else
 	echo "Exiting, no reliable taxonomy files exist"
 	exit 1
