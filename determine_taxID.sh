@@ -48,14 +48,26 @@ Order="Not_assigned"
 Family="Not_assigned"
 Genus="Not_assigned"
 species="Not_assigned"
+ani_files=0
 
-if [[ -s "${processed}/${project}/${sample}/ANI/best_ANI_hits_ordered(${sample}_vs_Acinetobacter).txt" ]]; then
+for f in ${processed}/${project}/${sample}/ANI/*; do
+	if [[ "${f}" = *"best_ANI_hits_ordered"* ]]; then
+    ani_files=1
+    break
+	fi
+done
+echo "${ani_files}"
+
+if [[ ${ani_files} -gt 0 ]]; then
 	source="ANI"
-	#echo "${source}"
-	# Lookup Taxonomy
-  #echo "${processed}/${project}/${sample}/ANI/best_ANI_hits_ordered(${sample}_vs_All).txt"
-	header=$(head -n 1 "${processed}/${project}/${sample}/ANI/best_ANI_hits_ordered(${sample}_vs_Acinetobacter).txt")
-	#echo "${header}"
+	echo "${source}"
+	if [[ -f "${processed}/${project}/${sample}/ANI/best_ANI_hits_ordered(${sample}_vs_All).txt" ]]; then
+		source_file="${processed}/${project}/${sample}/ANI/best_ANI_hits_ordered(${sample}_vs_All).txt"
+	else
+		source_file=$(ls -t "${processed}/${project}/${sample}/ANI/best_ANI_hits_ordered"* | head -n 1)
+	fi
+	header=$(head -n 1 "${source_file}")
+	echo "${header}"
 	Genus=$(echo "${header}" | cut -d' ' -f1 | cut -d'-' -f2)
 	species=$(echo "${header}" | cut -d' ' -f2 | cut -d'(' -f1)
 	echo "${Genus}-${species}"

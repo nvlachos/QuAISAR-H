@@ -29,7 +29,7 @@ if [[ $# -eq 0 ]]; then
 # Shows a brief uasge/help section if -h option used as first argument
 elif [[ "$1" = "-h" ]]; then
 	echo "Usage is ./run_srst2.sh  sample_name run_ID"
-	echo "Output location is ${processed}/${2}/srst2"
+	echo "Output location is ${processed}/run_ID/sample_name/srst2"
 	exit 0
 fi
 

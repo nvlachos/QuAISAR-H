@@ -35,7 +35,7 @@ elif [[ -z "${1}" ]] || [[ ! -f ${1} ]] ; then
 	exit 1
 # Gives the user a brief usage and help section if requested with the -h option argument
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_SNVPhyl.sh group_name (to identify the different groups analyzed) output_directory folder_name(e.g. outbreak number)"
+	echo "Usage is ./run_SNVPhyl.sh path_to_list_file (to identify the different groups analyzed) output_directory folder_name(e.g. outbreak number)"
 	echo "Phylogeny_analyses folder must contain list of samples (in format of project_id/sample_name) to be compared labelled by group_name.samples. First sample on list will be reference"
 	echo "Output is saved to ${share}/Phylogeny_analyses/group_name/SNVPhyl(or alt_name)"
 	exit 0

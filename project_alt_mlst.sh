@@ -12,14 +12,14 @@
 . "${mod_changers}/pipeline_mods"
 
 #
-# Usage ./run_csstar_proj_parser.sh list_name g/u (gapped/ungapped analysis ran) identity (80/95/98/99/100) output_name plasmid_identity(optional)
+# Usage ./project_alt_mlst.sh list_name output_directory project_name database_to_look_for
 #
 # Pulls out MLST, AR genes, and plasmid for the listed samples and consolidates them into one sheet (per category)
 #
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
-	echo "No argument supplied to run_csstar_proj_parser.sh, exiting"
+	echo "No argument supplied to project_alt_mlst.sh, exiting"
 	exit 1
 # Shows a brief uasge/help section if -h option used as first argument
 elif [[ "$1" = "-h" ]]; then
