@@ -239,6 +239,7 @@ while IFS= read -r line; do
 		"${shareScript}/determine_taxID.sh" "${sample_name}" "${project}"
 	fi
 	tax_file="${OUTDATADIR}/${sample_name}.tax"
+	sed -i '/^$/d' "${OUTDATADIR}/${sample_name}.tax"
 	tax_header=$(head -n1 "${OUTDATADIR}/${sample_name}.tax")
 	taxonomy_source_type=$(echo "${tax_header}" | cut -d'-' -f1)
 	taxonomy_source=$(echo "${tax_header}" | cut -d'-' -f3-)

@@ -559,6 +559,7 @@ process_samples()	{
 
 	# Get taxonomy from currently available files (Only ANI, has not been run...yet, will change after discussions)
 	"${shareScript}/determine_taxID.sh" "${filename}" "${project}"
+	"${OUTDATADIR}/${filename}/${filename}.tax"
 
 	### BUSCO on prokka output ###
 	echo "----- Running BUSCO on Assembly -----"

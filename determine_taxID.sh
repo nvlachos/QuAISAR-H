@@ -118,6 +118,14 @@ else
 	exit 1
 fi
 
+
+if [[ ! -z ${Genus} ]]; then
+	Genus=$(echo ${Genus} | tr -d [:space:])
+fi
+if [[ ! -z ${species} ]]; then
+	species=$(echo ${species} | tr -d [:space:])
+fi
+
 if [[ ${Genus} == "Peptoclostridium" ]]; then
 	Genus="Clostridium"
 fi
