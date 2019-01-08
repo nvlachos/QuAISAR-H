@@ -243,7 +243,7 @@ while IFS= read -r line; do
 	taxonomy_source=$(head -n1 "${OUTDATADIR}/${sample_name}.tax" | cut -d'-' -f3)
 
 	#echo "Looking at ${OUTDATADIR}/${sample_name}.tax"
-	genus=$(tail -2 "${OUTDATADIR}/${sample_name}.tax"| head -n1 | cut -d'	' -f2)
+	genus=$(tail -2 "${OUTDATADIR}/${sample_name}.tax" | head -n1 | cut -d'	' -f2)
 	species=$(tail -1 "${OUTDATADIR}/${sample_name}.tax" | cut -d'	' -f2)
 	taxonomy="${genus} ${species}"
 	if [[ "${taxonomy_source_type}" = "(ANI)" ]]; then
@@ -252,6 +252,7 @@ while IFS= read -r line; do
 		taxonomy_source_type=$(echo "${taxonomy_source_type}" | cut -d'(' -f2 | cut -d')' -f1)
 		confidence_percent=$(head -n1 "${OUTDATADIR}/${sample_name}.tax" | cut -d'-' -f2)
 		confidence_info="NO_ANI...${taxonomy_source_type}=${confidence_percent}"
+	fi
 #	echo "${ANI}"
 # Print all extracted info to primary file
 	echo -e "${project}\t${sample_name}\t${taxonomy_source_type}\t${confidence_info}\t${mlst}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_full.txt
