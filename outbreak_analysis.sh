@@ -239,8 +239,9 @@ while IFS= read -r line; do
 		"${shareScript}/determine_taxID.sh" "${sample_name}" "${project}"
 	fi
 	tax_file="${OUTDATADIR}/${sample_name}.tax"
-	taxonomy_source_type=$(head -n1 "${OUTDATADIR}/${sample_name}.tax" | cut -d'-' -f1)
-	taxonomy_source=$(head -n1 "${OUTDATADIR}/${sample_name}.tax" | cut -d'-' -f3)
+	tax_header=$(head -n1 "${OUTDATADIR}/${sample_name}.tax")
+	taxonomy_source_type=$(echo "${tax_header}" | cut -d'-' -f1)
+	taxonomy_source=$(echo "${tax_header}" | cut -d'-' -f3)
 
 	#echo "Looking at ${OUTDATADIR}/${sample_name}.tax"
 	genus=$(tail -2 "${OUTDATADIR}/${sample_name}.tax" | head -n1 | cut -d'	' -f2)
@@ -250,7 +251,7 @@ while IFS= read -r line; do
 		confidence_info=$(head -n1 "${taxonomy_source}")
 	else
 		taxonomy_source_type=$(echo "${taxonomy_source_type}" | cut -d'(' -f2 | cut -d')' -f1)
-		confidence_percent=$(head -n1 "${OUTDATADIR}/${sample_name}.tax" | cut -d'-' -f2)
+		confidence_percent=$(echo "${tax_header}" | cut -d'-' -f2)
 		confidence_info="NO_ANI...${taxonomy_source_type}=${confidence_percent}"
 	fi
 #	echo "${ANI}"
