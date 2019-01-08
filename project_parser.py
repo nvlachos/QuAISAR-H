@@ -14,7 +14,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 		print(counter, csstar_line)
 		print("Start csstar loop")
 		csstar_line_sections=csstar_line.split("	")
-		ar_list=csstar_line_sections[4].split(",")
+		ar_list=csstar_line_sections[6].split(",")
 		ar_dict={}
 		for ar_gene in ar_list:
 			gene_name=ar_gene.split("[")[0]
@@ -81,7 +81,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 		#	print(k, v)
 		#print("1:",csstar_line_sections[0])
 		#print("0:", csstar_line_sections[0], "1:", csstar_line_sections[1],"2:" , csstar_line_sections[2], "3:", csstar_line_sections[3])
-		samples.append([csstar_line_sections[0], csstar_line_sections[1], csstar_line_sections[2], csstar_line_sections[3], ar_dict])
+		samples.append([csstar_line_sections[0], csstar_line_sections[1], csstar_line_sections[2], csstar_line_sections[3],  csstar_line_sections[4], ar_dict])
 		#print("Total AR genes in sample set:", len(all_ARs_in_file)-1)
 		csstar_line = csstar_file.readline().strip()
 	csstar_file.close
@@ -179,7 +179,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 	#all_AR_to_write.insert(0,",")
 	#all_AR_to_write.insert(0,",")
 	#all_AR_to_write=','.join(map(str, all_AR_to_write))
-	header="id, Project__autocolour, Species__autocolour, MLST__autocolour,"
+	header="id, Project__autocolour, Species_determined_by__autocolour, Species_Support__autocolour , MLST__autocolour,"
 	for thing in all_ar_and_plasmids:
 		header = header + " " + thing + "__autocolour,"
 	header = header[:-1]
@@ -191,22 +191,22 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 	#	print ("2:",sample[0])
 	#return
 	for sample in samples:
-		sample_details=[sample[1], sample[0], sample[2], sample[3]]
+		sample_details=[sample[1], sample[0], sample[2], sample[3], sample[4]]
 		#print("pre:",sample)
 		for gene in all_ar_and_plasmids:
 			status=" "
 			if gene == "|":
 				sample_details.append(gene)
 				continue
-			if sample[4].get(gene):
-				status=sample[4].get(gene)
-			elif sample[5].get(gene):
-				if sample[6].get(gene):
-					status="F:"+sample[5].get(gene)+";P:"+sample[6].get(gene)
-				else:
-					status="F:"+sample[5].get(gene)
+			if sample[5].get(gene):
+				status=sample[5].get(gene)
 			elif sample[6].get(gene):
-				status="P:"+sample[6].get(gene)
+				if sample[7].get(gene):
+					status="F:"+sample[6].get(gene)+";P:"+sample[7].get(gene)
+				else:
+					status="F:"+sample[6].get(gene)
+			elif sample[7].get(gene):
+				status="P:"+sample[7].get(gene)
 			sample_details.append(status)
 		#print("Post Sample check", sample_details)
 		sample_details=','.join(map(str, sample_details))

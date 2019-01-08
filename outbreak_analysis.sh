@@ -239,13 +239,22 @@ while IFS= read -r line; do
 		"${shareScript}/determine_taxID.sh" "${sample_name}" "${project}"
 	fi
 	tax_file="${OUTDATADIR}/${sample_name}.tax"
+	taxonomy_source_type=$(head -n1 "${OUTDATADIR}/${sample_name}.tax" | cut -d'-' -f1)
+	taxonomy_source=$(head -n1 "${OUTDATADIR}/${sample_name}.tax" | cut -d'-' -f3)
+
 	#echo "Looking at ${OUTDATADIR}/${sample_name}.tax"
 	genus=$(tail -2 "${OUTDATADIR}/${sample_name}.tax"| head -n1 | cut -d'	' -f2)
 	species=$(tail -1 "${OUTDATADIR}/${sample_name}.tax" | cut -d'	' -f2)
-	ANI="${genus} ${species}"
+	taxonomy="${genus} ${species}"
+	if [[ "${taxonomy_source_type}" = "(ANI)" ]]; then
+		confidence_info=$(head -n1 "${taxonomy_source}")
+	else
+		taxonomy_source_type=$(echo "${taxonomy_source_type}" | cut -d'(' -f2 | cut -d')' -f1)
+		confidence_percent=$(head -n1 "${OUTDATADIR}/${sample_name}.tax" | cut -d'-' -f2)
+		confidence_info="NO_ANI...${taxonomy_source_type}=${confidence_percent}"
 #	echo "${ANI}"
 # Print all extracted info to primary file
-	echo -e "${project}\t${sample_name}\t${ANI}\t${mlst}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_full.txt
+	echo -e "${project}\t${sample_name}\t${taxonomy_source_type}\t${confidence_info}\t${mlst}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_full.txt
 
 	# Adding in srst2 output in a similar fashion as to how the csstar genes are output to the file.
 	if [[ -s "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
