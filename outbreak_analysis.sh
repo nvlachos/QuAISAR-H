@@ -245,8 +245,8 @@ while IFS= read -r line; do
 	echo "Test-${tax_header};${taxonomy_source_type};${taxonomy_source}"
 
 	#echo "Looking at ${OUTDATADIR}/${sample_name}.tax"
-	genus=$(tail -2 "${OUTDATADIR}/${sample_name}.tax" | head -n1 | cut -d'	' -f2)
-	species=$(tail -1 "${OUTDATADIR}/${sample_name}.tax" | cut -d'	' -f2)
+	genus=$(tail -n2 "${OUTDATADIR}/${sample_name}.tax" | head -n1 | cut -d'	' -f2)
+	species=$(tail -n1 "${OUTDATADIR}/${sample_name}.tax" | cut -d'	' -f2)
 	taxonomy="${genus} ${species}"
 	if [[ "${taxonomy_source_type}" = "(ANI)" ]]; then
 		confidence_info=$(head -n1 "${taxonomy_source}")

@@ -179,7 +179,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 	#all_AR_to_write.insert(0,",")
 	#all_AR_to_write.insert(0,",")
 	#all_AR_to_write=','.join(map(str, all_AR_to_write))
-	header="id, Project__autocolour, Species_determined_by__autocolour, Species_Support__autocolour , MLST__autocolour,"
+	header="id, Project__autocolour, Species__autocolour, Species_determinant__autocolour, Species_Support__autocolour , MLST__autocolour,"
 	for thing in all_ar_and_plasmids:
 		header = header + " " + thing + "__autocolour,"
 	header = header[:-1]
@@ -191,7 +191,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 	#	print ("2:",sample[0])
 	#return
 	for sample in samples:
-		sample_details=[sample[1], sample[0], sample[2], sample[3], sample[4]]
+		sample_details=[sample[1], sample[0], sample[2], sample[3], sample[4], sample[5]]
 		#print("pre:",sample)
 		for gene in all_ar_and_plasmids:
 			status=" "
