@@ -76,10 +76,12 @@ elif [[ -s "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt" ]]
 	#echo "${source}"
 		# Lookup Taxonomy
 		line=$(tail -n 1 "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt")
+		source_file="${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt"
 		Genus=$(echo "${line}" | cut -d"	" -f3 | cut -d" " -f1)
 		species=$(echo "${line}" | cut -d"	" -f3 | cut -d" " -f2)
 elif [[ -s "${processed}/${project}/${sample}/gottcha/${sample}_gottcha_species_summary.txt" ]]; then
 	source="GOTTCHA"
+	source_file="${processed}/${project}/${sample}/gottcha/${sample}_gottcha_species_summary.txt"
 	#echo "${source}"
 	while IFS= read -r line;
 	do
@@ -96,6 +98,7 @@ elif [[ -s "${processed}/${project}/${sample}/gottcha/${sample}_gottcha_species_
 	done < "${processed}/${project}/${sample}/gottcha/${sample}_gottcha_species_summary.txt"
 elif [[ -s "${processed}/${project}/${sample}/kraken/postAssembly/${sample}_kraken_summary_assembled_BP_data.txt" ]]; then
 	source="Kraken"
+	source_file="${processed}/${project}/${sample}/kraken/postAssembly/${sample}_kraken_summary_assembled_BP_data.txt"
 	#echo "${source}"
 	while IFS= read -r line;
 	do
@@ -134,4 +137,4 @@ do
 			break
 	fi
 done < "${local_DBs}/taxes.csv"
-printf "(${source}) \nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n" > "${processed}/${project}/${sample}/${sample}.tax"
+printf "(${source})-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n" > "${processed}/${project}/${sample}/${sample}.tax"
