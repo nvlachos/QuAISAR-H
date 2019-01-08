@@ -241,7 +241,7 @@ while IFS= read -r line; do
 	tax_file="${OUTDATADIR}/${sample_name}.tax"
 	tax_header=$(head -n1 "${OUTDATADIR}/${sample_name}.tax")
 	taxonomy_source_type=$(echo "${tax_header}" | cut -d'-' -f1)
-	taxonomy_source=$(echo "${tax_header}" | cut -d'-' -f3)
+	taxonomy_source=$(echo "${tax_header}" | cut -d'-' -f3-)
 	echo "Test-${tax_header};${taxonomy_source_type};${taxonomy_source}"
 
 	#echo "Looking at ${OUTDATADIR}/${sample_name}.tax"
