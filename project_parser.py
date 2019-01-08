@@ -14,7 +14,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 		print(counter, csstar_line)
 		print("Start csstar loop")
 		csstar_line_sections=csstar_line.split("	")
-		ar_list=csstar_line_sections[5].split(",")
+		ar_list=csstar_line_sections[6].split(",")
 		ar_dict={}
 		for ar_gene in ar_list:
 			gene_name=ar_gene.split("[")[0]
@@ -81,7 +81,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 		#	print(k, v)
 		#print("1:",csstar_line_sections[0])
 		#print("0:", csstar_line_sections[0], "1:", csstar_line_sections[1],"2:" , csstar_line_sections[2], "3:", csstar_line_sections[3])
-		samples.append([csstar_line_sections[0], csstar_line_sections[1], csstar_line_sections[2], csstar_line_sections[3],  csstar_line_sections[4], ar_dict])
+		samples.append([csstar_line_sections[0], csstar_line_sections[1], csstar_line_sections[2], csstar_line_sections[3],  csstar_line_sections[4], csstar_line_sections[5], ar_dict])
 		#print("Total AR genes in sample set:", len(all_ARs_in_file)-1)
 		csstar_line = csstar_file.readline().strip()
 	csstar_file.close
@@ -198,15 +198,15 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 			if gene == "|":
 				sample_details.append(gene)
 				continue
-			if sample[5].get(gene):
-				status=sample[5].get(gene)
-			elif sample[6].get(gene):
-				if sample[7].get(gene):
-					status="F:"+sample[6].get(gene)+";P:"+sample[7].get(gene)
-				else:
-					status="F:"+sample[6].get(gene)
+			if sample[6].get(gene):
+				status=sample[6].get(gene)
 			elif sample[7].get(gene):
-				status="P:"+sample[7].get(gene)
+				if sample[8].get(gene):
+					status="F:"+sample[7].get(gene)+";P:"+sample[8].get(gene)
+				else:
+					status="F:"+sample[7].get(gene)
+			elif sample[7].get(gene):
+				status="P:"+sample[8].get(gene)
 			sample_details.append(status)
 		#print("Post Sample check", sample_details)
 		sample_details=','.join(map(str, sample_details))
