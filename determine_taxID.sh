@@ -67,14 +67,18 @@ Check_source() {
 		if [[ -s "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt" ]]; then
 			best_line=$(head -n1 "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt")
 			largest_line=$(tail -n1 "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt")
+			IFS=', ' read -r -a best_array <<< "$best_line"
+			IFS=', ' read -r -a largest_array <<< "$largest_line"
+			best_arr_size="${#best_array[@]}"
+			largest_arr_size="${#largest_array[@]}"
 			best_species=$(echo ${best_line} | cut -d'	' -f3)
 			largest_species=$(echo ${largest_line} | cut -d'	' -f3)
 			echo "largest:${largest_species}:"
 			echo "best:${best_species}:"
-			if [[ ! -z "${largest_species}" ]]  && [[ "${largest_species}" != "" ]]; then
+			if [[ "${largest_arr_size}" -ge 3 ]]; then
 				do_16s "largest"
 				return
-			elif [[ ! -z "${best_species}" ]]  && [[ "${best_species}" != "" ]]; then
+			elif [[ "${best_arr_size}" -ge 3 ]]; then
 				do_16s "best"
 				return
 			fi
