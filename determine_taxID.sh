@@ -209,4 +209,13 @@ do
 done < "${local_DBs}/taxes.csv"
 
 echo -e "(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
-printf "(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n" > "${processed}/${project}/${sample}/${sample}.tax"
+printf "(${source})-${confidence_index}-${source_file}\n" #D:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
+printf "(${source})-${confidence_index}-${source_file}\nD:	${Domain}\n" #P:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
+printf "(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\n" #C:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
+printf "(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\n" #O:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
+printf "(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\n" #F:	${Family}\nG:	${Genus}\ns:	${species}\n"
+printf "(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\n" #G:	${Genus}\ns:	${species}\n"
+printf "(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\n" #s:	${species}\n"
+printf "(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
+
+#printf "(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n" > "${processed}/${project}/${sample}/${sample}.tax"
