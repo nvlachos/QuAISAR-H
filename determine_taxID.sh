@@ -48,17 +48,52 @@ Order="Not_assigned"
 Family="Not_assigned"
 Genus="Not_assigned"
 species="Not_assigned"
-ani_files=0
+source="Not assigned"
 
-for f in ${processed}/${project}/${sample}/ANI/*; do
-	if [[ "${f}" = *"best_ANI_hits_ordered"* ]]; then
-    ani_files=1
-    break
+Check_source() {
+	start_at="${1}"
+	if [[ "${start_at}" -le 1 ]]; then
+		for f in ${processed}/${project}/${sample}/ANI/*; do
+			if [[ "${f}" = *"best_ANI_hits_ordered"* ]]; then
+				header=$(head -n1 ${f})
+				if [[ ${header} != "No matching ANI database found for"* ]]; then
+		    	do_ANI
+		    	return
+				fi
+			fi
+		done
 	fi
-done
-echo "${ani_files}"
+	if [[ "${start_at}" -le 2 ]]; then
+		if [[ -s "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt" ]]; then
+			best_line=$(head -n1 "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt")
+			largest_line=$(tail -n1 "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt")
+			best_species=$(echo ${best_line} | cut -d'	' -f3)
+			largest_species=$(echo ${largest_line} | cut -d'	' -f3)
+			if [[ ! -z "${largest_species}" ]]; then
+				do_16s "largest"
+				return
+			elif [[ ! -z "${best_species}" ]]; then
+				do_16s "best"
+				return
+			fi
+		fi
+	fi
+	if [[ "${start_at}" -le 3 ]];then
+		if [[ -s "${processed}/${project}/${sample}/gottcha/${sample}_gottcha_species_summary.txt" ]]; then
+			do_GOTTCHA
+			return
+		fi
+	fi
+	if [[ "${start_at}" -le 4 ]]; then
+		if [[ -s "${processed}/${project}/${sample}/kraken/postAssembly/${sample}_kraken_summary_assembled_BP_data.txt" ]]; then
+			do_Kraken
+		return
+		fi
+	fi
+	echo "No ACCEPTABLE taxonomy file found to use"
+}
 
-if [[ ${ani_files} -gt 0 ]]; then
+do_ANI() {
 	source="ANI"
 	echo "${source}"
 	if [[ -f "${processed}/${project}/${sample}/ANI/best_ANI_hits_ordered(${sample}_vs_All).txt" ]]; then
@@ -71,15 +106,24 @@ if [[ ${ani_files} -gt 0 ]]; then
 	Genus=$(echo "${header}" | cut -d' ' -f1 | cut -d'-' -f2)
 	species=$(echo "${header}" | cut -d' ' -f2 | cut -d'(' -f1)
 	echo "${Genus}-${species}"
-elif [[ -s "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt" ]]; then
-	source="16s"
-	#echo "${source}"
-		# Lookup Taxonomy
+}
+
+do_16s() {
+	if [[ "${1}" = "largest" ]]; then
 		line=$(tail -n 1 "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt")
-		source_file="${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt"
-		Genus=$(echo "${line}" | cut -d"	" -f3 | cut -d" " -f1)
-		species=$(echo "${line}" | cut -d"	" -f3 | cut -d" " -f2)
-elif [[ -s "${processed}/${project}/${sample}/gottcha/${sample}_gottcha_species_summary.txt" ]]; then
+		source="16s_largest"
+	elif [[ "${1}" = "best" ]]; then
+		line=$(head -n 1 "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt")
+		source="16s_best"
+	else
+		break
+	fi
+	source_file="${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt"
+	Genus=$(echo "${line}" | cut -d"	" -f3 | cut -d" " -f1)
+	species=$(echo "${line}" | cut -d"	" -f3 | cut -d" " -f2)
+}
+
+do_GOTTCHA() {
 	source="GOTTCHA"
 	source_file="${processed}/${project}/${sample}/gottcha/${sample}_gottcha_species_summary.txt"
 	#echo "${source}"
@@ -96,7 +140,9 @@ elif [[ -s "${processed}/${project}/${sample}/gottcha/${sample}_gottcha_species_
 			Genus=$(echo "${line}" | awk -F ' ' '{print $4}')
 		fi
 	done < "${processed}/${project}/${sample}/gottcha/${sample}_gottcha_species_summary.txt"
-elif [[ -s "${processed}/${project}/${sample}/kraken/postAssembly/${sample}_kraken_summary_assembled_BP_data.txt" ]]; then
+}
+
+do_Kraken() {
 	source="Kraken"
 	source_file="${processed}/${project}/${sample}/kraken/postAssembly/${sample}_kraken_summary_assembled_BP_data.txt"
 	#echo "${source}"
@@ -113,11 +159,9 @@ elif [[ -s "${processed}/${project}/${sample}/kraken/postAssembly/${sample}_krak
 			Genus=$(echo "${line}" | awk -F ' ' '{print $4}')
 		fi
 	done < "${processed}/${project}/${sample}/kraken/postAssembly/${sample}_kraken_summary_assembled_BP_data.txt"
-else
-	echo "Exiting, no reliable taxonomy files exist"
-	exit 1
-fi
+}
 
+Check_source 0
 
 if [[ ! -z ${Genus} ]]; then
 	Genus=$(echo ${Genus} | tr -d [:space:])
@@ -145,4 +189,5 @@ do
 			break
 	fi
 done < "${local_DBs}/taxes.csv"
+
 printf "(${source})-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n" > "${processed}/${project}/${sample}/${sample}.tax"
