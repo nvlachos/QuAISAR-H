@@ -371,6 +371,16 @@ process_samples()	{
 	echo "Gottcha - ${timeGott} seconds" >> "${time_summary}"
 	totaltime=$((totaltime + timeGott))
 
+	# Check reads using SRST2
+	echo "----- Running SRST2 -----"
+	start=$SECONDS
+	"${shareScript}/run_srst2_on_singleDB.sh" "${filename}" "${project}"
+	"${shareScript}/run_srst2_on_singleDB_alternateDB.sh" "${filename}" "${project}" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
+	end=$SECONDS
+	timesrst2=$((end - start))
+	echo "SRST2 - ${timesrst2} seconds" >> "${time_summary}"
+	totaltime=$((totaltime + timesrst2))
+
 	######  Assembling Using SPAdes  ######
 	echo "----- Assembling Using SPAdes -----"
 	# Get start time of SPAdes
@@ -462,7 +472,7 @@ process_samples()	{
 	"${shareScript}/16s_blast.sh" "${filename}" "${project}"
 	end=$SECONDS
 	time16s=$((end - start))
-	echo "SRST2 - ${time16s} seconds" >> "${time_summary}"
+	echo "16S - ${time16s} seconds" >> "${time_summary}"
 	totaltime=$((totaltime + time16s))
 
 	# Get taxonomy from currently available files (Only ANI, has not been run...yet, will change after discussions)
@@ -618,16 +628,6 @@ process_samples()	{
 	timestar=$((end - start))
 	echo "c-SSTAR - ${timestar} seconds" >> "${time_summary}"
 	totaltime=$((totaltime + timestar))
-
-	# Check reads using SRST2
-	echo "----- Running SRST2 -----"
-	start=$SECONDS
-	"${shareScript}/run_srst2_on_singleDB.sh" "${filename}" "${project}"
-	"${shareScript}/run_srst2_on_singleDB_alternateDB.sh" "${filename}" "${project}" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
-	end=$SECONDS
-	timesrst2=$((end - start))
-	echo "SRST2 - ${timesrst2} seconds" >> "${time_summary}"
-	totaltime=$((totaltime + timesrst2))
 
 	# Get MLST profile
 	echo "----- Running MLST -----"
