@@ -48,7 +48,10 @@ Order="Not_assigned"
 Family="Not_assigned"
 Genus="Not_assigned"
 species="Not_assigned"
-source="Not assigned"
+source="Not_assigned"
+confidence_index="0%"
+source_file="Not_assigned"
+
 
 Check_source() {
 	start_at="${1}"
@@ -111,20 +114,25 @@ do_ANI() {
 	echo "${header}"
 	Genus=$(echo "${header}" | cut -d' ' -f1 | cut -d'-' -f2)
 	species=$(echo "${header}" | cut -d' ' -f2 | cut -d'(' -f1)
+	confidence_index=$(echo "${header}" | cut -d' ' -f1 | cut -d'-' -f1)
 	echo "${Genus}-${species}"
 }
 
 do_16s() {
 	if [[ "${1}" = "largest" ]]; then
+		source_file="${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt"
 		line=$(tail -n 1 "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt")
 		source="16s_largest"
+		confidence_index=$(head -n1 "${processed}/${project}/${sample}/16s/${sample}.nt.RemoteBLASTN.sorted" | cut -d'	' -f3)
+		confidence_index="${confidence_index}%"
 	elif [[ "${1}" = "best" ]]; then
 		line=$(head -n 1 "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt")
 		source="16s_best"
+		confidence_index=$(head -n1 "${processed}/${project}/${sample}/16s/${sample}.nt.RemoteBLASTN" | cut -d'	' -f3)
+		confidence_index="${confidence_index}%"
 	else
 		break
 	fi
-	source_file="${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt"
 	Genus=$(echo "${line}" | cut -d"	" -f3 | cut -d" " -f1)
 	species=$(echo "${line}" | cut -d"	" -f3 | cut -d" " -f2)
 }
@@ -145,6 +153,8 @@ do_GOTTCHA() {
 		then
 			Genus=$(echo "${line}" | awk -F ' ' '{print $4}')
 		fi
+		confidence_index=$(tail -n1 "${source_file}" | cut -d' ' -f2)
+		confidence_index="${confidence_index}%"
 	done < "${processed}/${project}/${sample}/gottcha/${sample}_gottcha_species_summary.txt"
 }
 
@@ -165,6 +175,8 @@ do_Kraken() {
 			Genus=$(echo "${line}" | awk -F ' ' '{print $4}')
 		fi
 	done < "${processed}/${project}/${sample}/kraken/postAssembly/${sample}_kraken_summary_assembled_BP_data.txt"
+	confidence_index=$(tail -n1 "${source_file}" | cut -d' ' -f2)
+	confidence_index="${confidence_index}%"
 }
 
 Check_source 0
@@ -196,4 +208,4 @@ do
 	fi
 done < "${local_DBs}/taxes.csv"
 
-printf "(${source})-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n" > "${processed}/${project}/${sample}/${sample}.tax"
+printf "(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n" > "${processed}/${project}/${sample}/${sample}.tax"
