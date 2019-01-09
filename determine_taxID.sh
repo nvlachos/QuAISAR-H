@@ -217,5 +217,16 @@ printf "(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylu
 printf "(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\n" #G:	${Genus}\ns:	${species}\n"
 printf "(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\n" #s:	${species}\n"
 printf "(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
+printf "${species}\n"
+printf "${Genus}\ns:	${species}\n"
+printf "${Family}\nG:	${Genus}\ns:	${species}\n"
+printf "${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
+printf "${Class}\nO:	${Order}\n" #F:	${Family}\nG:	${Genus}\ns:	${species}\n"
+printf "${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\n" #G:	${Genus}\ns:	${species}\n"
+printf "${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\n" #s:	${species}\n"
+printf "${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\n" #G:	${Genus}\ns:	${species}\n"
+printf "${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\n" #s:	${species}\n"
+printf "(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
+
 
 #printf "(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n" > "${processed}/${project}/${sample}/${sample}.tax"
