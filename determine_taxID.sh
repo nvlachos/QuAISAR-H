@@ -69,6 +69,8 @@ Check_source() {
 			largest_line=$(tail -n1 "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt")
 			best_species=$(echo ${best_line} | cut -d'	' -f3)
 			largest_species=$(echo ${largest_line} | cut -d'	' -f3)
+			echo "largest:${largest_species}:"
+			echo "best:${best_species}:"
 			if [[ ! -z "${largest_species}" ]]  && [[ "${largest_species}" != "" ]]; then
 				do_16s "largest"
 				return
