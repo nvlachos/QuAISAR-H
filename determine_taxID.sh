@@ -90,6 +90,8 @@ Check_source() {
 			else
 					echo "Best not 3+"
 			fi
+		else
+			echo "No 16s FILE??"
 		fi
 	fi
 	if [[ "${start_at}" -le 3 ]];then
