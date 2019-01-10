@@ -49,7 +49,7 @@ Family="Not_assigned"
 Genus="Not_assigned"
 species="Not_assigned"
 source="Not_assigned"
-confidence_index="0%"
+confidence_index="0"
 source_file="Not_assigned"
 
 
@@ -124,12 +124,12 @@ do_16s() {
 		line=$(tail -n 1 "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt")
 		source="16s_largest"
 		confidence_index=$(head -n1 "${processed}/${project}/${sample}/16s/${sample}.nt.RemoteBLASTN.sorted" | cut -d'	' -f3)
-		confidence_index="${confidence_index}%"
+		confidence_index="${confidence_index}"
 	elif [[ "${1}" = "best" ]]; then
 		line=$(head -n 1 "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt")
 		source="16s_best"
 		confidence_index=$(head -n1 "${processed}/${project}/${sample}/16s/${sample}.nt.RemoteBLASTN" | cut -d'	' -f3)
-		confidence_index="${confidence_index}%"
+		confidence_index="${confidence_index}"
 	else
 		break
 	fi
@@ -154,7 +154,7 @@ do_GOTTCHA() {
 			Genus=$(echo "${line}" | awk -F ' ' '{print $4}')
 		fi
 		confidence_index=$(tail -n1 "${source_file}" | cut -d' ' -f2)
-		confidence_index="${confidence_index}%"
+		confidence_index="${confidence_index}"
 	done < "${processed}/${project}/${sample}/gottcha/${sample}_gottcha_species_summary.txt"
 }
 
@@ -176,7 +176,7 @@ do_Kraken() {
 		fi
 	done < "${processed}/${project}/${sample}/kraken/postAssembly/${sample}_kraken_summary_assembled_BP_data.txt"
 	confidence_index=$(tail -n1 "${source_file}" | cut -d' ' -f2)
-	confidence_index="${confidence_index}%"
+	confidence_index="${confidence_index}"
 }
 
 Check_source 0
@@ -208,15 +208,15 @@ do
 	fi
 done < "${local_DBs}/taxes.csv"
 
-echo -e "1:(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
-printf "2:(${source})-${confidence_index}-${source_file}\n" #D:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
-printf "3:(${source})-${confidence_index}-${source_file}\nD:	${Domain}\n" #P:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
-printf "4:(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\n" #C:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
-printf "5:(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\n" #O:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
-printf "6:(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\n" #F:	${Family}\nG:	${Genus}\ns:	${species}\n"
-printf "7:(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\n" #G:	${Genus}\ns:	${species}\n"
-printf "8:(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\n" #s:	${species}\n"
-printf "9:(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
+echo -e "1:(${source})-${confidence_index}%-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
+printf "2:(${source})-${confidence_index}%%-${source_file}\n" #D:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
+printf "3:(${source})-${confidence_index}%%-${source_file}\nD:	${Domain}\n" #P:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
+printf "4:(${source})-${confidence_index}%%-${source_file}\nD:	${Domain}\nP:	${Phylum}\n" #C:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
+printf "5:(${source})-${confidence_index}%%-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\n" #O:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
+printf "6:(${source})-${confidence_index}%%-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\n" #F:	${Family}\nG:	${Genus}\ns:	${species}\n"
+printf "7:(${source})-${confidence_index}%%-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\n" #G:	${Genus}\ns:	${species}\n"
+printf "8:(${source})-${confidence_index}%%-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\n" #s:	${species}\n"
+printf "9:(${source})-${confidence_index}%%-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
 printf "10:${species}\n"
 printf "11:${Genus}\ns:	${species}\n"
 printf "12:${Family}\nG:	${Genus}\ns:	${species}\n"
@@ -225,8 +225,8 @@ printf "14:${Class}\nO:	${Order}\n" #F:	${Family}\nG:	${Genus}\ns:	${species}\n"
 printf "15:${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\n" #G:	${Genus}\ns:	${species}\n"
 printf "16:${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\n" #s:	${species}\n"
 printf "17:${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\n" #G:	${Genus}\ns:	${species}\n"
-printf "18:${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\n" #s:	${species}\n"
-printf "19:(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
+printf "18:${confidence_index}%%-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\n" #s:	${species}\n"
+printf "19:(${source})-${confidence_index}%%-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n"
 
 
 #printf "(${source})-${confidence_index}-${source_file}\nD:	${Domain}\nP:	${Phylum}\nC:	${Class}\nO:	${Order}\nF:	${Family}\nG:	${Genus}\ns:	${species}\n" > "${processed}/${project}/${sample}/${sample}.tax"
