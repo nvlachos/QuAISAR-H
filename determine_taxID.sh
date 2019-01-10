@@ -83,7 +83,8 @@ Check_source() {
 				return
 			else
 				echo "Largest not 3+"
-			elif [[ "${best_arr_size}" -ge 3 ]]; then
+			fi
+			if [[ "${best_arr_size}" -ge 3 ]]; then
 				do_16s "best"
 				return
 			else
