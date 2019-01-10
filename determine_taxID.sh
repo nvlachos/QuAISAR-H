@@ -104,18 +104,18 @@ Check_source() {
 
 do_ANI() {
 	source="ANI"
-	echo "${source}"
+	#echo "${source}"
 	if [[ -f "${processed}/${project}/${sample}/ANI/best_ANI_hits_ordered(${sample}_vs_All).txt" ]]; then
 		source_file="${processed}/${project}/${sample}/ANI/best_ANI_hits_ordered(${sample}_vs_All).txt"
 	else
 		source_file=$(ls -t "${processed}/${project}/${sample}/ANI/best_ANI_hits_ordered"* | head -n 1)
 	fi
 	header=$(head -n 1 "${source_file}")
-	echo "${header}"
+	#echo "${header}"
 	Genus=$(echo "${header}" | cut -d' ' -f1 | cut -d'-' -f2)
 	species=$(echo "${header}" | cut -d' ' -f2 | cut -d'(' -f1)
 	confidence_index=$(echo "${header}" | cut -d' ' -f1 | cut -d'%' -f1)
-	echo "${Genus}-${species}"
+	#echo "${Genus}-${species}"
 }
 
 do_16s() {
