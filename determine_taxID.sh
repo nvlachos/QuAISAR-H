@@ -76,8 +76,8 @@ Check_source() {
 			largest_arr_size="${#largest_array[@]}"
 			best_species=$(echo ${best_line} | cut -d'	' -f3)
 			largest_species=$(echo ${largest_line} | cut -d'	' -f3)
-			echo "largest:${largest_species}:"
-			echo "best:${best_species}:"
+			#echo "largest:${largest_species}:"
+			#echo "best:${best_species}:"
 			if [[ "${largest_arr_size}" -ge 3 ]]; then
 				do_16s "largest"
 				return
@@ -114,7 +114,7 @@ do_ANI() {
 	echo "${header}"
 	Genus=$(echo "${header}" | cut -d' ' -f1 | cut -d'-' -f2)
 	species=$(echo "${header}" | cut -d' ' -f2 | cut -d'(' -f1)
-	confidence_index=$(echo "${header}" | cut -d' ' -f1 | cut -d'-' -f1)
+	confidence_index=$(echo "${header}" | cut -d' ' -f1 | cut -d'%' -f1)
 	echo "${Genus}-${species}"
 }
 
