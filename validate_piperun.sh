@@ -860,30 +860,31 @@ fi
 #Check ANI
 ani_found=false
 # Goes through each file in the ANI folder to find if any match the proper format of the ANI output (this keeps old version and formats from sneaking in, pretty much uselss at this point)
-for file in "${OUTDATADIR}/ANI/"*
-do
-	# If filename matches format, grabs best hit info (first line) and note that a match was found
-	#echo "Checking for ${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus,}).txt"
-	if [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus,}).txt" ]]; then
-		mv "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus,}).txt" "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus^}).txt"
-		   #"${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus^}).txt"
-	fi
-	if [[ "${file}" == *"best_ANI_hits_ordered(${1}_vs_"* ]]; then
-		filename=${file}
-		#echo "${OUTDATADIR}"
-		echo "${file}"
-		echo "${dec_genus^}"
-		if [[ -f "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_All).txt" ]]; then
-			#echo "ALL"
-			ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_All).txt")
-		elif [[ -f "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus^}).txt" ]]; then
-			#echo "${dec_genus^}"
-			ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus^}).txt")
+if [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus,}).txt" ]]; then
+	mv "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus,}).txt" "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus^}).txt"
+		 #"${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus^}).txt"
+fi
+if [[ -f "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_All).txt" ]]; then
+	#echo "ALL"
+	ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_All).txt")
+	ani_found=true
+elif [[ -f "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus^}).txt" ]]; then
+	ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${dec_genus^}).txt")
+	ani_found=true
+else
+	for file in "${OUTDATADIR}/ANI/"*
+	do
+		if [[ "${file}" == *"best_ANI_hits_ordered(${1}_vs_"* ]]; then
+			filename=${file}
+			#echo "${OUTDATADIR}"
+			echo "${file}"
+			echo "${dec_genus^}"
+			ani_info=$(head -n 1 "${file}")
+			ani_found=true
+			break
 		fi
-		ani_found=true
-		break
-	fi
-done
+	done
+fi
 # Checks to see if the match boolean was toggled, if so it extracts the best match info and database from the string
 if [[ "${ani_found}" = true ]]; then
 	genusDB=$(echo "${filename##*/}" | cut -d'_' -f6 | cut -d')' -f1)
