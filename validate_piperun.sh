@@ -877,8 +877,8 @@ else
 		if [[ "${file}" == *"best_ANI_hits_ordered(${1}_vs_"* ]]; then
 			filename=${file}
 			#echo "${OUTDATADIR}"
-			echo "${file}"
-			echo "${dec_genus^}"
+			#echo "${file}"
+			#echo "${dec_genus^}"
 			ani_info=$(head -n 1 "${file}")
 			ani_found=true
 			break
