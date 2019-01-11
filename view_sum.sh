@@ -259,7 +259,7 @@ while IFS= read -r var; do
 			# Determine way to check for multiple species above 30%
 			warning_flags="${warning_flags}-High_#_unclassified_reads_kraken(weighted)"
 			warnings=$(( warnings + 1 ))
-		elif [[ "${tool}" == "Assembl_Ratio" ]]; then
+		elif [[ "${tool}" == "Assembly_Ratio" ]]; then
 			warning_flags="${warning_flags}-Species_not_found_in_MMB_Bugs_database"
 			warnings=$(( warnings + 1 ))
 		elif [[ "${tool}" == "MLST" ]]; then
