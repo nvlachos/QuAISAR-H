@@ -196,7 +196,7 @@ while IFS= read -r var; do
 			notes="${notes}<>1 Species found in kraken list file above ${contamination_threshold}"
 		fi
 	elif [[ "${tool_status}" == "WARNING" ]]; then
-		echo "Found warning"
+		#echo "Found warning"
 		if [[ "${tool}" == "FASTQs" ]]; then
 			if [[ ! -s "${processed}/${1}/${sample_name}/FASTQs/${1}_R1_001.fastq" ]]; then
 				warning_flags="${warning_flags}-Missing_R1_reads_file"
