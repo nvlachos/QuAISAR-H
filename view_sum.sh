@@ -408,7 +408,7 @@ while IFS= read -r var; do
 		elif [[ "${tool}" == "QUAST" ]]; then
 			failure_flags="${failure_flags}-NO_QUAST_report"
 			failures=$(( failures + 1 ))
-		elif [[ "${tool}" == "Assemblyratio" ]]; then
+		elif [[ "${tool}" == "Assembly_Ratio" ]]; then
 			if [[ "${tool_details}" == *"Too large"* ]]; then
 				failure_flags="${failure_flags}-Assembly_is_>1.2x"
 				failures=$(( failures + 1 ))
