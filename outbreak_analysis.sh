@@ -191,6 +191,7 @@ while IFS= read -r line; do
 		echo "IT STILL thinks it needs to run ${sample_name} through normal csstar"
 		#${shareScript}/run_c-sstar_on_single.sh "${sample_name}" "${gapping}" "${sim}" "${project}"
 		#ARDB_full="${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
+		exit
 	fi
 	#echo "${ARDB_full}"
 	# Extracts all AR genes from normal csstar output file and creates a lits of all genes that pass the filtering steps
