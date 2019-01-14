@@ -176,6 +176,8 @@ if [[ "${run_srst2}" = "true" ]]; then
 	qsub -sync y ./abl_mass_qsub_srst2.sh "${output_directory}/${4}_srst2_todo.txt" 25
 fi
 
+sleep 5
+
 # # Loop through and extracts and formats AR genes found in all isolates, as well as the primary MLST type and plasmid replicons. Each are output to separate files. Any AR genes that do not meet the length or % identity are copied to the rejects file.
 while IFS= read -r line; do
  	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
