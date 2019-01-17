@@ -128,7 +128,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 			sample_f_plasmids_dict={}
 			sample_p_plasmids_dict={}
 		source_assembly=plasmid_line_sections[2]
-		print("Test:"+plasmid_line_sections[4]+":")
+		#print("Test:"+plasmid_line_sections[4]+":")
 		#if plasmid_line_sections[4].find("_contigs-") >= 0:
 		#	line = plas_file.readline().strip()
 		#	continue

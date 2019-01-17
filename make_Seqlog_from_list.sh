@@ -152,7 +152,7 @@ while IFS= read -r var; do
 				ass_length=$(sed -n '16p' "${OUTDATADIR}/Assembly_Stats/${sample_name}_report.tsv" | sed -r 's/[\t]+/ /g' | cut -d' ' -f3)
 				#Check Assembly ratio against expected size to see if it is missing a large portion or if there is contamination/double genome
 				dec_genus_initial="${dec_genus:0:1}"
-				ass_ID="${dec_genus_initial}.${species_post}"
+				ass_ID="${dec_genus_initial}.${dec_species}"
 				echo "About to check mmb_bugs[${ass_ID}]"
 				if [[ ! -z "${mmb_bugs[${ass_ID}]}" ]]; then
 					#echo "Found Bug in DB: ${ass_ID}-${mmb_bugs[${ass_ID}]}"
@@ -207,8 +207,18 @@ while IFS= read -r var; do
 	elif [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${dec_genus}).txt" ]]; then
 		ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${dec_genus}).txt")
 	# Report that more than one file exists
-	elif [[ ${file_count} -gt 1 ]]; then
-		ani_info="More than one ANI file exists"
+	else
+		for file in "${OUTDATADIR}/ANI/"*
+		do
+			if [[ "${file}" == *"best_ANI_hits_ordered(${sample_name}_vs_"* ]]; then
+				filename=${file}
+				#echo "${OUTDATADIR}"
+				#echo "${file}"
+				#echo "${dec_genus^}"
+				ani_info=$(head -n 1 "${file}")
+				break
+			fi
+		done
 	fi
 	# Extract q30 reads from qcCounts to calculate average coverage as q30_reads/assembly_length
 	q30_reads=$(echo "${read_qc_info}" | awk -F ' ' '{print $2}')
