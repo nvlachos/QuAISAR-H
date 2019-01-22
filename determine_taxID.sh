@@ -79,11 +79,19 @@ Check_source() {
 			#echo "largest:${largest_species}:"
 			#echo "best:${best_species}:"
 			if [[ "${largest_arr_size}" -ge 3 ]]; then
-				do_16s "largest"
-				return
+				if [[ "${largest_array[2]}" == "Unidentified" ]]; then
+					:
+				else
+					do_16s "largest"
+					return
+				fi
 			elif [[ "${best_arr_size}" -ge 3 ]]; then
-				do_16s "best"
-				return
+				if [[ "${best_array[2]}" == "Unidentified" ]]; then
+					:
+				else
+					do_16s "best"
+					return
+				fi
 			fi
 		fi
 	fi
@@ -99,7 +107,7 @@ Check_source() {
 		return
 		fi
 	fi
-	echo "No ACCEPTABLE taxonomy file found to use"
+	echo "No ACCEPTABLE source found to determine taxonomy"
 }
 
 do_ANI() {

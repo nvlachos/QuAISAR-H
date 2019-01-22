@@ -133,6 +133,11 @@ while IFS= read -r var; do
 		type=$(echo "${info}" | cut -d' ' -f1)
 		genus_16s=$(echo "${info}" | cut -d'	' -f3 | cut -d' ' -f1)
 		species_16s=$(echo "${info}" | cut -d'	' -f3 | cut -d' ' -f2)
+		if [[ -z "${genus_16s}" ]]; then
+			genus_16s="Unidentifiable"
+		if [[ -z "${species_16s}"]]; then
+			species_16s="NO_16s_found"
+		fi
 #		echo "g-${genus_16s};s-${species}"
 		g_s_16s="${genus_16s} ${species_16s}"
 #		echo "g_s_16-${g_s_16s}"
