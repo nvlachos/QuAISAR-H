@@ -135,7 +135,7 @@ while IFS= read -r var; do
 		species_16s=$(echo "${info}" | cut -d'	' -f3 | cut -d' ' -f2)
 		if [[ -z "${genus_16s}" ]]; then
 			genus_16s="Unidentifiable"
-		if [[ -z "${species_16s}"]]; then
+		if [[ -z "${species_16s}" ]]; then
 			species_16s="NO_16s_found"
 		fi
 #		echo "g-${genus_16s};s-${species}"
