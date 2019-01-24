@@ -286,23 +286,27 @@ if [[ "${best_file}" = *"_scaffolds_trimmed" ]]; then
 					fi
 				done < ${processed}/${project}/${sample_name}/${sample_name}_pipeline_stats.txt
 		fi
-	done < ${5}
-# if the best hit cmoes from the aniDB then lookup the taxonomy on ncbi
+	done < ${4}
+# if the best hit comes from the aniDB then lookup the taxonomy on ncbi
 else
 	#Extracts the accession number from the definition line
 	accession=$(echo "${def_array[2]}" | cut -d' ' -f1  | cut -d'>' -f2)
 	#Looks up the NCBI genus species from the accession number
 	best_organism_guess=$(python "${shareScript}/entrez_get_taxon_from_accession.py" "${accession}" "${me}")
 	counter=0
+		echo "pre-${best_organism_guess}"
 	while counter < 3; do
 		if [[ -z "${best_organism_guess}" ]]; then
 			best_organism_guess=$(python "${shareScript}/entrez_get_taxon_from_accession.py" "${accession}" "${me}")
 		fi
+		echo "${counter}-${best_organism_guess}"
 		counter=$(( counter + 1 ))
 	done
+		echo "post1-${best_organism_guess}"
 	if [[ -z "${best_organism_guess}" ]]; then
 		best_organism_guess=$(head -n1 "${best_file}" | cut -d',' -f1 | cut -d ' ' -f1-)
 	fi
+		echo "post2-${best_organism_guess}"
 
 # Uncomment this if you want to restrict ID to only genus species, without more resolute definition
 #best_organism_guess_arr=($best_organism_guess})
