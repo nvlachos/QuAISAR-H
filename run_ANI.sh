@@ -307,7 +307,7 @@ else
 		best_organism_guess=$(head -n1 "${best_file}" | cut -d',' -f1 | cut -d ' ' -f1-)
 	fi
 		echo "post2-${best_organism_guess}"
-
+fi
 # Uncomment this if you want to restrict ID to only genus species, without more resolute definition
 #best_organism_guess_arr=($best_organism_guess})
 #best_organism_guess="${best_organism_guess_arr[@]:0:2}"
