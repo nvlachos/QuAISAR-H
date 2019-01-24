@@ -295,7 +295,7 @@ else
 	best_organism_guess=$(python "${shareScript}/entrez_get_taxon_from_accession.py" "${accession}" "${me}")
 	counter=0
 		echo "pre-${best_organism_guess}"
-	while counter < 3; do
+	while [ ${counter} -lt 3 ]; do
 		if [[ -z "${best_organism_guess}" ]]; then
 			best_organism_guess=$(python "${shareScript}/entrez_get_taxon_from_accession.py" "${accession}" "${me}")
 		fi
