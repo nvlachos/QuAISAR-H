@@ -31,7 +31,6 @@ share="/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR"
 processed="/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles"
 # Locations of all scripts and necessary accessory files
 shareScript="$(pwd)"
-echo "${shareScript}"
 # Location of any files being called that have an effect on loaded modules
 mod_changers="${shareScript}/module_changers"
 # Local databases that are necessary for pipeline...ANI, BUSCO, star, adapters, phiX
@@ -182,3 +181,4 @@ project_parser_plasmid_Percent_identity=40
 if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
+processed=/scicomp/home/ktr2/Projects/GeneFlow/Workflows/QuAISAR-H/output

@@ -725,11 +725,11 @@ run_start_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 
 #Each file in the list is checked individually for successful completion and added then added to the log for the run
 if [[ "${is_full_run}" = "true" ]]; then
-	mkdir "${share}/Processing_Logs/${run_name}_on_${run_start_time}"
-	log_file="${share}/Processing_Logs/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}.log"
+	mkdir -p "${processed}/${PROJECT}/Processing_Logs/${run_name}_on_${run_start_time}"
+	log_file="${processed}/${PROJECT}/Processing_Logs/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}.log"
 else
-	mkdir "${share}/Processing_Logs/${run_name}_on_${run_start_time}"
-	log_file="${share}/Processing_Logs/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}.log"
+	mkdir -p "${processed}/${PROJECT}/Processing_Logs/${run_name}_on_${run_start_time}"
+	log_file="${processed}/${PROJECT}/Processing_Logs/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}.log"
 fi
 
 #Get the time the run started to use as the identifier
@@ -772,9 +772,9 @@ if [[ "${is_full_run}" = "true" ]];then
 # If a list or single sample was run through the pipeline instead of a full run. The log file is copied over and renamed
 elif [[ "${is_full_run}" = "false" ]];then
 	echo "In not full run move"
-	cp "${log_file}" "${share}/"
+	cp "${log_file}" "${processed}/"
 	runsumdate=$(date "+%m_%d_%Y_at_%Hh_%Mm")
-	mv "${share}/${run_name}_on_${run_start_time}.log" "${share}/${quick_list}_summary_at_${runsumdate}.sum"
+	mv "${processed}/${run_name}_on_${run_start_time}.log" "${processed}/${quick_list}_summary_at_${runsumdate}.sum"
 	# summary file is consolidated and prepped to send to email recipient(s)
 	runsum=$(${shareScript}/view_sum.sh ${quick_list}_summary_at_${runsumdate}.sum -l)
 	outarray+="${runsum}"
@@ -784,14 +784,14 @@ fi
 # If job was submitted move out and err files to processing logs folder
 
 if [[ ${host} = "cluster"* ]]; then
-	if [[ ! -d "${share}/Processing_Logs" ]]; then
-		mkdir "${share}/Processing_Logs"
+	if [[ ! -d "${processed}/${PROJECT}/Processing_Logs" ]]; then
+		mkdir -p "${processed}/${PROJECT}/Processing_Logs"
 	fi
 	if [ -f "${shareScript}/primary_processing.out" ]; then
-		mv "${shareScript}/primary_processing.out" "${share}/Processing_Logs/${run_name}_on_${run_start_time}_full/"
-		rename "${share}/Processing_Logs/${run_name}_on_${run_start_time}_full/primary_processing.out" "${share}/Processing_Logs/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}_primary_processing.out"
-		mv "${shareScript}/primary_processing.err" "${share}/Processing_Logs/${run_name}_on_${run_start_time}_full/"
-		rename "${share}/Processing_Logs/${run_name}_on_${run_start_time}_full/primary_processing.err" "${share}/Processing_Logs/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}_primary_processing.err"
+		mv "${shareScript}/primary_processing.out" "${processed}/${PROJECT}/Processing_Logs/${run_name}_on_${run_start_time}_full/"
+		rename "${processed}/${PROJECT}/Processing_Logs/${run_name}_on_${run_start_time}_full/primary_processing.out" "${processed}/${PROJECT}/Processing_Logs/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}_primary_processing.out"
+		mv "${shareScript}/primary_processing.err" "${processed}/${PROJECT}/Processing_Logs/${run_name}_on_${run_start_time}_full/"
+		rename "${processed}/${PROJECT}/Processing_Logs/${run_name}_on_${run_start_time}_full/primary_processing.err" "${processed}/${PROJECT}/Processing_Logs/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}_primary_processing.err"
 	fi
 fi
 
@@ -800,9 +800,9 @@ fi
 if [ "${is_full_run}" = "true" ]; then
 	"${shareScript}/make_Seqlog_from_log.sh" "${PROJECT}"
 else
-	if [ -s "${share}/tempList.txt" ]; then
+	if [ -s "${processed}/tempList.txt" ]; then
 		"${shareScript}/make_Seqlog_from_list.sh" "tempList.txt"
-		rm "${share}/tempList.txt"
+		rm "${processed}/tempList.txt"
 	else
 		"${shareScript}/make_Seqlog_from_list.sh" "${2}"
 	fi
