@@ -29,7 +29,6 @@ module purge
 if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to run_SNVPhyl.sh, exiting"
 	exit 1
-# elif [[ -z "${1}" ]] || ([ ! -f ${share}/Phylogeny_analyses/${1}/${1}.samples ] && [ ! -f ${share}/Phylogeny_analyses/${1}.samples ] && [ ! -f ${share}/Phylogeny_analyses/${1}/${2}/${1}.samples ] && [ ! -f ${share}/Phylogeny_analyses/${1}/SNVPhyl/${1}.samples ] && [ "${1}" != "-h" ] ); then
 elif [[ -z "${1}" ]] || [[ ! -f ${1} ]] ; then
 	echo "Empty group name or non-existent sample list file supplied to run_SNVPhyl.sh, exiting"
 	exit 1
@@ -37,7 +36,7 @@ elif [[ -z "${1}" ]] || [[ ! -f ${1} ]] ; then
 elif [[ "${1}" = "-h" ]]; then
 	echo "Usage is ./run_SNVPhyl.sh path_to_list_file (to identify the different groups analyzed) output_directory folder_name(e.g. outbreak number)"
 	echo "Phylogeny_analyses folder must contain list of samples (in format of project_id/sample_name) to be compared labelled by group_name.samples. First sample on list will be reference"
-	echo "Output is saved to ${share}/Phylogeny_analyses/group_name/SNVPhyl(or alt_name)"
+	echo "Output is saved to ${2}/${3}"
 	exit 0
 elif [[ -z "${2}" ]]; then
 	echo "Empty output directory name, exiting"

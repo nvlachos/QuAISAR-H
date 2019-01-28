@@ -559,6 +559,10 @@ process_samples()	{
 	# Get start time of ANI
 	start=$SECONDS
 	# run ANI
+	# Temp fix for strange genera until we do vs ALL all the time.
+	if [[ "${genus}" = "Peptoclostridium" ]] || [[ "${genus}" = "Clostridioides" ]]; then
+		genus="Clostridium"
+	fi
 	"${shareScript}/run_ANI.sh" "${filename}" "${genus}" "${species}" "${project}"
 	#"${shareScript}/run_ANI.sh" "${filename}" "All" "All" "${project}"
 	# Get end time of ANI and calculate run time and append to time summary (and sum to total time used
@@ -725,11 +729,11 @@ run_start_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 
 #Each file in the list is checked individually for successful completion and added then added to the log for the run
 if [[ "${is_full_run}" = "true" ]]; then
-	mkdir "${share}/Processing_Logs/${run_name}_on_${run_start_time}"
-	log_file="${share}/Processing_Logs/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}.log"
+	mkdir "${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}"
+	log_file="${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}.log"
 else
-	mkdir "${share}/Processing_Logs/${run_name}_on_${run_start_time}"
-	log_file="${share}/Processing_Logs/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}.log"
+	mkdir "${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}"
+	log_file="${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}.log"
 fi
 
 #Get the time the run started to use as the identifier
@@ -745,16 +749,6 @@ do
 	file=$(echo "${projfile}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
 	proj=$(echo "${projfile}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
 	process_samples "${file}" "${proj}" "${BASEDIR}"
-	#echo "Done"
-done
-
-
-
-for projfile in "${file_list[@]}";
-do
-	#echo ${file}
-	file=$(echo "${projfile}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
-	proj=$(echo "${projfile}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
 	"${shareScript}/validate_piperun.sh" "${file}" "${proj}" > "${processed}/${proj}/${file}/${file}_pipeline_stats.txt"
 	cat "${processed}/${proj}/${file}/${file}_pipeline_stats.txt" >> "${log_file}"
 	#echo "Done"
@@ -772,9 +766,8 @@ if [[ "${is_full_run}" = "true" ]];then
 # If a list or single sample was run through the pipeline instead of a full run. The log file is copied over and renamed
 elif [[ "${is_full_run}" = "false" ]];then
 	echo "In not full run move"
-	cp "${log_file}" "${share}/"
 	runsumdate=$(date "+%m_%d_%Y_at_%Hh_%Mm")
-	mv "${share}/${run_name}_on_${run_start_time}.log" "${share}/${quick_list}_summary_at_${runsumdate}.sum"
+	mv "${log_file}" "${Quaisar_H_log_directory}/${quick_list}_summary_at_${runsumdate}.sum"
 	# summary file is consolidated and prepped to send to email recipient(s)
 	runsum=$(${shareScript}/view_sum.sh ${quick_list}_summary_at_${runsumdate}.sum -l)
 	outarray+="${runsum}"
@@ -784,14 +777,22 @@ fi
 # If job was submitted move out and err files to processing logs folder
 
 if [[ ${host} = "cluster"* ]]; then
-	if [[ ! -d "${share}/Processing_Logs" ]]; then
-		mkdir "${share}/Processing_Logs"
+	qh_iteration=$(basename $0 | cut -d'.' -f1 | cut -d'_' -f3)
+	if [[ -z "${qh_iteration}" ]]; then
+		outbase="primary_processing"
+	else
+		outbase="primary_processing_${qh_iteration}"
 	fi
-	if [ -f "${shareScript}/primary_processing.out" ]; then
-		mv "${shareScript}/primary_processing.out" "${share}/Processing_Logs/${run_name}_on_${run_start_time}_full/"
-		rename "${share}/Processing_Logs/${run_name}_on_${run_start_time}_full/primary_processing.out" "${share}/Processing_Logs/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}_primary_processing.out"
-		mv "${shareScript}/primary_processing.err" "${share}/Processing_Logs/${run_name}_on_${run_start_time}_full/"
-		rename "${share}/Processing_Logs/${run_name}_on_${run_start_time}_full/primary_processing.err" "${share}/Processing_Logs/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}_primary_processing.err"
+	if [[ ! -d "${Quaisar_H_log_directory}" ]]; then
+		mkdir "${Quaisar_H_log_directory}"
+	fi
+	if [ -f "${shareScript}/${outbase}.out" ]; then
+		mv "${shareScript}/${outbase}.out" "${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}/"
+		rename "${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}/${outbase}.out" "${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}_primary_processing.out"
+	fi
+	if [ -f "${shareScript}/${outbase}.err" ]; then
+		mv "${shareScript}/${outbase}.err" "${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}/"
+		rename "${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}/${outbase}.err" "${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}_primary_processing.err"
 	fi
 fi
 
@@ -800,9 +801,9 @@ fi
 if [ "${is_full_run}" = "true" ]; then
 	"${shareScript}/make_Seqlog_from_log.sh" "${PROJECT}"
 else
-	if [ -s "${share}/tempList.txt" ]; then
-		"${shareScript}/make_Seqlog_from_list.sh" "tempList.txt"
-		rm "${share}/tempList.txt"
+	if [ -s "${Quaisar_H_log_directory}/tempList.txt" ]; then
+		"${shareScript}/make_Seqlog_from_list.sh" "${Quaisar_H_log_directory}/tempList.txt"
+		rm "${Quaisar_H_log_directory}/tempList.txt"
 	else
 		"${shareScript}/make_Seqlog_from_list.sh" "${2}"
 	fi

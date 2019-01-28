@@ -25,8 +25,8 @@ fi
 
 ############# General Options #############
 
-#Parent Share Folder location
-share="/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR"
+#Location to store all Quaisar-H pipeline run logs
+Quaisar_H_log_directory="/scicomp/groups/OID/NCEZID/DHQP/CEMB/QuAISAR_logs"
 #shortcut to processed samples folder
 processed="/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles"
 # Locations of all scripts and necessary accessory files

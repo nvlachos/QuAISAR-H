@@ -12,21 +12,21 @@
 . "${mod_changers}/pipeline_mods"
 
 #
-# Usage ./clear_mass_qsub_fodlers [1,2,3] (1-qsub folders, 2-qsub outs/errs, 3-Both)
+# Usage ./clear_mass_qsub_fodlers [1,2,3] (1-qsub folders, 2-qsub outs/errs, 3-Both) folder_with_script_files
 #
-# script that removes scripts made to parallelize submission of multiple qsub jobs at once and any output completion files that were associated
+# script that removes scripts made to parallelize submission of multiple qsub jobs at once and any output completion files that were associated folder_with_script_files_to_be_deleted
 #
 
 # Remove all completion txt and submission scripts made during mass qsub submission
 if [[ ${1} -eq 1 ]] || [[ ${1} -eq 3 ]]; then
-	for folder in ${share}/mass_subs/*
+	for folder in ${2}*
 	do
 		if [[ -d ${folder} ]]; then
 			for folder1 in ${folder}
 			do
-				echo "Deleting every sh script in ${folder1}"
+				echo "Deleting every .sh script in ${folder1}"
 				rm -r ${folder1}/*.sh
-				echo "Deleting every sh script in ${folder1}/complete"
+				echo "Deleting every .txt in ${folder1}/complete"
 				rm -r ${folder1}/complete/*.txt
 			done
 		fi

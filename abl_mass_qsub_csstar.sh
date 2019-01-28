@@ -21,7 +21,7 @@ if [[ $# -eq 0 ]]; then
 	exit 1
 # Shows a brief uasge/help section if -h option used as first argument
 elif [[ "$1" = "-h" ]]; then
-	echo "Usage is ./abl_mass_qsub_csstar.sh path_to_list_file(single sample ID per line, e.g. B8VHY/1700128 (it must include project id also)) max_submissions"
+	echo "Usage is ./abl_mass_qsub_csstar.sh path_to_list_file(single sample ID per line, e.g. B8VHY/1700128 (it must include project id also)) max_submissions output_directory_for_scripts"
 	exit 1
 elif [[ ! -f "${1}" ]]; then
 	echo "${1} (list) does not exist...exiting"
@@ -44,20 +44,20 @@ counter=0
 max_subs=${2}
 
 # Set script directory
-main_dir="${share}/mass_subs/csstar_alt_subs"
-if [[ ! -d "${share}/mass_subs/csstar_alt_subs" ]]; then
-	mkdir "${share}/mass_subs/csstar_alt_subs"
-	mkdir "${share}/mass_subs/csstar_alt_subs/complete"
-elif [[ ! -d  "${share}/mass_subs/csstar_alt_subs/complete" ]]; then
-	mkdir "${share}/mass_subs/csstar_alt_subs/complete"
+main_dir="${3}/csstar_alt_subs"
+if [[ ! -d "${3}/csstar_alt_subs" ]]; then
+	mkdir "${3}/csstar_alt_subs"
+	mkdir "${3}/csstar_alt_subs/complete"
+elif [[ ! -d  "${3}/csstar_alt_subs/complete" ]]; then
+	mkdir "${3}/csstar_alt_subs/complete"
 fi
 
 # format name being extracted from alt database
-main_dir="${share}/mass_subs/csstar_subs"
-if [[ ! -d "${share}/mass_subs/csstar_subs" ]]; then
-	mkdir -p "${share}/mass_subs/csstar_subs/complete"
-elif [[ ! -d  "${share}/mass_subs/csstar_subs/complete" ]]; then
-	mkdir "${share}/mass_subs/csstar_subs/complete"
+main_dir="${3}/csstar_subs"
+if [[ ! -d "${3}/csstar_subs" ]]; then
+	mkdir -p "${3}/csstar_subs/complete"
+elif [[ ! -d  "${3}/csstar_subs/complete" ]]; then
+	mkdir "${3}/csstar_subs/complete"
 fi
 
 start_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
@@ -84,6 +84,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 				# Defaulting to gapped/98, change if you want to include user preferences
 				echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g h \"${project}\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
 				echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarn_complete.txt\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
+				cd "${main_dir}"
 				if [[ "${counter}" -lt "${last_index}" ]]; then
 					qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
 				else
@@ -112,6 +113,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 					#echo -e "\"${shareScript}/fix_node_rename.sh\" \"${sample}\" \"${project}\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
 					echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g o \"${project}\" \"--plasmid\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
 					echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarp_complete.txt\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
+					cd "${main_dir}"
 					if [[ "${counter}" -lt "${last_index}" ]]; then
 						qsub "${main_dir}/csstp_${sample}_${start_time}.sh"
 					else
@@ -174,6 +176,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 							# Defaulting to gapped/98, change if you want to include user preferences
 							echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g o \"${project}\" \"--plasmid\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
 							echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarp_complete.txt\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
+							cd ${main_dir}
 							if [[ "${counter}" -lt "${last_index}" ]]; then
 								qsub "${main_dir}/csstp_${sample}_${start_time}.sh"
 							else
