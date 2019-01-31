@@ -450,7 +450,6 @@ while IFS= read -r line; do
 		mlst="N/A"
 	fi
 	echo -e "${project}\t${sample_name}\t${mlst}" >> ${output_directory}/${4}-mlst_summary.txt
-	#echo -e "${sample_name}\t${mlst}" >> ${share}/${4}-mlst_summary.txt
 done < ${1}
 
 # Calls script that sorts and formats all isolates info into a atrix for easy viewing

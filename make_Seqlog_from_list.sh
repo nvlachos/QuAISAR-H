@@ -40,7 +40,7 @@ while IFS= read -r bug_lines; do
 	bug_name="${bug_genus:0:1}.${bug_species}"
 	#echo "Should be adding ${bug_size} for ${bug_name}"
 	mmb_bugs["${bug_name}"]="${bug_size}"
-done < ${share}/DBs/MMB_Bugs.txt
+done < ${local_DBs}/MMB_Bugs.txt
 
 output_folder=$(dirname ${1})
 > "${output_folder}/Seqlog_output.txt"

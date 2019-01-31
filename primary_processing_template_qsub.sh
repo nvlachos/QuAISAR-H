@@ -1018,7 +1018,7 @@ make_relies_on_species_confirmation() {
 		busco_found=0
 		for tax in $species $genus $family $order $class $phylum $domain
 		do
-			if [ -d "${share}/DBs/BUSCO/${tax,}_odb9" ]
+			if [ -d "${local_DBs}/BUSCO/${tax,}_odb9" ]
 			then
 				buscoDB="${tax}_odb9"
 				busco_found=1
@@ -1053,7 +1053,7 @@ make_relies_on_species_confirmation() {
 		 		mlst_db="true"
 				break
 			fi
-	 	done < "${share}/DBs/mlst_dbs.csv"
+	 	done < "${local_DBs}/mlst_dbs.csv"
 
 		if [[ "${mlst_db}" == "true" ]]; then
 			# Need to check if database exists and the proper one if multiple

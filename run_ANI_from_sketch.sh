@@ -32,7 +32,7 @@ elif [[ "${1}" = "-h" ]]; then
 	echo "Output is saved to in ${processed}/sample_name/ANI"
 	exit 0
 elif [ -z "$2" ]; then
-	echo "Empty database name supplied to run_ANI.sh. Second argument should be a genus found in ${share}/DBs/ANI/  ...Exiting"
+	echo "Empty database name supplied to run_ANI.sh. Second argument should be a genus found in ${local_DBs}/ANI/  ...Exiting"
 	exit 1
 fi
 
@@ -61,7 +61,7 @@ fi
 me=$(whoami)
 #echo ${me}"___"${1}___${2}___${3}___${4}
 
-mash dist "${share}/DBs/aniDB/refseq.genomes.k21s1000.msh" "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" > "${OUTDATADIR}/ANI/${1}_all_refSeq.dists"
+mash dist "${local_DBs}/aniDB/refseq.genomes.k21s1000.msh" "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" > "${OUTDATADIR}/ANI/${1}_all_refSeq.dists"
 sort -k3 -n -o "${OUTDATADIR}/ANI/${1}_all_sorted_refSeq.dists" "${OUTDATADIR}/ANI/${1}_all_refSeq.dists"
 
 exit
@@ -177,7 +177,7 @@ if [[ "${best_file}" = *"_scaffolds_trimmed" ]]; then
 					fi
 				done < ${processed}/${project}/${sample_name}/${sample_name}_pipeline_stats.txt
 		fi
-	done < ${share}/${5}
+	done < ${5}
 # if the best hit comes from the aniDB then pull taxonomy from name
 else
 	#Extracts the accession number from the definition line
