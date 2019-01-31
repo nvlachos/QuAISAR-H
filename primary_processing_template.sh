@@ -111,7 +111,7 @@ for ((i=1 ; i <= nopts ; i++)); do
 			fi
 			indir_set="true"
 			postfix="$3"
-			is_full_run="true"
+			is_full_run="false"
 			#echo "$INDATADIR $2"
 			shift 3
 			;;
@@ -728,13 +728,8 @@ fi
 run_start_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 
 #Each file in the list is checked individually for successful completion and added then added to the log for the run
-if [[ "${is_full_run}" = "true" ]]; then
-	mkdir "${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}"
-	log_file="${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}.log"
-else
-	mkdir "${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}"
-	log_file="${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}.log"
-fi
+mkdir -p "${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}"
+log_file="${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}.log"
 
 #Get the time the run started to use as the identifier
 outarray=()
@@ -756,18 +751,19 @@ done
 
 #Full run overview status file is created for quick view
 # The full run log is searched and brief status overview is returned for each sample in the log as SUCCESSFUL,WARNING, or FAILED along with counts of each
-if [[ "${is_full_run}" = "true" ]];then
-	cp "${log_file}" "${processed}/${proj}/"
+if [[ "${is_full_run}" = "true" ]]; then
+	#cp "${log_file}" "${processed}/${proj}/"
 	runsumdate=$(date "+%m_%d_%Y_at_%Hh_%Mm")
-	mv "${processed}/${PROJECT}/${run_name}_on_${run_start_time}.log" "${processed}/${PROJECT}/${PROJECT}_run_summary_at_${runsumdate}.sum"
+	cp "${log_file}" "${processed}/${PROJECT}/${PROJECT}_run_summary_at_${runsumdate}.sum"
 	# summary file is consolidated and prepped to send to email recipient(s)
 	runsum=$(${shareScript}/view_sum.sh ${PROJECT})
 	outarray+="${runsum}"
 # If a list or single sample was run through the pipeline instead of a full run. The log file is copied over and renamed
-elif [[ "${is_full_run}" = "false" ]];then
+elif [[ "${is_full_run}" = "false" ]]; then
 	echo "In not full run move"
 	runsumdate=$(date "+%m_%d_%Y_at_%Hh_%Mm")
-	mv "${log_file}" "${Quaisar_H_log_directory}/${quick_list}_summary_at_${runsumdate}.sum"
+	#mv "${log_file}" "${Quaisar_H_log_directory}/${quick_list}_summary_at_${runsumdate}.sum"
+	mv "${log_file}" "${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}/${quick_list}_summary_at_${run_start_time}.log"
 	# summary file is consolidated and prepped to send to email recipient(s)
 	runsum=$(${shareScript}/view_sum.sh ${quick_list}_summary_at_${runsumdate}.sum -l)
 	outarray+="${runsum}"
