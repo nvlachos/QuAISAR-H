@@ -131,8 +131,9 @@ while IFS= read -r var; do
 	if [[ -s "${OUTDATADIR}/16s/${sample_name}_16s_blast_id.txt" ]]; then
 		info=$(tail -n 1 "${OUTDATADIR}/16s/${sample_name}_16s_blast_id.txt")
 		type=$(echo "${info}" | cut -d' ' -f1)
-		genus_16s=$(echo "${info}" | cut -d'	' -f3 | cut -d' ' -f1)
-		species_16s=$(echo "${info}" | cut -d'	' -f3 | cut -d' ' -f2)
+		genus_16s=$(echo "${info}" | cut -d'	' -f3- | cut -d' ' -f1)
+		species_16s=$(echo "${info}" | cut -d'	' -f3- | cut -d' ' -f2)
+		echo "g:${genus_16s};s:${species_16s};"
 		if [[ -z "${genus_16s}" ]]; then
 			genus_16s="Unidentifiable"
 		fi
@@ -142,6 +143,8 @@ while IFS= read -r var; do
 #		echo "g-${genus_16s};s-${species}"
 		g_s_16s="${genus_16s} ${species_16s}"
 #		echo "g_s_16-${g_s_16s}"
+	else
+		g_s_16s="No_16s_Output"
 	fi
 
 
