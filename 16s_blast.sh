@@ -107,7 +107,7 @@ do
 #		echo "ribo-$ribosome"
 		if [ "${ribosome}" = "16S" ]; then
 			make_fasta $1 $2 $contig $cstart $cstop
-			if [[ "${found_16s}" = "false"]]; then
+			if [[ "${found_16s}" = "false" ]]; then
 				found_16s="true"
 				> ${processed}/${2}/${1}/16s/${1}_16s_rna_seqs.txt
 			fi
