@@ -1120,7 +1120,7 @@ if [[ -d "${OUTDATADIR}/16s/" ]]; then
 			#else
 				printf "%-20s: %-8s : %s\\n" "16s_best_hit" "SUCCESS" "${genus_b} ${species_b} ${extra_b}"
 			#fi
-		elif [ -z "$species_b}" ]; then
+		elif [ -z "${species_b}" ]; then
 			if [ "${genus_b}" = "No_16s_sequences_found" ]; then
 				printf "%-20s: %-8s : %s\\n" "16s_best_hit" "Warning" "No 16s sequences found"
 				status="FAILED"
