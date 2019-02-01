@@ -1180,6 +1180,7 @@ if [[ -d "${OUTDATADIR}/16s/" ]]; then
 			#printf "%-20s: %-8s : %s\\n" "16s_largest_hit" "Warning" "Genus=${genus_l}, but no species found, Adding to maintenance_To_Do list"
 			#report_info=$(echo "${info_l}" | cut -d' ' -f2-)
 			#echo "${2}/${1}: 16s ID Warning - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
+			fi
 		elif [ -z "${genus_l}" ]; then
 			printf "%-20s: %-8s : %s\\n" "16s_largest_hit" "FAILED" "no genus found, Adding to maintenance_To_Do list"
 			report_info=$(echo "${info_l}" | cut -d' ' -f2-)
