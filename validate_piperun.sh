@@ -1162,7 +1162,7 @@ if [[ -d "${OUTDATADIR}/16s/" ]]; then
 			#	if [ "$status" = "SUCCESS" ]; then
 			#		status="Warning"
 			#	fi
-			e#lse
+			#else
 				printf "%-20s: %-8s : %s\\n" "16s_largest_hit" "SUCCESS" "${genus_l} ${species_l} ${extra_l}"
 			#fi
 		elif [ -z "${species_l}" ]; then
