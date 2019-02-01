@@ -1122,10 +1122,10 @@ if [[ -d "${OUTDATADIR}/16s/" ]]; then
 			#fi
 		elif [ -z "${species_b}" ]; then
 			if [ "${genus_b}" = "No_16s_sequences_found" ]; then
-				printf "%-20s: %-8s : %s\\n" "16s_best_hit" "Warning" "No 16s sequences found"
+				printf "%-20s: %-8s : %s\\n" "16s_best_hit" "FAILED" "No 16s sequences found"
 				status="FAILED"
-			elif [ "${genus_b}" = "Unidentified" ]; then
-				printf "%-20s: %-8s : %s\\n" "16s_best_hit" "Warning" "16s sequences were found but were not able to be classified"
+			elif [ "${genus_b}" = "No_16s_matches_found" ]; then
+				printf "%-20s: %-8s : %s\\n" "16s_best_hit" "FAILED" "16s sequences were found but were not able to be classified"
 				status="FAILED"
 			else
 				printf "%-20s: %-8s : %s\\n" "16s_best_hit" "Warning" "Genus=${genus_b}, but no species found, Adding to maintenance_To_Do list"
@@ -1169,7 +1169,7 @@ if [[ -d "${OUTDATADIR}/16s/" ]]; then
 			if [ "${genus_l}" = "No_16s_sequences_found" ]; then
 				printf "%-20s: %-8s : %s\\n" "16s_largest_hit" "FAILED" "No 16s sequences found"
 				status="FAILED"
-			elif [ "${genus_l}" = "Unidentified" ]; then
+			elif [ "${genus_l}" = "No_16s_matches_found" ]; then
 				printf "%-20s: %-8s : %s\\n" "16s_largest_hit" "FAILED" "16s sequences were found but were not able to be classified"
 				status="FAILED"
 			else

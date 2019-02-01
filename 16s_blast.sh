@@ -118,8 +118,8 @@ done < "${OUTDATADIR}/16s/${1}_scaffolds_trimmed.fasta_rRNA_seqs.fasta"
 
 # Adds No hits found to output file in the case where no 16s ribosomal sequences were found
 if [[ "${found_16s}" == "false" ]]; then
-	echo -e "best_hit	${1}	Unidentified" > "${OUTDATADIR}/16s/${1}_16s_blast_id.txt"
-	echo -e "largest_hit	${1}	Unidentified" >> "${OUTDATADIR}/16s/${1}_16s_blast_id.txt"
+	echo -e "best_hit	${1}	No_16s_sequences_found" > "${OUTDATADIR}/16s/${1}_16s_blast_id.txt"
+	echo -e "largest_hit	${1}	No_16s_sequences_found" >> "${OUTDATADIR}/16s/${1}_16s_blast_id.txt"
 	exit
 fi
 
@@ -139,7 +139,7 @@ if [[ -s "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN" ]]; then
 	blast_id=$(python ${shareScript}/entrez_get_taxon_from_accession.py "${gb_acc}" "${me}@cdc.gov")
 	echo ${blast_id}
 	if [[ -z ${blast_id} ]]; then
-		blast_id="No_16s_sequences_found"
+		blast_id="No_16s_matches_found"
 	fi
 	#blast_id=$(echo ${blast_id} | tr -d '\n')
 	echo -e "best_hit	${1}	${blast_id}" > "${OUTDATADIR}/16s/${1}_16s_blast_id.txt"
@@ -156,7 +156,7 @@ if [[ -s "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN.sorted" ]]; then
 	blast_id=$(python ${shareScript}/entrez_get_taxon_from_accession.py "${gb_acc}" "${me}@cdc.gov")
 #	blast_id$(echo ${blast_id} | tr -d '\n')
 	if [[ -z ${blast_id} ]]; then
-		blast_id="No_16s_sequences_found"
+		blast_id="No_16s_matches_found"
 	fi
 	echo -e "largest	${1}	${blast_id}" >> "${OUTDATADIR}/16s/${1}_16s_blast_id.txt"
 else
