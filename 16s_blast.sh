@@ -136,7 +136,7 @@ if [[ -s "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN" ]]; then
 	blast_id=$(python ${shareScript}/entrez_get_taxon_from_accession.py "${gb_acc}" "${me}@cdc.gov")
 	echo ${blast_id}
 	if [[ -z ${blast_id} ]]; then
-		blast_id="No_16s sequences_found"
+		blast_id="No_16s_sequences_found"
 	fi
 	#blast_id=$(echo ${blast_id} | tr -d '\n')
 	echo -e "best_hit	${1}	${blast_id}" > "${OUTDATADIR}/16s/${1}_16s_blast_id.txt"
@@ -153,7 +153,7 @@ if [[ -s "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN.sorted" ]]; then
 	blast_id=$(python ${shareScript}/entrez_get_taxon_from_accession.py "${gb_acc}" "${me}@cdc.gov")
 #	blast_id$(echo ${blast_id} | tr -d '\n')
 	if [[ -z ${blast_id} ]]; then
-		blast_id="No_16s sequences_found"
+		blast_id="No_16s_sequences_found"
 	fi
 	echo -e "largest	${1}	${blast_id}" >> "${OUTDATADIR}/16s/${1}_16s_blast_id.txt"
 else
