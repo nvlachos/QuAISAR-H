@@ -147,7 +147,7 @@ while IFS= read -r var; do
 			genus_16s="Unidentified"
 		fi
 #		echo "g-${genus_16s};s-${species}"
-		if [ -z "${species}" ]; then
+		if [ -z "${species_16s}" ]; then
 			echo "empty species"
 			g_s_16s="${genus_16s}"
 		else
