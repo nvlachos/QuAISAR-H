@@ -1111,7 +1111,7 @@ if [[ -d "${OUTDATADIR}/16s/" ]]; then
 		else
 			extra_b=""
 		fi
-		#echo "g-${genus},s-${species}"
+		echo "g-${genus},s-${species}"
 		if [ ! -z "${genus_b}" ] && [ ! -z "${species_b}" ]; then
 			#if [[ "${genus_b}" == "No" ]] && [[ "${species_b}" == "16s" ]]; then
 			#	printf "%-20s: %-8s : %s\\n" "16s_best_hit" "Warning" "No 16s sequences found"
@@ -1167,10 +1167,10 @@ if [[ -d "${OUTDATADIR}/16s/" ]]; then
 			#fi
 		elif [ -z "${species_l}" ]; then
 			if [ "${genus_l}" = "No_16s_sequences_found" ]; then
-				printf "%-20s: %-8s : %s\\n" "16s_largest_hit" "Warning" "No 16s sequences found"
+				printf "%-20s: %-8s : %s\\n" "16s_largest_hit" "FAILED" "No 16s sequences found"
 				status="FAILED"
 			elif [ "${genus_l}" = "Unidentified" ]; then
-				printf "%-20s: %-8s : %s\\n" "16s_laregest_hit" "Warning" "16s sequences were found but were not able to be classified"
+				printf "%-20s: %-8s : %s\\n" "16s_largest_hit" "FAILED" "16s sequences were found but were not able to be classified"
 				status="FAILED"
 			else
 				printf "%-20s: %-8s : %s\\n" "16s_largest_hit" "Warning" "Genus=${genus_l}, but no species found, Adding to maintenance_To_Do list"
