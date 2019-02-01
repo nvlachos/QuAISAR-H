@@ -1113,28 +1113,36 @@ if [[ -d "${OUTDATADIR}/16s/" ]]; then
 		fi
 		#echo "g-${genus},s-${species}"
 		if [ ! -z "${genus_b}" ] && [ ! -z "${species_b}" ]; then
-			if [[ "${genus_b}" == "No" ]] && [[ "${species_b}" == "16s" ]]; then
+			#if [[ "${genus_b}" == "No" ]] && [[ "${species_b}" == "16s" ]]; then
+			#	printf "%-20s: %-8s : %s\\n" "16s_best_hit" "Warning" "No 16s sequences found"
+			##		status="Warning"
+			#	fi
+			#else
+				printf "%-20s: %-8s : %s\\n" "16s_best_hit" "SUCCESS" "${genus_b} ${species_b} ${extra_b}"
+			#fi
+		elif [ -z "$species_b}" ]; then
+			if [ "${genus_b}" = "No_16s_sequences_found" ]; then
 				printf "%-20s: %-8s : %s\\n" "16s_best_hit" "Warning" "No 16s sequences found"
+				status="FAILED"
+			elif [ "${genus_b}" = "Unidentified" ]; then
+				printf "%-20s: %-8s : %s\\n" "16s_best_hit" "Warning" "16s sequences were found but were not able to be classified"
+				status="FAILED"
+			else
+				printf "%-20s: %-8s : %s\\n" "16s_best_hit" "Warning" "Genus=${genus_b}, but no species found, Adding to maintenance_To_Do list"
 				if [ "$status" = "SUCCESS" ]; then
 					status="Warning"
 				fi
-			else
-				printf "%-20s: %-8s : %s\\n" "16s_best_hit" "SUCCESS" "${genus_b} ${species_b} ${extra_b}"
 			fi
-		elif [ ! -z "${genus_b}" ]; then
-			printf "%-20s: %-8s : %s\\n" "16s_best_hit" "Warning" "Genus=${genus_b}, but no species found, Adding to maintenance_To_Do list"
-			report_info=$(echo "${info_b}" | cut -d' ' -f2-)
-			echo "${2}/${1}: 16s ID Warning - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
-			if [ "$status" = "SUCCESS" ]; then
-				status="Warning"
-			fi
-		elif [ ! -z "${species_b}" ]; then
-			printf "%-20s: %-8s : %s\\n" "16s_best_hit" "FAILED" "no genus found, Adding to maintenance_To_Do list"
+			#report_info=$(echo "${info_b}" | cut -d' ' -f2-)
+			#echo "${2}/${1}: 16s ID Warning - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
+
+		elif [ -z "${genus_b}" ]; then
+			printf "%-20s: %-8s : %s\\n" "16s_best_hit" "FAILED" "No genus found, Adding to maintenance_To_Do list"
 			report_info=$(echo "${info_b}" | cut -d' ' -f2-)
 			echo "${2}/${1}: 16s ID Failure - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
 			status="FAILED"
 		else
-			printf "%-20s: %-8s : %s\\n" "16s_best_hit" "FAILED" "nothing found in ${1}_16s_blast_id.txt, Adding to maintenance_To_Do list"
+			printf "%-20s: %-8s : %s\\n" "16s_best_hit" "FAILED" "Nothing found in ${1}_16s_blast_id.txt, Adding to maintenance_To_Do list"
 			report_info=$(echo "${info_l}" | cut -d' ' -f2-)
 			echo "${2}/${1}: 16s ID Failure - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
 			status="FAILED"
@@ -1149,22 +1157,30 @@ if [[ -d "${OUTDATADIR}/16s/" ]]; then
 			extra_l=""
 		fi
 		if [ ! -z "${genus_l}" ] && [ ! -z "${species_l}" ]; then
-			if [[ "${genus_l}" == "No" ]] && [[ "${species_l}" == "16s" ]]; then
+			#if [[ "${genus_l}" == "No" ]] && [[ "${species_l}" == "16s" ]]; then
+			#	printf "%-20s: %-8s : %s\\n" "16s_largest_hit" "Warning" "No 16s sequences found"
+			#	if [ "$status" = "SUCCESS" ]; then
+			#		status="Warning"
+			#	fi
+			e#lse
+				printf "%-20s: %-8s : %s\\n" "16s_largest_hit" "SUCCESS" "${genus_l} ${species_l} ${extra_l}"
+			#fi
+		elif [ -z "${species_l}" ]; then
+			if [ "${genus_l}" = "No_16s_sequences_found" ]; then
 				printf "%-20s: %-8s : %s\\n" "16s_largest_hit" "Warning" "No 16s sequences found"
+				status="FAILED"
+			elif [ "${genus_l}" = "Unidentified" ]; then
+				printf "%-20s: %-8s : %s\\n" "16s_laregest_hit" "Warning" "16s sequences were found but were not able to be classified"
+				status="FAILED"
+			else
+				printf "%-20s: %-8s : %s\\n" "16s_largest_hit" "Warning" "Genus=${genus_l}, but no species found, Adding to maintenance_To_Do list"
 				if [ "$status" = "SUCCESS" ]; then
 					status="Warning"
 				fi
-			else
-				printf "%-20s: %-8s : %s\\n" "16s_largest_hit" "SUCCESS" "${genus_l} ${species_l} ${extra_l}"
-			fi
-		elif [ ! -z "${genus_l}" ]; then
-			printf "%-20s: %-8s : %s\\n" "16s_largest_hit" "Warning" "Genus=${genus_l}, but no species found, Adding to maintenance_To_Do list"
-			report_info=$(echo "${info_l}" | cut -d' ' -f2-)
-			echo "${2}/${1}: 16s ID Warning - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
-			if [ "$status" = "SUCCESS" ]; then
-				status="Warning"
-			fi
-		elif [ ! -z "${species_l}" ]; then
+			#printf "%-20s: %-8s : %s\\n" "16s_largest_hit" "Warning" "Genus=${genus_l}, but no species found, Adding to maintenance_To_Do list"
+			#report_info=$(echo "${info_l}" | cut -d' ' -f2-)
+			#echo "${2}/${1}: 16s ID Warning - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
+		elif [ -z "${genus_l}" ]; then
 			printf "%-20s: %-8s : %s\\n" "16s_largest_hit" "FAILED" "no genus found, Adding to maintenance_To_Do list"
 			report_info=$(echo "${info_l}" | cut -d' ' -f2-)
 			echo "${2}/${1}: 16s ID Failure - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
