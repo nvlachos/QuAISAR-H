@@ -11,7 +11,7 @@
 #. "${shareScript}/module_changers/perl_5221_to_5123.sh"
 #. ./module_changers/list_modules.sh
 module unload perl/5.22.1
-module load perl 5.12.3
+module load perl/5.12.3
 
 #
 # Creates a species prediction based on blasting the largest and also best hit of the suggested 16s sequences found using barrnap
