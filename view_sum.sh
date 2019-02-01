@@ -450,18 +450,18 @@ while IFS= read -r var; do
 			fi
 		elif [[ "${tool}" == "16s_best_hit" ]]; then
 			if [[ -s "${processed}/${1}/${sample_name}/16s/${1}_16s_blast_id.txt" ]]; then
-				failure_flags="${failure_flags}-Genus_not_assigned_in_16s_output"
+				failure_flags="${failure_flags}-No_taxonomy_assigned_in_16s_best"
 				failures=$(( failures + 1 ))
 			else
-				failure_flags="${failure_flags}-NO_16s_best_species"
+				failure_flags="${failure_flags}-NO_16s_blast_id.txt file"
 				failures=$(( failures + 1 ))
 			fi
 		elif [[ "${tool}" == "16s_largest_hit" ]]; then
 			if [[ -s "${processed}/${1}/${sample_name}/16s/${1}_16s_blast_id.txt" ]]; then
-				failure_flags="${failure_flags}-Genus_not_assigned_in_16s_output"
+				failure_flags="${failure_flags}-No_taxonomy_assigned_in_16s_largest"
 				failures=$(( failures + 1 ))
 			else
-				failure_flags="${failure_flags}-NO_16s_best_species"
+				failure_flags="${failure_flags}-NO_16s_blast_id.txt"
 				failures=$(( failures + 1 ))
 			fi
 		elif [[ "${tool}" == "16s" ]]; then
