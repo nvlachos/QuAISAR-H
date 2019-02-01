@@ -140,7 +140,7 @@ while IFS= read -r var; do
 		if [ "${genus_16s}" = "${species_16s}" ]; then
 			species_16s=""
 		fi
-		if [[ "${genus_16s}" = "No_16s_matches_found" ]; then
+		if [ "${genus_16s}" = "No_16s_matches_found" ]; then
 			genus_16s="Unidentified"
 		fi
 #		echo "g-${genus_16s};s-${species}"
