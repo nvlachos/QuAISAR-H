@@ -733,8 +733,8 @@ log_file="${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}/${run_name
 
 #Get the time the run started to use as the identifier
 outarray=()
-echo "Full Run started at ${run_start_time}   status file will be ${run_name}_on_${run_start_time}.log"
-outarray+=("${run_name} started at ${run_start_time} and saved to ${run_name}_on_${run_start_time}_full_run.log")
+echo "Run started at ${run_start_time}; status file will be ${run_name}_on_${run_start_time}.log"
+outarray+=("${run_name} started at ${run_start_time} and saved to ${run_name}_on_${run_start_time}.log")
 
 
 #Each file in the list is put through the full pipeline
