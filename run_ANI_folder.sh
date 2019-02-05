@@ -1,8 +1,8 @@
 #!/bin/sh -l
 
-#$ -o run_ANI.out
-#$ -e run_ANI.err
-#$ -N run_ANI
+#$ -o run_ANI_fodler.out
+#$ -e run_ANI_folder.err
+#$ -N run_ANI_folder
 #$ -cwd
 #$ -q all.q
 
