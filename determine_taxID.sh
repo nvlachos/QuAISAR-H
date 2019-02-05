@@ -86,7 +86,7 @@ Check_source() {
 					return
 				fi
 			elif [[ "${best_arr_size}" -ge 3 ]] ; then
-				if [[ "${best_array[2]}" == "Unidentified" ]]  || [[ "${best_array[2]}" == "No_16s_"* ]]; then; then
+				if [[ "${best_array[2]}" == "Unidentified" ]]  || [[ "${best_array[2]}" == "No_16s_"* ]]; then
 					:
 				else
 					do_16s "best"
