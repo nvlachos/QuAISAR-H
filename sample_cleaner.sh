@@ -20,42 +20,46 @@ fi
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
-	echo "No argument supplied to run_srst2.sh, exiting"
+	echo "No argument supplied to sample_cleaner.sh, exiting"
 	exit 1
 # Shows a brief uasge/help section if -h option used as first argument
 elif [[ "$1" = "-h" ]]; then
-	echo "Usage is ./sample_cleaner.sh  sample_name run_ID"
-	echo "Output location is ${processed}/${2}/srst2"
-	exit 0
-elif [[ ! -d "${processed}/${2}" ]] || [[ ! -d "${processed}/${2}/${1}" ]]; then
 	echo "Usage is ./sample_cleaner.sh  sample_name MiSeq_Run_ID"
 	echo "Will clean ${processed}/${2}/${1} folder"
 	exit 0
+elif [[ ! -d "${processed}/${2}" ]] || [[ ! -d "${processed}/${2}/${1}" ]]; then
+	if [ ! -d "${processed}/${2}" ]; then
+		echo "Project ${processed}/${2} does not exist"
+	elif [ ! -d "${processed}/${2}/${1}" ]; then
+		echo "Isolate ${processed}/${2}/${1} does not exist"
+	fi
+	echo "EXITING..."
+	exit 1
 fi
 
 # Set main sample folder to clean
 sample_folder="${processed}/${2}/${1}"
-	echo "Source - ${sample_folder}"
-	sample_name=$(echo "${sample_folder}" | rev | cut -d'/' -f1 | rev)
-	echo "Sample_ID - ${sample_name}"
-	# Remove the localANIDB from ANI output folder, if found
-	echo "Cleaning ANI"
-	if [ -d "${sample_folder}/ANI/localANIDB" ]; then
-		echo "removing localANIDb"
-		rm -r "${sample_folder}/ANI/localANIDB"
-	fi
-	# Use Gulviks cleaner script on regular SPAdes output
-	echo "Cleaning Assembly Folder"
-	if [ -d "${sample_folder}/Assembly" ]; then
-		echo "Using Gulviks SPAdes cleaner on Assembly"
-		${shareScript}/gulvic_SPAdes_cleaner.sh "${sample_folder}/Assembly"
-	fi
-	# Use Gulviks cleaner script on regular SPAdes output
-	echo "Cleaning plasmidAssembly Folder"
-	if [ -d "${sample_folder}/plasmidAssembly" ]; then
-		echo "Using Gulviks SPAdes cleaner on plasmidAssembly"
-		${shareScript}/gulvic_SPAdes_cleaner.sh "${sample_folder}/plasmidAssembly"
-	fi
+echo "Source - ${sample_folder}"
+sample_name=$(echo "${sample_folder}" | rev | cut -d'/' -f1 | rev)
+echo "Sample_ID - ${sample_name}"
+# Remove the localANIDB from ANI output folder, if found
+echo "Cleaning ANI"
+if [ -d "${sample_folder}/ANI/localANIDB" ]; then
+	echo "removing localANIDb"
+	rm -r "${sample_folder}/ANI/localANIDB"
+fi
+# Use Gulviks cleaner script on regular SPAdes output
+echo "Cleaning Assembly Folder"
+if [ -d "${sample_folder}/Assembly" ]; then
+	echo "Using Gulviks SPAdes cleaner on Assembly"
+	${shareScript}/gulvic_SPAdes_cleaner.sh "${sample_folder}/Assembly"
+fi
+# Use Gulviks cleaner script on regular SPAdes output
+echo "Cleaning plasmidAssembly Folder"
+if [ -d "${sample_folder}/plasmidAssembly" ]; then
+	echo "Using Gulviks SPAdes cleaner on plasmidAssembly"
+	${shareScript}/gulvic_SPAdes_cleaner.sh "${sample_folder}/plasmidAssembly"
+fi
 	# Remove hmm_output folder from BUSCO analysis if found
 	echo "Cleaning BUSCO Folder"
 	if [ -d "${sample_folder}/BUSCO/hmm_output" ]; then
