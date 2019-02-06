@@ -1,8 +1,8 @@
 #!/bin/sh -l
 
-#$ -o getTax.out
-#$ -e getTax.err
-#$ -N getTax
+#$ -o getTaxQ.out
+#$ -e getTaxQ.err
+#$ -N getTaxQ
 #$ -cwd
 #$ -q short.q
 

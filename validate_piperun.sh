@@ -1111,7 +1111,7 @@ if [[ -d "${OUTDATADIR}/16s/" ]]; then
 		else
 			extra_b=""
 		fi
-		echo "g-${genus_b},s-${species_b}"
+		#echo "g-${genus_b},s-${species_b}"
 		if [ ! -z "${genus_b}" ] && [ ! -z "${species_b}" ]; then
 			#if [[ "${genus_b}" == "No" ]] && [[ "${species_b}" == "16s" ]]; then
 			#	printf "%-20s: %-8s : %s\\n" "16s_best_hit" "Warning" "No 16s sequences found"
