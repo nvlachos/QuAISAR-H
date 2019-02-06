@@ -36,7 +36,7 @@ elif [[ ! -d "${processed}/${2}" ]] || [[ ! -d "${processed}/${2}/${1}" ]]; then
 	echo "EXITING..."
 	exit 1
 else
-	"Cleaning ${processed}/${2}/${1}"
+	echo "Cleaning ${processed}/${2}/${1}"
 fi
 
 # Set main sample folder to clean
@@ -49,6 +49,20 @@ echo "Cleaning ANI"
 if [ -d "${sample_folder}/ANI/localANIDB" ]; then
 	echo "removing localANIDb"
 	rm -r "${sample_folder}/ANI/localANIDB"
+fi
+if [ -d "${sample_folder}/ANI/localANIDB_full" ]; then
+	echo "removing localANIDb_full"
+	rm -r "${sample_folder}/ANI/localANIDB_full"
+fi
+if [ -d "${sample_folder}/ANI/temp" ]; then
+	echo "removing temp"
+	rm -r "${sample_folder}/ANI/temp"
+fi
+# Remove the hmmer output from the BUSCO folder
+echo "Cleaning BUSCO"
+if [ -d "${sample_folder}/BUSCO/hmmer_output" ]; then
+	echo "removing hmmer output"
+	rm -r "${sample_folder}/BUSCO/hmmer_output"
 fi
 # Use Gulviks cleaner script on regular SPAdes output
 echo "Cleaning Assembly Folder"
