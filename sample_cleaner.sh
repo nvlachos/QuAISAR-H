@@ -10,7 +10,7 @@
 if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
-. /config.sh
+. ./config.sh
 
 #
 # Usage ./sample_cleaner.sh   sample_name   run_ID
@@ -35,6 +35,8 @@ elif [[ ! -d "${processed}/${2}" ]] || [[ ! -d "${processed}/${2}/${1}" ]]; then
 	fi
 	echo "EXITING..."
 	exit 1
+else
+	"Cleaning ${processed}/${2}/${1}"
 fi
 
 # Set main sample folder to clean
