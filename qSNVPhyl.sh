@@ -1,8 +1,8 @@
 #!/bin/sh -l
 
-#$ -o qquaisar.out
-#$ -e qquaisar.err
-#$ -N qpp
+#$ -o qSNVPhyl.out
+#$ -e qSNVPhyl.err
+#$ -N qsnv
 #$ -cwd
 #$ -q all.q
 
@@ -62,6 +62,7 @@ done
 
 cp ${shareScript}/run_SNVPhyl_template.sh ${shareScript}/run_SNVPhyl_temp.sh
 sed -i -e "s/run_SNVPhyl/run_SNVPhyl_${counter}/g" "${shareScript}/run_SNVPhyl_temp.sh"
+sed -i -e "s/SNVPhyl_X/SNVPhyl_${counter}/g" "${shareScript}/run_SNVPhyl_temp.sh"
 mv ${shareScript}/run_SNVPhyl_temp.sh ${shareScript}/run_SNVPhyl_${counter}.sh
 echo "${shareScript}/run_SNVPhyl_${counter}.sh $@"
 echo "Created and ran run_SNVPhyl_${counter}.sh"
