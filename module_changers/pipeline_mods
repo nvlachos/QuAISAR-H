@@ -46,7 +46,7 @@ module load perl/5.22.1
 
 module load BEDTools/2.26.0
 
-module load mlst/2.9
+module load mlst/2.16
 
 module load barrnap/0.8
 
