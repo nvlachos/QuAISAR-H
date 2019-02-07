@@ -30,7 +30,7 @@ counter=1
 while IFS= read -r var; do
 	sample_name=$(echo "${var}" | cut -d'/' -f2 | tr -d '[:space:]')
 	project=$(echo "${var}" | cut -d'/' -f1 | tr -d '[:space:]')
-	echo "Cleaning-${counter}-${project}/${sample_name}" >> clean.summary
+	echo "Cleaning-${counter}-${project}/${sample_name}" >> /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/clean.summary
 	/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts/Quaisar-H/sample_cleaner.sh ${sample_name} ${project} >> /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/clean.out
 done < "${1}"
 echo "All isolates completed"
