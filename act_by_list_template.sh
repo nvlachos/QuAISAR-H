@@ -1,8 +1,8 @@
 #!/bin/sh -l
 
-#$ -o act_by_list_barebones_4.out
-#$ -e act_by_list_barebones_4.err
-#$ -N abl-prokka
+#$ -o act_by_list_template.out
+#$ -e act_by_list_template.err
+#$ -N abl-template
 #$ -cwd
 #$ -q all.q
 
@@ -26,10 +26,11 @@ elif [[ "$1" = "-h" ]]; then
 fi
 
 # Loop through and act on each sample name in the passed/provided list
-counter=0
+counter=1
 while IFS= read -r var; do
 	sample_name=$(echo "${var}" | cut -d'/' -f2 | tr -d '[:space:]')
 	project=$(echo "${var}" | cut -d'/' -f1 | tr -d '[:space:]')
+	echo "Cleaning-${counter}-${project}/${sample_name}" >> clean.summary
 	/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts/Quaisar-H/sample_cleaner.sh ${sample_name} ${project} >> /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/clean.out
 done < "${1}"
 echo "All isolates completed"
