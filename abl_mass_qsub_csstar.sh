@@ -7,6 +7,10 @@
 #$ -q short.q
 
 #Import the config file with shortcuts and settings
+# Import the config file with shortcuts and settings
+if [[ ! -f "./config.sh" ]]; then
+	cp ./config_template.sh ./config.sh
+fi
 . ./config.sh
 #Import the module file that loads all necessary mods
 . "${mod_changers}/pipeline_mods"
@@ -105,12 +109,14 @@ while [ ${counter} -lt ${arr_size} ] ; do
 					#echo -e "\"${shareScript}/fix_node_rename.sh\" \"${sample}\" \"${project}\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
 					echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g o \"${project}\" \"--plasmid\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
 					echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarp_complete.txt\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-					cd "${main_dir}"
+					#cd "${main_dir}"
 					if [[ "${counter}" -lt "${last_index}" ]]; then
 						qsub "${main_dir}/csstp_${sample}_${start_time}.sh"
 					else
 						qsub -sync y "${main_dir}/csstp_${sample}_${start_time}.sh"
 					fi
+					mv "csstp_${sample}"* ${main_dir}
+					mv "csstn_${sample}"* ${main_dir}
 				#else
 				#	echo "${project}/${sample} already has ${resGANNOT_srst2_filename} PLASMID"
 				#	echo "$(date)" > "${main_dir}/complete/${sample}_csstarp_complete.txt"
@@ -174,6 +180,8 @@ while [ ${counter} -lt ${arr_size} ] ; do
 							else
 								qsub -sync y "${main_dir}/csstp_${sample}_${start_time}.sh"
 							fi
+							mv "csstp_${sample}"* ${main_dir}
+							mv "csstn_${sample}"* ${main_dir}
 						#else
 						#	echo "${project}/${sample} already has ${resGANNOT_srst2_filename} PLASMID"
 						#	echo "$(date)" > "${main_dir}/complete/${sample}_csstarp_complete.txt"
