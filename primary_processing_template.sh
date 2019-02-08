@@ -170,8 +170,9 @@ for ((i=1 ; i <= nopts ; i++)); do
 			if [[ -z ${BASEDIR} ]]; then
 				BASEDIR="${processed}"
 			fi
-			trn=$(echo "${2}" | sed 's/\//-/')
-			run_name="single_${trn}"
+			#trn=$(echo "${2}" | sed 's/\//-/')
+			#run_name="single_${trn}"
+			run_name="run_for_sample_${3}"
 			do_download="false"
 			is_full_run="false"
 			shift 3
