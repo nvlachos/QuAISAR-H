@@ -43,15 +43,6 @@ echo "-${arr_size}:${arr[@]}-"
 counter=0
 max_subs=${2}
 
-# Set script directory
-main_dir="${3}/csstar_alt_subs"
-if [[ ! -d "${3}/csstar_alt_subs" ]]; then
-	mkdir "${3}/csstar_alt_subs"
-	mkdir "${3}/csstar_alt_subs/complete"
-elif [[ ! -d  "${3}/csstar_alt_subs/complete" ]]; then
-	mkdir "${3}/csstar_alt_subs/complete"
-fi
-
 # format name being extracted from alt database
 main_dir="${3}/csstar_subs"
 if [[ ! -d "${3}/csstar_subs" ]]; then

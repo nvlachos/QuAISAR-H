@@ -29,6 +29,8 @@ fi
 Quaisar_H_log_directory="/scicomp/groups/OID/NCEZID/DHQP/CEMB/QuAISAR_logs"
 #shortcut to processed samples folder
 processed="/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles"
+# Location to keep all temp files when doing mass qsubmissions
+mass_qsub_folder="/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_Dir/mass_subs"
 # Locations of all scripts and necessary accessory files
 shareScript="$(pwd)"
 # Location of any files being called that have an effect on loaded modules
