@@ -49,6 +49,7 @@ max_subs=${2}
 
 # format name being extracted from alt database
 main_dir="${3}/csstar_subs"
+cp ./config ${main_dir}
 if [[ ! -d "${3}/csstar_subs" ]]; then
 	mkdir -p "${3}/csstar_subs/complete"
 elif [[ ! -d  "${3}/csstar_subs/complete" ]]; then
@@ -148,6 +149,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 						# Defaulting to gapped/98, change if you want to include user preferences
 						echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g h \"${project}\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
 						echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarn_complete.txt\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
+						cd ${main_dir}
 						if [[ "${counter}" -lt "${last_index}" ]]; then
 							qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
 						else
@@ -180,8 +182,8 @@ while [ ${counter} -lt ${arr_size} ] ; do
 							else
 								qsub -sync y "${main_dir}/csstp_${sample}_${start_time}.sh"
 							fi
-							mv "csstp_${sample}"* ${main_dir}
-							mv "csstn_${sample}"* ${main_dir}
+							#mv "csstp_${sample}"* ${main_dir}
+							#mv "csstn_${sample}"* ${main_dir}
 						#else
 						#	echo "${project}/${sample} already has ${resGANNOT_srst2_filename} PLASMID"
 						#	echo "$(date)" > "${main_dir}/complete/${sample}_csstarp_complete.txt"
@@ -221,3 +223,5 @@ do
 		sleep 5
 	fi
 done
+
+rm ${main_dir}/config.sh
