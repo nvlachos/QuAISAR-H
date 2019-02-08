@@ -21,6 +21,8 @@ fi
 # Python/3.5.2
 #
 
+pwd
+
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to run_c-sstar.sh, exiting"
