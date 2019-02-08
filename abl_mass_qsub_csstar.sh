@@ -76,6 +76,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 				echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g h \"${project}\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
 				echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarn_complete.txt\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
 				cd "${main_dir}"
+				echo "submitting ${main_dir}/csstn_${sample}_${start_time}.sh"
 				if [[ "${counter}" -lt "${last_index}" ]]; then
 					qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
 				else
