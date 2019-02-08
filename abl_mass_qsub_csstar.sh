@@ -190,7 +190,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 					break
 				else
 					timer=$(( timer + 5 ))
-					echo "sleeping for 5 seconds, so far slept for ${timer}"
+					echo "${main_dir}/complete/${waiting_sample}_csstarn_complete.txt not ready, sleeping for 5 seconds, so far slept for ${timer}"
 					sleep 5
 				fi
 			done
