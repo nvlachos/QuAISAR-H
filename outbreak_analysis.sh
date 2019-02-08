@@ -454,3 +454,11 @@ done < ${1}
 
 # Calls script that sorts and formats all isolates info into a atrix for easy viewing
 python3 "${shareScript}/project_parser.py" "${output_directory}/${4}-csstar_summary_full.txt" "${output_directory}/${4}-plasmid_summary.txt" "${output_directory}/${4}_AR_plasmid_report.csv" "${output_directory}/${4}-srst2.txt"
+
+resGANNOT_short=$(echo "${resGANNOT_srst2_filename}" | rev | cut -d'_' -f2 | rev)
+year_AR_made="${resGANNOT_short:10:4}"
+month_AR_made="${resGANNOT_short:14:2}"
+day_AR_made="${resGANNOT_short:16:2}"
+
+echo "
+ResGANNOT AR Database created on:	${month_AR_made}/${day_AR_made}/${year_AR_made}"
