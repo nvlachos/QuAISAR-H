@@ -168,12 +168,12 @@ rm -r ${output_directory}/mashtree
 # Submits the list of isolates that need the newest ResGANNOT file for csstar
 if [[ "${run_csstar}" = "true" ]]; then
 	echo "Submitting list for csstar qsub analysis"
-	qsub -sync y ./abl_mass_qsub_csstar.sh "${output_directory}/${4}_csstar_todo.txt" 50
+	qsub -sync y ./abl_mass_qsub_csstar.sh "${output_directory}/${4}_csstar_todo.txt" 25 "${mass_qsub_folder}"
 fi
 # Submits the list of isolates that need the newest ResGANNOT file for srst2
 if [[ "${run_srst2}" = "true" ]]; then
 	echo "Submitting list for srst2 qsub analysis"
-	qsub -sync y ./abl_mass_qsub_srst2.sh "${output_directory}/${4}_srst2_todo.txt" 50
+	qsub -sync y ./abl_mass_qsub_srst2.sh "${output_directory}/${4}_srst2_todo.txt" 25 "${mass_qsub_folder}"
 fi
 
 sleep 15
