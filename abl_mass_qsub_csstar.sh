@@ -224,4 +224,4 @@ do
 	fi
 done
 
-rm ${main_dir}/config.sh
+#rm ${main_dir}/config.sh
