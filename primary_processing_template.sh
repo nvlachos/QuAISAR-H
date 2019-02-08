@@ -744,6 +744,7 @@ do
 	#echo "${projfile}"
 	file=$(echo "${projfile}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
 	proj=$(echo "${projfile}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
+	echo "${file} ${proj} ${BASEDIR}"
 	process_samples "${file}" "${proj}" "${BASEDIR}"
 	"${shareScript}/validate_piperun.sh" "${file}" "${proj}" > "${processed}/${proj}/${file}/${file}_pipeline_stats.txt"
 	cat "${processed}/${proj}/${file}/${file}_pipeline_stats.txt" >> "${log_file}"
