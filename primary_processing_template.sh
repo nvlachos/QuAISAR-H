@@ -741,7 +741,7 @@ outarray+=("${run_name} started at ${run_start_time} and saved to ${run_name}_on
 #Each file in the list is put through the full pipeline
 for projfile in "${file_list[@]}";
 do
-	#echo "${projfile}"
+	echo "${projfile}"
 	file=$(echo "${projfile}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
 	proj=$(echo "${projfile}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
 	echo "${file} ${proj} ${BASEDIR}"
