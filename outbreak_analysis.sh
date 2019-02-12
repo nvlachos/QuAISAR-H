@@ -468,5 +468,4 @@ year_AR_made="${resGANNOT_date:0:4}"
 month_AR_made="${resGANNOT_date:4:2}"
 day_AR_made="${resGANNOT_date:6:2}"
 
-echo "
-ResGANNOT AR Database created on:	${month_AR_made}/${day_AR_made}/${year_AR_made}" >> "${output_directory}/${4}_AR_plasmid_report.csv"
+echo -e "\nResGANNOT AR Database created on:\t${month_AR_made}/${day_AR_made}/${year_AR_made}" >> "${output_directory}/${4}_AR_plasmid_report.csv"
