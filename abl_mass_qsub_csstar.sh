@@ -114,9 +114,6 @@ while [ ${counter} -lt ${arr_size} ] ; do
 					mv "${shareScript}/csstp_${sample}.out" ${main_dir}
 					mv "${shareScript}/csstp_${sample}.err" ${main_dir}
 			fi
-			mv "csstp_${sample}"* ${main_dir}
-			mv "csstn_${sample}"* ${main_dir}
-
 		else
 			waiting_for_index=$(( counter - max_subs ))
 			waiting_sample=$(echo "${arr[${waiting_for_index}]}" | cut -d'/' -f2)
@@ -186,27 +183,30 @@ while [ ${counter} -lt ${arr_size} ] ; do
 	counter=$(( counter + 1 ))
 done
 
-# Check for completion of last sample
-finish_counter=0
-waiting_for_index=${last_index}
-waiting_sample=$(echo "${arr[${last_index}]}" | cut -d'/' -f2)
+# Check for completion of all samples
 timer=0
-while :
-do
-	if [[ ${timer} -gt 3600 ]]; then
-		echo "Timer exceeded limit of 3600 seconds = 60 minutes"
-		break
-	fi
+
+for item in "${arr[@]}"; do
+	waiting_sample=$(echo "${item}" | cut -d'/' -f2)
 	if [[ -f "${main_dir}/complete/${waiting_sample}_csstarn_complete.txt" ]] || [[ ! -s "${processed}/${project}/${waiting_sample}/Assembly/${waiting_sample}_scaffolds_trimmed.fasta" ]]; then
-		echo "All isolates completed"
-		printf "%s %s" "Act_by_list.sh has completed ${2}" "${global_end_time}" | mail -s "act_by_list complete" nvx4@cdc.gov
-		exit 0
+		echo "${item} is complete"
 	else
-		counter+$(( counter + 1))
-		timer=$(( timer + 5 ))
-		echo "sleeping for 5 seconds, so far slept for ${timer}"
-		sleep 5
+		while :
+		do
+				if [[ ${timer} -gt 3600 ]]; then
+					echo "Timer exceeded limit of 3600 seconds = 60 minutes"
+					exit 1
+				fi
+				if [[ -f "${main_dir}/complete/${waiting_sample}_csstarn_complete.txt" ]]; then
+					echo "${item} is complete"
+					break
+				else
+					timer=$(( timer + 5 ))
+					echo "sleeping for 5 seconds, so far slept for ${timer}"
+					sleep 5
+				fi
+		done
 	fi
 done
 
-#rm ${main_dir}/config.sh
+exit 0

@@ -150,5 +150,30 @@ while [ ${counter} -lt ${arr_size} ] ; do
 	counter=$(( counter + 1 ))
 done
 
-echo "All isolates completed"
+# Check for completion of all samples
+timer=0
+
+for item in "${arr[@]}"; do
+	waiting_sample=$(echo "${item}" | cut -d'/' -f2)
+	if [[ -f "${main_dir}/complete/${waiting_sample}_csstarn_complete.txt" ]] || [[ ! -s "${processed}/${project}/${waiting_sample}/Assembly/${waiting_sample}_scaffolds_trimmed.fasta" ]]; then
+		echo "${item} is complete"
+	else
+		while :
+		do
+				if [[ ${timer} -gt 3600 ]]; then
+					echo "Timer exceeded limit of 3600 seconds = 60 minutes"
+					exit 1
+				fi
+				if [[ -f "${main_dir}/complete/${waiting_sample}_csstarn_complete.txt" ]]; then
+					echo "${item} is complete"
+					break
+				else
+					timer=$(( timer + 5 ))
+					echo "sleeping for 5 seconds, so far slept for ${timer}"
+					sleep 5
+				fi
+		done
+	fi
+done
+
 exit 0
