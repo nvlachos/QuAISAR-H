@@ -62,8 +62,6 @@ start_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 while [ ${counter} -lt ${arr_size} ] ; do
 	sample=$(echo "${arr[${counter}]}" | cut -d'/' -f2)
 	project=$(echo "${arr[${counter}]}" | cut -d'/' -f1)
-	#rm -r ${processed}/${project}/${sample}/c-sstar/*20181003*
-	#rm -r ${processed}/${project}/${sample}/c-sstar_plasmid/*20181003*
 	echo ${counter}-${project}-${sample}
 	if [[ -s "${processed}/${project}/${sample}/Assembly/${sample}_scaffolds_trimmed.fasta" ]]; then
 		echo "Test"
@@ -92,11 +90,8 @@ while [ ${counter} -lt ${arr_size} ] ; do
 						qsub -sync y "${main_dir}/csstn_${sample}_${start_time}.sh"
 					fi
 				fi
-			#else
-			#	echo "${project}/${sample} already has ${resGANNOT_srst2_filename}"
-			#	echo "$(date)" > "${main_dir}/complete/${sample}_csstarn_complete.txt"
-			#fi
-
+				mv "${shareScript}/csstn_${sample}.out" ${main_dir}
+				mv "${shareScript}/csstn_${sample}.err" ${main_dir}
 			if [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
 				#if [[ ! -f "${processed}/${project}/${sample}/c-sstar_plasmid/${sample}.${resGANNOT_srst2_filename}.gapped_40_sstar_summary.txt" ]]; then
 					echo "Index below max submissions, submitting plasmid"
@@ -108,23 +103,19 @@ while [ ${counter} -lt ${arr_size} ] ; do
 					echo -e "#$ -q short.q\n"  >> "${main_dir}/csstp_${sample}_${start_time}.sh"
 					echo -e "module load Python/3.6.1\n" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
 					# Defaulting to gapped/98, change if you want to include user preferences
-					#echo -e "\"${shareScript}/fix_node_rename.sh\" \"${sample}\" \"${project}\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
 					echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g o \"${project}\" \"--plasmid\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
 					echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarp_complete.txt\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-					#cd "${main_dir}"
+					cd "${main_dir}"
 					if [[ "${counter}" -lt "${last_index}" ]]; then
 						qsub "${main_dir}/csstp_${sample}_${start_time}.sh"
 					else
 						qsub -sync y "${main_dir}/csstp_${sample}_${start_time}.sh"
 					fi
-					mv "csstp_${sample}"* ${main_dir}
-					mv "csstn_${sample}"* ${main_dir}
-				#else
-				#	echo "${project}/${sample} already has ${resGANNOT_srst2_filename} PLASMID"
-				#	echo "$(date)" > "${main_dir}/complete/${sample}_csstarp_complete.txt"
-				#fi
+					mv "${shareScript}/csstp_${sample}.out" ${main_dir}
+					mv "${shareScript}/csstp_${sample}.err" ${main_dir}
 			fi
-
+			mv "csstp_${sample}"* ${main_dir}
+			mv "csstn_${sample}"* ${main_dir}
 
 		else
 			waiting_for_index=$(( counter - max_subs ))
@@ -160,11 +151,8 @@ while [ ${counter} -lt ${arr_size} ] ; do
 								qsub -sync y "${main_dir}/csstn_${sample}_${start_time}.sh"
 							fi
 						fi
-					#else
-					#	echo "${project}/${sample} already has ${resGANNOT_srst2_filename}"
-					#	echo "$(date)" > "${main_dir}/complete/${sample}_csstarn_complete.txt"
-					#fi
-
+						mv "${shareScript}/csstn_${sample}.out" ${main_dir}
+						mv "${shareScript}/csstn_${sample}.err" ${main_dir}
 					if [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
 						#if [[ ! -f "${processed}/${project}/${sample}/c-sstar_plasmid/${sample}.${resGANNOT_srst2_filename}.gapped_40_sstar_summary.txt" ]]; then
 							echo -e "#!/bin/bash -l\n" > "${main_dir}/csstp_${sample}_${start_time}.sh"
@@ -183,12 +171,8 @@ while [ ${counter} -lt ${arr_size} ] ; do
 							else
 								qsub -sync y "${main_dir}/csstp_${sample}_${start_time}.sh"
 							fi
-							#mv "csstp_${sample}"* ${main_dir}
-							#mv "csstn_${sample}"* ${main_dir}
-						#else
-						#	echo "${project}/${sample} already has ${resGANNOT_srst2_filename} PLASMID"
-						#	echo "$(date)" > "${main_dir}/complete/${sample}_csstarp_complete.txt"
-						#fi
+							mv "${shareScript}/csstp_${sample}.out" ${main_dir}
+							mv "${shareScript}/csstp_${sample}.err" ${main_dir}
 					fi
 					break
 				else
