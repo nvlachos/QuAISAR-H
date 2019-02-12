@@ -80,10 +80,8 @@ while [ ${counter} -lt ${arr_size} ] ; do
 				else
 					qsub -sync y "${main_dir}/mlst_${sample}_${start_time}.sh"
 				fi
-		#	else
-		#		echo "${project}/${sample} already has mlst summary"
-		#		echo "$(date)" > "${main_dir}/complete/${sample}_mlst_complete.txt"
-		#	fi
+				mv "mlst_${sample}.out" ${main_dir}
+				mv "mlst_${sample}.err" ${main_dir}
 		else
 			waiting_for_index=$(( counter - max_subs ))
 			waiting_sample=$(echo "${arr[${waiting_for_index}]}" | cut -d'/' -f2)
@@ -104,14 +102,17 @@ while [ ${counter} -lt ${arr_size} ] ; do
 						echo -e "#$ -N mlst_${sample}"   >> "${main_dir}/mlst_${sample}_${start_time}.sh"
 						echo -e "#$ -cwd"  >> "${main_dir}/mlst_${sample}_${start_time}.sh"
 						echo -e "#$ -q short.q\n"  >> "${main_dir}/mlst_${sample}_${start_time}.sh"
+						echo -e "cd ${shareScript}" >> "${main_dir}/mlst_${sample}_${start_time}.sh"
 						echo -e "\"${shareScript}/run_MLST.sh\" \"${sample}\" \"${project}\"" >> "${main_dir}/mlst_${sample}_${start_time}.sh"
 						echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_mlst_complete.txt\"" >> "${main_dir}/mlst_${sample}_${start_time}.sh"
-						cd "${main_dir}"
+						#cd "${main_dir}"
 						if [[ "${counter}" -lt "${last_index}" ]]; then
 							qsub "${main_dir}/mlst_${sample}_${start_time}.sh"
 						else
 							qsub -sync y "${main_dir}/mlst_${sample}_${start_time}.sh"
 						fi
+						mv "mlst_${sample}.out" ${main_dir}
+						mv "mlst_${sample}.err" ${main_dir}
 					else
 						echo "${project}/${sample} already has mlst summary"
 						echo "$(date)" > "${main_dir}/complete/${sample}_mlst_complete.txt"

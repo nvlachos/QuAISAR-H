@@ -82,12 +82,14 @@ while [ ${counter} -lt ${arr_size} ] ; do
 			# Can we somehow consolidate into one srst2 analysis to do MLST/AR/SEROTYPE
 			echo -e "\"${shareScript}/run_srst2_on_singleDB.sh\" \"${sample}\" \"${project}\"" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 			echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_srst2_complete.txt\"" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
-			cd "${main_dir}"
+			#cd "${main_dir}"
 			if [[ "${counter}" -lt "${last_index}" ]]; then
 				qsub "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 			else
 				qsub -sync y "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 			fi
+			mv "srst2AR_${sample}.err" ${main_dir}
+			mv "srst2AR_${sample}.out" ${main_dir}
 		else
 			echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_srst2_complete.txt\"" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 			echo "${project}/${sample} already has 20180608"
@@ -121,6 +123,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 					echo -e "module load perl/5.16.1-MT" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 					echo -e "module load srst2" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 					# Can we somehow consolidate into one srst2 analysis to do MLST/AR/SEROTYPE
+					echo -e "cd ${shareScript}" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 					echo -e "\"${shareScript}/run_srst2_on_singleDB.sh\" \"${sample}\" \"${project}\"" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 					echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_srst2_complete.txt\"" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 					cd "${main_dir}"
@@ -129,6 +132,8 @@ while [ ${counter} -lt ${arr_size} ] ; do
 					else
 						qsub -sync y "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 					fi
+					mv "srst2AR_${sample}.err" ${main_dir}
+					mv "srst2AR_${sample}.out" ${main_dir}
 				else
 					echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_srst2_complete.txt\"" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 					echo "${project}/${sample} already has 20180608"
