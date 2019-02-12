@@ -72,6 +72,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 				echo -e "#$ -N mlst_${sample}"   >> "${main_dir}/mlst_${sample}_${start_time}.sh"
 				echo -e "#$ -cwd"  >> "${main_dir}/mlst_${sample}_${start_time}.sh"
 				echo -e "#$ -q short.q\n"  >> "${main_dir}/mlst_${sample}_${start_time}.sh"
+				echo -e "cd ${shareScript}" >> "${main_dir}/mlst_${sample}_${start_time}.sh"
 				echo -e "\"${shareScript}/run_MLST.sh\" \"${sample}\" \"${project}\" \"-f\" \"abaumannii\"" >> "${main_dir}/mlst_${sample}_${start_time}.sh"
 				echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_mlst_complete.txt\"" >> "${main_dir}/mlst_${sample}_${start_time}.sh"
 				cd "${main_dir}"
