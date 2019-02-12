@@ -128,16 +128,20 @@ while IFS= read -r line; do
 	#echo "checking for ${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
 	if [[ -s "${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]];
 	then
-		echo "${project}/${sample_name} has newest ResGANNOT for normal csstar already"
+		#echo "${project}/${sample_name} has newest ResGANNOT for normal csstar already"
+		:
 	else
+		echo "${project}/${sample_name} - ccstar needs to be run against ${resGANNOT_srst2_filename}"
 		echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
 		run_csstar="true"
 	fi
 	#echo "checking for ${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
 	if [[ -s "${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta" ]]; then
 		if [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]] || [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_40_sstar_summary.txt" ]]; then
-			echo "${project}/${sample_name} has newest ResGANNOT for plasmid csstar already"
+			#echo "${project}/${sample_name} has newest ResGANNOT for plasmid csstar already"
+			:
 		else
+			echo "${project}/${sample_name} - ccstar plasmid needs to be run against ${resGANNOT_srst2_filename}"
 			echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
 			sort -u "${output_directory}/${4}_csstar_todo.txt" > "${output_directory}/${4}_csstar_todo_no_dups.txt"
 			cp "${output_directory}/${4}_csstar_todo_no_dups.txt" "${output_directory}/${4}_csstar_todo.txt"
@@ -150,8 +154,10 @@ while IFS= read -r line; do
 	if [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] && [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] || [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]] && [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]]; then
 		#echo "FASTQs exist"
 		if [[ -f "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]] || [[ -f "${OUTDATADIR}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
-				echo "${project}/${sample_name} has newest ResGANNOT for srst2 already"
+				#echo "${project}/${sample_name} has newest ResGANNOT for srst2 already"
+				:
 			else
+				echo "${project}/${sample_name} - SRST2 needs to be run against ${resGANNOT_srst2_filename}"
 				echo "${project}/${sample_name}" >> "${output_directory}/${4}_srst2_todo.txt"
 				run_srst2="true"
 		fi
