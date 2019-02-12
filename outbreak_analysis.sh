@@ -464,9 +464,9 @@ python3 "${shareScript}/project_parser.py" "${output_directory}/${4}-csstar_summ
 
 resGANNOT_date=$(echo "${resGANNOT_srst2_filename}" | cut -d'_' -f2)
 echo "${resGANNOT_date}"
-year_AR_made="${resGANNOT_short:0:4}"
-month_AR_made="${resGANNOT_short:4:2}"
-day_AR_made="${resGANNOT_short:6:2}"
+year_AR_made="${resGANNOT_date:0:4}"
+month_AR_made="${resGANNOT_date:4:2}"
+day_AR_made="${resGANNOT_date:6:2}"
 
 echo "
 ResGANNOT AR Database created on:	${month_AR_made}/${day_AR_made}/${year_AR_made}" >> "${output_directory}/${4}_AR_plasmid_report.csv"
