@@ -193,8 +193,8 @@ while IFS= read -r line; do
 	sample_index=0
 	oar_list=""
 	# Looks at all the genes found for a sample
-	ls ${OUTDATADIR}/c-sstar/
-	echo "looking for ${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
+	#ls ${OUTDATADIR}/c-sstar/
+	#echo "looking for ${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
 	if [[ -f "${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]]; then
 		ARDB_full="${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
 	else
@@ -254,7 +254,7 @@ while IFS= read -r line; do
 	tax_header=$(head -n1 "${OUTDATADIR}/${sample_name}.tax")
 	taxonomy_source_type=$(echo "${tax_header}" | cut -d'-' -f1)
 	taxonomy_source=$(echo "${tax_header}" | cut -d'-' -f3-)
-	echo "Test-${tax_header};${taxonomy_source_type};${taxonomy_source}"
+	#echo "Test-${tax_header};${taxonomy_source_type};${taxonomy_source}"
 
 	#echo "Looking at ${OUTDATADIR}/${sample_name}.tax"
 	genus=$(tail -n2 "${OUTDATADIR}/${sample_name}.tax" | head -n1 | cut -d'	' -f2)
@@ -468,4 +468,4 @@ year_AR_made="${resGANNOT_date:0:4}"
 month_AR_made="${resGANNOT_date:4:2}"
 day_AR_made="${resGANNOT_date:6:2}"
 
-echo -e "\nResGANNOT AR Database created on:\t${month_AR_made}/${day_AR_made}/${year_AR_made}" >> "${output_directory}/${4}_AR_plasmid_report.csv"
+echo -e "\n\tResGANNOT AR Database created on:\t${month_AR_made}/${day_AR_made}/${year_AR_made}" >> "${output_directory}/${4}_AR_plasmid_report.csv"
