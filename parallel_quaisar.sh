@@ -264,6 +264,7 @@ do
 		cp ${shareScript}/quaisar_template.sh ${shareScript}/quaisar_${file}.sh
 		sed -i -e "s/quaisar_X/quaisar_${file}/g" "${shareScript}/quaisar_${file}.sh"
 		sed -i -e "s/quasX/quasp_${file}/g" "${shareScript}/quaisar_${file}.sh"
+		echo "Entering ${shareScript}/quaisar_${file}.sh" "${file}" "${proj}"
 		qsub "${shareScript}/quaisar_${file}.sh" "${file}" "${proj}"
 		echo "Created and ran quaisar_${file}.sh"
 	else
