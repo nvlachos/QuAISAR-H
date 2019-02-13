@@ -1,8 +1,8 @@
 #!/bin/sh -l
 
-#$ -o run_csstar_proj_parser.out
-#$ -e run_csstar_proj_parser.err
-#$ -N run_csstar_proj_parser
+#$ -o outbreak_analysis.out
+#$ -e outbreak_analysis.err
+#$ -N outbreak_analysis
 #$ -cwd
 #$ -q all.q
 
