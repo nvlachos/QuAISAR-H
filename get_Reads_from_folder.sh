@@ -104,11 +104,11 @@ do
 								echo "${short_name} already has both zipped FASTQs (Probably done when R2 was found, this is the R1 tester)"
 							else
 								echo "Clumping ${source_path}/${full_sample_name} and ${source_path}/${full_sample_name_pair} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz and ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
-								clumpify.sh in1="${source}/${full_sample_name}" in2="${source}/${full_sample_name_pair}" out1="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" out2="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" reorder
+								clumpify.sh in1="${source_path}/${full_sample_name}" in2="${source_path}/${full_sample_name_pair}" out1="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" out2="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" reorder
 							fi
 						else
 							echo "No R2 found for ${source_path}/${full_sample_name}"
-							clumpify.sh in="${source}/${full_sample_name}" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
+							clumpify.sh in="${source_path}/${full_sample_name}" out="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz"
 						fi
 					elif [[ "${full_sample_name}" = *".fastq" ]]; then
 						if [[ -f "${source_path}/${full_sample_name_pair}" ]]; then
@@ -140,7 +140,7 @@ do
 								echo "${short_name} already has both zipped FASTQs (Probably done when R1 was found, this is the R2 tester)"
 							else
 								echo "Clumping ${source_path}/${full_sample_name} and ${source_path}/${full_sample_name_pair} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz and ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
-								clumpify.sh in1="${source}/${full_sample_name_pair}" in2="${source}/${full_sample_name}" out1="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" out2="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" reorder
+								clumpify.sh in1="${source_path}/${full_sample_name_pair}" in2="${source_path}/${full_sample_name}" out1="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" out2="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" reorder
 							fi
 						else
 							echo "No R1 found for ${source_path}/${full_sample_name}"
