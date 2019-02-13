@@ -262,11 +262,10 @@ do
 	fi
 	if [[ ! -f ${shareScript}/quaisar_${file}.sh ]]; then
 		cp ${shareScript}/quaisar_template.sh ${shareScript}/quaisar_${file}.sh
-		sed -i -e "s/quaisar_/quaisar_${file}/g" "${shareScript}/quaisar_${file}.sh"
-		sed -i -e "s/quasX/quas${file}/g" "${shareScript}/quaisar_${file}.sh"
-		echo "Entering ${shareScript}/quaisar_${file}.sh $@"
-		echo "Created and ran quaisar_${file}.sh"
+		sed -i -e "s/quaisar_X/quaisar_${file}/g" "${shareScript}/quaisar_${file}.sh"
+		sed -i -e "s/quasX/quasp_${file}/g" "${shareScript}/quaisar_${file}.sh"
 		qsub "${shareScript}/quaisar_${file}.sh" "$@"
+		echo "Created and ran quaisar_${file}.sh"
 	else
 		echo "${shareScript}/quaisar_${file}.sh already exists, will resubmit"
 		qsub "${shareScript}/quaisar_${file}.sh" "$@"
