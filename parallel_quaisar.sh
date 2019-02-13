@@ -269,6 +269,7 @@ do
 		qsub "${shareScript}/quaisar_${file}.sh" "$@"
 	else
 		echo "${shareScript}/quaisar_${file}.sh already exists, will resubmit"
+		qsub "${shareScript}/quaisar_${file}.sh" "$@"
 	fi
 done
 
