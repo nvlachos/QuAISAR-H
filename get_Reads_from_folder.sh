@@ -104,7 +104,7 @@ do
 								echo "${short_name} already has both zipped FASTQs (Probably done when R2 was found, this is the R1 tester)"
 							else
 								echo "Clumping ${source_path}/${full_sample_name} and ${source_path}/${full_sample_name_pair} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz and ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
-								clumpify.sh in1="${source_path}/${full_sample_name}" in2="${source_path}/${full_sample_name_pair}" out1="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" out2="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" reorder
+								clumpify.sh in1="${source_path}/${full_sample_name}" in2="${source_path}/${full_sample_name_pair}" out1="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" out2="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" reorder=p
 							fi
 						else
 							echo "No R2 found for ${source_path}/${full_sample_name}"
@@ -121,7 +121,7 @@ do
 								echo "Zipping and clumping ${source_path}/${full_sample_name} and ${source_path}/${full_sample_name_pair} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz and ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 								gzip -c "${source_path}/${full_sample_name}" > "${OUTDATADIR}/${short_name}/FASTQs/temp/${short_name}_R1_001.fastq.gz"
 								gzip -c "${source_path}/${full_sample_name_pair}" > "${OUTDATADIR}/${short_name}/FASTQs/temp/${short_name}_R2_001.fastq.gz"
-								clumpify.sh in1="${OUTDATADIR}/${short_name}/FASTQs/temp/${short_name}_R1_001.fastq.gz" in2="${OUTDATADIR}/${short_name}/FASTQs/temp/${short_name}_R2_001.fastq.gz" out1="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" out2="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" reorder
+								clumpify.sh in1="${OUTDATADIR}/${short_name}/FASTQs/temp/${short_name}_R1_001.fastq.gz" in2="${OUTDATADIR}/${short_name}/FASTQs/temp/${short_name}_R2_001.fastq.gz" out1="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" out2="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" reorder=p
 								rm -r "${OUTDATADIR}/${short_name}/FASTQs/temp"
 							fi
 						else
@@ -140,7 +140,7 @@ do
 								echo "${short_name} already has both zipped FASTQs (Probably done when R1 was found, this is the R2 tester)"
 							else
 								echo "Clumping ${source_path}/${full_sample_name} and ${source_path}/${full_sample_name_pair} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz and ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
-								clumpify.sh in1="${source_path}/${full_sample_name_pair}" in2="${source_path}/${full_sample_name}" out1="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" out2="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" reorder
+								clumpify.sh in1="${source_path}/${full_sample_name_pair}" in2="${source_path}/${full_sample_name}" out1="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" out2="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" reorder=p
 							fi
 						else
 							echo "No R1 found for ${source_path}/${full_sample_name}"
@@ -157,7 +157,7 @@ do
 									echo "Zipping and clumping ${source_path}/${full_sample_name} and ${source_path}/${full_sample_name_pair} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz and ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
 									gzip -c "${source_path}/${full_sample_name}" > "${OUTDATADIR}/${short_name}/FASTQs/temp/${short_name}_R1_001.fastq.gz"
 									gzip -c "${source_path}/${full_sample_name_pair}" > "${OUTDATADIR}/${short_name}/FASTQs/temp/${short_name}_R2_001.fastq.gz"
-									clumpify.sh in1="${OUTDATADIR}/${short_name}/FASTQs/temp/${short_name}_R1_001.fastq.gz" in2="${OUTDATADIR}/${short_name}/FASTQs/temp/${short_name}_R2_001.fastq.gz" out1="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" out2="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" reorder
+									clumpify.sh in1="${OUTDATADIR}/${short_name}/FASTQs/temp/${short_name}_R1_001.fastq.gz" in2="${OUTDATADIR}/${short_name}/FASTQs/temp/${short_name}_R2_001.fastq.gz" out1="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" out2="${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" reorder=p
 									rm -r "${OUTDATADIR}/${short_name}/FASTQs/temp"
 							fi
 						else
