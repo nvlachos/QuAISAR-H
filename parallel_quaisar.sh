@@ -154,6 +154,7 @@ for ((i=1 ; i <= nopts ; i++)); do
 			if [[ ! -d "${INDATADIR}" ]]; then
 				echo "No FOLDER ${2} exists on any MiSeq instrument, exiting"
 				exit 123
+			fi
 			if [[ ${BASEDIR} = "${requestor}_${global_time}" ]]; then
 				BASEDIR="${processed}"
 			fi
