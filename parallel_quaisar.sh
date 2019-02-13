@@ -1,8 +1,8 @@
 #!/bin/bash -l
 
-#$ -o primary_processing.out
-#$ -e primary_processing.err
-#$ -N ppX
+#$ -o parqua.out
+#$ -e parqua.err
+#$ -N parqua
 #$ -pe smp 14
 #$ -cwd
 #$ -q all.q
