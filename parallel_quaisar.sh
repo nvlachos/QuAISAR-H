@@ -273,7 +273,7 @@ do
 done
 
 # Hold for completion of all submited single quaisars
-for run_sample in "${file_list[@]}";; do
+for run_sample in "${file_list[@]}"; do
 	waiting_sample=$(echo "${run_sample}" | cut -d'/' -f2)
 	if [[ -f "${processed}/${PROJECT}/${waiting_sample}/${waiting_sample}_pipeline_stats.txt" ]]; then
 		echo "${waiting_sample} is complete"
