@@ -248,7 +248,7 @@ while IFS= read -r line; do
 	# Pulls MLST type for sample and adds it to the summary file
 	if [[ -f "${OUTDATADIR}/MLST/${sample_name}.mlst" ]]; then
 		mlst=$(head -n 1 ${OUTDATADIR}/MLST/${sample_name}.mlst)
-		mlst=$(echo "${mlst}" | cut -d'	' -f3-)
+		mlst=$(echo "${mlst}" | cut -d'	' -f3)
 	else
 		mlst="N/A"
 	fi
@@ -264,7 +264,7 @@ while IFS= read -r line; do
 	fi
 	if [[ ! -z "${alt_mlst_file}" ]]; then
 		alt_mlst=$(head -n 1 "${alt_mlst_file}")
-		alt_mlst=$(echo "${alt_mlst}" | cut -d'	' -f3-)
+		alt_mlst=$(echo "${mlst}" | cut -d'	' -f3)
 	else
 		alt_mlst="N/A"
 	fi
