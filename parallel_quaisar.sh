@@ -312,7 +312,7 @@ if [[ -f "${processed}/${PROJECT}/${PROJECT}_list_original.txt" ]]; then
 fi
 
 runsumdate=$(date "+%m_%d_%Y_at_%Hh_%Mm")
-$(${shareScript}/run_sum.sh ${PROJECT})
+${shareScript}/run_sum.sh ${PROJECT}
 runsum=$(${shareScript}/view_sum.sh ${PROJECT})
 outarray+="${runsum}"
 
