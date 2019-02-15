@@ -66,6 +66,7 @@ do
 		# gets path from file
 		source_path=$(dirname "${file}")
 		# Extracts filename keeping only isolate ID, if it matches standard miseq naming
+		echo "${match}:${full_sample_name}"
 		if [[ "${match}" -eq 1 ]]; then
 			short_name=$(echo "${full_sample_name}" | rev | cut -d'_' -f5- | rev)
 			postfix=$(echo "${full_sample_name}" | rev | cut -d'_' -f1,2,3 | rev)
