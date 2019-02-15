@@ -508,6 +508,15 @@ timeplasfin=$((end - start))
 echo "plasmidFinder - ${timeplasfin} seconds" >> "${time_summary}"
 totaltime=$((totaltime + timeplasfin))
 
+"${shareScript}/sample_cleaner.sh" "${filename}" "${project}"
+"${shareScript}/validate_piperun.sh" "${filename}" "${project}" > "${processed}/${project}/${filename}/${filename}_pipeline_stats.txt"
+
+# Extra dump cleanse in case anything else failed
+	if [ -n "$(find "${shareScript}" -maxdepth 1 -name 'core.*' -print -quit)" ]; then
+		echo "Found core dump files at end of processing ${filename} and attempting to delete"
+		find "${shareScript}" -maxdepth 1 -name 'core.*' -exec rm -f {} \;
+	fi
+
 # Append total time to bottom of time summary
 echo "Total time: ${totaltime} seconds" >> "${time_summary}"
 
@@ -519,12 +528,3 @@ echo "
 				completed at ${global_end_time}
 
 "
-
-# Extra dump cleanse in case anything else failed
-	if [ -n "$(find "${shareScript}" -maxdepth 1 -name 'core.*' -print -quit)" ]; then
-		echo "Found core dump files at end of processing ${filename} and attempting to delete"
-		find "${shareScript}" -maxdepth 1 -name 'core.*' -exec rm -f {} \;
-	fi
-
-	"${shareScript}/sample_cleaner.sh" "${file}" "${proj}"
-	"${shareScript}/validate_piperun.sh" "${file}" "${proj}" > "${processed}/${proj}/${file}/${file}_pipeline_stats.txt"

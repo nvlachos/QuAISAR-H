@@ -148,7 +148,7 @@ while IFS= read -r line; do
 			run_csstar="true"
 		fi
 	else
-		echo "No plasmid Assembly found, no need for csstar plasmid"
+		echo "${sample_name} - No plasmid Assembly found, no need for csstar plasmid"
 	fi
 	#echo "checking for ${OUTDATADIR}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt"
 	if [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] && [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] || [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]] && [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]]; then
@@ -242,8 +242,33 @@ while IFS= read -r line; do
 	fi
 
 	# Extracts the MLST type
-	mlst=$(head -n1 ${OUTDATADIR}/MLST/${sample_name}.mlst)
-	mlst=$(echo "${mlst}" | cut -d'	' -f3)
+	#mlst=$(head -n1 ${OUTDATADIR}/MLST/${sample_name}.mlst)
+	#mlst=$(echo "${mlst}" | cut -d'	' -f3)
+
+	# Pulls MLST type for sample and adds it to the summary file
+	if [[ -f "${OUTDATADIR}/MLST/${sample_name}.mlst" ]]; then
+		mlst=$(head -n 1 ${OUTDATADIR}/MLST/${sample_name}.mlst)
+		mlst=$(echo "${mlst}" | cut -d'	' -f3-)
+	else
+		mlst="N/A"
+	fi
+	echo -e "${project}\t${sample_name}\t${mlst}" >> ${output_directory}/${4}-mlst_summary.txt
+
+	# Pulls Alternate MLST type for sample and adds it to the summary file
+	if [[ -f "${OUTDATADIR}/MLST/${sample_name}_abaumannii.mlst" ]]; then
+		alt_mlst_file="${OUTDATADIR}/MLST/${sample_name}_abaumannii.mlst"
+	elif || [[ -f "${OUTDATADIR}/MLST/${sample_name}_ecoli_2.mlst" ]]; then
+		alt_mlst_file="${OUTDATADIR}/MLST/${sample_name}_ecoli_2.mlst"
+	else
+		alt_mlst_file=""
+	fi
+	if [[ ! -z "${alt_mlst_file}" ]]; then
+		alt_mlst=$(head -n 1 "${alt_mlst_file}")
+		alt_mlst=$(echo "${alt_mlst}" | cut -d'	' -f3-)
+	else
+		alt_mlst="N/A"
+	fi
+	echo -e "${project}\t${sample_name}\t${alt_mlst}" >> ${output_directory}/${4}-alt_mlst_summary.txt
 
 	# Extracts taxonomic info
 	if [[ ! -f "${OUTDATADIR}/${sample_name}.tax" ]]; then
@@ -269,7 +294,7 @@ while IFS= read -r line; do
 	fi
 #	echo "${ANI}"
 # Print all extracted info to primary file
-	echo -e "${project}\t${sample_name}\t${taxonomy}\t${taxonomy_source_type}\t${confidence_info}\t${mlst}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_full.txt
+	echo -e "${project}\t${sample_name}\t${taxonomy}\t${taxonomy_source_type}\t${confidence_info}\t${mlst}\t${alt_mlst}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_full.txt
 
 	# Adding in srst2 output in a similar fashion as to how the csstar genes are output to the file.
 	if [[ -s "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
@@ -448,31 +473,6 @@ while IFS= read -r line; do
 	if [[ "${added}" -eq 0 ]]; then
 		echo -e "${project}\t${sample_name}\tplasmid_assembly\tNo_Plasmids_Found\t${plas_contigs}_contigs-${components}_components" >> ${output_directory}/${4}-plasmid_summary.txt
 	fi
-
-	# Pulls MLST type for sample and adds it to the summary file
-	if [[ -f "${OUTDATADIR}/MLST/${sample_name}.mlst" ]]; then
-		mlst=$(head -n 1 ${OUTDATADIR}/MLST/${sample_name}.mlst)
-		mlst=$(echo "${mlst}" | cut -d'	' -f3-)
-	else
-		mlst="N/A"
-	fi
-	echo -e "${project}\t${sample_name}\t${mlst}" >> ${output_directory}/${4}-mlst_summary.txt
-
-	# Pulls Alternate MLST type for sample and adds it to the summary file
-	if [[ -f "${OUTDATADIR}/MLST/${sample_name}_abaumannii.mlst" ]]; then
-		alt_mlst_file="${OUTDATADIR}/MLST/${sample_name}_abaumannii.mlst"
-	elif || [[ -f "${OUTDATADIR}/MLST/${sample_name}_ecoli_2.mlst" ]]; then
-		alt_mlst_file="${OUTDATADIR}/MLST/${sample_name}_ecoli_2.mlst"
-	else
-		alt_mlst_file=""
-	fi
-	if [[ ! -z "${alt_mlst_file}" ]]; then
-		alt_mlst=$(head -n 1 "${alt_mlst_file}")
-		alt_mlst=$(echo "${alt_mlst}" | cut -d'	' -f3-)
-	else
-		alt_mlst="N/A"
-	fi
-	echo -e "${project}\t${sample_name}\t${alt_mlst}" >> ${output_directory}/${4}-alt_mlst_summary.txt
 
 done < ${1}
 
