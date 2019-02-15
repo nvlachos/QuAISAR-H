@@ -81,7 +81,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 		#	print(k, v)
 		#print("1:",csstar_line_sections[0])
 		#print("0:", csstar_line_sections[0], "1:", csstar_line_sections[1],"2:" , csstar_line_sections[2], "3:", csstar_line_sections[3])
-		samples.append([csstar_line_sections[0], csstar_line_sections[1], csstar_line_sections[2], csstar_line_sections[3],  csstar_line_sections[4], csstar_line_sections[5], ar_dict])
+		samples.append([csstar_line_sections[0], csstar_line_sections[1], csstar_line_sections[2], csstar_line_sections[3],  csstar_line_sections[4], csstar_line_sections[5], csstar_line_sections[6], ar_dict])
 		#print("Total AR genes in sample set:", len(all_ARs_in_file)-1)
 		csstar_line = csstar_file.readline().strip()
 	csstar_file.close
