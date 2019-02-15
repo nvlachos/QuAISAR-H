@@ -159,7 +159,6 @@ for ((i=1 ; i <= nopts ; i++)); do
 				BASEDIR="${processed}"
 			fi
 			list_path="${processed}/${PROJECT}/${PROJECT}_list.txt"
-			run_name="project_${PROJECT}"
 			postfix=1
 			shift 2
 			;;
@@ -177,7 +176,7 @@ for ((i=1 ; i <= nopts ; i++)); do
 		# 		BASEDIR="${processed}"
 		# 	fi
 		# 	do_download="false"
-		# 	run_name="list_${quick_list}"
+		# 	PROJECT="list_${quick_list}"
 		# 	is_full_run="false"
 		# 	shift 2
 		# 	;;
@@ -190,8 +189,8 @@ for ((i=1 ; i <= nopts ; i++)); do
 		# 		BASEDIR="${processed}"
 		# 	fi
 			#trn=$(echo "${2}" | sed 's/\//-/')
-			#run_name="single_${trn}"
-			# run_name="run_for_sample_${3}"
+			#PROJECT="single_${trn}"
+			# PROJECT="run_for_sample_${3}"
 			# do_download="false"
 			# is_full_run="false"
 			# shift 3
@@ -204,7 +203,6 @@ for ((i=1 ; i <= nopts ; i++)); do
 			;;
 	esac
 done
-
 
 # Short print out summary of run settings
 echo -e "Source folder: ${INDATADIR}\\nOutput folder: ${BASEDIR}\\nList based analysis:  ${list_path}"
@@ -240,14 +238,14 @@ fi
 run_start_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 
 #Each file in the list is checked individually for successful completion and added then added to the log for the run
-mkdir -p "${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}"
-log_dir="${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}"
+mkdir -p "${Quaisar_H_log_directory}/${PROJECT}_on_${run_start_time}"
+log_dir="${Quaisar_H_log_directory}/${PROJECT}_on_${run_start_time}"
 
 #Get the time the run started to use as the identifier
 outarray=()
-echo "Run started at ${run_start_time}; Log directory will be ${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}"
-echo "Run started at ${run_start_time}" > "${log_dir}/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}.log"
-outarray+=("${run_name} started at ${run_start_time} and saved to ${run_name}_on_${run_start_time}.log")
+echo "Run started at ${run_start_time}; Log directory will be ${Quaisar_H_log_directory}/${PROJECT}_on_${run_start_time}"
+echo "Run started at ${run_start_time}" > "${log_dir}/${PROJECT}_on_${run_start_time}/${PROJECT}_on_${run_start_time}.log"
+outarray+=("${PROJECT} started at ${run_start_time} and saved to ${PROJECT}_on_${run_start_time}.log")
 
 
 #Each file in the list is put through the full pipeline
@@ -297,7 +295,9 @@ for run_sample in "${file_list[@]}"; do
 					break
 				else
 					timer=$(( timer + 1 ))
-					echo "sleeping for 1 minute, so far slept for ${timer} minutes"
+					if [[ $(( timer % 5 )) -eq 0 ]]; then
+						echo "Slept for ${timer} minutes so far"
+					fi
 					sleep 60
 				fi
 		done
@@ -325,24 +325,24 @@ fi
 
 # Add print time the run completed in the text that will be emailed
 global_end_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
-echo "Finished with run ${run_name} at ${global_end_time}"
+echo "Finished with run ${PROJECT} at ${global_end_time}"
 outarray+=("
-${run_name} finished at ${global_end_time}")
+${PROJECT} finished at ${global_end_time}")
 exit
 #Send email to submitter and Nick with run status
 
 if [ "${requestor}" != "nvx4" ]; then
 	echo "Sending summary email to ${requestor}@cdc.gov & nvx4@cdc.gov"
-	printf "%s\\n" "${outarray[@]}" | mail -s "Run Status for ${run_name}_on_${run_start_time}_run.log" "nvx4@cdc.gov"
-	printf "%s\\n" "${outarray[@]}" | mail -s "Run Status for ${run_name}_on_${run_start_time}_run.log" "${requestor}@cdc.gov"
+	printf "%s\\n" "${outarray[@]}" | mail -s "Run Status for ${PROJECT}_on_${run_start_time}_run.log" "nvx4@cdc.gov"
+	printf "%s\\n" "${outarray[@]}" | mail -s "Run Status for ${PROJECT}_on_${run_start_time}_run.log" "${requestor}@cdc.gov"
 else
 	echo "Sending summary email to nvx4@cdc.gov"
-	printf "%s\\n" "${outarray[@]}" | mail -s "Run Status for ${run_name}_on_${run_start_time}_run.log" "nvx4@cdc.gov"
+	printf "%s\\n" "${outarray[@]}" | mail -s "Run Status for ${PROJECT}_on_${run_start_time}_run.log" "nvx4@cdc.gov"
 fi
 
 # One final check for any dump files
 if [ -n "$(find "${shareScript}" -maxdepth 1 -name 'core.*' -print -quit)" ]; then
-	echo "Found core dump files at end of processing ${run_name} and attempting to delete"
+	echo "Found core dump files at end of processing ${PROJECT} and attempting to delete"
 	find "${shareScript}" -maxdepth 1 -name 'core.*' -exec rm -f {} \;
 fi
 
@@ -352,4 +352,4 @@ if [[ -f "./config.sh" ]]; then
 fi
 
 end_date=$(date "+%m_%d_%Y_at_%Hh_%Mm")
-echo "Run ended at ${end_date}" >> "${log_dir}/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}.log"
+echo "Run ended at ${end_date}" >> "${log_dir}/${PROJECT}_on_${run_start_time}/${PROJECT}_on_${run_start_time}.log"

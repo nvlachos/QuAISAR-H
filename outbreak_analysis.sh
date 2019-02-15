@@ -183,7 +183,7 @@ if [[ "${run_srst2}" = "true" ]]; then
 fi
 
 echo $(date)
-sleep 30
+sleep 10
 
 # # Loop through and extracts and formats AR genes found in all isolates, as well as the primary MLST type and plasmid replicons. Each are output to separate files. Any AR genes that do not meet the length or % identity are copied to the rejects file.
 while IFS= read -r line; do
@@ -457,6 +457,23 @@ while IFS= read -r line; do
 		mlst="N/A"
 	fi
 	echo -e "${project}\t${sample_name}\t${mlst}" >> ${output_directory}/${4}-mlst_summary.txt
+
+	# Pulls Alternate MLST type for sample and adds it to the summary file
+	if [[ -f "${OUTDATADIR}/MLST/${sample_name}_abaumannii.mlst" ]]; then
+		alt_mlst_file="${OUTDATADIR}/MLST/${sample_name}_abaumannii.mlst"
+	elif || [[ -f "${OUTDATADIR}/MLST/${sample_name}_ecoli_2.mlst" ]]; then
+		alt_mlst_file="${OUTDATADIR}/MLST/${sample_name}_ecoli_2.mlst"
+	else
+		alt_mlst_file=""
+	fi
+	if [[ ! -z "${alt_mlst_file}" ]]; then
+		alt_mlst=$(head -n 1 "${alt_mlst_file}")
+		alt_mlst=$(echo "${alt_mlst}" | cut -d'	' -f3-)
+	else
+		alt_mlst="N/A"
+	fi
+	echo -e "${project}\t${sample_name}\t${alt_mlst}" >> ${output_directory}/${4}-alt_mlst_summary.txt
+
 done < ${1}
 
 # Calls script that sorts and formats all isolates info into a atrix for easy viewing

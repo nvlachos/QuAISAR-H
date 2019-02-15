@@ -14,7 +14,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 		#print(counter, csstar_line)
 		#print("Start csstar loop")
 		csstar_line_sections=csstar_line.split("	")
-		ar_list=csstar_line_sections[6].split(",")
+		ar_list=csstar_line_sections[7].split(",")
 		ar_dict={}
 		for ar_gene in ar_list:
 			gene_name=ar_gene.split("[")[0]
@@ -179,7 +179,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 	#all_AR_to_write.insert(0,",")
 	#all_AR_to_write.insert(0,",")
 	#all_AR_to_write=','.join(map(str, all_AR_to_write))
-	header="id, Project__autocolour, Species__autocolour, Species_determinant__autocolour, Species_Support__autocolour , MLST__autocolour,"
+	header="id, Project__autocolour, Species__autocolour, Species_determinant__autocolour, Species_Support__autocolour , MLST__autocolour, ALT_MLST__autocolour,"
 	for thing in all_ar_and_plasmids:
 		header = header + " " + thing + "__autocolour,"
 	header = header[:-1]
@@ -191,22 +191,22 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 	#	print ("2:",sample[0])
 	#return
 	for sample in samples:
-		sample_details=[sample[1], sample[0], sample[2], sample[3], sample[4], sample[5]]
+		sample_details=[sample[1], sample[0], sample[2], sample[3], sample[4], sample[5], sample[6]]
 		#print("pre:",sample)
 		for gene in all_ar_and_plasmids:
 			status=" "
 			if gene == "|":
 				sample_details.append(gene)
 				continue
-			if sample[6].get(gene):
-				status=sample[6].get(gene)
-			elif sample[7].get(gene):
-				if sample[8].get(gene):
-					status="F:"+sample[7].get(gene)+";P:"+sample[8].get(gene)
+			if sample[7].get(gene):
+				status=sample[7].get(gene)
+			elif sample[8].get(gene):
+				if sample[9].get(gene):
+					status="F:"+sample[8].get(gene)+";P:"+sample[9].get(gene)
 				else:
-					status="F:"+sample[7].get(gene)
-			elif sample[7].get(gene):
-				status="P:"+sample[8].get(gene)
+					status="F:"+sample[8].get(gene)
+			elif sample[8].get(gene):
+				status="P:"+sample[9].get(gene)
 			sample_details.append(status)
 		#print("Post Sample check", sample_details)
 		sample_details=','.join(map(str, sample_details))
