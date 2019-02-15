@@ -257,7 +257,7 @@ while IFS= read -r line; do
 	# Pulls Alternate MLST type for sample and adds it to the summary file
 	if [[ -f "${OUTDATADIR}/MLST/${sample_name}_abaumannii.mlst" ]]; then
 		alt_mlst_file="${OUTDATADIR}/MLST/${sample_name}_abaumannii.mlst"
-	elif || [[ -f "${OUTDATADIR}/MLST/${sample_name}_ecoli_2.mlst" ]]; then
+	elif [[ -f "${OUTDATADIR}/MLST/${sample_name}_ecoli_2.mlst" ]]; then
 		alt_mlst_file="${OUTDATADIR}/MLST/${sample_name}_ecoli_2.mlst"
 	else
 		alt_mlst_file=""
