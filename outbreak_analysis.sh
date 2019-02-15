@@ -263,8 +263,8 @@ while IFS= read -r line; do
 		alt_mlst_file=""
 	fi
 	if [[ ! -z "${alt_mlst_file}" ]]; then
-		alt_mlst=$(head -n 1 "${alt_mlst_file}")
-		alt_mlst=$(echo "${mlst}" | cut -d'	' -f3)
+		alt_mlst=$(tail -n 1 "${alt_mlst_file}")
+		alt_mlst=$(echo "${alt_mlst}" | cut -d'	' -f3)
 	else
 		alt_mlst="N/A"
 	fi
