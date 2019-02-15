@@ -246,6 +246,7 @@ log_dir="${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}"
 #Get the time the run started to use as the identifier
 outarray=()
 echo "Run started at ${run_start_time}; Log directory will be ${Quaisar_H_log_directory}/${run_name}_on_${run_start_time}"
+echo "Run started at ${run_start_time}" > "${log_dir}/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}.log"
 outarray+=("${run_name} started at ${run_start_time} and saved to ${run_name}_on_${run_start_time}.log")
 
 
@@ -349,3 +350,6 @@ if [[ -f "./config.sh" ]]; then
 	rm -r "./config.sh"
 	:
 fi
+
+end_date=$(date "+%m_%d_%Y_at_%Hh_%Mm")
+echo "Run ended at ${end_date}" >> "${log_dir}/${run_name}_on_${run_start_time}/${run_name}_on_${run_start_time}.log"
