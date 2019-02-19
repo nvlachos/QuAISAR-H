@@ -23,7 +23,7 @@ fi
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
-	echo "No argument supplied todetermine_taxID.sh, exiting"
+	echo "No argument supplied to determine_taxID.sh, exiting"
 	exit 1
 elif [[ -z "${1}" ]]; then
 	echo "Empty sample_id supplied to determine_taxID.sh, exiting"

@@ -30,7 +30,7 @@ counter=1
 while IFS= read -r var; do
 	sample_name=$(echo "${var}" | cut -d'/' -f2 | tr -d '[:space:]')
 	project=$(echo "${var}" | cut -d'/' -f1 | tr -d '[:space:]')
-	"${shareScript}/determine_taxID.sh"
+	"${shareScript}/determine_taxID.sh" "${sample_name}" "${project}"
 	while IFS= read -r line;
 	do
 		# Grab first letter of line (indicating taxonomic level)
