@@ -32,7 +32,7 @@ while IFS= read -r line || [[ "$line" ]];  do
 	sample_name=$(echo "${line}" | cut -d'/' -f2 | tr -d '[:space:]')
 	project=$(echo "${line}" | cut -d'/' -f1 | tr -d '[:space:]')
 	cp ${processed}/${project}/${sample_name}/Assembly/${sample_name}_scaffolds_trimmed.fasta ${2}
-done < ${1}
+done < ${1}/*
 
 # Call mashtree on all copied fasta
 cd ${1}
