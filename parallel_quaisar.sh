@@ -313,7 +313,7 @@ fi
 
 runsumdate=$(date "+%m_%d_%Y_at_%Hh_%Mm")
 ${shareScript}/run_sum.sh ${PROJECT}
-runsum=$(${shareScript}/view_sum.sh ${PROJECT})
+runsum=$(echo ${shareScript}/view_sum.sh ${PROJECT})
 outarray+="${runsum}"
 
 # Run the Seqlog creator on the proper file
