@@ -30,11 +30,35 @@ counter=1
 while IFS= read -r var; do
 	sample_name=$(echo "${var}" | cut -d'/' -f2 | tr -d '[:space:]')
 	project=$(echo "${var}" | cut -d'/' -f1 | tr -d '[:space:]')
-	echo "Cleaning-${counter}-${project}/${sample_name}" >> /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/clean.summary
-	/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/scripts/Quaisar-H/sample_cleaner.sh ${sample_name} ${project} >> /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/clean.out
+	"${shareScript}/determine_taxID.sh"
+	while IFS= read -r line;
+	do
+		# Grab first letter of line (indicating taxonomic level)
+		first=${line::1}
+		# Assign taxonomic level value from 4th value in line (1st-classification level,2nd-% by kraken, 3rd-true % of total reads, 4th-identifier)
+		if [ "${first}" = "s" ]
+		then
+			species=$(echo "${line}" | awk -F '	' '{print $2}')
+		elif [ "${first}" = "G" ]
+		then
+			genus=$(echo "${line}" | awk -F ' ' '{print $2}')
+		fi
+	done < "${processed}/${sample_name}/${sample_name}.tax"
+
+	"${shareScript}/run_MLST.sh" ${sample_name} ${project}
+	if [[ "${genus}_${species}" = "Acinetobacter_baumannii" ]]; then
+		"${shareScript}/run_MLST.sh" "${filename}" "${project}" "-f" "abaumannii"
+	elif [[ "${genus}_${species}" = "Escherichia_coli" ]]; then
+		"${shareScript}/run_MLST.sh" "${filename}" "${project}" "-f" "ecoli_2"
+	fi
+
+	"${shareScript}/validate_piperun.sh" ${sample_name} ${project} > "${processed}/${project}/${sample_name}/"
+	echo "${counter}:${sample_name}/${project} completed"
+	counter=$(( counter + 1 ))
 done < "${1}"
+
 echo "All isolates completed"
 global_end_time=$(date "+%m-%d-%Y @ %Hh_%Mm_%Ss")
 #Script exited gracefully (unless something else inside failed)
-printf "%s %s" "Act_by_list.sh has completed check for AR completion " "${global_end_time}" | mail -s "act_by_list complete" nvx4@cdc.gov
+printf "%s %s" "Act_by_list.sh has completed updating MLST and pipeline_stats " "${global_end_time}" | mail -s "act_by_list complete" nvx4@cdc.gov
 exit 0
