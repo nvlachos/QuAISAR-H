@@ -43,13 +43,13 @@ while IFS= read -r var; do
 		then
 			genus=$(echo "${line}" | awk -F ' ' '{print $2}')
 		fi
-	done < "${processed}/${sample_name}/${sample_name}.tax"
+	done < "${processed}/${project}/${sample_name}/${sample_name}.tax"
 
 	"${shareScript}/run_MLST.sh" ${sample_name} ${project}
 	if [[ "${genus}_${species}" = "Acinetobacter_baumannii" ]]; then
-		"${shareScript}/run_MLST.sh" "${filename}" "${project}" "-f" "abaumannii"
+		"${shareScript}/run_MLST.sh" "${sample_name}" "${project}" "-f" "abaumannii"
 	elif [[ "${genus}_${species}" = "Escherichia_coli" ]]; then
-		"${shareScript}/run_MLST.sh" "${filename}" "${project}" "-f" "ecoli_2"
+		"${shareScript}/run_MLST.sh" "${sample_name}" "${project}" "-f" "ecoli_2"
 	fi
 
 	"${shareScript}/validate_piperun.sh" ${sample_name} ${project} > "${processed}/${project}/${sample_name}/"
