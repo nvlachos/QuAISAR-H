@@ -52,7 +52,7 @@ while IFS= read -r var; do
 		"${shareScript}/run_MLST.sh" "${sample_name}" "${project}" "-f" "ecoli_2"
 	fi
 
-	"${shareScript}/validate_piperun.sh" ${sample_name} ${project} > "${processed}/${project}/${sample_name}/"
+	"${shareScript}/validate_piperun.sh" ${sample_name} ${project} > "${processed}/${project}/${sample_name}/${sample_name}_pipeline_stats.txt"
 	echo "${counter}:${sample_name}/${project} completed"
 	counter=$(( counter + 1 ))
 done < "${1}"
