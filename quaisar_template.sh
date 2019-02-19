@@ -51,6 +51,7 @@ fi
 
 #Time tracker to gauge time used by each step
 totaltime=0
+start_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 
 # Set arguments to filename(sample name) project (miseq run id) and outdatadir(${processed}/project/filename)
 filename="${1}"
@@ -69,7 +70,7 @@ fi
 touch "${OUTDATADIR}/${filename}/${filename}_time_summary.txt"
 time_summary=${OUTDATADIR}/${filename}/${filename}_time_summary.txt
 
-echo "Time summary for ${project}/${filename}:" >> "${time_summary}"
+echo "Time summary for ${project}/${filename}: Started ${}" >> "${time_summary}"
 echo "${project}/${filename} started at ${global_time}"
 
 echo "Starting processing of ${project}/${filename}"
@@ -517,11 +518,13 @@ totaltime=$((totaltime + timeplasfin))
 		find "${shareScript}" -maxdepth 1 -name 'core.*' -exec rm -f {} \;
 	fi
 
+global_end_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
+
 # Append total time to bottom of time summary
 echo "Total time: ${totaltime} seconds" >> "${time_summary}"
+echo "Completed at ${global_end_time}"
 
 # Designate end of this sample #
-global_end_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 echo "
 
 				End of sample ${filename}
