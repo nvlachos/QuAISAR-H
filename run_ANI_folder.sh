@@ -1,6 +1,6 @@
 #!/bin/sh -l
 
-#$ -o run_ANI_fodler.out
+#$ -o run_ANI_folder.out
 #$ -e run_ANI_folder.err
 #$ -N run_ANI_folder
 #$ -cwd
