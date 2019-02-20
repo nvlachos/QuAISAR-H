@@ -96,12 +96,12 @@ do
 				mkdir -p "${OUTDATADIR}/${short_name}/FASTQs"
 			fi
 			# Announces name of file being unzipped and then unzips it to the FASTQs folder for the matching sample name. Files are shortened to just name_R1_001.fastq or name_R2_001.fastq
-			echo "Retrieving ${source_path}/${full_sample_name}"
+			echo "Retrieving ${source_path}/${full_sample_name} and ${full_sample_name_pair}"
 			#if [[ "${match}" -eq 1 ]] || [[ "${match}" -eq 4 ]]; then
 				if [[ "${postfix}" = *"R1_001.fast"* ]] || [[ "${postfix}" = *"R1.fast"* ]] || [[ "${postfix}" = *"_1.fast"* ]]; then
 					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						if [[ -f "${source_path}/${full_sample_name_pair}" ]]; then
-							if [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" ]] && [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" ]]; then
+							if [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" ]] && [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" ]]; then
 								echo "${short_name} already has both zipped FASTQs (Probably done when R2 was found, this is the R1 tester)"
 							else
 								echo "Moving ${source_path}/${full_sample_name} and ${source_path}/${full_sample_name_pair} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz and ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
@@ -116,7 +116,7 @@ do
 						fi
 					elif [[ "${full_sample_name}" = *".fastq" ]]; then
 						if [[ -f "${source_path}/${full_sample_name_pair}" ]]; then
-							if [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" ]] && [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" ]]; then
+							if [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" ]] && [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" ]]; then
 								echo "${short_name} already has both unzipped FASTQs (Probably done when R2 was found, this is the R1 tester)"
 							else
 								#if [[ ! -d "${OUTDATADIR}/${short_name}/FASTQs/temp" ]]; then
@@ -138,8 +138,8 @@ do
 				fi
 				if [[ "${postfix}" = *"R2_001.fast"* ]] || [[ "${postfix}" = *"R2.fast"* ]] || [[ "${postfix}" = *"_2.fast"* ]]; then
 					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
-						if [[ -f "${full_sample_name_pair}" ]]; then
-							if [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" ]] && [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" ]]; then
+						if [[ -f "${source_path}/${full_sample_name_pair}" ]]; then
+							if [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" ]] && [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" ]]; then
 								echo "${short_name} already has both zipped FASTQs (Probably done when R1 was found, this is the R2 tester)"
 							else
 								echo "Not Clumping ${source_path}/${full_sample_name} and ${source_path}/${full_sample_name_pair} to ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz and ${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz"
@@ -154,7 +154,7 @@ do
 						fi
 					elif [[ "${full_sample_name}" = *".fastq" ]]; then
 						if [[ -f "${source_path}/${full_sample_name_pair}" ]]; then
-							if [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" ]] && [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" ]]; then
+							if [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" ]] && [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" ]]; then
 								echo "${short_name} already has both zipped FASTQs (Probably done when R1 was found, this is the R2 tester)"
 							else
 								#if [[ ! -d "${OUTDATADIR}/${short_name}/FASTQs/temp" ]]; then
