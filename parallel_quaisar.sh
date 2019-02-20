@@ -141,9 +141,9 @@ for ((i=1 ; i <= nopts ; i++)); do
 				do
 					# Gets folder names in current directory
 					run_id=${run_folder##*/}
-					echo "${run_id} - ${1}"
+					#echo "${run_id} - ${PROJECT}"
 					# If folder name matches project name
-					if [[ "${run_id}" = "${1}" ]]; then
+					if [[ "${run_id}" = "${PROJECT}" ]]; then
 						# Print that a match was found
 						echo "Found project ${run_id} in ${instrument}"
 						# Go through every file in the Basecalls folder of the found folder (all files will only be fastq.gzs)
