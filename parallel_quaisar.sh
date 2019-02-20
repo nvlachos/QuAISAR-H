@@ -147,7 +147,7 @@ for ((i=1 ; i <= nopts ; i++)); do
 						# Print that a match was found
 						echo "Found project ${run_id} in ${instrument}"
 						# Go through every file in the Basecalls folder of the found folder (all files will only be fastq.gzs)
-						INDATADIR="${instrument}/${run_id}"
+						INDATADIR="${instrument}/${run_id}/Data/Intensities/Basecalls"
 						break
 					fi
 				done
