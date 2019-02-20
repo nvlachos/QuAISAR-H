@@ -141,7 +141,7 @@ for ((i=1 ; i <= nopts ; i++)); do
 				do
 					# Gets folder names in current directory
 					run_id=${run_folder##*/}
-					#echo "${run_id} - ${1}"
+					echo "${run_id} - ${1}"
 					# If folder name matches project name
 					if [[ "${run_id}" = "${1}" ]]; then
 						# Print that a match was found
