@@ -10,17 +10,28 @@
 # Copy config file into working directory to allow changes to made to output directory if necessary
 shareScript=$(pwd)
 echo "${shareScript}"
-
-if [[ -f "${shareScript}/config_template.sh" ]]; then
-	if [[ -f "${shareScript}/config.sh" ]]; then
-		rm -r "${shareScript}/config.sh"
+config_counter=0
+while; do
+	if [[ "${config_counter}" -gt 9 ]]; then
+		echo "Already 10 parallel quaisar sets running, please wait until one finishes...exiting"
+		exit 324
 	fi
-	echo "Trying to copy config_template.sh"
-	cp "${shareScript}/config_template.sh" "${shareScript}/config.sh"
-fi
+	if [[ ! -f "${shareScript}/config_${config_counter}.sh"]]; then
+		if [[ -f "${shareScript}/config_template.sh" ]]; then
+			echo "Trying to copy config_template.sh to config_${config_counter}"
+			cp "${shareScript}/config_template.sh" "${shareScript}/config_${config_counter}.sh"
+			break
+		else
+			echo "config_template.sh does not exist, cannot copy and must exit..."
+			exit 333
+		fi
+	else
+		config_counter=$(( config_counter + 1 ))
+	fi
+done
 
 #Import the config file with shortcuts and settings
-. ${shareScript}/config.sh
+. ${shareScript}/config_${config_counter}.sh
 
 #Import the module file that loads all necessary mods
 . ${mod_changers}/pipeline_mods
@@ -81,7 +92,6 @@ global_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 requestor=$(whoami)
 PROJECT="${requestor}_${global_time}"
 BASEDIR="${processed}"
-alt_out=""
 
 for ((i=1 ; i <= nopts ; i++)); do
 	#echo "${1} ${2}"
@@ -123,12 +133,9 @@ for ((i=1 ; i <= nopts ; i++)); do
 			PROJECT="$3"
 			shift 3
 
-			#echo "processed=${BASEDIR}" >> "${shareScript}/config.sh"
-			#. ${shareScript}/config.sh
-
-			alt_out="${BASEDIR}"
-
-			#echo "${processed}"
+			echo "processed=${BASEDIR}" >> "${shareScript}/config.sh"
+			. ${shareScript}/config.sh
+			echo "${processed}"
 			list_path="${BASEDIR}/${PROJECT}/${PROJECT}_list.txt"
 			if [[ ! -d ${BASEDIR} ]]; then
 				mkdir -p ${BASEDIR}
@@ -270,11 +277,11 @@ do
 		sed -i -e "s/quaisar_X/quaisar_${file}/g" "${shareScript}/quaisar_${file}.sh"
 		sed -i -e "s/quasX/quasp_${file}/g" "${shareScript}/quaisar_${file}.sh"
 		echo "Entering ${shareScript}/quaisar_${file}.sh" "${file}" "${proj}"
-		qsub "${shareScript}/quaisar_${file}.sh" "${file}" "${proj}" "${alt_out}"
+		qsub "${shareScript}/quaisar_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
 		echo "Created and ran quaisar_${file}.sh"
 	else
 		echo "${shareScript}/quaisar_${file}.sh already exists, will resubmit"
-		qsub "${shareScript}/quaisar_${file}.sh" "${file}" "${proj}" "${alt_out}"
+		qsub "${shareScript}/quaisar_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
 	fi
 done
 
