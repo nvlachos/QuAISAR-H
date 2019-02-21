@@ -10,6 +10,7 @@
 # Copy config file into working directory to allow changes to made to output directory if necessary
 shareScript=$(pwd)
 echo "${shareScript}"
+
 if [[ -f "${shareScript}/config_template.sh" ]]; then
 	if [[ -f "${shareScript}/config.sh" ]]; then
 		rm -r "${shareScript}/config.sh"
@@ -80,6 +81,7 @@ global_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 requestor=$(whoami)
 PROJECT="${requestor}_${global_time}"
 BASEDIR="${processed}"
+alt_out=""
 
 for ((i=1 ; i <= nopts ; i++)); do
 	#echo "${1} ${2}"
@@ -121,9 +123,12 @@ for ((i=1 ; i <= nopts ; i++)); do
 			PROJECT="$3"
 			shift 3
 
-			echo "processed=${BASEDIR}" >> "${shareScript}/config.sh"
-			. ${shareScript}/config.sh
-			echo "${processed}"
+			#echo "processed=${BASEDIR}" >> "${shareScript}/config.sh"
+			#. ${shareScript}/config.sh
+
+			alt_out="${BASEDIR}"
+
+			#echo "${processed}"
 			list_path="${BASEDIR}/${PROJECT}/${PROJECT}_list.txt"
 			if [[ ! -d ${BASEDIR} ]]; then
 				mkdir -p ${BASEDIR}
@@ -265,11 +270,11 @@ do
 		sed -i -e "s/quaisar_X/quaisar_${file}/g" "${shareScript}/quaisar_${file}.sh"
 		sed -i -e "s/quasX/quasp_${file}/g" "${shareScript}/quaisar_${file}.sh"
 		echo "Entering ${shareScript}/quaisar_${file}.sh" "${file}" "${proj}"
-		qsub "${shareScript}/quaisar_${file}.sh" "${file}" "${proj}"
+		qsub "${shareScript}/quaisar_${file}.sh" "${file}" "${proj}" "${alt_out}"
 		echo "Created and ran quaisar_${file}.sh"
 	else
 		echo "${shareScript}/quaisar_${file}.sh already exists, will resubmit"
-		qsub "${shareScript}/quaisar_${file}.sh" "${file}" "${proj}"
+		qsub "${shareScript}/quaisar_${file}.sh" "${file}" "${proj}" "${alt_out}"
 	fi
 done
 

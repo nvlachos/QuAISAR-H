@@ -7,27 +7,6 @@
 #$ -cwd
 #$ -q all.q
 
-# Copy config file into working directory to allow changes to made to output directory if necessary
-shareScript=$(pwd)
-echo "${shareScript}"
-if [[ -f "${shareScript}/config_template.sh" ]]; then
-	if [[ -f "${shareScript}/config.sh" ]]; then
-		rm -r "${shareScript}/config.sh"
-	fi
-	echo "Trying to copy config_template.sh"
-	cp "${shareScript}/config_template.sh" "${shareScript}/config.sh"
-fi
-
-#Import the config file with shortcuts and settings
-. ${shareScript}/config.sh
-
-#Import the module file that loads all necessary mods
-. ${mod_changers}/pipeline_mods
-
-
-
-
-
 #
 # The straight pipeline that runs all the tools that have been designated as necessary (and some others that are typically run also)
 #
@@ -40,14 +19,23 @@ if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to quaisar.sh, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./quaisar.sh  sample_name miseq_run_id(or_project_name) optional_alternate_directory"
+	echo "Usage is ./quaisar.sh  sample_name miseq_run_id(or_project_name) config_file_to_use optional_alternate_directory"
 	echo "Populated FASTQs folder needs to be present in ${2}/${1}, wherever it resides"
-	echo "Output by default is processed to ${processed}/miseq_run_id/sample_name"
+	echo "Output by default is processed to processed/miseq_run_id/sample_name"
 	exit 0
 elif [[ -z "{2}" ]]; then
 	echo "No Project/Run_ID supplied to quaisar.sh, exiting"
 	exit 33
 fi
+
+if [[ ! -f  "${3}"]]; then
+	echo "no config file to load (${3}), exiting"
+	exit 223
+else
+	. "${3}"
+	. ${mod_changers}/pipeline_mods
+fi
+
 
 #Time tracker to gauge time used by each step
 totaltime=0
@@ -57,8 +45,8 @@ start_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 filename="${1}"
 project="${2}"
 OUTDATADIR="${processed}/${2}"
-if [[ ! -z "${3}" ]]; then
-	OUTDATADIR="${3}/${2}"
+if [[ ! -z "${4}" ]]; then
+	OUTDATADIR="${4}/${2}"
 fi
 
 # Remove old run stats as the presence of the file indicates run completion
@@ -70,7 +58,7 @@ fi
 touch "${OUTDATADIR}/${filename}/${filename}_time_summary.txt"
 time_summary=${OUTDATADIR}/${filename}/${filename}_time_summary.txt
 
-echo "Time summary for ${project}/${filename}: Started ${}" >> "${time_summary}"
+echo "Time summary for ${project}/${filename}: Started ${global_time}" >> "${time_summary}"
 echo "${project}/${filename} started at ${global_time}"
 
 echo "Starting processing of ${project}/${filename}"
@@ -509,7 +497,7 @@ timeplasfin=$((end - start))
 echo "plasmidFinder - ${timeplasfin} seconds" >> "${time_summary}"
 totaltime=$((totaltime + timeplasfin))
 
-#"${shareScript}/sample_cleaner.sh" "${filename}" "${project}"
+"${shareScript}/sample_cleaner.sh" "${filename}" "${project}"
 "${shareScript}/validate_piperun.sh" "${filename}" "${project}" > "${processed}/${project}/${filename}/${filename}_pipeline_stats.txt"
 
 # Extra dump cleanse in case anything else failed
