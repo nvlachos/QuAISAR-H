@@ -28,7 +28,7 @@ elif [[ -z "{2}" ]]; then
 	exit 33
 fi
 
-if [[ ! -f  "${3}"]]; then
+if [[ ! -f "${3}" ]]; then
 	echo "no config file to load (${3}), exiting"
 	exit 223
 else
