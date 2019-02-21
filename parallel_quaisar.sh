@@ -17,7 +17,7 @@ do
 		echo "Already 10 parallel quaisar sets running, please wait until one finishes...exiting"
 		exit 324
 	fi
-	if [[ ! -f "${shareScript}/config_${config_counter}.sh"]]; then
+	if [[ ! -f "${shareScript}/config_${config_counter}.sh" ]]; then
 		if [[ -f "${shareScript}/config_template.sh" ]]; then
 			echo "Trying to copy config_template.sh to config_${config_counter}"
 			cp "${shareScript}/config_template.sh" "${shareScript}/config_${config_counter}.sh"
