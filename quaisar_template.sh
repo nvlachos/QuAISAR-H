@@ -509,7 +509,7 @@ timeplasfin=$((end - start))
 echo "plasmidFinder - ${timeplasfin} seconds" >> "${time_summary}"
 totaltime=$((totaltime + timeplasfin))
 
-"${shareScript}/sample_cleaner.sh" "${filename}" "${project}"
+#"${shareScript}/sample_cleaner.sh" "${filename}" "${project}"
 "${shareScript}/validate_piperun.sh" "${filename}" "${project}" > "${processed}/${project}/${filename}/${filename}_pipeline_stats.txt"
 
 # Extra dump cleanse in case anything else failed
