@@ -11,7 +11,8 @@
 shareScript=$(pwd)
 echo "${shareScript}"
 config_counter=0
-while; do
+while true
+do
 	if [[ "${config_counter}" -gt 9 ]]; then
 		echo "Already 10 parallel quaisar sets running, please wait until one finishes...exiting"
 		exit 324
