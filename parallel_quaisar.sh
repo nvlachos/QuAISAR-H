@@ -360,8 +360,8 @@ if [ -n "$(find "${shareScript}" -maxdepth 1 -name 'core.*' -print -quit)" ]; th
 	find "${shareScript}" -maxdepth 1 -name 'core.*' -exec rm -f {} \;
 fi
 
-if [[ -f "./config.sh" ]]; then
-	rm -r "./config.sh"
+if [[ -f "./config_${config_counter}.sh" ]]; then
+	mv "./config${config_counter}.sh" ${log_dir}
 	:
 fi
 
