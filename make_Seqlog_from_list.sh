@@ -76,7 +76,7 @@ while IFS= read -r var; do
 		done < "${OUTDATADIR}/kraken/postAssembly/${sample_name}_kraken_summary_assembled_BP_data.txt"
 		g_s_assembled="${genus_post} ${species_post}"
 		#echo "${g_s_assembly}"
-	else
+	elif [[ ! -f "${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta"]]
 		g_s_assembled="Failed_Assembly"
 	fi
 
