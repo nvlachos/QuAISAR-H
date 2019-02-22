@@ -86,7 +86,7 @@ while IFS= read -r var; do
 	#echo "O:${OUTDATADIR}:"
 
 	# Creates default values in case they are not filled in later
-	g_s_assembly="Unidentified"
+	g_s_assembled="Unidentified"
 	genus_post="not_assigned"
 	species_post="not_assigned"
 	# Pulls species and genus_post information from kraken out of assembly
@@ -104,7 +104,11 @@ while IFS= read -r var; do
 		done < "${OUTDATADIR}/kraken/postAssembly/${sample_name}_kraken_summary_assembled_BP_data.txt"
 		g_s_assembled="${genus_post} ${species_post}"
 		#echo "${g_s_assembly}"
+	elif [[ ! -f "${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta" ]]; then
+		#echo "Cant find ${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta"
+		g_s_assembled="Failed_Assembly"
 	fi
+
 	g_s_reads="Unidentified"
 	genus_reads="not_assigned"
 	species_reads="not_assigned"
@@ -131,32 +135,28 @@ while IFS= read -r var; do
 	if [[ -s "${OUTDATADIR}/16s/${sample_name}_16s_blast_id.txt" ]]; then
 		info=$(tail -n 1 "${OUTDATADIR}/16s/${sample_name}_16s_blast_id.txt")
 		type=$(echo "${info}" | cut -d' ' -f1)
-		genus_16s=$(echo "${info}" | cut -d'	' -f3- | cut -d' ' -f1)
-		species_16s=$(echo "${info}" | cut -d'	' -f3- | cut -d' ' -f2)
-		if [[ -z "${genus_16s}" ]]; then
-			echo "NO GENUS"
-			genus_16s="No Genus"
-		fi
-		if [ "${genus_16s}" = "${species_16s}" ]; then
-			echo "SAME"
-			species_16s=""
-		fi
-		if [ "${genus_16s}" = "No_16s_matches_found" ]; then
-			echo "No matches"
-			genus_16s="Unidentified"
-		fi
+		genus_16s=$(echo "${info}" | cut -d'	' -f3 | cut -d' ' -f1)
+		species_16s=$(echo "${info}" | cut -d'	' -f3 | cut -d' ' -f2)
 #		echo "g-${genus_16s};s-${species}"
-		if [ -z "${species_16s}" ]; then
-			echo "empty species"
+		if [[ "${genus_16s}" = "No_16s_sequences_found" ]] && [[ "${genus_16s}" = "No_16s_sequences_found" ]]; then
 			g_s_16s="${genus_16s}"
 		else
 			g_s_16s="${genus_16s} ${species_16s}"
 		fi
 		#		echo "g_s_16-${g_s_16s}"
-	else
-		g_s_16s="No_16s_Output"
+	elif [[ ! -f "${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta" ]]; then
+		g_s_16s="Failed_Assembly"
 	fi
-
+	# Pulls QC count info from counts file (Order is as follows Q20_Total_[bp]	Q30_Total_[bp]	Q20_R1_[bp]	Q20_R2_[bp]	Q20_R1_[%]	Q20_R2_[%]	Q30_R1_[bp]	Q30_R2_[bp]
+	# Q30_R1_[%]	Q30_R2_[%]	Total_Sequenced_[bp]	Total_Sequenced_[reads]
+	read_qc_info="N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A"
+	# If the counts file exists take the header line (the only one) and copy all but the first entry (which is the sample name) and store in an array
+	if [[ -s "${OUTDATADIR}/preQCcounts/${sample_name}_counts.txt" ]]; then
+		line=$(head -n 1 "${OUTDATADIR}/preQCcounts/${sample_name}_counts.txt")
+		IFS='	' read -r -a qcs <<< "${line}"
+		read_qc_info=${qcs[@]:1}
+		#echo "${read_qc_info}"
+	fi
 
 	source_call=$(head -n1 "${OUTDATADIR}/${sample_name}.tax")
 	while IFS= read -r line;
@@ -174,19 +174,10 @@ while IFS= read -r var; do
 	done < "${OUTDATADIR}/${sample_name}.tax"
 
 
-	# Pulls QC count info from counts file (Order is as follows Q20_Total_[bp]	Q30_Total_[bp]	Q20_R1_[bp]	Q20_R2_[bp]	Q20_R1_[%]	Q20_R2_[%]	Q30_R1_[bp]	Q30_R2_[bp]
-	# Q30_R1_[%]	Q30_R2_[%]	Total_Sequenced_[bp]	Total_Sequenced_[reads]
-	read_qc_info="N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A	N/A"
-	# If the counts file exists take the header line (the only one) and copy all but the first entry (which is the sample name) and store in an array
-	if [[ -s "${OUTDATADIR}/preQCcounts/${sample_name}_counts.txt" ]]; then
-		line=$(head -n 1 "${OUTDATADIR}/preQCcounts/${sample_name}_counts.txt")
-		IFS='	' read -r -a qcs <<< "${line}"
-		read_qc_info=${qcs[@]:1}
-		#echo "${read_qc_info}"
-	fi
+
 	# Pulls contig info from toms qc analysis file
 	contig_info="0(0)\\t0"
-	if [[ -s "${OUTDATADIR}/Assembly_Stats/${sample_name}_report.tsv" ]]; then
+		if [[ -s "${OUTDATADIR}/Assembly_Stats/${sample_name}_report.tsv" ]]; then
 		counter=0
 		while IFS= read -r line;
 		do
@@ -198,17 +189,13 @@ while IFS= read -r var; do
 				ass_length=$(sed -n '16p' "${OUTDATADIR}/Assembly_Stats/${sample_name}_report.tsv" | sed -r 's/[\t]+/ /g' | cut -d' ' -f3)
 				#Check Assembly ratio against expected size to see if it is missing a large portion or if there is contamination/double genome
 				dec_genus_initial="${dec_genus:0:1}"
-				ass_ID="${dec_genus_initial}.${species_post}"
+				ass_ID="${dec_genus_initial}.${dec_species}"
 				echo "About to check mmb_bugs[${ass_ID}]"
-				if [[ ${ass_length} -eq 0 ]]; then
-					ass_ratio="No Assembly"
+				if [[ ! -z "${mmb_bugs[${ass_ID}]}" ]]; then
+					#echo "Found Bug in DB: ${ass_ID}-${mmb_bugs[${ass_ID}]}"
+					ass_ratio=$(awk -v p="${ass_length}" -v q="${mmb_bugs[${ass_ID}]}" 'BEGIN{printf("%.2f",p/q)}')
 				else
-					if [[ ! -z "${mmb_bugs[${ass_ID}]}" ]]; then
-						#echo "Found Bug in DB: ${ass_ID}-${mmb_bugs[${ass_ID}]}"
-						ass_ratio=$(awk -v p="${ass_length}" -v q="${mmb_bugs[${ass_ID}]}" 'BEGIN{printf("%.2f",p/q)}')
-					else
-						ass_ratio="Not_in_DB"
-					fi
+					ass_ratio="Not_in_DB"
 				fi
 			elif [ ${counter} -eq 3 ]
 			then
@@ -220,6 +207,7 @@ while IFS= read -r var; do
 		#with N50 size
 		#contig_info=$(echo -e "${num_contigs}(${n50_length})\\t${ass_length}")
 	fi
+
 	# Pulls busco info from summary file
 	busco_info="No BUSCO performed"
 	if [[ -s "${OUTDATADIR}/BUSCO/short_summary_${sample_name}.txt" ]]; then
@@ -241,26 +229,17 @@ while IFS= read -r var; do
 		done < ${OUTDATADIR}/BUSCO/short_summary_${sample_name}.txt
 		busco_info="${found_buscos}/${total_buscos}(${db})"
 	fi
-
-
-
-
-
-
-
-
-
-	# Pulls ANI info from
+	# Pulls ANI info from best_ANI_hits file
 	ani_info="No ANI performed"
 	# Count the number of matching format files for the current sample
 	file_count=$(find "${OUTDATADIR}/ANI/" -name *"${sample_name}"*"_vs_"*".txt" | wc -l)
 	# Rename files in old formating convention
 	if [[ -s "${OUTDATADIR}/ANI/best_hits_ordered.txt" ]]; then
-		mv "${OUTDATADIR}/ANI/best_hits_ordered.txt" "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${dec_genus}).txt"
+		mv "${OUTDATADIR}/ANI/best_hits_ordered.txt" "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus}).txt"
 	fi
 	# If 1 and only 1 file exists pull the first line as the best hit information
 	# echo "test-${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${dec_genus}).txt"
-	if [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_All).txt" ]]; then
+	if [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_All.txt" ]]; then
 		ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_All).txt")
 	elif [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${dec_genus}).txt" ]]; then
 		ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${dec_genus}).txt")
@@ -288,11 +267,13 @@ while IFS= read -r var; do
 	fi
 	# Replace all spaces in qc_info as tabs
 	read_qc_info=$(echo "${read_qc_info}" | tr '[:blank:]' \\t)
-	# Add all pertinent info to the output file in the correct formatting to add to MMB_Seq log
-	echo -e "${sample_name}\\t${month}/${day}/${year}\\t${g_s_reads}\\t${g_s_assembled}\\t${g_s_16s}\\t${read_qc_info}\\t${avg_coverage}\\t${contig_info}\\t${busco_info}\\t${ani_info}\\r" >> "${processed}/${1}/seqlog_output.txt"
-done < ${processed}/${1}/${1}_list_ordered.txt
 
-#rm -r ${processed}/${1}/${1}_list.txt
+	# Get the date to show when the log was made
+	NOW=$(date +"%m/%d/%Y")
+
+	# Add all pertinent info to the output file in the correct formatting to add to MMB_Seq log
+	echo -e "${sample_name}\\t${NOW}\\t${g_s_reads}\\t${g_s_assembled}\\t${g_s_16s}\\t${read_qc_info}\\t${avg_coverage}\\t${contig_info}\\t${busco_info}\\t${ani_info}\\r" >> "${output_folder}/Seqlog_output.txt"
+ done < ${1}
 
 #Script exited gracefully
 exit 0
