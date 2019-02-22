@@ -77,6 +77,7 @@ while IFS= read -r var; do
 		g_s_assembled="${genus_post} ${species_post}"
 		#echo "${g_s_assembly}"
 	elif [[ ! -f "${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta" ]]; then
+		echo "Cent find ${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta""
 		g_s_assembled="Failed_Assembly"
 	fi
 
