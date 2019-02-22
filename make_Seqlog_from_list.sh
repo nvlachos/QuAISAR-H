@@ -58,7 +58,7 @@ while IFS= read -r var; do
 	#echo "O:${OUTDATADIR}:"
 
 	# Creates default values in case they are not filled in later
-	g_s_assembly="Unidentified"
+	g_s_assembled="Unidentified"
 	genus_post="not_assigned"
 	species_post="not_assigned"
 	# Pulls species and genus_post information from kraken out of assembly
