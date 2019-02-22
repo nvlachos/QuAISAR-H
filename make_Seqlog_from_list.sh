@@ -77,7 +77,7 @@ while IFS= read -r var; do
 		g_s_assembled="${genus_post} ${species_post}"
 		#echo "${g_s_assembly}"
 	else
-		g_s_assembled="Failed Assembly"
+		g_s_assembled="Failed_Assembly"
 	fi
 
 	g_s_reads="Unidentified"
