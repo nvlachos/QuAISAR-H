@@ -76,6 +76,8 @@ while IFS= read -r var; do
 		done < "${OUTDATADIR}/kraken/postAssembly/${sample_name}_kraken_summary_assembled_BP_data.txt"
 		g_s_assembled="${genus_post} ${species_post}"
 		#echo "${g_s_assembly}"
+	else
+		g_s_assembled="Failed Assembly"
 	fi
 
 	g_s_reads="Unidentified"
