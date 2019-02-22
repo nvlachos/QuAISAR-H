@@ -114,7 +114,9 @@ while IFS= read -r var; do
 		else
 			g_s_16s="${genus_16s} ${species_16s}"
 		fi
-#		echo "g_s_16-${g_s_16s}"
+		#		echo "g_s_16-${g_s_16s}"
+	elif [[ ! -f "${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta" ]]; then
+		g_s_16s="Assembly_Failed"
 	fi
 	# Pulls QC count info from counts file (Order is as follows Q20_Total_[bp]	Q30_Total_[bp]	Q20_R1_[bp]	Q20_R2_[bp]	Q20_R1_[%]	Q20_R2_[%]	Q30_R1_[bp]	Q30_R2_[bp]
 	# Q30_R1_[%]	Q30_R2_[%]	Total_Sequenced_[bp]	Total_Sequenced_[reads]
