@@ -131,13 +131,21 @@ do_16s() {
 		source_file="${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt"
 		line=$(tail -n 1 "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt")
 		source="16s_largest"
-		confidence_index=$(head -n1 "${processed}/${project}/${sample}/16s/${sample}.nt.RemoteBLASTN.sorted" | cut -d'	' -f3)
-		confidence_index="${confidence_index}"
+		if [[ -f "${processed}/${project}/${sample}/16s/${sample}.nt.RemoteBLASTN.sorted" ]]; then
+			confidence_index=$(head -n1 "${processed}/${project}/${sample}/16s/${sample}.nt.RemoteBLASTN.sorted" | cut -d'	' -f3)
+			confidence_index="${confidence_index}"
+		else
+			confidence_index=0
+		fi
 	elif [[ "${1}" = "best" ]]; then
 		line=$(head -n 1 "${processed}/${project}/${sample}/16s/${sample}_16s_blast_id.txt")
 		source="16s_best"
-		confidence_index=$(head -n1 "${processed}/${project}/${sample}/16s/${sample}.nt.RemoteBLASTN" | cut -d'	' -f3)
-		confidence_index="${confidence_index}"
+		if [[ -f "${processed}/${project}/${sample}/16s/${sample}.nt.RemoteBLASTN.sorted" ]]; then
+			confidence_index=$(head -n1 "${processed}/${project}/${sample}/16s/${sample}.nt.RemoteBLASTN.sorted" | cut -d'	' -f3)
+			confidence_index="${confidence_index}"
+		else
+			confidence_index=0
+		fi
 	else
 		break
 	fi
