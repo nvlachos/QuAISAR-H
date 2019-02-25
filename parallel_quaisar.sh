@@ -3,7 +3,6 @@
 #$ -o parqua.out
 #$ -e parqua.err
 #$ -N parqua
-#$ -pe smp 14
 #$ -cwd
 #$ -q all.q
 
@@ -361,7 +360,7 @@ if [ -n "$(find "${shareScript}" -maxdepth 1 -name 'core.*' -print -quit)" ]; th
 fi
 
 if [[ -f "./config_${config_counter}.sh" ]]; then
-	mv "./config${config_counter}.sh" ${log_dir}
+	mv "./config_${config_counter}.sh" ${log_dir}
 	:
 fi
 
