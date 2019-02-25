@@ -148,7 +148,7 @@ while IFS= read -r var; do
 
 
 	# Pulls contig info from toms qc analysis file
-	contig_info="0(0)\\t0"
+	contig_info="0(0)\\t0\tNot_in_DB"
 		if [[ -s "${OUTDATADIR}/Assembly_Stats/${sample_name}_report.tsv" ]]; then
 		counter=0
 		while IFS= read -r line;
