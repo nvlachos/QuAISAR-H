@@ -249,9 +249,9 @@ while IFS= read -r var; do
 		do
 			if [[ "${file}" == *"best_ANI_hits_ordered(${sample_name}_vs_"* ]]; then
 				filename=${file}
-				#echo "${OUTDATADIR}"
-				#echo "${file}"
-				#echo "${dec_genus^}"
+				echo "${OUTDATADIR}"
+				echo "${file}"
+				echo "${dec_genus^}"
 				ani_info=$(head -n 1 "${file}")
 				break
 			fi

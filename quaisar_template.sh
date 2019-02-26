@@ -32,7 +32,7 @@ if [[ ! -f "${3}" ]]; then
 	echo "no config file to load (${3}), exiting"
 	exit 223
 else
-	echo "Loading file ${3}"
+	echo "${2}/${1} is loading config file ${3}"
 	. "${3}"
 	. ${mod_changers}/pipeline_mods
 fi
