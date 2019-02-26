@@ -273,7 +273,7 @@ while IFS= read -r var; do
 
 	# Add all pertinent info to the output file in the correct formatting to add to MMB_Seq log
 	echo -e "${sample_name}\\t${NOW}\\t${g_s_reads}\\t${g_s_assembled}\\t${g_s_16s}\\t${read_qc_info}\\t${avg_coverage}\\t${contig_info}\\t${busco_info}\\t${ani_info}\\r" >> "${output_folder}/Seqlog_output.txt"
- done < ${1}
+done < ${processed}/${1}
 
 #Script exited gracefully
 exit 0
