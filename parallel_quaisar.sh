@@ -297,7 +297,7 @@ for run_sample in "${file_list[@]}"; do
 		while :
 		do
 				if [[ ${timer} -gt 1440 ]]; then
-					echo "Timer exceeded limit of 86400 seconds = 24 hours"
+					echo "Timer exceeded limit of 86400 seconds(24 hours), Must complete other steps manually for ${project}"
 					exit 1
 				fi
 				if [[ -f "${processed}/${PROJECT}/${waiting_sample}/${waiting_sample}_pipeline_stats.txt" ]]; then
