@@ -359,8 +359,8 @@ if [ -n "$(find "${shareScript}" -maxdepth 1 -name 'core.*' -print -quit)" ]; th
 	find "${shareScript}" -maxdepth 1 -name 'core.*' -exec rm -f {} \;
 fi
 
-if [[ -f "./config_${config_counter}.sh" ]]; then
-	mv "./config_${config_counter}.sh" ${log_dir}
+if [[ -f "${shareScript}/config_${config_counter}.sh" ]]; then
+	mv "${shareScript}/config_${config_counter}.sh" ${log_dir}
 	:
 fi
 
