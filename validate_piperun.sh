@@ -889,7 +889,7 @@ fi
 if [[ "${ani_found}" = true ]]; then
 	genusDB=$(echo "${filename##*/}" | cut -d'_' -f6 | cut -d')' -f1)
 	percent_match="${ani_info:0:2}"
-	#echo "${percent_match--}"
+	echo "${percent_match--}"
 	if [[ "${percent_match}" = "0." ]]; then
 		echo "Assembly likely failed. This should be fixed now in run_ANI.sh, but adding here in case"
 	else
