@@ -890,11 +890,15 @@ if [[ "${ani_found}" = true ]]; then
 	genusDB=$(echo "${filename##*/}" | cut -d'_' -f6 | cut -d')' -f1)
 	percent_match="${ani_info:0:2}"
 	#echo "${percent_match--}"
-	if [[ "${percent_match}" -ge 95 ]]; then
-		printf "%-20s: %-8s : %s\\n" "ANI" "SUCCESS" "${ani_info} against ${genusDB}"
+	if [[ "${percent_match}" = "0." ]]; then
+		echo "Assembly likely failed. This should be fixed now in run_ANI.sh, but adding here in case"
 	else
-		printf "%-20s: %-8s : %s\\n" "ANI" "FAILED" "${percent_match}% is too low, ${ani_info}"
-		status="FAILED"
+		if [[ "${percent_match}" -ge 95 ]]; then
+			printf "%-20s: %-8s : %s\\n" "ANI" "SUCCESS" "${ani_info} against ${genusDB}"
+		else
+			printf "%-20s: %-8s : %s\\n" "ANI" "FAILED" "${percent_match}% is too low, ${ani_info}"
+			status="FAILED"
+		fi
 	fi
 else
 	if [[ ! -d "${OUTDATADIR}/ANI/" ]]; then

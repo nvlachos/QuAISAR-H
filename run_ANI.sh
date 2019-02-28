@@ -105,6 +105,10 @@ cp "${local_DBs}/aniDB/${genus_in,}/"*".fna" "${OUTDATADIR}/ANI/localANIDB/"
 gunzip ${OUTDATADIR}/ANI/localANIDB/*.gz
 
 #Copies the samples assembly contigs to the local ANI db folder
+if [[ ! -f "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
+	echo "Assembly file does not exist, can not perform ANI, exiting..."
+	exit 93
+fi
 cp "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" "${OUTDATADIR}/ANI/localANIDB/sample_${2}_${3}.fasta"
 
 
