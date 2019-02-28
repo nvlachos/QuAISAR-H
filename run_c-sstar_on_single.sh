@@ -74,12 +74,17 @@ if [[ "${5}" == "--plasmid" ]] || [[ "${5}" == "-p" ]]; then
 		source_assembly="${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta"
 		OUTDATADIR="${OUTDATADIR}/c-sstar_plasmid"
 	else
-		"No anti-microbial genes were found using c-SSTAR because there were No Plasmids Found" > "${OUTDATADIR}/c-sstar_plasmid/${1}_plasmid_scaffolds_trimmed.fasta"
+		"No anti-microbial genes were found using c-SSTAR because there were No Plasmids Found" > "${OUTDATADIR}/${resGANNOT_srst2_filename}_${suffix}/${1}.${resGANNOT_srst2_filename}.${suffix}_${sim}.sstar"
 		exit
 	fi
 else
 	source_assembly="${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
 	OUTDATADIR="${OUTDATADIR}/c-sstar"
+fi
+
+if [[ ! -s "${OUTDATADIR}/Assembly/${1}_plasmid_scaffolds_trimmed.fasta" ]]; then
+	"No Assembly found to run c-sstar with"
+	exit
 fi
 
 # Creates the output c-sstar folder if it does not exist yet
