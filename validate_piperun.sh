@@ -936,6 +936,9 @@ if [[ -d "${OUTDATADIR}/c-sstar/" ]]; then
 			else
 				printf "%-20s: %-8s : %s\\n" "c-SSTAR" "ALERT" "Completed, but NO KNOWN AMR genes were found in ${resGANNOT_DB} (DB NOT up to date! Most current DB: ${resGANNOT_srst2_filename})"
 			fi
+		elif [[ ${header} = "No Assembly found to run c-sstar with" ]]; then
+			printf "%-20s: %-8s : %s\\n" "c-SSTAR" "FAILED" "No Assembly file to run through c-sstar"
+			status="FAILED"
 		else
 			amr_genes_found=$(wc -l "${csstar_file}" | cut -d' ' -f1)
 			# Prints out the counts of AR gene hits
