@@ -83,7 +83,7 @@ else
 fi
 
 if [[ ! -s "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
-	"No Assembly found to run c-sstar with"
+	echo "No Assembly found to run c-sstar with"
 	exit
 fi
 
