@@ -164,7 +164,7 @@ for item in "${arr[@]}"; do
 					echo "Timer exceeded limit of 3600 seconds = 60 minutes"
 					exit 1
 				fi
-				if [[ -f "${main_dir}/complete/${waiting_sample}_csstarn_complete.txt" ]]; then
+				if [[ -f "${main_dir}/complete/${waiting_sample}_srst2_complete.txt" ]]; then
 					echo "${item} is complete"
 					break
 				else
