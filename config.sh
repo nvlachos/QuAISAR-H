@@ -176,7 +176,7 @@ plasmidFinder_length=60
 # Minimum % length required to be included in report, otherwise gets placed in rejects file
 project_parser_Percent_length=90
 # Minimum % identity required to be included in report, otherwise gets placed in rejects file
-project_parser_Percent_identity=95
+project_parser_Percent_identity=98
 # Minimum % length required to be included in report when looking at plasmid assembly, typically more leeway is given to plasmid only hits, otherwise gets placed in rejects file
 project_parser_plasmid_Percent_identity=40
 

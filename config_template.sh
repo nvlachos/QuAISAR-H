@@ -46,6 +46,7 @@ max_quaisars=25
 miseq1="/scicomp/instruments/17-4-4248_Illumina-MiSeq-M04765"
 miseq2="/scicomp/instruments/17-4-4248_Illumina-MiSeq-M01025"
 miseq3="/scicomp/instruments/17-5-5248_Illumina-MiSeq-M02103"
+miseq4="/scicomp/instruments/17-4-4123_Illumina-MiSeq-M03961"
 pacbio="/scicomp/instruments/23-12-651_PacBio-RSII-RS42135"
 
 # Create a list of instruments to check output of
@@ -176,7 +177,7 @@ plasmidFinder_length=60
 # Minimum % length required to be included in report, otherwise gets placed in rejects file
 project_parser_Percent_length=90
 # Minimum % identity required to be included in report, otherwise gets placed in rejects file
-project_parser_Percent_identity=95
+project_parser_Percent_identity=98
 # Minimum % length required to be included in report when looking at plasmid assembly, typically more leeway is given to plasmid only hits, otherwise gets placed in rejects file
 project_parser_plasmid_Percent_identity=40
 
