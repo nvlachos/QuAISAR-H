@@ -82,7 +82,7 @@ else
 	OUTDATADIR="${OUTDATADIR}/c-sstar"
 fi
 
-if [[ ! -s "${OUTDATADIR}/Assembly/${1}_plasmid_scaffolds_trimmed.fasta" ]]; then
+if [[ ! -s "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
 	"No Assembly found to run c-sstar with"
 	exit
 fi
