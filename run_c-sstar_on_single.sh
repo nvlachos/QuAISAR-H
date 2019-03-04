@@ -76,14 +76,15 @@ if [[ "${5}" == "--plasmid" ]] || [[ "${5}" == "-p" ]]; then
 		exit
 	fi
 else
+	if [[ ! -s "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
+		echo "No Assembly found to run c-sstar with (${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta does not exist)"
+		exit
+	fi
 	source_assembly="${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
 	OUTDATADIR="${OUTDATADIR}/c-sstar"
 fi
 
-if [[ ! -s "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
-	echo "No Assembly found to run c-sstar with (${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta does not exist)"
-	exit
-fi
+
 
 # Creates the output c-sstar folder if it does not exist yet
 #echo "${OUTDATADIR}"
