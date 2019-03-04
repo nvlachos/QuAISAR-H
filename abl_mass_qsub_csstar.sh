@@ -12,7 +12,7 @@ pwd
 if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
-. config.sh
+. ./config.sh
 #Import the module file that loads all necessary mods
 . "${mod_changers}/pipeline_mods"
 
