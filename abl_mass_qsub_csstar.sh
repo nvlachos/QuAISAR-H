@@ -8,6 +8,7 @@
 
 #Import the config file with shortcuts and settings
 # Import the config file with shortcuts and settings
+pwd
 if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
