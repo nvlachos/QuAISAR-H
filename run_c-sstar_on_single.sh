@@ -22,8 +22,6 @@ pwd
 # Python/3.5.2
 #
 
-pwd
-
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to run_c-sstar.sh, exiting"
@@ -83,7 +81,7 @@ else
 fi
 
 if [[ ! -s "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
-	echo "No Assembly found to run c-sstar with"
+	echo "No Assembly found to run c-sstar with (${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta does not exist)"
 	exit
 fi
 
