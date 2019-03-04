@@ -10,7 +10,7 @@
 if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
-pwd
+
 . ./config.sh
 # No modules needed
 
