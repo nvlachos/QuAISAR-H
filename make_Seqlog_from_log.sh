@@ -189,7 +189,7 @@ while IFS= read -r var; do
 				ass_length=$(sed -n '16p' "${OUTDATADIR}/Assembly_Stats/${sample_name}_report.tsv" | sed -r 's/[\t]+/ /g' | cut -d' ' -f3)
 				#Check Assembly ratio against expected size to see if it is missing a large portion or if there is contamination/double genome
 				dec_genus_initial="${dec_genus:0:1}"
-				if [[ "${dec_genus_initial}" = "[" ]]; then
+				if [[ "${dec_genus_initial}" = "[" ]] || [[ "${dec_genus_initial}" = "(" ]]; then
 					dec_genus_initial="${dec_genus:1:1}"
 				fi
 				ass_ID="${dec_genus_initial}.${dec_species}"
