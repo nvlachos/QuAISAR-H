@@ -9,10 +9,11 @@
 #Import the config file with shortcuts and settings
 # Import the config file with shortcuts and settings
 pwd
+owd=$(pwd)
 if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
-. ./config.sh
+. ${owd}/config.sh
 #Import the module file that loads all necessary mods
 . "${mod_changers}/pipeline_mods"
 
@@ -50,7 +51,7 @@ max_subs=${2}
 
 # format name being extracted from alt database
 main_dir="${3}/csstar_subs"
-cp ./config ${main_dir}
+cp ./config.sh ${main_dir}
 if [[ ! -d "${3}/csstar_subs" ]]; then
 	mkdir -p "${3}/csstar_subs/complete"
 elif [[ ! -d  "${3}/csstar_subs/complete" ]]; then
@@ -212,5 +213,9 @@ for item in "${arr[@]}"; do
 		done
 	fi
 done
+
+if [[ -f "${main_dir}/config.sh" ]]; then
+	rm "${main_dir}/config.sh"
+fi
 
 exit 0
