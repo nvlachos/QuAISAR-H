@@ -50,7 +50,7 @@ miseq4="/scicomp/instruments/17-4-4123_Illumina-MiSeq-M03961"
 pacbio="/scicomp/instruments/23-12-651_PacBio-RSII-RS42135"
 
 # Create a list of instruments to check output of
-all_instruments=($miseq1 $miseq2 $miseq3) # $pacbio)
+all_instruments=($miseq1 $miseq2 $miseq3 $miseq4) # $pacbio)
 
 # Number of processors requested by numerous applications within the pipeline
 procs=13 # Number of processors
