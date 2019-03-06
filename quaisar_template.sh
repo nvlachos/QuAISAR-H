@@ -3,7 +3,7 @@
 #$ -o quaisar_X.out
 #$ -e quaisar_X.err
 #$ -N quasX
-#$ -pe smp 14
+#$ -pe smp 10
 #$ -cwd
 #$ -q all.q
 
