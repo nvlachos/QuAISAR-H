@@ -216,19 +216,20 @@ while IFS= read -r line; do
 		percent_ID="${ar_line[6]}"
 		percent_length="${ar_line[9]}"
 		conferred=$(echo "${ar_line[1]}" | rev | cut -d'_' -f2- | rev)
+		contig_number=$(echo "${ar_line[5]}" | rev | cut -d'_' -f3 | rev)
 		gene="${ar_line[4]}"
 		# Ensure that the gene passes % identity and % length threhsolds for reporting
 		if [[ ${percent_length} -ge ${project_parser_Percent_length} ]] && [[ ${percent_ID} -ge ${project_parser_Percent_identity} ]] ; then
 			if [[ -z "${oar_list}" ]]; then
 			#	echo "First oar: ${gene}"
-				oar_list="${gene}(${conferred})[${percent_ID}/${percent_length}]"
+				oar_list="${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
 			else
 				if [[ ${oar_list} == *"${gene}"* ]]; then
 				#	echo "${gene} already found in ${oar_list}"
 					:
 				else
 				#	echo "${gene} not found in ${oar_list}...adding it"
-					oar_list="${oar_list},${gene}(${conferred})[${percent_ID}/${percent_length}]"
+					oar_list="${oar_list},${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
 				fi
 			fi
 		# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
@@ -394,6 +395,7 @@ while IFS= read -r line; do
 			percent_length="${ar_line[9]}"
 			conferred=$(echo "${ar_line[1]}" | cut -d'_' -f1)
 			gene="pla-${ar_line[4]}"
+			contig_number=$(echo "${ar_line[5]}" | rev | cut -d'_' -f3 | rev)
 			if [[ "${conferred}" == "macrolide," ]]; then
 				conferred="macrolide, lincosamide, streptogramin_B"
 			fi
@@ -401,14 +403,14 @@ while IFS= read -r line; do
 			if [[ ${percent_length} -ge ${project_parser_Percent_length} ]] && [[ ${percent_ID} -ge ${project_parser_plasmid_Percent_identity} ]] ; then
 				if [[ -z "${oar_list}" ]]; then
 				#	echo "First oar: ${gene}"+
-					oar_list="${gene}(${conferred})[${percent_ID}/${percent_length}]"
+					oar_list="${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
 				else
 					if [[ ${oar_list} == *"${gene}"* ]]; then
 					#	echo "${gene} already found in ${oar_list}"
 						:
 					else
 					#	echo "${gene} not found in ${oar_list}...adding it"
-						oar_list="${oar_list},${gene}(${conferred})[${percent_ID}/${percent_length}]"
+						oar_list="${oar_list},${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
 					fi
 				fi
 			# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
