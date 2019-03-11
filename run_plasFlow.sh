@@ -88,7 +88,7 @@ if [[ -s "${processed}/${2}/${1}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
 	mkdir ${processed}/${2}/${1}/plasFlow/bowtie2-index/
 	bowtie2-build -f "${processed}/${2}/${1}/plasFlow/${1}_plasFlow_results.tsv_chromosomes.fasta" "${processed}/${2}/${1}/plasFlow/bowtie2-index/bowtie2_${1}_chr"
 	mkdir ${processed}/${2}/${1}/plasFlow/filtered_reads_70/
-	bowtie2 -x "${processed}/${2}/${1}/plasFlow/bowtie2-index/bowtie2_${1}_chr" -1 "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq" 2 "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq" -S "${processed}/${2}/${1}/plasFlow/filtered_reads_70/${1}.sam" -p 12 --local
+	bowtie2 -x "${processed}/${2}/${1}/plasFlow/bowtie2-index/bowtie2_${1}_chr" -1 "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq" -2 "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq" -S "${processed}/${2}/${1}/plasFlow/filtered_reads_70/${1}.sam" -p 12 --local
 	samtools view -bS "${processed}/${2}/${1}/plasFlow/filtered_reads_70/${1}.sam" > "${processed}/${2}/${1}/plasFlow/filtered_reads_70/${1}.bam"
 	bam2fastq --no-aligned -o "${processed}/${2}/${1}/plasFlow/filtered_reads_70/${1}_R#_bacterial.fastq" "${processed}/${2}/${1}/plasFlow/filtered_reads_70/${1}.bam"
 	unicycler -1 "${processed}/${2}/${1}/plasFlow/filtered_reads_70/${1}_R_1_bacterial.fastq" -2 "${processed}/${2}/${1}/plasFlow/filtered_reads_70/${1}_R_2_bacterial.fastq" -o "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly"
