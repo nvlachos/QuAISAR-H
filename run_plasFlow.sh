@@ -46,6 +46,7 @@ module load Unicycler/0.4.4;
 module load gcc/5.5;
 module load SPAdes/3.11.1;
 module load racon/1.2.0;
+module load perl/5.22.1
 
 
 . ./module_changers/list_modules.sh
