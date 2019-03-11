@@ -86,25 +86,30 @@ echo "do"
 getmlst.py --species "${3} ${4}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
 echo "done"
 
+db_name="Standard"
 if [[ "${3}" == "Acinetobacter" ]]; then
 	echo "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
 	if [[ "${4}" == "baumannii#1" ]]; then
-		sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
-		sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/abaumannii(Oxford).txt"
+	#	sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
+	#	sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/abaumannii(Oxford).txt"
+		db_name="Oxford"
 	elif [[ "${4}" == "baumannii#2" ]]; then
-		sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
-		sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/abaumannii_2(Pasteur).txt"
+	#	sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
+	#	sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/abaumannii_2(Pasteur).txt"
+		db_name="Pasteur"
 	else
 		echo "Unknown species in Acinetobacter MLST lookup"
 	fi
 elif [[ "${3}" == "Escherichia" ]]; then
 	echo "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
 	if [[ "${4}" == "coli#1" ]]; then
-		sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
-		sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/ecoli.txt"
+	#	sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
+	#	sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/ecoli(Achtman).txt"
+		db_name="Achtman"
 	elif [[ "${4}" == "coli#2" ]]; then
-		sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
-		sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/ecoli_2.txt"
+	#	sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
+	#	sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/ecoli_2(Pasteur).txt"
+		db_name="Pasteur"
 	else
 		echo "Unknown species in Escherichia MLST lookup"
 	fi
@@ -136,11 +141,11 @@ srst2 --input_pe "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" "${
 #srst2 --input_pe /scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/181109_M01025_0239_000000000-BWTC9/2018-35-19/srst2/2018-35-19_S1_L001_R1_001.fastq.gz /scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/181109_M01025_0239_000000000-BWTC9/2018-35-19/srst2/2018-35-19_S1_L001_R2_001.fastq.gz --output /scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/181109_M01025_0239_000000000-BWTC9/2018-35-19/MLST/srst2/2018-35-19 --mlst_db Escherichia_coli#1.fasta --mlst_definitions ecoli.txt --mlst_delimiter '_'
 
 
-#mv "${processed}/${2}/${1}/MLST/srst2/${1}__mlst__${3}_${4}_results.txt" "${processed}/${2}/${1}/MLST/${1}_srst2_${3}_${4}.mlst"
-#rm -r "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz"
-#rm -r "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz"
-#rm -r "${processed}/${2}/${1}/MLST/srst2/*.tfa"
-#rm -r "${processed}/${2}/${1}/MLST/${1}__${1}"*"scores"
+mv "${processed}/${2}/${1}/MLST/srst2/${1}__mlst__${3}_${4}_results.txt" "${processed}/${2}/${1}/MLST/${1}_srst2_${3}_${4}-${db_name}.mlst"
+rm -r "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz"
+rm -r "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz"
+rm -r "${processed}/${2}/${1}/MLST/srst2/*.tfa"
+rm -r "${processed}/${2}/${1}/MLST/${1}__${1}"*"scores"
 if [[ -f "${processed}/${2}/${1}/MLST/srst2/${1}__${1}.${3}_${4}.pileup" ]]; then
 	rm -r "${processed}/${2}/${1}/MLST/srst2/${1}__${1}.${3}_${4}.pileup"
 fi
