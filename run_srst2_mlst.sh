@@ -33,6 +33,9 @@ elif [[ "$1" = "-h" ]]; then
 	exit 0
 fi
 
+species="${4}"
+genus="${3}"
+
 if [[ ! -d "${processed}/${2}/${1}/srst2" ]]; then
 	mkdir "${processed}/${2}/${1}/srst2"
 fi
@@ -44,7 +47,6 @@ if [ ! -f "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" ]; then
 	elif [ -f "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq" ]; then
 		#echo "2"
 		gzip -c "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq" > "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz"
-		#gzip < "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq" > "${processed}/${2}/${1}/trimmed/${1}_S1_L001_R1_001.fastq.gz"
 	elif [[ ! -d "${processed}/${2}/${1}/trimmed" ]]; then
 		if [[ -f "${processed}/${2}/${1}/FASTQs/${1}_R1_001.fastq.gz" ]] && [[ ! -f "${processed}/${2}/${1}/FASTQs/${1}_R1_001.fastq" ]]; then
 			gunzip -c "${processed}/${2}/${1}/FASTQs/${1}_R1_001.fastq.gz" > "${processed}/${2}/${1}/FASTQs/${1}_R1_001.fastq"
@@ -67,36 +69,45 @@ if [ ! -f "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" ]; then
 	elif [ -f "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq" ]; then
 		#echo "4"
 		gzip -c "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq" > "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz"
-		#gzip < "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq" > "${processed}/${2}/${1}/trimmed/${1}_S1_L001_R2_001.fastq.gz"
 	fi
 fi
 
-if [ ! -d "${processed}/${2}/${1}/MLST/" ]; then
-	mkdir "${processed}/${2}/${1}/MLST/"
-	mkdir "${processed}/${2}/${1}/MLST/srst2"
-elif [ ! -d "${processed}/${2}/${1}/MLST/srst2" ]; then
-	mkdir "${processed}/${2}/${1}/MLST/srst2"
+if [ ! -d "${processed}/${2}/${1}/MLST/srst2" ]; then
+	mkdir -p "${processed}/${2}/${1}/MLST/srst2"
 fi
 
 cd "${processed}/${2}/${1}/MLST/srst2"
 
-echo "do"
-#python2 "${shareScript}/srst2/scriptsgetmlst.py" --species "${3} ${4}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
-getmlst.py --species "${3} ${4}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
-
-echo "done"
 if [[ "${3}" == "Acinetobacter" ]]; then
 	echo "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
 	if [[ "${4}" == "baumannii#1" ]]; then
 		sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
-		sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/abaumannii.txt"
+		sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/abaumannii(Oxford).txt"
 	elif [[ "${4}" == "baumannii#2" ]]; then
 		sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
-		sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/abaumannii_2.txt"
+		sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/abaumannii_2(Pasteur).txt"
 	else
 		echo "Unknown species in Acinetobacter MLST lookup"
 	fi
+elif [[ "${3}" == "Escherichia" ]]; then
+	echo "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
+	if [[ "${4}" == "coli#1" ]]; then
+		sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
+		sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/ecoli.txt"
+	elif [[ "${4}" == "coli#2" ]]; then
+		sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
+		sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/ecoli_2.txt"
+	else
+		echo "Unknown species in Escherichia MLST lookup"
+	fi
 fi
+
+
+echo "do"
+#python2 "${shareScript}/srst2/scriptsgetmlst.py" --species "${3} ${4}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
+getmlst.py --species "${3} ${4}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
+echo "done"
+
 
 suggested_command=$(tail -n2 "${processed}/${2}/${1}/MLST/srst2/getmlst.out" | head -n1)
 mlst_db=$(echo "${suggested_command}" | cut -d' ' -f11)
