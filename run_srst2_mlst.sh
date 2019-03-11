@@ -42,10 +42,10 @@ fi
 
 if [ ! -f "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" ]; then
 	if [ -f "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq.gz" ]; then
-		#echo "1"
+		echo "1"
 		cp "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq.gz" "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz"
 	elif [ -f "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq" ]; then
-		#echo "2"
+		echo "2"
 		gzip -c "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq" > "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz"
 	elif [[ ! -d "${processed}/${2}/${1}/trimmed" ]]; then
 		if [[ -f "${processed}/${2}/${1}/FASTQs/${1}_R1_001.fastq.gz" ]] && [[ ! -f "${processed}/${2}/${1}/FASTQs/${1}_R1_001.fastq" ]]; then
@@ -64,10 +64,10 @@ if [ ! -f "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" ]; then
 fi
 if [ ! -f "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" ]; then
 	if [ -f "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq.gz" ]; then
-		#echo "3"
+		echo "3"
 		cp "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq.gz" "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz"
 	elif [ -f "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq" ]; then
-		#echo "4"
+		echo "4"
 		gzip -c "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq" > "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz"
 	fi
 fi
@@ -129,6 +129,7 @@ echo "--input_pe ${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz ${pro
 
 #python "${shareScript}/srst2/scripts/srst2.py" --input_pe "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" --output "${processed}/${2}/${1}/MLST/srst2/${1}" --mlst_db "${mlst_db}" --mlst_definitions "${mlst_defs}" --mlst_delimiter "${mlst_delimiter}"
 srst2 --input_pe "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" --output "${processed}/${2}/${1}/MLST/srst2/${1}" --mlst_db "${mlst_db}" --mlst_definitions "${mlst_defs}" --mlst_delimiter "${mlst_delimiter}"
+#srst2 --input_pe /scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/181109_M01025_0239_000000000-BWTC9/2018-35-19/srst2/2018-35-19_S1_L001_R1_001.fastq.gz /scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/181109_M01025_0239_000000000-BWTC9/2018-35-19/srst2/2018-35-19_S1_L001_R2_001.fastq.gz --output /scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/181109_M01025_0239_000000000-BWTC9/2018-35-19/MLST/srst2/2018-35-19 --mlst_db Escherichia_coli#1.fasta --mlst_definitions ecoli.txt --mlst_delimiter '_'
 
 
 #mv "${processed}/${2}/${1}/MLST/srst2/${1}__mlst__${3}_${4}_results.txt" "${processed}/${2}/${1}/MLST/${1}_srst2_${3}_${4}.mlst"
