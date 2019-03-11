@@ -78,6 +78,12 @@ fi
 
 cd "${processed}/${2}/${1}/MLST/srst2"
 
+
+echo "do"
+#python2 "${shareScript}/srst2/scriptsgetmlst.py" --species "${3} ${4}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
+getmlst.py --species "${3} ${4}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
+echo "done"
+
 if [[ "${3}" == "Acinetobacter" ]]; then
 	echo "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
 	if [[ "${4}" == "baumannii#1" ]]; then
@@ -103,10 +109,6 @@ elif [[ "${3}" == "Escherichia" ]]; then
 fi
 
 
-echo "do"
-#python2 "${shareScript}/srst2/scriptsgetmlst.py" --species "${3} ${4}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
-getmlst.py --species "${3} ${4}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
-echo "done"
 
 
 suggested_command=$(tail -n2 "${processed}/${2}/${1}/MLST/srst2/getmlst.out" | head -n1)
