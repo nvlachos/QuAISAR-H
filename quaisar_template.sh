@@ -479,9 +479,26 @@ start=$SECONDS
 "${shareScript}/run_MLST.sh" "${filename}" "${project}"
 if [[ "${genus}_${species}" = "Acinetobacter_baumannii" ]]; then
 	"${shareScript}/run_MLST.sh" "${filename}" "${project}" "-f" "abaumannii"
+	#Check for "-", unidentified type
+	type1=$(tail -n1 ${processed}/${project}/${filename}/MLST/${filename}_abaumannii.mlst | cut -d' ' -f3)
+	type2=$(head -n1 ${processed}/${project}/${filename}/MLST/${filename}.mlst | cut -d' ' -f3)
+	if [[ "${type1}" = "-" ]]; then
+		"${shareScript}/run_srst2_mlst" "${filename}" "${project}" "Acinetobacter" "baumannii#1"
+	fi
+	if [[ "${type2}" = "-" ]]; then
+		"${shareScript}/run_srst2_mlst" "${filename}" "${project}" "Acinetobacter" "baumannii#2"
+	fi
 elif [[ "${genus}_${species}" = "Escherichia_coli" ]]; then
 	# Verify that ecoli_2 is default and change accordingly
 	"${shareScript}/run_MLST.sh" "${filename}" "${project}" "-f" "ecoli_2"
+	type2=$(tail -n1 ${processed}/${project}/${filename}/MLST/${filename}_ecoli_2.mlst | cut -d' ' -f3)
+	type1=$(head -n1 ${processed}/${project}/${filename}/MLST/${filename}.mlst | cut -d' ' -f3)
+	if [[ "${type1}" = "-" ]]; then
+		"${shareScript}/run_srst2_mlst" "${filename}" "${project}" "Escherichia" "coli#1"
+	fi
+	if [[ "${type2}" = "-" ]]; then
+		"${shareScript}/run_srst2_mlst" "${filename}" "${project}" "Escherichia" "coli#2"
+	fi
 fi
 end=$SECONDS
 timeMLST=$((end - start))
