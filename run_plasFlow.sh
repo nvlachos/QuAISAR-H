@@ -1,10 +1,10 @@
 #!/bin/sh -l
 
-#$ -o get_run_plasFlow.out
-#$ -e get_run_plasFlow.err
-#$ -N get_run_plasFlow
+#$ -o run_plasFlow.out
+#$ -e run_plasFlow.err
+#$ -N run_plasFlow
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 # Import the config file with shortcuts and settings
 if [[ ! -f "./config.sh" ]]; then
