@@ -56,15 +56,22 @@ if [[ ! -d "${processed}/${2}/${1}/plasFlow" ]]; then
 	mkdir "${processed}/${2}/${1}/plasFlow"
 fi
 
-if [ -f "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq.gz" ]; then
+if [ -f "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq" ] && [ -f "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq" ]; then
 	echo "1"
-	:
-elif [ -f "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq" ] && [ -f "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq" ]; then
+	#gzip -c "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq" > "${processed}/${2}/${1}/trimmed/${1}_S1_L001_R1_001.fastq.gz"
+	#gzip -c "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq" > "${processed}/${2}/${1}/trimmed/${1}_S1_L001_R2_001.fastq.gz"
+elif [ -f "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq.gz" ]; then
 	echo "2"
-	gzip -c "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq" > "${processed}/${2}/${1}/trimmed/${1}_S1_L001_R1_001.fastq.gz"
-	gzip -c "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq" > "${processed}/${2}/${1}/trimmed/${1}_S1_L001_R2_001.fastq.gz"
-else
+	gunzip -k "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq.gz"
+	if [[ -f "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq.gz" ]]; then
+	echo "2A"
+		gunzip -k "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq.gz"
+	fi
+elif [ -f "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq.gz"]; then 
 	echo "3"
+	gunzip -k "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq.gz"
+else
+	echo "4"
 	if [[ -f "${processed}/${2}/${1}/FASTQs/${1}_R1_001.fastq.gz" ]] && [[ ! -f "${processed}/${2}/${1}/FASTQs/${1}_R1_001.fastq" ]]; then
 		gunzip -c "${processed}/${2}/${1}/FASTQs/${1}_R1_001.fastq.gz" > "${processed}/${2}/${1}/FASTQs/${1}_R1_001.fastq"
 	fi
