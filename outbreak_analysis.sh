@@ -321,7 +321,7 @@ while IFS= read -r line; do
 				fi
 			fi
 			confers=${confers//_resistance/}
-			allele=$(echo "${line}" | cut -d'	' -f4 | cut -d'_' -f1)
+			allele=$(echo "${line}" | cut -d'	' -f4 | rev | cut -d'_' -f2- | rev)
 			if [[ "${allele}" = "Zn-dependent" ]]; then
 				allele="${allele}_hydrolase"
 			fi
