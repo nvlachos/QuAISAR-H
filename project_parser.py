@@ -25,7 +25,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 			ar_dict[gene_name]=gene_stats
 			if gene_name not in all_ARs_in_file:
 				all_ARs_in_file.append(gene_name)
-				#print("Adding", gene_name)
+				print("Adding", gene_name)
 		srst2_file=open(input_srst2_AR,'r')
 		srst2_line=srst2_file.readline().strip()
 		counter=0
