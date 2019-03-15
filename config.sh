@@ -29,10 +29,13 @@ fi
 Quaisar_H_log_directory="/scicomp/groups/OID/NCEZID/DHQP/CEMB/QuAISAR_logs"
 #shortcut to processed samples folder
 processed="/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles"
-# Location to keep all temp files when doing mass qsubmissions
-mass_qsub_folder="/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/mass_subs"
 # Locations of all scripts and necessary accessory files
 shareScript="$(pwd)"
+# Location to keep all temp files when doing mass qsubmissions
+mass_qsub_folder="/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/mass_subs"
+if [[ ! -d "/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/mass_subs" ]]; then
+	mkdir -p "/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/mass_subs"
+fi
 # Location of any files being called that have an effect on loaded modules
 mod_changers="${shareScript}/module_changers"
 # Local databases that are necessary for pipeline...ANI, BUSCO, star, adapters, phiX
