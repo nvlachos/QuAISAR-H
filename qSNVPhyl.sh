@@ -17,15 +17,11 @@ fi
 #
 # The wrapper script that runs the lowest possible primary_processing.sh script on the cluster
 #
-# Usage ./primary_processing.sh
-# -p/l/s(project/list/single) identifier: project pulls every sample from a particular "project" (or run identifier). Samples will be downloaded from instruments also.
-# 							   			  list will only process samples found on the list
-#							   			  sample will process the single sample supplied
-#                                         *list and sample must have had the fastq files already downloaded and extracted
+# Usage ./qSNVPhyl path_to_list_file output_directory project_identifier
 #
 
 # Checks for proper argumentation
-if [[ $# -lt 2 ]]; then
+if [[ $# -lt 3 ]]; then
 	echo "Improper argument quantity supplied to act_by_list.sh, exiting"
 	exit 1
 # Shows a brief uasge/help section if -h option used as first argument
@@ -39,7 +35,7 @@ fi
 
 # Not being run on cluster=no run
 if [[ ${host} != "cluster"* ]]; then
-	echo "No scheduling system, can not run qquaisar.sh"
+	echo "No scheduling system, can not run qSNVPhyl.sh"
 	#exit 1
 fi
 
@@ -51,10 +47,11 @@ counter=0
 while [[ -f ${shareScript}/run_SNVPhyl_${counter}.sh ]]; do
 	counter=$(( counter + 1 ))
 	echo ${counter}
-	if [[ ${counter} -ge ${max_quaisars} ]]; then
+	# Do we need to set a global variable for max SNVPhyls??? (instead of 10)
+	if [[ ${counter} -ge 10 ]]; then
 		#echo "Showing all jobs by MMB team..."
 		qstat -u nvx4 -u nvd4 -u njr5 -u xku6 -u kqj9 -u nyx3 -u kbi5 -u yer1 -u vif0 -u hex1
-		echo "Too many quaisars running already; please try again later"
+		echo "Too many (10) SNVPhyls running already; please try again later (also check that there arent unused scripts in ${shareScript}/run_SNVPhyl_*.sh)"
 		exit
 	fi
 done
