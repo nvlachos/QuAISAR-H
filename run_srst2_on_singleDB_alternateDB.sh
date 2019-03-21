@@ -77,10 +77,10 @@ rm -r "${processed}/${2}/${1}/srst2/"*".bam"
 rm -r "${processed}/${2}/${1}/srst2/"*".pileup"
 
 
-find ${processed}/${2}/${1}/srst2 -type f -name "*ResGANNOT__*" | while read FILE ; do
+find ${processed}/${2}/${1}/srst2 -type f -name "*_${alt_DB}__*" | while read FILE ; do
   dirname=$(dirname $FILE)
 	filename=$(basename $FILE)
-	filename="${filename/_ResGANNOT__/__}"
+	filename="${filename/_${alt_DB}__/__}"
 	#echo "Found-${FILE}"
 	#echo "${filename}"
     mv "${FILE}" "${dirname}/${filename}"
