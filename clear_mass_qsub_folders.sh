@@ -12,28 +12,29 @@
 . "${mod_changers}/pipeline_mods"
 
 #
-# Usage ./clear_mass_qsub_fodlers [1,2,3] (1-qsub folders, 2-qsub outs/errs, 3-Both) folder_with_script_files
-#
-# script that removes scripts made to parallelize submission of multiple qsub jobs at once and any output completion files that were associated folder_with_script_files_to_be_deleted
+# Usage ./clear_mass_qsub_fodlers [1,2,3] (1-qsub folders, 2-qsub outs/errs, 3-Both) folder_containinng_script_files_to_be_deleted
 #
 
-# Remove all completion txt and submission scripts made during mass qsub submission
+# Clears out script folder of all .sh, .err, and .out files and the complete folders within each qsub type folder
 if [[ ${1} -eq 1 ]] || [[ ${1} -eq 3 ]]; then
-	for folder in ${2}*
+	for folder in ${2}/*
 	do
 		if [[ -d ${folder} ]]; then
 			for folder1 in ${folder}
 			do
 				echo "Deleting every .sh script in ${folder1}"
-				rm -r ${folder1}/*.sh
+				rm ${folder1}/*.sh
+				rm ${folder1}/*.out
+				rm ${folder1}/*.err
+
 				echo "Deleting every .txt in ${folder1}/complete"
-				rm -r ${folder1}/complete/*.txt
+				rm ${folder1}/complete/*.txt
 			done
 		fi
 	done
 fi
 
-# Remove all out and err files
+# Deletes all straggling .err and .out files left in the home shareScript directory
 if [[ ${1} -eq 2 ]] || [[ ${1} -eq 3 ]]; then
 	rm ${shareScript}/blast16sID_*.out
 	rm ${shareScript}/blast16sID_*.err
@@ -104,5 +105,7 @@ if [[ ${1} -eq 2 ]] || [[ ${1} -eq 3 ]]; then
 	rm ${shareScript}/aniB_*.err
 	rm ${shareScript}/aniM_*.out
 	rm ${shareScript}/aniM_*.err
+	rm ${shareScript}/node_*.out
+	rm ${shareScript}/node_*.err
 	rm ${shareScript}/core.*
 fi
