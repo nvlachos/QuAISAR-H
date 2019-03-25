@@ -95,7 +95,7 @@ fi
 
 
 # Creates the output c-sstar folder if it does not exist yet
-#echo "${OUTDATADIR}"
+echo "${OUTDATADIR}"
 if [ ! -d "$OUTDATADIR" ]; then  #create outdir if absent
 	echo "Creating $OUTDATADIR"
 	mkdir -p "$OUTDATADIR"
