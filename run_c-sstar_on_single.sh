@@ -69,14 +69,17 @@ fi
 # Check if there was a request to run it on the plasmid assembly of the sample, change fasta source as necessary
 if [[ "${5}" == "--plasmid" ]] || [[ "${5}" == "-p" ]]; then
 	if [[ -s "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta" ]]; then
-		source_assembly="${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta"
-		OUTDATADIR="${OUTDATADIR}/c-sstar_plasmid"
 	#if [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.fasta" ]]; then
 		source_assembly="${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta"
 		OUTDATADIR="${OUTDATADIR}/c-sstar_plasmid"
 		#source_assembly="${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.fasta"
 		#OUTDATADIR="${OUTDATADIR}/plasFlow_plasmid"
 	else
+		if [[ "${2}" = "g" ]]; then
+			suffix="gapped"
+		elif [[ "${2}" = "u" ]]; then
+			suffix="ungapped"
+		fi
 		"No anti-microbial genes were found using c-SSTAR because there were No Plasmids Found" > "${OUTDATADIR}/${resGANNOT_srst2_filename}_${suffix}/${1}.${resGANNOT_srst2_filename}.${suffix}_${sim}.sstar"
 		exit
 	fi
