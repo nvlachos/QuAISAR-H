@@ -9,11 +9,10 @@
 #Import the config file with shortcuts and settings
 # Import the config file with shortcuts and settings
 pwd
-owd=$(pwd)
 if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
-. ${owd}/config.sh
+. ./config.sh
 #Import the module file that loads all necessary mods
 . "${mod_changers}/pipeline_mods"
 
@@ -37,7 +36,10 @@ fi
 # create an array of all samples in the list
 arr=()
 while IFS= read -r line || [[ "$line" ]];  do
-  arr+=("$line")
+	if [[ ! -z "${line}" ]]; then
+		line=$(echo ${line} | tr -d '\n' | tr -d '\r')
+		arr+=($line)
+	fi
 done < ${1}
 
 arr_size="${#arr[@]}"
@@ -51,7 +53,7 @@ max_subs=${2}
 
 # format name being extracted from alt database
 main_dir="${3}/csstar_subs"
-cp ./config.sh ${main_dir}
+#cp ./config ${main_dir}
 if [[ ! -d "${3}/csstar_subs" ]]; then
 	mkdir -p "${3}/csstar_subs/complete"
 elif [[ ! -d  "${3}/csstar_subs/complete" ]]; then
@@ -68,7 +70,8 @@ while [ ${counter} -lt ${arr_size} ] ; do
 	if [[ -s "${processed}/${project}/${sample}/Assembly/${sample}_scaffolds_trimmed.fasta" ]]; then
 		echo "Test"
 		if [[ ${counter} -lt ${max_subs} ]]; then
-			#if [[ ! -f "${processed}/${project}/${sample}/c-sstar/${sample}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt" ]]; then
+			rm "${processed}/${project}/${sample}/c-sstar/${sample}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt"
+			if [[ ! -f "${processed}/${project}/${sample}/c-sstar/${sample}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt" ]]; then
 				echo  "Index is below max submissions, submitting"
 				echo -e "#!/bin/bash -l\n" > "${main_dir}/csstn_${sample}_${start_time}.sh"
 				echo -e "#$ -o csstn_${sample}.out" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
@@ -94,8 +97,12 @@ while [ ${counter} -lt ${arr_size} ] ; do
 				fi
 				mv "${shareScript}/csstn_${sample}.out" ${main_dir}
 				mv "${shareScript}/csstn_${sample}.err" ${main_dir}
+			else
+				echo "${project}/${sample} already has the newest ResGANNOT (${resGANNOT_srst2_filename})"
+				echo -e "$(date)" > "${main_dir}/complete/${sample}_csstarn_complete.txt"
+			fi
 			if [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
-				#if [[ ! -f "${processed}/${project}/${sample}/c-sstar_plasmid/${sample}.${resGANNOT_srst2_filename}.gapped_40_sstar_summary.txt" ]]; then
+				if [[ ! -f "${processed}/${project}/${sample}/c-sstar_plasmid/${sample}.${resGANNOT_srst2_filename}.gapped_40_sstar_summary.txt" ]]; then
 					echo "Index below max submissions, submitting plasmid"
 					echo -e "#!/bin/bash -l\n" > "${main_dir}/csstp_${sample}_${start_time}.sh"
 					echo -e "#$ -o csstp_${sample}.out" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
@@ -116,6 +123,10 @@ while [ ${counter} -lt ${arr_size} ] ; do
 					fi
 					mv "${shareScript}/csstp_${sample}.out" ${main_dir}
 					mv "${shareScript}/csstp_${sample}.err" ${main_dir}
+				else
+					echo "${project}/${sample} plasmid already has the newest ResGANNOT (${resGANNOT_srst2_filename})"
+					echo -e "$(date)" > "${main_dir}/complete/${sample}_csstarp_complete.txt"
+				fi
 			fi
 		else
 			waiting_for_index=$(( counter - max_subs ))
@@ -129,7 +140,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 					break
 				fi
 				if [[ -f "${main_dir}/complete/${waiting_sample}_csstarn_complete.txt" ]] || [[ ! -s "${processed}/${project}/${waiting_sample}/Assembly/${waiting_sample}_scaffolds_trimmed.fasta" ]]; then
-					#if [[ ! -f "${processed}/${project}/${sample}/c-sstar/${sample}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt" ]]; then
+					if [[ ! -f "${processed}/${project}/${sample}/c-sstar/${sample}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt" ]]; then
 						echo  "Index is below max submissions, submitting"
 						echo -e "#!/bin/bash -l\n" > "${main_dir}/csstn_${sample}_${start_time}.sh"
 						echo -e "#$ -o csstn_${sample}.out" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
@@ -154,8 +165,12 @@ while [ ${counter} -lt ${arr_size} ] ; do
 						fi
 						mv "${shareScript}/csstn_${sample}.out" ${main_dir}
 						mv "${shareScript}/csstn_${sample}.err" ${main_dir}
+					else
+						echo "${project}/${sample} already has the newest ResGANNOT (${resGANNOT_srst2_filename})"
+						echo -e "$(date)" > "${main_dir}/complete/${sample}_csstarn_complete.txt"
+					fi
 					if [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
-						#if [[ ! -f "${processed}/${project}/${sample}/c-sstar_plasmid/${sample}.${resGANNOT_srst2_filename}.gapped_40_sstar_summary.txt" ]]; then
+						if [[ ! -f "${processed}/${project}/${sample}/c-sstar_plasmid/${sample}.${resGANNOT_srst2_filename}.gapped_40_sstar_summary.txt" ]]; then
 							echo -e "#!/bin/bash -l\n" > "${main_dir}/csstp_${sample}_${start_time}.sh"
 							echo -e "#$ -o csstp_${sample}.out" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
 							echo -e "#$ -e csstp_${sample}.err" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
@@ -175,6 +190,10 @@ while [ ${counter} -lt ${arr_size} ] ; do
 							fi
 							mv "${shareScript}/csstp_${sample}.out" ${main_dir}
 							mv "${shareScript}/csstp_${sample}.err" ${main_dir}
+						else
+							echo "${project}/${sample} plasmid already has the newest ResGANNOT (${resGANNOT_srst2_filename})"
+							echo -e "$(date)" > "${main_dir}/complete/${sample}_csstarp_complete.txt"
+						fi
 					fi
 					break
 				else
@@ -213,9 +232,5 @@ for item in "${arr[@]}"; do
 		done
 	fi
 done
-
-if [[ -f "${main_dir}/config.sh" ]]; then
-	rm "${main_dir}/config.sh"
-fi
 
 exit 0

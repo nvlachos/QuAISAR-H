@@ -63,7 +63,8 @@ while [ ${counter} -lt ${arr_size} ] ; do
 	project=$(echo "${arr[${counter}]}" | cut -d'/' -f1)
 	echo ${counter}
 	if [ ${counter} -lt ${max_subs} ]; then
-		if [[ ! -f "${processed}/${project}/${sample_name}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt" ]] || [[ ! -f "${processed}/${project}/${sample_name}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
+		echo "if [[ ! -f ${processed}/${project}/${sample}/srst2/${sample}__genes__${resGANNOT_srst2_filename}_srst2__results.txt ]] || [[ ! -f ${processed}/${project}/${sample}/srst2/${sample}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt ]]; then"
+		if [[ ! -f "${processed}/${project}/${sample}/srst2/${sample}__genes__${resGANNOT_srst2_filename}_srst2__results.txt" ]] || [[ ! -f "${processed}/${project}/${sample}/srst2/${sample}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
 			echo  "Index is below max submissions, submitting"
 			echo -e "#!/bin/bash -l\n" > "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 			echo -e "#$ -o srst2AR_${sample}.out" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
@@ -83,17 +84,18 @@ while [ ${counter} -lt ${arr_size} ] ; do
 			echo -e "cd ${shareScript}" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 			echo -e "\"${shareScript}/run_srst2_on_singleDB.sh\" \"${sample}\" \"${project}\"" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 			echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_srst2_complete.txt\"" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
+
 			#cd "${main_dir}"
 			if [[ "${counter}" -lt "${last_index}" ]]; then
 				qsub "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 			else
 				qsub -sync y "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 			fi
-			mv "srst2AR_${sample}.err" ${main_dir}
-			mv "srst2AR_${sample}.out" ${main_dir}
+			mv "${shareScript}/srst2AR_${sample}.err" ${main_dir}
+			mv "${shareScript}/srst2AR_${sample}.out" ${main_dir}
 		else
-			echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_srst2_complete.txt\"" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
-			echo "${project}/${sample} already has 20180608"
+			echo -e $(date) > "${main_dir}/complete/${sample}_srst2_complete.txt"
+			echo "${project}/${sample} already has newest srst2 ResGANNOT ${resGANNOT_srst2_filename}"
 		fi
 	else
 		waiting_for_index=$(( counter - max_subs ))
@@ -107,7 +109,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 				break
 			fi
 			if [ -f "${main_dir}/complete/${waiting_sample}_srst2_complete.txt" ]; then
-				if [[ ! -f "${processed}/${project}/${sample_name}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt" ]] && [[ ! -f "${processed}/${project}/${sample_name}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
+				if [[ ! -f "${processed}/${project}/${sample}/srst2/${sample}__genes__${resGANNOT_srst2_filename}_srst2__results.txt" ]] && [[ ! -f "${processed}/${project}/${sample}/srst2/${sample}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
 					echo "${waiting_sample} has completed, starting ${sample}"
 					echo -e "#!/bin/bash -l\n" > "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 					echo -e "#$ -o srst2AR_${sample}.out" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
@@ -133,11 +135,11 @@ while [ ${counter} -lt ${arr_size} ] ; do
 					else
 						qsub -sync y "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 					fi
-					mv "srst2AR_${sample}.err" ${main_dir}
-					mv "srst2AR_${sample}.out" ${main_dir}
+					mv "${shareScript}/srst2AR_${sample}.err" ${main_dir}
+					mv "${shareScript}/srst2AR_${sample}.out" ${main_dir}
 				else
-					echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_srst2_complete.txt\"" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
-					echo "${project}/${sample} already has 20180608"
+					echo -e $(date) > "${main_dir}/complete/${sample}_srst2_complete.txt"
+					echo "${project}/${sample} already has newest srst2 ResGANNOT ${resGANNOT_srst2_filename}"
 				fi
 				break
 			else
