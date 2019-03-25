@@ -30,9 +30,6 @@ elif [[ "$1" = "-h" ]]; then
 elif [[ ! -f "${1}" ]]; then
 	echo "${1} (list) does not exist...exiting"
 	exit 1
-elif [[ ! -f "${3}" ]]; then
-	echo "${3} (alt_db) does not exist...exiting"
-	exit 1
 elif [[ -z "${4}" ]]; then
 	echo "Clobberness was not input, be sure to add keep or clobber as 4th parameter...exiting"
 	exit 1
