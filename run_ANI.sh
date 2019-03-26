@@ -99,16 +99,10 @@ genus_in=${2}
 
 #Creates a local copy of the database folder
 echo "trying to copy ${local_DBs}/aniDB/${genus_in,}/"
-#cp "${local_DBs}/aniDB/${genus_in,}/"*".fna" "${OUTDATADIR}/ANI/localANIDB/"
-# temp locale chnage
 cp "${local_DBs}/aniDB/${genus_in,}/"*".fna" "${OUTDATADIR}/ANI/localANIDB/"
 gunzip ${OUTDATADIR}/ANI/localANIDB/*.gz
 
 #Copies the samples assembly contigs to the local ANI db folder
-if [[ ! -f "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
-	echo "Assembly file does not exist, can not perform ANI, exiting..."
-	exit 93
-fi
 cp "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" "${OUTDATADIR}/ANI/localANIDB/sample_${2}_${3}.fasta"
 
 
@@ -205,7 +199,7 @@ cd ${owd}
 # Resume normal ANI analysis after mashtree reduction
 
 # Checks for a previous copy of the aniM folder, removes it if found
-if [ -d "${OUTDATADIR}/ANI/aniM" ]; then  #checks for and removes old results folder for ANIm
+if [ -d "${OUTDATADIR}/ANI/aniM" ]; then
 	echo "Removing old ANIm results in ${OUTDATADIR}/ANI/aniM"
 	rm -r "${OUTDATADIR}/ANI/aniM"
 fi
@@ -214,11 +208,6 @@ fi
 python -V
 #python "${shareScript}/pyani/average_nucleotide_identity.py" -i "${OUTDATADIR}/ANI/localANIDB" -o "${OUTDATADIR}/ANI/aniM" --write_excel
 average_nucleotide_identity.py -i "${OUTDATADIR}/ANI/localANIDB" -o "${OUTDATADIR}/ANI/aniM" --write_excel
-
-#Calls pyani using scicomp module
-#. "${shareScript}/module_changers/load_python_3.6.sh"
-#`average_nucleotide_identity.py -i "${OUTDATADIR}/ANI/localANIDB" -o "${OUTDATADIR}/ANI/aniM"`
-#. "${shareScript}/module_changers/unload_python_3.6.sh"
 
 #Extracts the query sample info line for percentage identity from the percent identity file
 while IFS='' read -r line;
@@ -271,7 +260,7 @@ IFS=' ' read -r -a def_array <<< "${best}"
 best_file=${def_array[1]}
 #Formats the %id to standard percentage (xx.xx%)
 best_percent=$(awk -v per="${def_array[0]}" 'BEGIN{printf "%.2f", per * 100}')
-echo "${best_file}"
+#echo "${best_file}"
 # If the best match comes from the additional file, extract the taxonomy from that file
 if [[ "${best_file}" = *"_scaffolds_trimmed" ]]; then
 	best_outbreak_match=$(echo "${best_file}" | rev | cut -d'_' -f3- | rev)
@@ -290,27 +279,17 @@ if [[ "${best_file}" = *"_scaffolds_trimmed" ]]; then
 					fi
 				done < ${processed}/${project}/${sample_name}/${sample_name}_pipeline_stats.txt
 		fi
-	done < ${4}
-# if the best hit comes from the aniDB then lookup the taxonomy on ncbi
+	done < ${5}
+# if the best hit cmoes from the aniDB then lookup the taxonomy on ncbi
 else
 	#Extracts the accession number from the definition line
 	accession=$(echo "${def_array[2]}" | cut -d' ' -f1  | cut -d'>' -f2)
 	#Looks up the NCBI genus species from the accession number
-	best_organism_guess=$(python "${shareScript}/entrez_get_taxon_from_accession.py" "${accession}" "${me}")
-	counter=0
-		echo "pre-${best_organism_guess}"
-	while [ ${counter} -lt 3 ]; do
-		if [[ -z "${best_organism_guess}" ]]; then
-			best_organism_guess=$(python "${shareScript}/entrez_get_taxon_from_accession.py" "${accession}" "${me}")
-		fi
-		echo "${counter}-${best_organism_guess}"
-		counter=$(( counter + 1 ))
-	done
-		echo "post1-${best_organism_guess}"
-	if [[ -z "${best_organism_guess}" ]]; then
-		best_organism_guess=$(head -n1 "${best_file}" | cut -d',' -f1 | cut -d ' ' -f1-)
+	if [[ "${accession}" == "No_Accession_Number" ]]; then
+		best_organism_guess="${def_array[3]} ${def_array[4]}"
+	else
+		best_organism_guess=$(python "${shareScript}/entrez_get_taxon_from_accession.py" "${accession}" "${me}")
 	fi
-		echo "post2-${best_organism_guess}"
 fi
 # Uncomment this if you want to restrict ID to only genus species, without more resolute definition
 #best_organism_guess_arr=($best_organism_guess})
