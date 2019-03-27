@@ -115,7 +115,7 @@ if [ "${2}" == "u" ]; then
 	echo "python \"${shareScript}/c-SSTAR_ungapped.py\" -g \"${source_assembly}\" -s \"${sim}\" -d \"${resGANNOT_srst2}\" > \"${OUTDATADIR}/${resGANNOT_srst2_filename}_${suffix}/${1}.${resGANNOT_srst2_filename}.${suffix}_${sim}.sstar\""
 	python3 "${shareScript}/c-SSTAR_ungapped.py" -g "${source_assembly}" -s "${sim}" -d "${resGANNOT_srst2}" > "${OUTDATADIR}/${resGANNOT_srst2_filename}_${suffix}/${1}.${resGANNOT_srst2_filename}.${suffix}_${sim}.sstar"
 # Calls the gapped version of csstar
-	elif [ "${2}" == "g" ]; then
+elif [ "${2}" == "g" ]; then
 	suffix="gapped"
 	if [ ! -d "$OUTDATADIR/${resGANNOT_srst2_filename}_${suffix}" ]; then  #create outdir if absent
 		echo "Creating $OUTDATADIR/${resGANNOT_srst2_filename}_${suffix}"
@@ -127,7 +127,7 @@ if [ "${2}" == "u" ]; then
 	echo "python \"${shareScript}/c-SSTAR_gapped.py\" -g \"${source_assembly}\" -s \"${sim}\" -d \"${resGANNOT_srst2}\" > \"${OUTDATADIR}/${resGANNOT_srst2_filename}_${suffix}/${1}.${resGANNOT_srst2_filename}.${suffix}_${sim}.sstar\""
 	python3 "${shareScript}/c-SSTAR_gapped.py" -g "${source_assembly}" -s "${sim}" -d "${resGANNOT_srst2}" > "${OUTDATADIR}/${resGANNOT_srst2_filename}_${suffix}/${1}.${resGANNOT_srst2_filename}.${suffix}_${sim}.sstar"
 # Unknown gapping parameter when called (not 'g' or 'u')
-	else
+else
 	echo "Unknown run type set (only use 'g' or 'u' for gapped/ungapped analysis"
 	exit 1
 fi

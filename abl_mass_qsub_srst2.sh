@@ -7,7 +7,6 @@
 #$ -q short.q
 
 #Import the config file with shortcuts and settings
-# Import the config file with shortcuts and settings
 if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
@@ -15,9 +14,15 @@ fi
 #Import the module file that loads all necessary mods
 . "${mod_changers}/pipeline_mods"
 
+#List all currently loaded modules
+#. ./module_changers/list_modules.sh
+
 #
-# Usage ./abl_mass_qsub_srst2.sh path_to_list max_concurrent_submissions output_directory_for_scripts clobberness (keep|clobber)
+# Usage ./abl_mass_qsub_srst2.sh path_to_list max_concurrent_submissions output_directory_for_scripts clobberness[keep|clobber]
 #
+
+# Number regex to test max concurrent submission parametr
+number='^[0-9]+$'
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -25,10 +30,16 @@ if [[ $# -eq 0 ]]; then
 	exit 1
 # Shows a brief uasge/help section if -h option used as first argument
 elif [[ "$1" = "-h" ]]; then
-	echo "Usage is ./abl_mass_qsub_srst2.sh path_to_list_file(single sample ID per line, e.g. B8VHY/1700128 (it must include project id also)) max_concurrent_submissions path_to_alt_database output_directory_for_scripts"
+	echo "Usage is ./abl_mass_qsub_srst2.sh path_to_list_file(single sample ID per line, e.g. B8VHY/1700128 (it must include project id also)) max_concurrent_submissions path_to_alt_database output_directory_for_scripts clobberness[keep|clobber]"
 	exit 1
 elif [[ ! -f "${1}" ]]; then
 	echo "${1} (list) does not exist...exiting"
+	exit 1
+elif ! [[ ${2} =~ $number ]] || [[ -z "${2}" ]]; then
+	echo "${2} is not a number or is empty. Please input max number of concurrent qsub submissions...exiting"
+	exit 2
+elif [[ ! -f "${3}" ]]; then
+	echo "Output directory parameter is empty...exiting"
 	exit 1
 elif [[ -z "${4}" ]]; then
 	echo "Clobberness was not input, be sure to add keep or clobber as 4th parameter...exiting"
@@ -100,7 +111,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 			# Can we somehow consolidate into one srst2 analysis to do MLST/AR/SEROTYPE
 			echo -e "cd ${shareScript}" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 			echo -e "\"${shareScript}/run_srst2_on_singleDB.sh\" \"${sample}\" \"${project}\"" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
-			echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_srst2_complete.txt\"" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
+			echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_srst2AR_complete.txt\"" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 
 			#cd "${main_dir}"
 			if [[ "${counter}" -lt "${last_index}" ]]; then
@@ -112,7 +123,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 			mv "${shareScript}/srst2AR_${sample}.out" ${main_dir}
 		# Old data existed, skipping
 		else
-			echo -e $(date) > "${main_dir}/complete/${sample}_srst2_complete.txt"
+			echo -e $(date) > "${main_dir}/complete/${sample}_srst2AR_complete.txt"
 			echo "${project}/${sample} already has newest srst2 ResGANNOT ${resGANNOT_srst2_filename}"
 		fi
 	# Counter is above max submission, must wait for previous ones to finish before moving on
@@ -150,7 +161,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 					# Can we somehow consolidate into one srst2 analysis to do MLST/AR/SEROTYPE
 					echo -e "cd ${shareScript}" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 					echo -e "\"${shareScript}/run_srst2_on_singleDB.sh\" \"${sample}\" \"${project}\"" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
-					echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_srst2_complete.txt\"" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
+					echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_srst2AR_complete.txt\"" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 					cd "${main_dir}"
 					if [[ "${counter}" -lt "${last_index}" ]]; then
 						qsub "${main_dir}/srst2AR_${sample}_${start_time}.sh"
@@ -161,7 +172,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 					mv "${shareScript}/srst2AR_${sample}.out" ${main_dir}
 				# Old data existed, skipping
 				else
-					echo -e $(date) > "${main_dir}/complete/${sample}_srst2_complete.txt"
+					echo -e $(date) > "${main_dir}/complete/${sample}_srst2AR_complete.txt"
 					echo "${project}/${sample} already has newest srst2 ResGANNOT ${resGANNOT_srst2_filename}"
 				fi
 				break
@@ -178,11 +189,16 @@ done
 
 # Check for completion of all samples
 timer=0
-
 for item in "${arr[@]}"; do
 	waiting_sample=$(echo "${item}" | cut -d'/' -f2)
-	if [[ -f "${main_dir}/complete/${waiting_sample}_srst2_complete.txt" ]]; then
+	if [[ -f "${main_dir}/complete/${waiting_sample}_srst2AR_complete.txt" ]]; then
 		echo "${item} is complete"
+		if [[ -f "${shareScript}/srst2AR_${sample}.out" ]]; then
+			mv "${shareScript}/srst2AR_${sample}.out" "${main_dir}"
+		fi
+		if [[ -f "${shareScript}/srst2AR_${sample}.err" ]]; then
+			mv "${shareScript}/srst2AR_${sample}.err" "${main_dir}"
+		fi
 	else
 		while :
 		do
@@ -192,6 +208,12 @@ for item in "${arr[@]}"; do
 				fi
 				if [[ -f "${main_dir}/complete/${waiting_sample}_srst2_complete.txt" ]]; then
 					echo "${item} is complete"
+					if [[ -f "${shareScript}/srst2AR_${sample}.out" ]]; then
+						mv "${shareScript}/srst2AR_${sample}.out" "${main_dir}"
+					fi
+					if [[ -f "${shareScript}/srst2AR_${sample}.err" ]]; then
+						mv "${shareScript}/srst2AR_${sample}.err" "${main_dir}"
+					fi
 					break
 				else
 					timer=$(( timer + 5 ))

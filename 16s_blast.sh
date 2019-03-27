@@ -7,9 +7,13 @@
 #$ -q all.q
 
 #Import the config file with shortcuts and settings
-. ./config.sh
-#. "${shareScript}/module_changers/perl_5221_to_5123.sh"
+if [[ ! -f "./config.sh" ]]; then
+	cp ./config_template.sh ./config.sh
+fi
+
 #. ./module_changers/list_modules.sh
+
+# Load modules necessary for barrnap (that arent automatically loaded)
 module unload perl/5.22.1
 module load perl/5.12.3
 
@@ -17,7 +21,10 @@ module load perl/5.12.3
 # Creates a species prediction based on blasting the largest and also best hit of the suggested 16s sequences found using barrnap
 # Usage ./16s_blast.sh   sample_name   run_id
 #
-# barrnap/0.8
+# Required modules: barrnap/0.8
+# Sub-required modules (loaded by required modules): hmmer/3.1b2
+#
+# Required modules that arent automatically loaded: perl 5.12.3 (not 5.22.1)
 #
 
 # Checks for proper argumentation
@@ -30,10 +37,10 @@ elif [[ -z "${1}" ]]; then
 # Gives the user a brief usage and help section if requested with the -h option argument
 elif [[ "${1}" = "-h" ]]; then
 	echo "Usage is ./16s_blast.sh   sample_name   run_id"
-	echo "Output is saved to ${processed}/miseq_run_id/sample_name/16s"
+	echo "Output is saved to ${processed}/run_id/sample_name/16s"
 	exit 0
 elif [[ -z "${2}" ]]; then
-	echo "Empty miseq_run_id supplied to 16s_blast.sh, exiting"
+	echo "Empty run_id supplied to 16s_blast.sh, exiting"
 	exit 1
 fi
 
@@ -82,7 +89,7 @@ make_fasta() {
 owd=$(pwd)
 cd ${OUTDATADIR}/16s
 
-#Run rnammer to predict 16s RNA sequence
+#Run rnammer to predict 16s RNA sequence NO LONGER USED, but keeping for posterity
 #rnammer -S bac -m ssu -xml ${OUTDATADIR}/16s/${1}_scaffolds_trimmed.fasta_rRNA_seqs.xml -gff ${OUTDATADIR}/16s/${1}_scaffolds_trimmed.fasta_rRNA_seqs.gff -h ${OUTDATADIR}/16s/${1}_scaffolds_trimmed.fasta_rRNA_seqs.hmmreport -f ${OUTDATADIR}/16s/${1}_scaffolds_trimmed.fasta_rRNA_seqs.fasta < ${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta
 
 # Run barrnap to discover ribosomal sequences
@@ -106,11 +113,8 @@ do
 		ribosome=$(echo ${line} | cut -d' ' -f9 | cut -d'=' -f3)
 #		echo "ribo-$ribosome"
 		if [ "${ribosome}" = "16S" ]; then
-			if [[ "${found_16s}" = "false" ]]; then
-				found_16s="true"
-				> ${processed}/${2}/${1}/16s/${1}_16s_rna_seqs.txt
-			fi
 			make_fasta $1 $2 $contig $cstart $cstop
+			found_16s="true"
 		fi
 	fi
 	lines=$((lines + 1))
@@ -154,16 +158,22 @@ if [[ -s "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN.sorted" ]]; then
 #	echo ${accessions}
 	gb_acc=$(echo "${accessions}" | cut -d' ' -f2 | cut -d'|' -f4)
 	blast_id=$(python ${shareScript}/entrez_get_taxon_from_accession.py "${gb_acc}" "${me}@cdc.gov")
-#	blast_id$(echo ${blast_id} | tr -d '\n')
+	echo ${blast_id}
 	if [[ -z ${blast_id} ]]; then
 		blast_id="No_16s_matches_found"
 	fi
+#	blast_id$(echo ${blast_id} | tr -d '\n')
 	echo -e "largest	${1}	${blast_id}" >> "${OUTDATADIR}/16s/${1}_16s_blast_id.txt"
 else
 	echo "No sorted remote blast file"
 fi
 
+# Go back to original working directory
 cd ${owd}
+
+# Return modules to original versions
+module load perl/5.12.3
+module load perl/5.22.1
 
 #Script exited gracefully (unless something else inside failed)
 exit 0
