@@ -38,7 +38,7 @@ elif [[ ! -f "${1}" ]]; then
 elif ! [[ ${2} =~ $number ]] || [[ -z "${2}" ]]; then
 	echo "${2} is not a number or is empty. Please input max number of concurrent qsub submissions...exiting"
 	exit 2
-elif [[ ! -f "${3}" ]]; then
+elif [[ -z "${3}" ]]; then
 	echo "Output directory parameter is empty...exiting"
 	exit 1
 elif [[ -z "${4}" ]]; then
