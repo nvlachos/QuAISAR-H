@@ -140,7 +140,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 				break
 			fi
 			# Check if waiting sample is finished
-			if [ -f "${main_dir}/complete/${waiting_sample}_srst2_complete.txt" ]; then
+			if [ -f "${main_dir}/complete/${waiting_sample}_srst2AR_complete.txt" ]; then
 				# Check if current sample has etiher one of the output files from srst2, skip analysis if so
 				if [[ ! -f "${processed}/${project}/${sample}/srst2/${sample}__genes__${resGANNOT_srst2_filename}_srst2__results.txt" ]] && [[ ! -f "${processed}/${project}/${sample}/srst2/${sample}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
 					echo "${waiting_sample} has completed, starting ${sample}"
