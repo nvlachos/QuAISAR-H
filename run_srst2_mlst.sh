@@ -141,11 +141,11 @@ srst2 --input_pe "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" "${
 #srst2 --input_pe /scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/181109_M01025_0239_000000000-BWTC9/2018-35-19/srst2/2018-35-19_S1_L001_R1_001.fastq.gz /scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/181109_M01025_0239_000000000-BWTC9/2018-35-19/srst2/2018-35-19_S1_L001_R2_001.fastq.gz --output /scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/181109_M01025_0239_000000000-BWTC9/2018-35-19/MLST/srst2/2018-35-19 --mlst_db Escherichia_coli#1.fasta --mlst_definitions ecoli.txt --mlst_delimiter '_'
 
 
-mv "${processed}/${2}/${1}/MLST/srst2/${1}__mlst__${3}_${4}_results.txt" "${processed}/${2}/${1}/MLST/${1}_srst2_${3}_${4}-${db_name}.mlst"
-rm -r "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz"
-rm -r "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz"
-rm -r "${processed}/${2}/${1}/MLST/srst2/*.tfa"
-rm -r "${processed}/${2}/${1}/MLST/${1}__${1}"*"scores"
+mv "${processed}/${2}/${1}/MLST/srst2/${1}__mlst__${3}_${4}__results.txt" "${processed}/${2}/${1}/MLST/${1}_srst2_${3}_${4}-${db_name}.mlst"
+mv "${processed}/${2}/${1}/MLST/srst2/mlst_data_download_Acinetobacter_baumannii#1_2019-04-01.log" "${processed}/${2}/${1}/MLST/"
+rm "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz"
+rm "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz"
+rm -r "${processed}/${2}/${1}/MLST/srst2"
 if [[ -f "${processed}/${2}/${1}/MLST/srst2/${1}__${1}.${3}_${4}.pileup" ]]; then
 	rm -r "${processed}/${2}/${1}/MLST/srst2/${1}__${1}.${3}_${4}.pileup"
 fi
