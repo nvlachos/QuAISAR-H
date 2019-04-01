@@ -103,11 +103,11 @@ if [[ "${3}" == "Acinetobacter" ]]; then
 elif [[ "${3}" == "Escherichia" ]]; then
 	echo "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
 	if [[ "${4}" == "coli#1" ]]; then
-	#	sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
+		sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
 	#	sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/ecoli(Achtman).txt"
 		db_name="Achtman"
 	elif [[ "${4}" == "coli#2" ]]; then
-	#	sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
+		sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
 	#	sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/ecoli_2(Pasteur).txt"
 		db_name="Pasteur"
 	else
@@ -146,7 +146,7 @@ mv "${processed}/${2}/${1}/MLST/srst2/${1}__mlst__${3}_${4}__results.txt" "${pro
 mv "${processed}/${2}/${1}/MLST/srst2/mlst_data_download_${3}_${4}_${today}.log" "${processed}/${2}/${1}/MLST/"
 rm "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz"
 rm "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz"
-rm -r "${processed}/${2}/${1}/MLST/srst2"
+#rm -r "${processed}/${2}/${1}/MLST/srst2"
 if [[ -f "${processed}/${2}/${1}/MLST/srst2/${1}__${1}.${3}_${4}.pileup" ]]; then
 	rm -r "${processed}/${2}/${1}/MLST/srst2/${1}__${1}.${3}_${4}.pileup"
 fi
