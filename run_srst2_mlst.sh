@@ -90,8 +90,8 @@ db_name="Standard"
 if [[ "${3}" == "Acinetobacter" ]]; then
 	echo "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
 	if [[ "${4}" == "baumannii#1" ]]; then
-	#	sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
-	#	sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/abaumannii(Oxford).txt"
+		sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
+		sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/abaumannii(Oxford).txt"
 		db_name="Oxford"
 	elif [[ "${4}" == "baumannii#2" ]]; then
 	#	sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
