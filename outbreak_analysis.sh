@@ -24,28 +24,50 @@ fi
 # Pulls out MLST, AR genes, and plasmid repicons and creates a mashtree for the listed samples and consolidates them into one sheet
 #
 
+# Number regex to test max concurrent submission parametr
+number='^[0-9]+$'
+
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to run_csstar_proj_parser.sh, exiting"
 	exit 1
 # Shows a brief uasge/help section if -h option used as first argument
 elif [[ "$1" = "-h" ]]; then
-	echo "Usage is ./outbreak_analysis.sh path_to_list_file gapped/ungapped 80/95/98/99/100 output_prefix output_directory plasmid_identity_cutoff(optional, default = 40)"
+	echo "Usage is ./outbreak_analysis.sh path_to_list_file gapped/ungapped 80/95/98/99/100 output_prefix output_directory plasmid_identity_cutoff(optional, default = 40) clobberness[keep|clobber] "
 	exit 0
 elif [[ ! -f ${1} ]]; then
 	echo "list does not exist...exiting"
 	exit 1
+elif ! [[ ${6} =~ $number ]] || [[ -z "${6}" ]]; then
+	if [[ "${6}" == "keep" ]] || "${6}" == "clobber" ]]; then
+		echo "Clobberness is empty...keeping"
+		clobberness=${6}
+	else
+		echo "clobberness not input coreectly, must be keep or clobber...keeping"
+		clobberness="keep"
+	fi
+elif  [[ -z "${7}" ]]; then
+	if [[ "${7}" == "keep" ]] || "${7}" == "clobber" ]]; then
+		echo "Clobberness is empty...keeping"
+		clobberness=${7}
+	else
+		echo "clobberness not input coreectly, must be keep or clobber...keeping"
+		clobberness="keep"
+	fi
 fi
+
 # Checks that the gapping is set to one of the csstar presets
 if [[ "${2}" != "gapped" ]] && [[ "${2}" != "ungapped" ]]; then
 	echo "gapping does not equal; gapped or ungapped...exiting"
 	exit 1
 fi
+
 # Checks that value given for % Identity is one of the presets for csstar
 if [[ "${3}" != 80 ]] && [[ "${3}" != 95 ]] && [[ "${3}" != 98 ]] && [[ "${3}" != 99 ]] && [[ "${3}" != 100 ]]; then
 	echo "Identity is not one of the presets for csstar and therefore will fail, exiting..."
 	exit 1
 fi
+
 # Creates the output directory if it does not exist
 output_directory=${5}/${4}
 if [[ ! -d ${output_directory} ]]; then
@@ -174,12 +196,12 @@ rm -r ${output_directory}/mashtree
 # Submits the list of isolates that need the newest ResGANNOT file for csstar
 if [[ "${run_csstar}" = "true" ]]; then
 	echo "Submitting list for csstar qsub analysis"
-	qsub -sync y ${shareScript}/abl_mass_qsub_csstar.sh "${output_directory}/${4}_csstar_todo.txt" 25 "${mass_qsub_folder}" keep
+	qsub -sync y ${shareScript}/abl_mass_qsub_csstar.sh "${output_directory}/${4}_csstar_todo.txt" 25 "${mass_qsub_folder}" "${clobberness}"
 fi
 # Submits the list of isolates that need the newest ResGANNOT file for srst2
 if [[ "${run_srst2}" = "true" ]]; then
 	echo "Submitting list for srst2 qsub analysis"
-	qsub -sync y ${shareScript}/abl_mass_qsub_srst2.sh "${output_directory}/${4}_srst2_todo.txt" 25 "${mass_qsub_folder}" keep
+	qsub -sync y ${shareScript}/abl_mass_qsub_srst2.sh "${output_directory}/${4}_srst2_todo.txt" 25 "${mass_qsub_folder}" "${clobberness}"
 fi
 
 echo $(date)
