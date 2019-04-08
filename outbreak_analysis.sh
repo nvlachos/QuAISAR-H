@@ -365,7 +365,7 @@ while IFS= read -r line; do
 			fi
 		#	echo "${allele}/${coverage}/${depth}/${diffs}/${uncertainty}/${divergence}/${length}/${percent_ID}/${percent_length}"
 		# Filter genes based on thresholds for length and percent identity
-			if [[ "${percent_ID}" -gt ${project_parser_Percent_identity} ]] && [[ "${percent_length}" -gt ${project_parser_Percent_length} ]]; then
+			if [[ "${percent_ID}" -ge ${project_parser_Percent_identity} ]] && [[ "${percent_length}" -ge ${project_parser_Percent_length} ]]; then
 				info_line="${allele}(${confers})[${percent_ID}/${percent_length}]"
 				if [[ -z "${srst2_results}" ]]; then
 					srst2_results=${info_line,,}
