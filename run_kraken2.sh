@@ -72,16 +72,16 @@ elif [ "${3}" = "assembled" ]; then
 	echo "1"
 	python ${shareScript}/Kraken_Assembly_Converter_2_Exe.py "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2"
 	echo "2"
-	kraken2-translate --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.labels"
+	kraken-translate --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.labels"
 	# Create an mpa report
 	echo "3"
-	kraken2-mpa-report --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.mpa"
+	kraken-mpa-report --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.mpa"
 	# Convert mpa to krona file
 	echo "4"
 	perl "${shareScript}/Methaplan_to_krona.pl" -p "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.mpa" -k "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.krona"
 	# Create taxonomy list file from kraken2 file
 	echo "5"
-	kraken2-report --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.list"
+	kraken-report --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.list"
 	# Weigh taxonomy list file
 	echo "6"
 	python ${shareScript}/Kraken_Assembly_Summary_Exe.py "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.labels" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.list" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP_data.list"
@@ -102,7 +102,7 @@ fi
 
 # Run the metaphlan generator on the kraken2 output
 echo "[:] Generating metaphlan compatible report."
-kraken2-mpa-report --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.mpa"
+kraken-mpa-report --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.mpa"
 # Run the krona generator on the metaphlan output
 echo "[:] Generating krona output for ${1}."
 # Convert mpa to krona file
