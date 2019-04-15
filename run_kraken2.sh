@@ -49,7 +49,7 @@ OUTDATADIR="${processed}/${4}/${1}"
 if [ ! -d "$OUTDATADIR/kraken2" ]; then
 	echo "Creating $OUTDATADIR/kraken2"
 	mkdir -p "$OUTDATADIR/kraken2/${2}Assembly"
-elif [ ! -d "$OUTDATADIR/kraken2/{2}Assembly" ]; then
+elif [ ! -d "$OUTDATADIR/kraken2/${2}Assembly" ]; then
 	echo "Creating $OUTDATADIR/kraken2/${2}Assembly"
 	mkdir -p "$OUTDATADIR/kraken2/${2}Assembly"
 fi
