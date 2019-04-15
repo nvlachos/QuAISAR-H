@@ -54,7 +54,7 @@ elif [ ! -d "$OUTDATADIR/kraken2/{2}Assembly" ]; then
 	mkdir -p "$OUTDATADIR/kraken2/${2}Assembly"
 fi
 
-. "${shareScript}/module_changers/perl_5221_to_5123.sh"
+#. "${shareScript}/module_changers/perl_5221_to_5123.sh"
 # Prints out version of kraken
 kraken2 --version
 # Status view of run
@@ -91,7 +91,7 @@ elif [ "${3}" = "assembled" ]; then
 	echo "7"
 	ktImportText "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.krona" -o "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted_BP_krona.html"
 	# Return perl version back to 5.22.1
-	. "${shareScript}/module_changers/perl_5123_to_5221.sh"
+	#. "${shareScript}/module_changers/perl_5123_to_5221.sh"
 	# Runs the extractor for pulling best taxonomic hit from a kraken2 run
 	echo "8"
 	"${shareScript}/best_hit_from_kraken2.sh" "${1}" "${2}" "${3}_BP_data" "${4}"
