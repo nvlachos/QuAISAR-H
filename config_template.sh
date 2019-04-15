@@ -151,6 +151,10 @@ unclass_flag=30
 kraken_mini_db="${local_DBs}/minikrakenDB/"
 #kraken_mini_db="/scicomp/agave/execution/database/public/references/organizations/CDC/NCEZID/kraken/cdc-20171227"
 kraken_full_db="${scicomp_DBs}/kraken/1.0.0/kraken_db/"
+# MiniKraken DB (smaller, but effective option)
+kraken2_mini_db="${local_DBs}/minikrakenDB/"
+#kraken_mini_db="/scicomp/agave/execution/database/public/references/organizations/CDC/NCEZID/kraken/cdc-20171227"
+kraken2_full_db="${scicomp_DBs}/kraken/2.0.0/kraken_db/"
 ### MOVE THESE TO SHARE/DBS
 # Kraken normal, specially made by Tom with bacteria,archae, and viruses
 # kraken_db="/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/kraken_BAV_17/"
