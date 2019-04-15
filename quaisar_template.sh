@@ -253,27 +253,27 @@ else
 	echo "Assembly FAILED 3 times, continuing to next sample..." >&2
 	return 1
 fi
-for i in 1 2 3
-do
-	# If plasmid Assembly exists already and this is the first attempt (then the previous run will be used) [should not happen anymore as old runs are now renamed]
-	if [ -f "${OUTDATADIR}/${filename}/plasmidAssembly/scaffolds.fasta" ]; then
-		echo "Previous plasmid assembly already exists, using it (delete/rename the assembly folder at ${OUTDATADIR}/ if you'd like to try to reassemble"
-	else
-		"${shareScript}/run_SPAdes.sh" "${filename}" plasmid "${project}"
-		# Removes any core dump files created from SPAdes (occurred fairly regularly during testing/tweaking)
-		if [ -n "$(find "${shareScript}" -maxdepth 1 -name 'core.*' -print -quit)" ]; then
-			echo "Found core dump files in plasmid Assembly (assumed to be from SPAdes, but could be anything before that as well) and attempting to delete"
-			find "${shareScript}" -maxdepth 1 -name 'core.*' -exec rm -f {} \;
-			else
-			echo "No core dump files during plasmid assembly attempt number ${i}, plasmidSPAdes finished successfully and found nothing, creating dummy scaffolds file"
-			>> "${OUTDATADIR}/${filename}/plasmidAssembly/scaffolds.fasta"
-		fi
-	fi
-done
-# Returns if all 3 assembly attempts fail
-if [ ! -f "${OUTDATADIR}/${filename}/plasmidAssembly/scaffolds.fasta" ]; then
-	echo "plasmid Assembly FAILED 3 times, continuing to next step..." >&2
-fi
+#for i in 1 2 3
+#do
+#	# If plasmid Assembly exists already and this is the first attempt (then the previous run will be used) [should not happen anymore as old runs are now renamed]
+#	if [ -f "${OUTDATADIR}/${filename}/plasmidAssembly/scaffolds.fasta" ]; then
+#		echo "Previous plasmid assembly already exists, using it (delete/rename the assembly folder at ${OUTDATADIR}/ if you'd like to try to reassemble"
+#	else
+#		"${shareScript}/run_SPAdes.sh" "${filename}" plasmid "${project}"
+#		# Removes any core dump files created from SPAdes (occurred fairly regularly during testing/tweaking)
+#		if [ -n "$(find "${shareScript}" -maxdepth 1 -name 'core.*' -print -quit)" ]; then
+#			echo "Found core dump files in plasmid Assembly (assumed to be from SPAdes, but could be anything before that as well) and attempting to delete"
+#			find "${shareScript}" -maxdepth 1 -name 'core.*' -exec rm -f {} \;
+#			else
+#			echo "No core dump files during plasmid assembly attempt number ${i}, plasmidSPAdes finished successfully and found nothing, creating dummy scaffolds file"
+#			>> "${OUTDATADIR}/${filename}/plasmidAssembly/scaffolds.fasta"
+#		fi
+#	fi
+#done
+## Returns if all 3 assembly attempts fail
+#if [ ! -f "${OUTDATADIR}/${filename}/plasmidAssembly/scaffolds.fasta" ]; then
+#	echo "plasmid Assembly FAILED 3 times, continuing to next step..." >&2
+#fi
 # Get end time of SPAdes and calculate run time and append to time summary (and sum to total time used)
 end=$SECONDS
 timeSPAdes=$((end - start))
@@ -286,9 +286,15 @@ python "${shareScript}/removeShortContigs.py" "${OUTDATADIR}/${filename}/Assembl
 mv "${OUTDATADIR}/${filename}/Assembly/scaffolds.fasta.TRIMMED.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta"
 
 ### Removing Short Contigs  ###
-echo "----- Removing Short plasmid Contigs -----"
-python "${shareScript}/removeShortContigs.py" "${OUTDATADIR}/${filename}/plasmidAssembly/scaffolds.fasta" 500
-mv "${OUTDATADIR}/${filename}/plasmidAssembly/scaffolds.fasta.TRIMMED.fasta" "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed.fasta"
+echo "----- Removing Short Contigs -----"
+python "${shareScript}/removeShortContigs.py" "${OUTDATADIR}/${filename}/Assembly/contigs.fasta" 500
+mv "${OUTDATADIR}/${filename}/Assembly/contigs.fasta.TRIMMED.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_contigs_trimmed.fasta"
+
+
+### Removing Short Contigs  ###
+#echo "----- Removing Short plasmid Contigs -----"
+#python "${shareScript}/removeShortContigs.py" "${OUTDATADIR}/${filename}/plasmidAssembly/scaffolds.fasta" 500
+#mv "${OUTDATADIR}/${filename}/plasmidAssembly/scaffolds.fasta.TRIMMED.fasta" "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed.fasta"
 
 # Checks to see that the trimming and renaming worked properly, returns if unsuccessful
 if [ ! -s "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta" ]; then
@@ -389,10 +395,16 @@ totaltime=$((totaltime + timeProk))
 # Rename contigs to something helpful (Had to wait until after prokka runs due to the strict naming requirements
 mv "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed_original.fasta"
 python3 "${shareScript}/fasta_headers.py" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed_original.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta"
-if [[ -s "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed.fasta" ]]; then
-	mv "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed.fasta" "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed_original.fasta"
-	python3 "${shareScript}/fasta_headers.py" "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed_original.fasta" "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed.fasta"
-fi
+
+# Rename contigs to something helpful (Had to wait until after prokka runs due to the strict naming requirements
+mv "${OUTDATADIR}/${filename}/Assembly/${filename}_contigs_trimmed.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_contigs_trimmed_original.fasta"
+python3 "${shareScript}/fasta_headers.py" "${OUTDATADIR}/${filename}/Assembly/${filename}_contigs_trimmed_original.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_contigs_trimmed.fasta"
+
+
+#if [[ -s "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed.fasta" ]]; then
+#	mv "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed.fasta" "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed_original.fasta"
+#	python3 "${shareScript}/fasta_headers.py" "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed_original.fasta" "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed.fasta"
+#fi
 
 ### Average Nucleotide Identity ###
 echo "----- Running ANI for Species confirmation -----"
@@ -509,7 +521,7 @@ totaltime=$((totaltime + timeMLST))
 echo "----- Identifying plasmids using plasmidFinder -----"
 start=$SECONDS
 "${shareScript}/run_plasmidFinder.sh" "${filename}" "${project}" "plasmid"
-"${shareScript}/run_plasmidFinder.sh" "${filename}" "${project}" "plasmid_on_plasmidAssembly"
+#"${shareScript}/run_plasmidFinder.sh" "${filename}" "${project}" "plasmid_on_plasmidAssembly"
 end=$SECONDS
 timeplasfin=$((end - start))
 echo "plasmidFinder - ${timeplasfin} seconds" >> "${time_summary}"
