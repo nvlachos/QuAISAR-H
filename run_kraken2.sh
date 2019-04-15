@@ -84,17 +84,17 @@ elif [ "${3}" = "assembled" ]; then
 	kraken-report --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.list"
 	# Weigh taxonomy list file
 	echo "6"
-	python ${shareScript}/Kraken_Assembly_Summary_Exe.py "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.labels" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.list" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP_data.list"
+	python3 ${shareScript}/Kraken_Assembly_Summary_Exe.py "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.labels" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.list" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP_data.list"
 	# Change perl version to allow ktimporttext to work ( cant use anything but 5.12.3
-	####. "${shareScript}/module_changers/perl_5221_to_5123.sh"
+	. "${shareScript}/module_changers/perl_5221_to_5123.sh"
 	# Run the krona graph generator from krona output
 	echo "7"
 	ktImportText "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.krona" -o "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted_BP_krona.html"
 	# Return perl version back to 5.22.1
-	#. "${shareScript}/module_changers/perl_5123_to_5221.sh"
+	. "${shareScript}/module_changers/perl_5123_to_5221.sh"
 	# Runs the extractor for pulling best taxonomic hit from a kraken2 run
 	echo "8"
-	"${shareScript}/best_hit_from_kraken2.sh" "${1}" "${2}" "${3}_BP_data" "${4}"
+	"${shareScript}/best_hit_from_kraken.sh" "${1}" "${2}" "${3}_BP_data" "${4}"
 else
 	echo "Argument combination is incorrect"
 	exit 1
@@ -116,11 +116,11 @@ ktImportText "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.krona" -o "${OUTDATAD
 
 # Creates the taxonomy list file from the kraken2 output
 echo "[:] Creating alternate report for taxonomic extraction"
-kraken2-report --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list"
+kraken-report --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list"
 # Parses the output for the best taxonomic hit
 echo "[:] Extracting best taxonomic matches"
 # Runs the extractor for pulling best taxonomic hit from a kraken2 run
-"${shareScript}/best_hit_from_kraken2.sh" "${1}" "${2}" "${3}" "${4}"
+"${shareScript}/best_hit_from_kraken.sh" "${1}" "${2}" "${3}" "${4}"
 
 #Script exited gracefully (unless something else inside failed)
 exit 0
