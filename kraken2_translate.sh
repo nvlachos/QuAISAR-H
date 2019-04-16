@@ -57,12 +57,19 @@ if [[ ! -s "${OUTDATADIR}/${1}_${post_fix}.kraken2" ]]; then
 	exit 1
 fi
 
+> ${OUTDATADIR}/${1}_${post_fix}.labels
+
+who_am_i=$(whoami)
 #Parses the kraken output list line by line
 while IFS= read -r line
 do
 		contig_info=$(echo "${line}" | cut -d'	' -f2)
 		taxid=$(echo "${line}" | cut -d'	' -f3)
-		echo "${contig_info} ::::: ${taxid}"
+		#echo "${contig_info} ::::: ${taxid}"
+
+		taxonomy=$(${shareScript}/entrez_get_taxon_from_number.sh ${taxid} ${who_am_i})
+		tax_tree=$(echo "${taxonomy}" | cut -d'|' -f3 | cut -d'	' -f2)
+		print("${contig_info} ::: ${tax_tree}")
 
 done < "${OUTDATADIR}/${1}_${post_fix}.kraken2"
 
