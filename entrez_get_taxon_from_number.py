@@ -22,7 +22,7 @@ handle = Entrez.efetch(db="taxonomy", id=sys.argv[1], mode="text", rettype="xml"
 result= Entrez.read(handle)
 #Goes through each line until it finds (and prints) the organism name that the accession number represents
 for taxon in result:
-	taxid = taxon["TaxID"]
+	taxid = taxon["TaxId"]
 	name = taxon["ScientificName"]
 	lineage=[]
 	for t in taxon["LineageEx"]:
