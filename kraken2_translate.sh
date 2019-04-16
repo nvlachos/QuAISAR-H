@@ -60,6 +60,10 @@ fi
 > ${OUTDATADIR}/${1}_${post_fix}.labels
 
 who_am_i=$(whoami)
+
+# Create associative array to hold taxid and tree styructure so not to look up as many times
+declare -a tax_trees
+
 #Parses the kraken output list line by line
 while IFS= read -r line
 do
@@ -67,8 +71,16 @@ do
 		taxid=$(echo "${line}" | cut -d'	' -f3)
 		#echo "${contig_info} ::::: ${taxid}"
 
-		taxonomy=$(python ${shareScript}/entrez_get_taxon_from_number.py ${taxid} ${who_am_i})
-		tax_tree=$(echo "${taxonomy}" | cut -d'|' -f3 | cut -d'	' -f2)
+
+
+		if [[ -n ${tax_trees[$taxonomy]} ]]; then
+			echo "Looking up" 
+			taxonomy=$(python ${shareScript}/entrez_get_taxon_from_number.py ${taxid} ${who_am_i})
+			tax_tree=$(echo "${taxonomy}" | cut -d'|' -f3 | cut -d'	' -f2)
+		else
+			print "Already in array"
+			tax_tree=${tax_trees[${taxonomy}]}
+		fi
 		echo "${contig_info} ::: ${tax_tree}"
 
 done < "${OUTDATADIR}/${1}_${post_fix}.kraken2"
