@@ -63,7 +63,7 @@ echo "[:] Running kraken2.  Output: ${1}.kraken2 / ${1}.classified"
 if [ "${3}" = "paired" ]; then
 	#gunzip -c "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq.gz" > "${OUTDATADIR}/trimmed/${1}_1.fq"
 	#gunzip -c "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq.gz"  > "${OUTDATADIR}/trimmed/${1}_2.fq"
-	kraken2 --paired --db "${kraken2_mini_db}" --report --use-mpa-style "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2_report" --use-names --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.classified" "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
+	kraken2 --paired --db "${kraken2_mini_db}" --report --use-mpa-style "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list" --use-names --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.classified" "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
 	#rm "${OUTDATADIR}/trimmed/${1}_1.fq"
 	#rm "${OUTDATADIR}/trimmed/${1}_2.fq"
 # Runs kraken2 in single end mode on the concatenated single read file
@@ -71,7 +71,7 @@ elif [ "${3}" = "single" ]; then
 	kraken2 --db "${kraken2_mini_db}" --fastq-input --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.classified ${OUTDATADIR}/FASTQs/${1}.single.fastq"
 # Runs kraken2 on the assembly
 elif [ "${3}" = "assembled" ]; then
-	kraken2 --db "${kraken2_mini_db}" --report "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2_report" --use-mpa-style --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.classified" "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
+	kraken2 --db "${kraken2_mini_db}" --report "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list" --use-mpa-style --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.classified" "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
 	# Attempting to weigh contigs and produce standard krona and list output using a modified version of Rich's weighting scripts (will also be done on pure contigs later)
 	echo "1"
 	python ${shareScript}/Kraken_Assembly_Converter_2_Exe.py "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2"
@@ -79,10 +79,10 @@ elif [ "${3}" = "assembled" ]; then
 	echo "2"
 	module load kraken/0.10.5
 	. "${shareScript}/module_changers/perl_5221_to_5123.sh"
-	kraken-translate --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.labels"
+	kraken-translate --db "${kraken_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.labels"
 	# Create an mpa report
 	echo "3"
-	kraken-mpa-report --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.mpa"
+	kraken-mpa-report --db "${kraken_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.mpa"
 	module unload kraken/0.10.5
 	# Convert mpa to krona file# Convert mpa to krona file
 	echo "4"
@@ -114,7 +114,7 @@ echo "[:] Generating metaphlan compatible report."
 # Run the krona generator on the metaphlan output
 echo "[:] Generating krona output for ${1}."
 # Convert mpa to krona file
-perl "${shareScript}/Methaplan_to_krona.pl" -p "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2_report" -k "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.krona"
+perl "${shareScript}/Methaplan_to_krona.pl" -p "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list" -k "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.krona"
 # Change perl version to allow ktimporttext to work ( cant use anything but 5.12.3
 . "${shareScript}/module_changers/perl_5221_to_5123.sh"
 # Run the krona graph generator from krona output
@@ -124,7 +124,7 @@ ktImportText "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.krona" -o "${OUTDATAD
 
 # Creates the taxonomy list file from the kraken2 output
 echo "[:] Creating alternate report for taxonomic extraction"
-kraken2 --report --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list"
+#kraken2 --report --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list"
 # Parses the output for the best taxonomic hit
 echo "[:] Extracting best taxonomic matches"
 # Runs the extractor for pulling best taxonomic hit from a kraken2 run
