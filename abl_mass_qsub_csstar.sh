@@ -128,36 +128,36 @@ while [ ${counter} -lt ${arr_size} ] ; do
 				echo -e "$(date)" > "${main_dir}/complete/${sample}_csstarn_complete.txt"
 			fi
 			# Check if plasmid folder exists
-			if [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
-				# Check if old data exists, skip if so
-				if [[ ! -f "${processed}/${project}/${sample}/c-sstar_plasmid/${sample}.${resGANNOT_srst2_filename}.gapped_40_sstar_summary.txt" ]]; then
-					echo "Index below max submissions, submitting plasmid"
-					echo -e "#!/bin/bash -l\n" > "${main_dir}/csstp_${sample}_${start_time}.sh"
-					echo -e "#$ -o csstp_${sample}.out" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-					echo -e "#$ -e csstp_${sample}.err" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-					echo -e "#$ -N csstp_${sample}"   >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-					echo -e "#$ -cwd"  >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-					echo -e "#$ -q short.q\n"  >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-					echo -e "module load Python/3.6.1\n" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-					# Defaulting to gapped/98, change if you want to include user preferences
-					echo -e "cd ${shareScript}" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-					echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g o \"${project}\" \"--plasmid\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-					echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarp_complete.txt\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-					cd "${main_dir}"
-					#if [[ "${counter}" -lt "${last_index}" ]]; then
-						qsub "${main_dir}/csstp_${sample}_${start_time}.sh"
-					#else
-					#	qsub -sync y "${main_dir}/csstp_${sample}_${start_time}.sh"
-					#fi
-				# Skipping because old data exists
-				else
-					echo "${project}/${sample} plasmid already has the newest ResGANNOT (${resGANNOT_srst2_filename})"
-					echo -e "$(date)" > "${main_dir}/complete/${sample}_csstarp_complete.txt"
-				fi
-			else
-				echo "${project}/${sample} doesnt have a plasmid folder, so no further actions required"
-				echo "$(date)" > "${main_dir}/complete/${sample}_csstarp_complete.txt"
-			fi
+			# if [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
+			# 	# Check if old data exists, skip if so
+			# 	if [[ ! -f "${processed}/${project}/${sample}/c-sstar_plasmid/${sample}.${resGANNOT_srst2_filename}.gapped_40_sstar_summary.txt" ]]; then
+			# 		echo "Index below max submissions, submitting plasmid"
+			# 		echo -e "#!/bin/bash -l\n" > "${main_dir}/csstp_${sample}_${start_time}.sh"
+			# 		echo -e "#$ -o csstp_${sample}.out" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
+			# 		echo -e "#$ -e csstp_${sample}.err" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
+			# 		echo -e "#$ -N csstp_${sample}"   >> "${main_dir}/csstp_${sample}_${start_time}.sh"
+			# 		echo -e "#$ -cwd"  >> "${main_dir}/csstp_${sample}_${start_time}.sh"
+			# 		echo -e "#$ -q short.q\n"  >> "${main_dir}/csstp_${sample}_${start_time}.sh"
+			# 		echo -e "module load Python/3.6.1\n" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
+			# 		# Defaulting to gapped/98, change if you want to include user preferences
+			# 		echo -e "cd ${shareScript}" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
+			# 		echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g o \"${project}\" \"--plasmid\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
+			# 		echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarp_complete.txt\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
+			# 		cd "${main_dir}"
+			# 		#if [[ "${counter}" -lt "${last_index}" ]]; then
+			# 			qsub "${main_dir}/csstp_${sample}_${start_time}.sh"
+			# 		#else
+			# 		#	qsub -sync y "${main_dir}/csstp_${sample}_${start_time}.sh"
+			# 		#fi
+			# 	# Skipping because old data exists
+			# 	else
+			# 		echo "${project}/${sample} plasmid already has the newest ResGANNOT (${resGANNOT_srst2_filename})"
+			# 		echo -e "$(date)" > "${main_dir}/complete/${sample}_csstarp_complete.txt"
+			# 	fi
+			# else
+			# 	echo "${project}/${sample} doesnt have a plasmid folder, so no further actions required"
+			# 	echo "$(date)" > "${main_dir}/complete/${sample}_csstarp_complete.txt"
+			# fi
 		# Counter is above max number of submissions
 		else
 			waiting_for_index=$(( counter - max_subs ))

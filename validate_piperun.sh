@@ -375,39 +375,39 @@ else
 	printf "%-20s: %-8s : %s\\n" "Assembly" "FAILED" "/Assembly/scaffolds.fasta not found"
 	status="FAILED"
 fi
-#Check spades plasmid assembly
-plasmidsFoundviaplasmidSPAdes=0
-if [[ -d "${OUTDATADIR}/plasmidAssembly" ]]; then
-	if [[ -s "${OUTDATADIR}/plasmidAssembly/scaffolds.fasta" ]]; then
-		# Count the number of '>' in the assembly file before trimming
-		plas_scaffolds=">"
-		plas_scaffolds=$(grep -c ${plas_scaffolds} "${OUTDATADIR}/plasmidAssembly/scaffolds.fasta")
-		if [ -z ${plas_scaffolds} ]; then
-			plas_scaffolds=0
-			components=-1
-		fi
-		if [[ "${plas_scaffolds}" -gt 0 ]]; then
-			while IFS= read -r line; do
-				if [[ "${line:0:1}" == ">" ]]; then
-					this_component_number=$(echo ${line} | cut -d'_' -f8)
-					if [[ "${this_component_number}" -gt "${components}" ]]; then
-						components="${this_component_number}"
-					fi
-				fi
-			done < ${OUTDATADIR}/plasmidAssembly/scaffolds.fasta
-			components=$(( components + 1 ))
-			printf "%-20s: %-8s : %s\\n" "plasmid Assembly" "SUCCESS" "${components} components in ${plas_scaffolds} scaffolds found via plasmid SPAdes"
-			plasmidsFoundviaplasmidSPAdes=1
-		else
-			printf "%-20s: %-8s : %s\\n" "plasmid Assembly" "SUCCESS" "No plasmid scaffold found"
-		fi
-	else
-		printf "%-20s: %-8s : %s\\n" "plasmid Assembly" "SUCCESS" "No plasmid scaffold found using plasmidSpades"
-	fi
-else
-	printf "%-20s: %-8s : %s\\n" "plasmid Assembly" "FAILED" "/plasmidAssembly not found"
-	status="FAILED"
-fi
+# #Check spades plasmid assembly
+# plasmidsFoundviaplasmidSPAdes=0
+# if [[ -d "${OUTDATADIR}/plasmidAssembly" ]]; then
+# 	if [[ -s "${OUTDATADIR}/plasmidAssembly/scaffolds.fasta" ]]; then
+# 		# Count the number of '>' in the assembly file before trimming
+# 		plas_scaffolds=">"
+# 		plas_scaffolds=$(grep -c ${plas_scaffolds} "${OUTDATADIR}/plasmidAssembly/scaffolds.fasta")
+# 		if [ -z ${plas_scaffolds} ]; then
+# 			plas_scaffolds=0
+# 			components=-1
+# 		fi
+# 		if [[ "${plas_scaffolds}" -gt 0 ]]; then
+# 			while IFS= read -r line; do
+# 				if [[ "${line:0:1}" == ">" ]]; then
+# 					this_component_number=$(echo ${line} | cut -d'_' -f8)
+# 					if [[ "${this_component_number}" -gt "${components}" ]]; then
+# 						components="${this_component_number}"
+# 					fi
+# 				fi
+# 			done < ${OUTDATADIR}/plasmidAssembly/scaffolds.fasta
+# 			components=$(( components + 1 ))
+# 			printf "%-20s: %-8s : %s\\n" "plasmid Assembly" "SUCCESS" "${components} components in ${plas_scaffolds} scaffolds found via plasmid SPAdes"
+# 			plasmidsFoundviaplasmidSPAdes=1
+# 		else
+# 			printf "%-20s: %-8s : %s\\n" "plasmid Assembly" "SUCCESS" "No plasmid scaffold found"
+# 		fi
+# 	else
+# 		printf "%-20s: %-8s : %s\\n" "plasmid Assembly" "SUCCESS" "No plasmid scaffold found using plasmidSpades"
+# 	fi
+# else
+# 	printf "%-20s: %-8s : %s\\n" "plasmid Assembly" "FAILED" "/plasmidAssembly not found"
+# 	status="FAILED"
+# fi
 
 #Check short scaffolds reduction script
 if [[ -s "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
@@ -433,40 +433,40 @@ else
 	status="FAILED"
 fi
 
-#Check short scaffolds reduction script for plasmid assembly
-#echo "${plasmidsFoundviaplasmidSPAdes}-Found?"
-if [[ "${plasmidsFoundviaplasmidSPAdes}" -eq 1 ]]; then
-	if [[ -s "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta" ]]; then
-		# Count the number of '>' still remaining after trimming the contig file
-		plas_longies=">"
-		plas_longies=$(grep -c ${plas_longies} "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta")
-		# Calculate the number of lost (short) scaffolds
-		plas_shorties=$(( plas_scaffolds - plas_longies ))
-		if [ -z ${plas_shorties} ]; then
-			plas_shorties=0
-		fi
-		if [[ "${plas_longies}" -gt 0 ]]; then
-			components=-1
-			while IFS= read -r line; do
-				if [[ "${line:0:1}" == ">" ]]; then
-					this_component_number=$(echo ${line} | cut -d'_' -f8)
-					if [[ "${this_component_number}" -gt "${components}" ]]; then
-						components="${this_component_number}"
-					fi
-				fi
-			done < ${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta
-			components=$(( components + 1 ))
-			printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "SUCCESS" "${components} components in ${plas_longies} scaffolds remain. ${plas_shorties} were removed due to shortness"
-		else
-			printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "SUCCESS" "No plasmid scaffold found"
-		fi
-	elif [[ -f "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta" ]]; then
-		printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "SUCCESS" "No plasmid scaffold found"
-	else
-		printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "FAILED" "/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta not found"
-		status="FAILED"
-	fi
-fi
+# #Check short scaffolds reduction script for plasmid assembly
+# #echo "${plasmidsFoundviaplasmidSPAdes}-Found?"
+# if [[ "${plasmidsFoundviaplasmidSPAdes}" -eq 1 ]]; then
+# 	if [[ -s "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta" ]]; then
+# 		# Count the number of '>' still remaining after trimming the contig file
+# 		plas_longies=">"
+# 		plas_longies=$(grep -c ${plas_longies} "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta")
+# 		# Calculate the number of lost (short) scaffolds
+# 		plas_shorties=$(( plas_scaffolds - plas_longies ))
+# 		if [ -z ${plas_shorties} ]; then
+# 			plas_shorties=0
+# 		fi
+# 		if [[ "${plas_longies}" -gt 0 ]]; then
+# 			components=-1
+# 			while IFS= read -r line; do
+# 				if [[ "${line:0:1}" == ">" ]]; then
+# 					this_component_number=$(echo ${line} | cut -d'_' -f8)
+# 					if [[ "${this_component_number}" -gt "${components}" ]]; then
+# 						components="${this_component_number}"
+# 					fi
+# 				fi
+# 			done < ${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta
+# 			components=$(( components + 1 ))
+# 			printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "SUCCESS" "${components} components in ${plas_longies} scaffolds remain. ${plas_shorties} were removed due to shortness"
+# 		else
+# 			printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "SUCCESS" "No plasmid scaffold found"
+# 		fi
+# 	elif [[ -f "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta" ]]; then
+# 		printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "SUCCESS" "No plasmid scaffold found"
+# 	else
+# 		printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "FAILED" "/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta not found"
+# 		status="FAILED"
+# 	fi
+# fi
 
 #Check kraken on assembly
 kraken_post_success=false
@@ -663,20 +663,20 @@ else
 	status="FAILED"
 fi
 
-#Check QUAST on plasmid Assembly
-if [[ "${plasmidsFoundviaplasmidSPAdes}" -eq 1 ]]; then
-	if [[ -s "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.tsv" ]]; then
-		# Extract the useful bits and report (to compare to Toms)
-		contig_num_plas=$(sed -n '14p' "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.tsv"| sed -r 's/[\t]+/ /g' | cut -d' ' -f3 )
-		ass_length_plas=$(sed -n '16p' "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.tsv" | sed -r 's/[\t]+/ /g' | cut -d' ' -f3)
-		N50_plas=$(sed -n '18p' "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.tsv"  | sed -r 's/[\t]+/ /g'| cut -d' ' -f2)
-		GC_con_plas=$(sed -n '17p' "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.tsv" | sed -r 's/[\t]+/ /g' | cut -d' ' -f3)
-		printf "%-20s: %-8s : %s\\n" "QUAST_plasmid" "SUCCESS" "#-${contig_num_plas} length-${ass_length_plas} n50-${N50_plas} %GC-${GC_con_plas}"
-	else
-		printf "%-20s: %-8s : %s\\n" "QUAST_plasmid" "FAILED" "/Assembly_Stats_plasmid/report.tsv does not exist"
-		status="FAILED"
-	fi
-fi
+# #Check QUAST on plasmid Assembly
+# if [[ "${plasmidsFoundviaplasmidSPAdes}" -eq 1 ]]; then
+# 	if [[ -s "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.tsv" ]]; then
+# 		# Extract the useful bits and report (to compare to Toms)
+# 		contig_num_plas=$(sed -n '14p' "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.tsv"| sed -r 's/[\t]+/ /g' | cut -d' ' -f3 )
+# 		ass_length_plas=$(sed -n '16p' "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.tsv" | sed -r 's/[\t]+/ /g' | cut -d' ' -f3)
+# 		N50_plas=$(sed -n '18p' "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.tsv"  | sed -r 's/[\t]+/ /g'| cut -d' ' -f2)
+# 		GC_con_plas=$(sed -n '17p' "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.tsv" | sed -r 's/[\t]+/ /g' | cut -d' ' -f3)
+# 		printf "%-20s: %-8s : %s\\n" "QUAST_plasmid" "SUCCESS" "#-${contig_num_plas} length-${ass_length_plas} n50-${N50_plas} %GC-${GC_con_plas}"
+# 	else
+# 		printf "%-20s: %-8s : %s\\n" "QUAST_plasmid" "FAILED" "/Assembly_Stats_plasmid/report.tsv does not exist"
+# 		status="FAILED"
+# 	fi
+# fi
 
 # Get determinde taxonomy
 if [[ ! -s "${OUTDATADIR}/${1}.tax" ]]; then
@@ -954,58 +954,58 @@ else
 	status="FAILED"
 fi
 
-#Check c-SSTAR on plasmid Assembly
-if [[ "${plasmidsFoundviaplasmidSPAdes}" -eq 1 ]]; then
-	#Check c-SSTAR
-	if [[ -d "${OUTDATADIR}/c-sstar_plasmid/" ]]; then
-		if [[ ! -z "${3}" ]]; then
-			gapping="${3}"
-		else
-			gapping="gapped"
-		fi
-		if [[ ! -z "${5}" ]]; then
-			sim="${5}"
-		else
-			sim="40"
-		fi
-		csstar_plasmid_file=$(find ${OUTDATADIR}/c-sstar_plasmid/${1}.ResGANNOT_*.${gapping}_${sim}_sstar_summary.txt -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
-		if [[ -z "${csstar_plasmid_file}" ]]; then
-			printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasmid" "FAILED" "/c-sstar/ does not have an sstar_summary file"
-			status="FAILED"
-		else
-			header=$(head -n1 "${csstar_plasmid_file}")
-			resGANNOT_DB=$(echo "${csstar_plasmid_file}" | rev | cut -d'.' -f3 | rev)
-			if [[ ${header} = *"No anti-microbial genes were found"* ]]; then
-				if [[ "${resGANNOT_DB}" = "${resGANNOT_srst2_filename}" ]]; then
-					printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasmid" "ALERT" "Completed, but NO KNOWN AMR genes present from ${resGANNOT_DB} (DB up to date, as of ${today})"
-					if [[ "${status}" == "SUCCESS" ]]; then
-						status="ALERT"
-					fi
-				else
-					printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasmid" "ALERT" "Completed, but NO KNOWN AMR genes present from ${resGANNOT_DB} (DB NOT up to date! Most current DB: ${resGANNOT_srst2_filename})"
-					if [[ "${status}" == "SUCCESS" ]]; then
-						status="ALERT"
-					fi
-				fi
-			else
-				amr_genes_found=$(wc -l "${csstar_plasmid_file}" | cut -d' ' -f1)
-				# Prints out the counts of AR gene hits
-				if [[ "${resGANNOT_DB}" = "${resGANNOT_srst2_filename}" ]]; then
-					printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasmid" "SUCCESS" "${amr_genes_found} genes found in ${resGANNOT_DB} (%ID defaults to 40) (DB up to date, as of ${today})"
-				else
-					printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasmid" "ALERT" "${amr_genes_found} genes found in ${resGANNOT_DB} (%ID defaults to 40) (DB NOT up to date! Most current DB: ${resGANNOT_srst2_filename})"
-					if [[ "${status}" == "SUCCESS" ]]; then
-						status="ALERT"
-					fi
-				fi
-			fi
-		fi
-	else
-		printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasmid" "FAILED" "/c-sstar_plasmid/ does not exist - BOOYA"
-		status="FAILED"
-	# Signals that the current sample is completed with verification
-	fi
-fi
+# #Check c-SSTAR on plasmid Assembly
+# if [[ "${plasmidsFoundviaplasmidSPAdes}" -eq 1 ]]; then
+# 	#Check c-SSTAR
+# 	if [[ -d "${OUTDATADIR}/c-sstar_plasmid/" ]]; then
+# 		if [[ ! -z "${3}" ]]; then
+# 			gapping="${3}"
+# 		else
+# 			gapping="gapped"
+# 		fi
+# 		if [[ ! -z "${5}" ]]; then
+# 			sim="${5}"
+# 		else
+# 			sim="40"
+# 		fi
+# 		csstar_plasmid_file=$(find ${OUTDATADIR}/c-sstar_plasmid/${1}.ResGANNOT_*.${gapping}_${sim}_sstar_summary.txt -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
+# 		if [[ -z "${csstar_plasmid_file}" ]]; then
+# 			printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasmid" "FAILED" "/c-sstar/ does not have an sstar_summary file"
+# 			status="FAILED"
+# 		else
+# 			header=$(head -n1 "${csstar_plasmid_file}")
+# 			resGANNOT_DB=$(echo "${csstar_plasmid_file}" | rev | cut -d'.' -f3 | rev)
+# 			if [[ ${header} = *"No anti-microbial genes were found"* ]]; then
+# 				if [[ "${resGANNOT_DB}" = "${resGANNOT_srst2_filename}" ]]; then
+# 					printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasmid" "ALERT" "Completed, but NO KNOWN AMR genes present from ${resGANNOT_DB} (DB up to date, as of ${today})"
+# 					if [[ "${status}" == "SUCCESS" ]]; then
+# 						status="ALERT"
+# 					fi
+# 				else
+# 					printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasmid" "ALERT" "Completed, but NO KNOWN AMR genes present from ${resGANNOT_DB} (DB NOT up to date! Most current DB: ${resGANNOT_srst2_filename})"
+# 					if [[ "${status}" == "SUCCESS" ]]; then
+# 						status="ALERT"
+# 					fi
+# 				fi
+# 			else
+# 				amr_genes_found=$(wc -l "${csstar_plasmid_file}" | cut -d' ' -f1)
+# 				# Prints out the counts of AR gene hits
+# 				if [[ "${resGANNOT_DB}" = "${resGANNOT_srst2_filename}" ]]; then
+# 					printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasmid" "SUCCESS" "${amr_genes_found} genes found in ${resGANNOT_DB} (%ID defaults to 40) (DB up to date, as of ${today})"
+# 				else
+# 					printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasmid" "ALERT" "${amr_genes_found} genes found in ${resGANNOT_DB} (%ID defaults to 40) (DB NOT up to date! Most current DB: ${resGANNOT_srst2_filename})"
+# 					if [[ "${status}" == "SUCCESS" ]]; then
+# 						status="ALERT"
+# 					fi
+# 				fi
+# 			fi
+# 		fi
+# 	else
+# 		printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasmid" "FAILED" "/c-sstar_plasmid/ does not exist - BOOYA"
+# 		status="FAILED"
+# 	# Signals that the current sample is completed with verification
+# 	fi
+# fi
 
 # check SRST2 output
 if [[ -d "${OUTDATADIR}/srst2/" ]]; then
@@ -1233,30 +1233,30 @@ else
 	status="FAILED"
 fi
 
-# check plasmids (on plasmidAssembly)
-if [[ "plasmidsFoundviaplasmidSPAdes" -eq 1 ]]; then
-	if [[ -d "${OUTDATADIR}/plasmid_on_plasmidAssembly/" ]]; then
-		if [[ -s "${OUTDATADIR}/plasmid_on_plasmidAssembly/${1}_results_table_summary.txt" ]]; then
-			number_of_plasmids=0
-			while read line_in; do
-				line_in=$(echo ${line_in} | cut -d' ' -f1)
-				if [[ "${line_in}" = "No" ]] || [[ "${line_in}" = "Enterococcus,Streptococcus,Staphylococcus" ]] || [[ "${line_in}" = "Enterobacteriaceae" ]] || [[ "${line_in}" = "Plasmid" ]]; then
-					:
-				else
-					number_of_plasmids=$(( number_of_plasmids + 1 ))
-				fi
-			done < "${OUTDATADIR}/plasmid/${1}_results_table_summary.txt"
-			printf "%-20s: %-8s : %s\\n" "plasmid-plasmidAsmb" "SUCCESS" "${number_of_plasmids} replicons were found in the plasmid scaffold"
-		else
-			printf "%-20s: %-8s : %s\\n" "plasmid-plasmidAsmb" "FAILED" "results_table_summary.txt does not exist"
-			status="FAILED"
-		fi
-	# No plasmid folder exists
-	else
-		printf "%-20s: %-8s : %s\\n" "plasmid-plasmidAsmb" "FAILED" "/plasmid_on_plasmidAssembly/ does not exist"
-		status="FAILED"
-	fi
-fi
+# # check plasmids (on plasmidAssembly)
+# if [[ "plasmidsFoundviaplasmidSPAdes" -eq 1 ]]; then
+# 	if [[ -d "${OUTDATADIR}/plasmid_on_plasmidAssembly/" ]]; then
+# 		if [[ -s "${OUTDATADIR}/plasmid_on_plasmidAssembly/${1}_results_table_summary.txt" ]]; then
+# 			number_of_plasmids=0
+# 			while read line_in; do
+# 				line_in=$(echo ${line_in} | cut -d' ' -f1)
+# 				if [[ "${line_in}" = "No" ]] || [[ "${line_in}" = "Enterococcus,Streptococcus,Staphylococcus" ]] || [[ "${line_in}" = "Enterobacteriaceae" ]] || [[ "${line_in}" = "Plasmid" ]]; then
+# 					:
+# 				else
+# 					number_of_plasmids=$(( number_of_plasmids + 1 ))
+# 				fi
+# 			done < "${OUTDATADIR}/plasmid/${1}_results_table_summary.txt"
+# 			printf "%-20s: %-8s : %s\\n" "plasmid-plasmidAsmb" "SUCCESS" "${number_of_plasmids} replicons were found in the plasmid scaffold"
+# 		else
+# 			printf "%-20s: %-8s : %s\\n" "plasmid-plasmidAsmb" "FAILED" "results_table_summary.txt does not exist"
+# 			status="FAILED"
+# 		fi
+# 	# No plasmid folder exists
+# 	else
+# 		printf "%-20s: %-8s : %s\\n" "plasmid-plasmidAsmb" "FAILED" "/plasmid_on_plasmidAssembly/ does not exist"
+# 		status="FAILED"
+# 	fi
+# fi
 echo "---------- ${1} completed as ${status} ----------"
 
 if [ "${status}" = "WARNING" ] || [ "${status}" = "FAILED" ]; then

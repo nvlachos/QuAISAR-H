@@ -19,7 +19,7 @@ fi
 
 
 #
-# Usage ./outbreak_analysis.sh path_to_list gapped/ungapped (analysis ran) identity (80/95/98/99/100) analysis_identifier(e.g. outbreak identifier) output_directory(will create a folder at this location with nam of analysis_identifier) plasmid_identity(optional)
+# Usage ./outbreak_analysis.sh path_to_list gapped/ungapped (analysis ran) identity (80/95/98/99/100) analysis_identifier(e.g. outbreak identifier) output_directory(will create a folder at this location with name of analysis_identifier) clobberness[keep|clobber]
 #
 # Pulls out MLST, AR genes, and plasmid repicons and creates a mashtree for the listed samples and consolidates them into one sheet
 #
@@ -33,7 +33,7 @@ if [[ $# -eq 0 ]]; then
 	exit 1
 # Shows a brief uasge/help section if -h option used as first argument
 elif [[ "$1" = "-h" ]]; then
-	echo "Usage is ./outbreak_analysis.sh path_to_list_file gapped/ungapped 80/95/98/99/100 output_prefix output_directory plasmid_identity_cutoff(optional, default = 40) clobberness[keep|clobber] "
+	echo "Usage is ./outbreak_analysis.sh path_to_list_file gapped/ungapped 80/95/98/99/100 output_prefix output_directory clobberness[keep|clobber] "
 	exit 0
 elif [[ ! -f ${1} ]]; then
 	echo "list does not exist...exiting"
@@ -141,7 +141,7 @@ run_srst2="false"
 > "${output_directory}/${4}_csstar_todo.txt"
 > "${output_directory}/${4}_srst2_todo.txt"
 
-# Check that each isolate has been comparde to the newest ResGANNOT DB file
+# Check that each isolate has been compared to the newest ResGANNOT DB file
 echo -e "\nMaking sure all isolates use the latest AR Database - ${resGANNOT_srst2_filename}\n"
 while IFS= read -r line; do
 	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
@@ -158,20 +158,20 @@ while IFS= read -r line; do
 		run_csstar="true"
 	fi
 	#echo "checking for ${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
-	if [[ -s "${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta" ]]; then
-		if [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]] || [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_40_sstar_summary.txt" ]]; then
-			#echo "${project}/${sample_name} has newest ResGANNOT for plasmid csstar already"
-			:
-		else
-			echo "${project}/${sample_name} - ccstar plasmid needs to be run against ${resGANNOT_srst2_filename}"
-			echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
-			sort -u "${output_directory}/${4}_csstar_todo.txt" > "${output_directory}/${4}_csstar_todo_no_dups.txt"
-			cp "${output_directory}/${4}_csstar_todo_no_dups.txt" "${output_directory}/${4}_csstar_todo.txt"
-			run_csstar="true"
-		fi
-	else
-		echo "${sample_name} - No plasmid Assembly found, no need for csstar plasmid"
-	fi
+	# if [[ -s "${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta" ]]; then
+	# 	if [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]] || [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_40_sstar_summary.txt" ]]; then
+	# 		#echo "${project}/${sample_name} has newest ResGANNOT for plasmid csstar already"
+	# 		:
+	# 	else
+	# 		echo "${project}/${sample_name} - ccstar plasmid needs to be run against ${resGANNOT_srst2_filename}"
+	# 		echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
+	# 		sort -u "${output_directory}/${4}_csstar_todo.txt" > "${output_directory}/${4}_csstar_todo_no_dups.txt"
+	# 		cp "${output_directory}/${4}_csstar_todo_no_dups.txt" "${output_directory}/${4}_csstar_todo.txt"
+	# 		run_csstar="true"
+	# 	fi
+	# else
+	# 	echo "${sample_name} - No plasmid Assembly found, no need for csstar plasmid"
+	# fi
 	#echo "checking for ${OUTDATADIR}/srst2/${sample_name}__genes__${resGANNOT_srst2_filename}_srst2__results.txt"
 	if [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] && [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] || [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]] && [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]]; then
 		#echo "FASTQs exist"
@@ -393,61 +393,61 @@ while IFS= read -r line; do
 #Test
 #echo "Test"
 
-	# Parse through plasmid Assembly, although it is not used in the final report
-	if [[ "${has_plasmidAssembly}" = "true" ]]; then
-		# Repeat the c-sstar output organization of the plasmidAssembly
-		oar_list=""
-		# Looks at all the genes found on the plasmid assembly for a sample
-		if [[ -f "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]]; then
-			ARDB_plasmid="${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
-		else
-			echo "It STILL STILL thinks it needs to put ${sample_name} trhough plasmid csstar"
-			#${shareScript}/run_c-sstar_on_single.sh "${sample_name}" "${gapping}" "${sim}" "${project}" "--plasmid"
-			#ARDB_plasmid="${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
-		fi
-		while IFS= read -r line; do
-			# exit if no genes were found for the sample
-			if [[ "${line}" == *"No anti-microbial genes were found"* ]]; then
-				break
-			fi
-			IFS='	' read -r -a ar_line <<< "$line"
-			length_1="${ar_line[7]}"
-			length_2="${ar_line[8]}"
-			percent_ID="${ar_line[6]}"
-			percent_length="${ar_line[9]}"
-			conferred=$(echo "${ar_line[1]}" | cut -d'_' -f1)
-			gene="pla-${ar_line[4]}"
-			contig_number=$(echo "${ar_line[5]}" | rev | cut -d'_' -f3 | rev)
-			if [[ "${conferred}" == "macrolide," ]]; then
-				conferred="macrolide, lincosamide, streptogramin_B"
-			fi
-			# Checks to see if gene passes the threshold rquirements for identity and length
-			if [[ ${percent_length} -ge ${project_parser_Percent_length} ]] && [[ ${percent_ID} -ge ${project_parser_plasmid_Percent_identity} ]] ; then
-				if [[ -z "${oar_list}" ]]; then
-				#	echo "First oar: ${gene}"+
-					oar_list="${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
-				else
-					if [[ ${oar_list} == *"${gene}"* ]]; then
-					#	echo "${gene} already found in ${oar_list}"
-						:
-					else
-					#	echo "${gene} not found in ${oar_list}...adding it"
-						oar_list="${oar_list},${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
-					fi
-				fi
-			# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
-			else
-				echo -e "${project}\t${sample_name}\t${line}" >> ${output_directory}/${4}-csstar_rejects_plasmids.txt
-			fi
-		done < ${ARDB_plasmid}
-		# Adds generic output saying nothing was found if the list was empty
-		if [[ -z "${oar_list}" ]]; then
-
-			oar_list="No AR genes discovered"
-		fi
-		# Adds info to plasmid csstar summary file
-		echo -e "${project}\t${sample_name}\t${oxa_list}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_plasmid.txt
-	fi
+	# # Parse through plasmid Assembly, although it is not used in the final report
+	# if [[ "${has_plasmidAssembly}" = "true" ]]; then
+	# 	# Repeat the c-sstar output organization of the plasmidAssembly
+	# 	oar_list=""
+	# 	# Looks at all the genes found on the plasmid assembly for a sample
+	# 	if [[ -f "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]]; then
+	# 		ARDB_plasmid="${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
+	# 	else
+	# 		echo "It STILL STILL thinks it needs to put ${sample_name} trhough plasmid csstar"
+	# 		#${shareScript}/run_c-sstar_on_single.sh "${sample_name}" "${gapping}" "${sim}" "${project}" "--plasmid"
+	# 		#ARDB_plasmid="${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
+	# 	fi
+	# 	while IFS= read -r line; do
+	# 		# exit if no genes were found for the sample
+	# 		if [[ "${line}" == *"No anti-microbial genes were found"* ]]; then
+	# 			break
+	# 		fi
+	# 		IFS='	' read -r -a ar_line <<< "$line"
+	# 		length_1="${ar_line[7]}"
+	# 		length_2="${ar_line[8]}"
+	# 		percent_ID="${ar_line[6]}"
+	# 		percent_length="${ar_line[9]}"
+	# 		conferred=$(echo "${ar_line[1]}" | cut -d'_' -f1)
+	# 		gene="pla-${ar_line[4]}"
+	# 		contig_number=$(echo "${ar_line[5]}" | rev | cut -d'_' -f3 | rev)
+	# 		if [[ "${conferred}" == "macrolide," ]]; then
+	# 			conferred="macrolide, lincosamide, streptogramin_B"
+	# 		fi
+	# 		# Checks to see if gene passes the threshold rquirements for identity and length
+	# 		if [[ ${percent_length} -ge ${project_parser_Percent_length} ]] && [[ ${percent_ID} -ge ${project_parser_plasmid_Percent_identity} ]] ; then
+	# 			if [[ -z "${oar_list}" ]]; then
+	# 			#	echo "First oar: ${gene}"+
+	# 				oar_list="${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
+	# 			else
+	# 				if [[ ${oar_list} == *"${gene}"* ]]; then
+	# 				#	echo "${gene} already found in ${oar_list}"
+	# 					:
+	# 				else
+	# 				#	echo "${gene} not found in ${oar_list}...adding it"
+	# 					oar_list="${oar_list},${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
+	# 				fi
+	# 			fi
+	# 		# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
+	# 		else
+	# 			echo -e "${project}\t${sample_name}\t${line}" >> ${output_directory}/${4}-csstar_rejects_plasmids.txt
+	# 		fi
+	# 	done < ${ARDB_plasmid}
+	# 	# Adds generic output saying nothing was found if the list was empty
+	# 	if [[ -z "${oar_list}" ]]; then
+	#
+	# 		oar_list="No AR genes discovered"
+	# 	fi
+	# 	# Adds info to plasmid csstar summary file
+	# 	echo -e "${project}\t${sample_name}\t${oxa_list}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_plasmid.txt
+	# fi
 
 
 	# Goes through the plasmid file of the sample and adds all found plasmid replicons to the summary file
@@ -472,31 +472,31 @@ while IFS= read -r line; do
 	if [[ "${added}" -eq 0 ]]; then
 		echo -e "${project}\t${sample_name}\tfull_assembly\tNo_Plasmids_Found\t${full_contigs}_contigs-${components}_components" >> ${output_directory}/${4}-plasmid_summary.txt
 	fi
-	plas_contigs=">"
-	plas_contigs=$(grep -c ${plas_contigs} "${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta")
-	components=-1
-	while IFS= read -r contigs; do
-		if [[ "${contigs}" = ">"* ]]; then
-			components_temp=$(echo "${contigs}" | cut -d'_' -f8)
-			if [[ ${components_temp} -gt ${components} ]]; then
-				components="${components_temp}"
-			fi
-		fi
-	done < ${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta
-	components=$(( components + 1 ))
-	while IFS= read -r plasmid; do
-		line_in=$(echo ${plasmid} | cut -d' ' -f1)
-		if [[ "${line_in}" = "No" ]] || [[ "${line_in}" = "Enterococcus,Streptococcus,Staphylococcus" ]] || [[ "${line_in}" = "Enterobacteriaceae" ]] || [[ "${line_in}" = "Plasmid" ]]; then
-			:
-		else
-			echo -e "${project}\t${sample_name}\tplasmid_assembly\t${plasmid}" >> ${output_directory}/${4}-plasmid_summary.txt
-			added=1
-		fi
-	done < ${OUTDATADIR}/plasmid_on_plasmidAssembly/${sample_name}_results_table_summary.txt
-
-	if [[ "${added}" -eq 0 ]]; then
-		echo -e "${project}\t${sample_name}\tplasmid_assembly\tNo_Plasmids_Found\t${plas_contigs}_contigs-${components}_components" >> ${output_directory}/${4}-plasmid_summary.txt
-	fi
+	# plas_contigs=">"
+	# plas_contigs=$(grep -c ${plas_contigs} "${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta")
+	# components=-1
+	# while IFS= read -r contigs; do
+	# 	if [[ "${contigs}" = ">"* ]]; then
+	# 		components_temp=$(echo "${contigs}" | cut -d'_' -f8)
+	# 		if [[ ${components_temp} -gt ${components} ]]; then
+	# 			components="${components_temp}"
+	# 		fi
+	# 	fi
+	# done < ${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta
+	# components=$(( components + 1 ))
+	# while IFS= read -r plasmid; do
+	# 	line_in=$(echo ${plasmid} | cut -d' ' -f1)
+	# 	if [[ "${line_in}" = "No" ]] || [[ "${line_in}" = "Enterococcus,Streptococcus,Staphylococcus" ]] || [[ "${line_in}" = "Enterobacteriaceae" ]] || [[ "${line_in}" = "Plasmid" ]]; then
+	# 		:
+	# 	else
+	# 		echo -e "${project}\t${sample_name}\tplasmid_assembly\t${plasmid}" >> ${output_directory}/${4}-plasmid_summary.txt
+	# 		added=1
+	# 	fi
+	# done < ${OUTDATADIR}/plasmid_on_plasmidAssembly/${sample_name}_results_table_summary.txt
+	#
+	# if [[ "${added}" -eq 0 ]]; then
+	# 	echo -e "${project}\t${sample_name}\tplasmid_assembly\tNo_Plasmids_Found\t${plas_contigs}_contigs-${components}_components" >> ${output_directory}/${4}-plasmid_summary.txt
+	# fi
 
 done < ${1}
 

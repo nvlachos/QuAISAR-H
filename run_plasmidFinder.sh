@@ -28,7 +28,7 @@ elif [[ -z "${1}" ]]; then
 	echo "Empty sample name supplied to run_plasmidFinder.sh, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_plasmidFinder.sh  sample_name run_id output_folder(either plasmid or plasmid_on_plasmidAssembly) (-i number_minimum_identity, optional) (-f to force against all databases, optional)"
+	echo "Usage is ./run_plasmidFinder.sh  sample_name run_id output_folder(either plasmid or (DONT USE-plasmid_on_plasmidAssembly) (-i number_minimum_identity, optional) (-f to force against all databases, optional)"
 	echo "Output by default is ${processed}/miseq_run_id/sample_name/plasmid"
 	exit 0
 elif [[ -z "${2}" ]]; then
@@ -47,9 +47,10 @@ fi
 # Set output directory
 OUTDATADIR=${processed}/${2}/${1}/${3}
 # Get proper input file based on output directory (whether it is full assembly or plasmid)
-if [[ "${3}" == "plasmid_on_plasmidAssembly" ]]; then
-	outpath="plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta"
-elif [[ "${3}" == "plasmid" ]]; then
+# if [[ "${3}" == "plasmid_on_plasmidAssembly" ]]; then
+# 	outpath="plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta"
+# el
+if [[ "${3}" == "plasmid" ]]; then
 	outpath="Assembly/${1}_scaffolds_trimmed.fasta"
 else
 	echo "Non standard output location, using full assembly to find plasmids"
@@ -81,7 +82,7 @@ if [[ "${force}" == "true" ]]; then
 	mv ${OUTDATADIR}/results.txt ${OUTDATADIR}/${1}_results_gramp.txt
 	mv ${OUTDATADIR}/results_tab.txt ${OUTDATADIR}/${1}_results_tab_gramp.txt
 	mv ${OUTDATADIR}/results_table.txt ${OUTDATADIR}/${1}_results_table_gramp.txt
-	cat	${OUTDATADIR}/${1}_results_table_gramp.txt ${OUTDATADIR}/${1}_results_table_entero.txt > ${OUTDATADIR}/${1}_results_table_summary.txt	
+	cat	${OUTDATADIR}/${1}_results_table_gramp.txt ${OUTDATADIR}/${1}_results_table_entero.txt > ${OUTDATADIR}/${1}_results_table_summary.txt
 # Else, if the force flag is not set, then TRY to limit search to family (it will still check against all if it does not match the family)
 else
 	# Checks to see if a post assembly kraken file is available to extract the family of the sample
@@ -131,7 +132,7 @@ else
 			mv ${OUTDATADIR}/results_tab.txt ${OUTDATADIR}/${1}_results_tab_gramp.txt
 			mv ${OUTDATADIR}/results_table.txt ${OUTDATADIR}/${1}_results_table_gramp.txt
 			cat	${OUTDATADIR}/${1}_results_table_gramp.txt ${OUTDATADIR}/${1}_results_table_entero.txt > ${OUTDATADIR}/${1}_results_table_summary.txt
-			
+
 		fi
 	# No assembly file exists and cannot be used to determine family of sample
 	else
