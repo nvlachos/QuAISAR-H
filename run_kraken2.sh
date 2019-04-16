@@ -71,7 +71,7 @@ elif [ "${3}" = "single" ]; then
 	kraken2 --db "${kraken2_mini_db}" --fastq-input --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.classified ${OUTDATADIR}/FASTQs/${1}.single.fastq"
 # Runs kraken2 on the assembly
 elif [ "${3}" = "assembled" ]; then
-	kraken2 --db "${kraken2_mini_db}" --report "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2_report" --use-mpa-style --threads "${procs}"  --use-names --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.classified" "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
+	kraken2 --db "${kraken2_mini_db}" --report "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2_report" --use-mpa-style --threads "${procs}" --use-names --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.classified" "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
 	# Attempting to weigh contigs and produce standard krona and list output using a modified version of Rich's weighting scripts (will also be done on pure contigs later)
 	echo "1"
 	python ${shareScript}/Kraken_Assembly_Converter_2_Exe.py "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2"
@@ -106,11 +106,11 @@ fi
 
 # Run the metaphlan generator on the kraken2 output
 echo "[:] Generating metaphlan compatible report."
-kraken2 --report --use-mpa-style --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.mpa"
+#kraken2 --report --use-mpa-style --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.mpa"
 # Run the krona generator on the metaphlan output
 echo "[:] Generating krona output for ${1}."
 # Convert mpa to krona file
-perl "${shareScript}/Methaplan_to_krona.pl" -p "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.mpa" -k "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.krona"
+perl "${shareScript}/Methaplan_to_krona.pl" -p "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2_report" -k "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.krona"
 # Change perl version to allow ktimporttext to work ( cant use anything but 5.12.3
 . "${shareScript}/module_changers/perl_5221_to_5123.sh"
 # Run the krona graph generator from krona output
