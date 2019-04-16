@@ -69,9 +69,7 @@ while IFS= read -r line
 do
 		contig_info=$(echo "${line}" | cut -d'	' -f2)
 		taxid=$(echo "${line}" | cut -d'	' -f3)
-		#echo "${contig_info} ::::: ${taxid}"
-
-
+		echo "${taxid}"
 
 		if [[ -n ${tax_trees[$taxonomy]} ]]; then
 			echo "Looking up" 
