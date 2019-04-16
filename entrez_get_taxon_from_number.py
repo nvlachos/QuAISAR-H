@@ -4,7 +4,7 @@
 #  + 1 August 2017
 #  Dependencies:  none
 
-# Usage python ./entrez_get_taxon_from_number.py accession_number your_email(for entrez tools)
+# Usage python ./entrez_get_taxon_from_number.py ncbi-taxonomy-number your_email(for entrez tools)
 #
 # Requires module Entrez/E-utilities
 #
@@ -22,5 +22,5 @@ handle = Entrez.efetch(db="taxonomy", id=sys.argv[1], rettype="gb", retmode="tex
 result=handle.read().split('\n')
 #Goes through each line until it finds (and prints) the organism name that the accession number represents
 for line in result:
-	if 'ORGANISM' in line:
-		print(' '.join(line.split()[1:]))
+	print(line)
+	#print(' '.join(line.split()[1:]))
