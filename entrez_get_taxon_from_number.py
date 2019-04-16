@@ -27,6 +27,6 @@ for taxon in result:
 	lineage=[]
 	for t in taxon["LineageEx"]:
 		lineage.append(t["ScientificName"])
-	lineage.append(taxid)
+	lineage.append(name)
 	print("%s\t|\t%s\t|\t%s" % (taxid, name, ";".join(lineage)))
 	#print(' '.join(line.split()[1:]))
