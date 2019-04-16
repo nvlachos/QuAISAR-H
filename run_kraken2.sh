@@ -75,17 +75,20 @@ elif [ "${3}" = "assembled" ]; then
 	# Attempting to weigh contigs and produce standard krona and list output using a modified version of Rich's weighting scripts (will also be done on pure contigs later)
 	echo "1"
 	python ${shareScript}/Kraken_Assembly_Converter_2_Exe.py "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2"
+	mv "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}._BP.kraken" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2"
 	echo "2"
-	#kraken2 --use-names --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.labels"
+	module load kraken/0.10.5
+	kraken-translate --db "${kraken_mini_db}" "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.labels"
 	# Create an mpa report
 	echo "3"
-#	kraken2 --report --use-mpa-style --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.mpa"
-	# Convert mpa to krona file
+	kraken-mpa-report --db "${kraken_mini_db}" "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.mpa"
+	module unload kraken/0/10/5
+	# Convert mpa to krona file# Convert mpa to krona file
 	echo "4"
 	perl "${shareScript}/Methaplan_to_krona.pl" -p "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.mpa" -k "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.krona"
 	# Create taxonomy list file from kraken2 file
 	echo "5"
-	kraken2 --report --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.list"
+	kraken-report --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.list"
 	# Weigh taxonomy list file
 	echo "6"
 	python3 ${shareScript}/Kraken_Assembly_Summary_Exe.py "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.labels" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.list" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP_data.list"
