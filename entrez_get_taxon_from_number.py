@@ -24,7 +24,7 @@ result= Entrez.read(handle)
 for taxon in result:
 	taxid = taxon["TaxId"]
 	name = taxon["ScientificName"]
-	lineage=[]
+	lineage=["root"]
 	for t in taxon["LineageEx"]:
 		lineage.append(t["ScientificName"])
 	lineage.append(name)
