@@ -61,8 +61,8 @@ kraken2 --version
 echo "[:] Running kraken2.  Output: ${1}.kraken2 / ${1}.classified"
 # Runs kraken2 in paired reads mode
 if [ "${3}" = "paired" ]; then
-	cp "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" "${OUTDATADIR}/trimmed/${1}_1.fq"
-	cp "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq" "${OUTDATADIR}/trimmed/${1}_2.fq"
+	gunzip -c "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq.gz" > "${OUTDATADIR}/trimmed/${1}_1.fq"
+	gunzip -c "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq.gz"  > "${OUTDATADIR}/trimmed/${1}_2.fq"
 	kraken2 --paired --db "${kraken2_mini_db}" --fastq-input --report --use-mpa-style "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2_report" --use-names --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}#.classified" "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
 	rm "${OUTDATADIR}/trimmed/${1}_1.fq"
 	rm "${OUTDATADIR}/trimmed/${1}_2.fq"
