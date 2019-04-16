@@ -202,36 +202,36 @@ while [ ${counter} -lt ${arr_size} ] ; do
 						echo "${project}/${sample} already has the newest ResGANNOT (${resGANNOT_srst2_filename})"
 						echo -e "$(date)" > "${main_dir}/complete/${sample}_csstarn_complete.txt"
 					fi
-					# Check if plasmid folder exists
-					if [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
-						# Check if old data exists, skip if so
-						if [[ ! -f "${processed}/${project}/${sample}/c-sstar_plasmid/${sample}.${resGANNOT_srst2_filename}.gapped_40_sstar_summary.txt" ]]; then
-							echo -e "#!/bin/bash -l\n" > "${main_dir}/csstp_${sample}_${start_time}.sh"
-							echo -e "#$ -o csstp_${sample}.out" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-							echo -e "#$ -e csstp_${sample}.err" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-							echo -e "#$ -N csstp_${sample}"   >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-							echo -e "#$ -cwd"  >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-							echo -e "#$ -q short.q\n"  >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-							echo -e "module load Python/3.6.1\n" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-							# Defaulting to gapped/98, change if you want to include user preferences
-							echo -e "cd ${shareScript}" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-							echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g o \"${project}\" \"--plasmid\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-							echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarp_complete.txt\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
-							cd ${main_dir}
-							#if [[ "${counter}" -lt "${last_index}" ]]; then
-								qsub "${main_dir}/csstp_${sample}_${start_time}.sh"
-							#else
-							#	qsub -sync y "${main_dir}/csstp_${sample}_${start_time}.sh"
-							#fi
-						# Skipping because old data exists
-						else
-							echo "${project}/${sample} plasmid already has the newest ResGANNOT (${resGANNOT_srst2_filename})"
-							echo -e "$(date)" > "${main_dir}/complete/${sample}_csstarp_complete.txt"
-						fi
-					else
-						echo "${project}/${sample} doesnt have a plasmid folder, so no further actions required"
-						echo "$(date)" > "${main_dir}/complete/${sample}_csstarp_complete.txt"
-					fi
+					# # Check if plasmid folder exists
+					# if [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
+					# 	# Check if old data exists, skip if so
+					# 	if [[ ! -f "${processed}/${project}/${sample}/c-sstar_plasmid/${sample}.${resGANNOT_srst2_filename}.gapped_40_sstar_summary.txt" ]]; then
+					# 		echo -e "#!/bin/bash -l\n" > "${main_dir}/csstp_${sample}_${start_time}.sh"
+					# 		echo -e "#$ -o csstp_${sample}.out" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
+					# 		echo -e "#$ -e csstp_${sample}.err" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
+					# 		echo -e "#$ -N csstp_${sample}"   >> "${main_dir}/csstp_${sample}_${start_time}.sh"
+					# 		echo -e "#$ -cwd"  >> "${main_dir}/csstp_${sample}_${start_time}.sh"
+					# 		echo -e "#$ -q short.q\n"  >> "${main_dir}/csstp_${sample}_${start_time}.sh"
+					# 		echo -e "module load Python/3.6.1\n" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
+					# 		# Defaulting to gapped/98, change if you want to include user preferences
+					# 		echo -e "cd ${shareScript}" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
+					# 		echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g o \"${project}\" \"--plasmid\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
+					# 		echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarp_complete.txt\"" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
+					# 		cd ${main_dir}
+					# 		#if [[ "${counter}" -lt "${last_index}" ]]; then
+					# 			qsub "${main_dir}/csstp_${sample}_${start_time}.sh"
+					# 		#else
+					# 		#	qsub -sync y "${main_dir}/csstp_${sample}_${start_time}.sh"
+					# 		#fi
+					# 	# Skipping because old data exists
+					# 	else
+					# 		echo "${project}/${sample} plasmid already has the newest ResGANNOT (${resGANNOT_srst2_filename})"
+					# 		echo -e "$(date)" > "${main_dir}/complete/${sample}_csstarp_complete.txt"
+					# 	fi
+					# else
+					# 	echo "${project}/${sample} doesnt have a plasmid folder, so no further actions required"
+					# 	echo "$(date)" > "${main_dir}/complete/${sample}_csstarp_complete.txt"
+					# fi
 					break
 				# If waiting sample has not completed, wait 5 more seconds and try again
 				else
@@ -258,30 +258,30 @@ for item in "${arr[@]}"; do
 		if [[ -f "${shareScript}/csstn_${sample}.err" ]]; then
 			mv "${shareScript}/csstn_${sample}.err" "${main_dir}"
 		fi
-		# Check if plasmid csstar is complete also and wait a total of 30 minutes for all samples to be checked
-		if [[ -f "${main_dir}/complete/${waiting_sample}_csstarp_complete.txt" ]] || [[ ! -s "${processed}/${project}/${waiting_sample}/plasmidAssembly/${waiting_sample}_plasmid_scaffolds_trimmed.fasta" ]]; then
-			while :
-			do
-					if [[ ${ptimer} -gt 1800 ]]; then
-						echo "Timer exceeded limit of 1800 seconds = 30 minutes"
-						exit 1
-					fi
-					if [[ -f "${main_dir}/complete/${waiting_sample}_csstarp_complete.txt" ]]; then
-						echo "${item} is complete plasmid"
-						if [[ -f "${shareScript}/csstp_${sample}.out" ]]; then
-							mv "${shareScript}/csstp_${sample}.out" "${main_dir}"
-						fi
-						if [[ -f "${shareScript}/csstp_${sample}.err" ]]; then
-							mv "${shareScript}/csstp_${sample}.err" "${main_dir}"
-						fi
-						break
-					else
-						ptimer=$(( ptimer + 5 ))
-						echo "sleeping for 5 seconds, so far slept for ${ptimer}"
-						sleep 5
-					fi
-			done
-		fi
+	# 	# Check if plasmid csstar is complete also and wait a total of 30 minutes for all samples to be checked
+	# 	if [[ -f "${main_dir}/complete/${waiting_sample}_csstarp_complete.txt" ]] || [[ ! -s "${processed}/${project}/${waiting_sample}/plasmidAssembly/${waiting_sample}_plasmid_scaffolds_trimmed.fasta" ]]; then
+	# 		while :
+	# 		do
+	# 				if [[ ${ptimer} -gt 1800 ]]; then
+	# 					echo "Timer exceeded limit of 1800 seconds = 30 minutes"
+	# 					exit 1
+	# 				fi
+	# 				if [[ -f "${main_dir}/complete/${waiting_sample}_csstarp_complete.txt" ]]; then
+	# 					echo "${item} is complete plasmid"
+	# 					if [[ -f "${shareScript}/csstp_${sample}.out" ]]; then
+	# 						mv "${shareScript}/csstp_${sample}.out" "${main_dir}"
+	# 					fi
+	# 					if [[ -f "${shareScript}/csstp_${sample}.err" ]]; then
+	# 						mv "${shareScript}/csstp_${sample}.err" "${main_dir}"
+	# 					fi
+	# 					break
+	# 				else
+	# 					ptimer=$(( ptimer + 5 ))
+	# 					echo "sleeping for 5 seconds, so far slept for ${ptimer}"
+	# 					sleep 5
+	# 				fi
+	# 		done
+	# fi
 	else
 		# Check every 5 seconds to see if the sample has completed normal csstar analysis
 		while :
