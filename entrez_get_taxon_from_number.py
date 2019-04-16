@@ -21,6 +21,12 @@ handle = Entrez.efetch(db="taxonomy", id=sys.argv[1], mode="text", rettype="xml"
 #Parses the returned output into lines
 result= Entrez.read(handle)
 #Goes through each line until it finds (and prints) the organism name that the accession number represents
-for line in result:
-	print(line)
+for taxon in result:
+	taxid = taxon["TaxID"]
+	name = taxon["ScientificName"]
+	lineage=[]
+	for t in taxon["LineageEx"]:
+		lineage.insert(0, t{"ScientificName"})
+	lineage.insert(0, taxid)
+	print("%s\t|\t%s\t|\t%s" % (taxid, name, ";".join(lineage)))
 	#print(' '.join(line.split()[1:]))
