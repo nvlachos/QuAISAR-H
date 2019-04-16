@@ -61,7 +61,7 @@ fi
 while IFS= read -r line
 do
 		contig_info=$(echo "${line}" | cut -d'	' -f2)
-		taxid=$(echo "${line}" | cut -d'	' -f4 | cut -d' ' -f2 | cut -d')' -f1)
+		taxid=$(echo "${line}" | cut -d'	' -f3)
 		echo "${contig_info} ::::: ${taxid}"
 
 done < "${OUTDATADIR}/${1}_${post_fix}.kraken2"
