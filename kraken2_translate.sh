@@ -43,12 +43,17 @@ fi
 #Sets output folder to the correct path relative to assembly completion
 OUTDATADIR="${processed}/${2}/${1}/kraken2/${3}Assembly"
 echo "-${OUTDATADIR}-"
-
-
+if [[ "${3}" == "post" ]]; then
+	post_fix="assembled"
+elif [[ "${3}" == "pre" ]]; then
+	post_fix="paired"
+else
+	echo "Unknown relativity ${3}, exiting"
+fi
 
 #Checks to see if the list file used for calculations exists and exits if it does not
-if [[ ! -s "${OUTDATADIR}/${1}_${3}.kraken2" ]]; then
-	#echo "${OUTDATADIR}/${1}_${3}.list does not exist"
+if [[ ! -s "${OUTDATADIR}/${1}_${post_fix}.kraken2" ]]; then
+	echo "${OUTDATADIR}/${1}_${post_fix}.list does not exist"
 	exit 1
 fi
 
@@ -59,7 +64,7 @@ do
 		taxid=$(echo "${line}" | cut -d'	' -f4 | cut -d' ' -f2 | cut -d')' -f1)
 		echo "${contig_info} ::::: ${taxid}"
 
-done < "${OUTDATADIR}/${1}_${3}.kraken2"
+done < "${OUTDATADIR}/${1}_${post_fix}.kraken2"
 
 #Script exited gracefully (unless something else inside failed)
 exit 0
