@@ -78,6 +78,7 @@ elif [ "${3}" = "assembled" ]; then
 	mv "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}._BP.kraken" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2"
 	echo "2"
 	module load kraken/0.10.5
+	. "${shareScript}/module_changers/perl_5221_to_5123.sh"
 	kraken-translate --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.labels"
 	# Create an mpa report
 	echo "3"
@@ -93,7 +94,7 @@ elif [ "${3}" = "assembled" ]; then
 	echo "6"
 	python3 ${shareScript}/Kraken_Assembly_Summary_Exe.py "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.labels" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.list" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP_data.list"
 	# Change perl version to allow ktimporttext to work ( cant use anything but 5.12.3
-	. "${shareScript}/module_changers/perl_5221_to_5123.sh"
+
 	# Run the krona graph generator from krona output
 	echo "7"
 	ktImportText "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.krona" -o "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted_BP_krona.html"
