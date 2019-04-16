@@ -69,7 +69,7 @@ do
 
 		taxonomy=$(${shareScript}/entrez_get_taxon_from_number.sh ${taxid} ${who_am_i})
 		tax_tree=$(echo "${taxonomy}" | cut -d'|' -f3 | cut -d'	' -f2)
-		print("${contig_info} ::: ${tax_tree}")
+		echo "${contig_info} ::: ${tax_tree}"
 
 done < "${OUTDATADIR}/${1}_${post_fix}.kraken2"
 
