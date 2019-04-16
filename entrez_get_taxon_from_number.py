@@ -19,7 +19,7 @@ Entrez.email = sys.argv[2]
 #Creates the data structure from a pull from entrez nucleotide database using accession id with return type of genbank text mode
 handle = Entrez.efetch(db="taxonomy", id=sys.argv[1], rettype="gb", retmode="text")
 #Parses the returned output into lines
-result=handle.read().split('\n')
+result= Entrez.read(handle)
 #Goes through each line until it finds (and prints) the organism name that the accession number represents
 for line in result:
 	print(line)
