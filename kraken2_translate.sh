@@ -67,7 +67,7 @@ do
 		taxid=$(echo "${line}" | cut -d'	' -f3)
 		#echo "${contig_info} ::::: ${taxid}"
 
-		taxonomy=$(${shareScript}/entrez_get_taxon_from_number.sh ${taxid} ${who_am_i})
+		taxonomy=$(python ${shareScript}/entrez_get_taxon_from_number.py ${taxid} ${who_am_i})
 		tax_tree=$(echo "${taxonomy}" | cut -d'|' -f3 | cut -d'	' -f2)
 		echo "${contig_info} ::: ${tax_tree}"
 
