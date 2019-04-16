@@ -72,11 +72,11 @@ do
 		echo "${taxid}"
 
 		if [[ -n ${tax_trees[$taxonomy]} ]]; then
-			echo "Looking up" 
+			echo "Looking up"
 			taxonomy=$(python ${shareScript}/entrez_get_taxon_from_number.py ${taxid} ${who_am_i})
 			tax_tree=$(echo "${taxonomy}" | cut -d'|' -f3 | cut -d'	' -f2)
 		else
-			print "Already in array"
+			echo "Already in array"
 			tax_tree=${tax_trees[${taxonomy}]}
 		fi
 		echo "${contig_info} ::: ${tax_tree}"
