@@ -58,15 +58,26 @@ fi
 
 contig_sizes=[]
 total_size=0
+unclassified=0
 
 #Parses the kraken output list line by line
 while IFS= read -r line
 do
-		contig_size=$(echo "${line}" | cut -d'	' -f4)
-		contig_sizes+=()${contig_size})
-		total_size=$(( total_size + contig_size ))
-		
+		classified==$(echo "${line}" | cut -d'	' -f1)
+		if [[ "${classified}" == "C" ]]; then
+			contig_size=$(echo "${line}" | cut -d'	' -f4)
+			contig_sizes+=()${contig_size})
+			total_size=$(( total_size + contig_size ))
+		else
+			echo "Contig not classified"
+			unclassified=$(( unclassified + 1 ))
+		fi
 done < "${OUTDATADIR}/${1}_assembled_BP.${3}"
+
+contig_count=${#contig_sizes[@]}
+echo "Contig count = ${contig_count}"
+echo "Total Size = ${total_size}"
+echo "unclassified = ${unclassified}"
 
 if [[ ! -s "${OUTDATADIR}/${1}_assembled_weighted.mpa" ]]; then
 	echo "${OUTDATADIR}/${1}_assembled_weighted.mpa does not exist, cant do mpa adjustment"
