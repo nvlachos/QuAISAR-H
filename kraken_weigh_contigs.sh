@@ -56,7 +56,7 @@ if [[ "${3}" != "kraken" ]] && [[ "${3}" != "kraken2" ]]; then
 	exit 4
 fi
 
-contig_sizes=[]
+contig_sizes=()
 total_size=0
 unclassified=0
 
