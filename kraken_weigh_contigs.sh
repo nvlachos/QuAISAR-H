@@ -46,8 +46,8 @@ echo "-${OUTDATADIR}-"
 
 
 #Checks to see if the list file used for calculations exists and exits if it does not
-if [[ ! -s "${OUTDATADIR}/${1}_assembled_BP.${3}" ]]; then
-	echo "${OUTDATADIR}/${1}_assembled_BP.${3} does not exist"
+if [[ ! -s "${OUTDATADIR}/${1}_assembled.${3}" ]]; then
+	echo "${OUTDATADIR}/${1}_assembled.${3} does not exist"
 	exit 1
 fi
 
@@ -60,7 +60,7 @@ contig_sizes=()
 total_size=0
 unclassified=0
 
-sort -t$'\t' -k4 -n "${OUTDATADIR}/${1}_assembled_BP.${3}"
+sort -t$'\t' -k4 -n "${OUTDATADIR}/${1}_assembled.${3}"
 
 #Parses the kraken output list line by line
 while IFS= read -r line
