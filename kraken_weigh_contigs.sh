@@ -60,6 +60,8 @@ contig_sizes=()
 total_size=0
 unclassified=0
 
+sort -k4 -n "${OUTDATADIR}/${1}_assembled_BP.${3}"
+
 #Parses the kraken output list line by line
 while IFS= read -r line
 do
