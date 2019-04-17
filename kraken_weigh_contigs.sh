@@ -63,7 +63,8 @@ unclassified=0
 #Parses the kraken output list line by line
 while IFS= read -r line
 do
-		#echo "${line}"
+		prefix=$(echo "${line}" | cut -d'	' -f1,2,3,4)
+		echo "${prefix}"
 		classified=$(echo "${line}" | cut -d'	' -f1)
 		echo "classified as:${classified}"
 		if [[ "${classified}" == "C" ]]; then
