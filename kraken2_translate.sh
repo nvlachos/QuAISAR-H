@@ -48,7 +48,7 @@ if [[ ! -s "${OUTDATADIR}/${1}_assembled_BP.kraken2" ]]; then
 	exit 1
 fi
 
-> ${OUTDATADIR}/${1}_${post_fix}.labels
+> ${OUTDATADIR}/${1}_assembled_BP.labels
 
 who_am_i=$(whoami)
 
