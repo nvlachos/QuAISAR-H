@@ -77,7 +77,7 @@ elif [ "${3}" = "single" ]; then
 # Runs kraken2 on the assembly
 elif [ "${3}" = "assembled" ]; then
 	#kraken2 --db "${kraken2_mini_db}" --report "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.mpa" --use-mpa-style --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.classified" "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
-	kraken2 --db "${kraken2_mini_db}" --report "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list" --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2extra" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.classified_extra" "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
+	kraken2 --db "${kraken2_mini_db}" --report "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list" --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.classified" "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
 
 	# Attempting to weigh contigs and produce standard krona and list output using a modified version of Rich's weighting scripts (will also be done on pure contigs later)
 	echo "1"
