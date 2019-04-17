@@ -71,8 +71,8 @@ do
 			echo "Already in array"
 			tax_tree=${tax_trees[${taxid}]}
 		fi
-		echo "${contig_info}	${tax_tree}"
-		#echo "${contig_info}	${tax_tree}" >> "${OUTDATADIR}/${1}_assembled_BP.labels"
+		
+		echo "${contig_info}	${tax_tree}" >> "${OUTDATADIR}/${1}_assembled_BP.labels"
 
 done < "${OUTDATADIR}/${1}_assembled_BP.kraken2"
 
