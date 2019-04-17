@@ -64,7 +64,7 @@ unclassified=0
 while IFS= read -r line
 do
 		echo "${line}"
-		classified==$(echo "${line}" | cut -d'	' -f1)
+		classified=$(echo "${line}" | cut -d'	' -f1)
 		echo "classified as:${classified}"
 		if [[ "${classified}" == "C" ]]; then
 			contig_size=$(echo "${line}" | cut -d'	' -f4)
