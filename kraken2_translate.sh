@@ -38,13 +38,13 @@ elif [ -z "$2" ]; then
 fi
 
 #Sets output folder to the correct path relative to assembly completion
-OUTDATADIR="${processed}/${2}/${1}/kraken2/${3}Assembly"
+OUTDATADIR="${processed}/${2}/${1}/kraken2/postAssembly"
 echo "-${OUTDATADIR}-"
 
 
 #Checks to see if the list file used for calculations exists and exits if it does not
 if [[ ! -s "${OUTDATADIR}/${1}_assembled_BP.kraken2" ]]; then
-	echo "${OUTDATADIR}/${1}_assembled_BP.kraken does not exist"
+	echo "${OUTDATADIR}/${1}_assembled_BP.kraken2 does not exist"
 	exit 1
 fi
 
