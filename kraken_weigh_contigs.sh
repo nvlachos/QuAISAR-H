@@ -82,6 +82,7 @@ counter=0
 for contiggy in ${contig_sizes[@]}; do
 	echo "${counter}-${contiggy}"
 	counter=$((counter + 1 ))
+done
 echo "Contig count = ${contig_count}"
 echo "Total Size = ${total_size}"
 echo "unclassified = ${unclassified}"
