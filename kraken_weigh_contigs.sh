@@ -63,7 +63,9 @@ unclassified=0
 #Parses the kraken output list line by line
 while IFS= read -r line
 do
+		echo "${line}"
 		classified==$(echo "${line}" | cut -d'	' -f1)
+		echo "classified as:${classified}"
 		if [[ "${classified}" == "C" ]]; then
 			contig_size=$(echo "${line}" | cut -d'	' -f4)
 			contig_sizes+=(${contig_size})
