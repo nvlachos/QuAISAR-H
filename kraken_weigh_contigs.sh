@@ -66,7 +66,7 @@ do
 		classified==$(echo "${line}" | cut -d'	' -f1)
 		if [[ "${classified}" == "C" ]]; then
 			contig_size=$(echo "${line}" | cut -d'	' -f4)
-			contig_sizes+=()${contig_size})
+			contig_sizes+=(${contig_size})
 			total_size=$(( total_size + contig_size ))
 		else
 			echo "Contig not classified"
