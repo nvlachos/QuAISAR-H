@@ -78,6 +78,7 @@ do
 done < "${OUTDATADIR}/${1}_assembled.${3}"
 
 contig_count=${#contig_sizes[@]}
+echo "Contig 1: contig_sizes[0]; Contig last: contig_sizes[${contig_count}]"
 echo "Contig count = ${contig_count}"
 echo "Total Size = ${total_size}"
 echo "unclassified = ${unclassified}"
