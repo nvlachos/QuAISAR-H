@@ -63,12 +63,12 @@ do
 		#echo "${taxid}"
 
 		if [[ -z ${tax_trees[$taxid]} ]]; then
-			#echo "Looking up"
+			echo "Looking up"
 			taxonomy=$(python ${shareScript}/entrez_get_taxon_from_number.py ${taxid} ${who_am_i})
 			tax_tree=$(echo "${taxonomy}" | cut -d'|' -f3 | cut -d'	' -f2)
 			tax_trees[${taxid}]="${tax_tree}"
 		else
-			#echo "Already in array"
+			echo "Already in array"
 			tax_tree=${tax_trees[${taxid}]}
 		fi
 		echo "${contig_info}	${tax_tree}" >> "${OUTDATADIR}/${1}_assembled_BP.labels"
