@@ -74,7 +74,7 @@ do
 			echo "Contig not classified"
 			unclassified=$(( unclassified + 1 ))
 		fi
-done < "${OUTDATADIR}/${1}_assembled_BP.${3}"
+done < "${OUTDATADIR}/${1}_assembled.${3}"
 
 contig_count=${#contig_sizes[@]}
 echo "Contig count = ${contig_count}"
