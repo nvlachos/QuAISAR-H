@@ -3,11 +3,11 @@ import glob
 import math
 
 # main function that sorts and formats all AR genes found using csstar and srst2 that have already been filtered for % identity and % length
-def do_MLST_Check(input_MLST_file, MLST_DB, MLST_filetype):
-	all_alleles_in_file=[]
-	schemes=[]
-	MLST_file=open(input_MLST_file,'r')
-	MLST_line = MLST_file.readline().strip()
+def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
+	all_ARs_in_file=[]
+	samples=[]
+	csstar_file=open(input_csstar_AR,'r')
+	csstar_line = csstar_file.readline().strip()
 	counter=0
 	#print("Start")
 	while csstar_line != '':
@@ -66,7 +66,7 @@ def do_MLST_Check(input_MLST_file, MLST_DB, MLST_filetype):
 								#print("No AR found in csstar for", gene_name)
 							#	:
 						else:
-							print("New gene", gene_name,"found in srst2")
+							#print("New gene", gene_name,"found in srst2")
 							ar_dict[gene_name]=gene_stats
 						if gene_name not in all_ARs_in_file:
 							all_ARs_in_file.append(gene_name)
@@ -216,5 +216,5 @@ def do_MLST_Check(input_MLST_file, MLST_DB, MLST_filetype):
 
 
 
-print("Checking MLST file for completion ...\n")
-do_MLST_Check(sys.argv[1], sys.argv[2], sys.argv[3])
+print("Parsing project AR files ...\n")
+do_AR(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
