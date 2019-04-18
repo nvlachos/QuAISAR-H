@@ -97,14 +97,15 @@ echo "Adjusted contig count = ${adjusted_contig_count}"
 while IFS= read -r line
 do
 		IFS='	' read -a arr_line <<< "$line"
-		echo "Size:${#arr_line}"
+		#echo "Size:${#arr_line}"
 		original_size=${arr_line[3]}
-		echo "3-${arr_line[3]}"
-		echo "OS = ${original_size}, smallest = ${smallest}"
+		#echo "3-${arr_line[3]}"
+		#echo "OS = ${original_size}, smallest = ${smallest}"
 		adjusted_size=$(( original_size / smallest ))
-		echo "Adj_size = ${adjusted_size}"
+		#echo "Adj_size = ${adjusted_size}"
 		arr_line[3]=${adjusted_size}
-		echo -e "${arr_line[0]}\n${arr_line[1]}\n${arr_line[2]}\n${arr_line[3]}"
+		echo -e "${arr_line[0]}\t${arr_line[1]}\t${arr_line[2]}\t${arr_line[3]}"
+
 done < "${OUTDATADIR}/${1}_assembled_sorted.${3}"
 
 if [[ ! -s "${OUTDATADIR}/${1}_assembled_weighted.mpa" ]]; then
