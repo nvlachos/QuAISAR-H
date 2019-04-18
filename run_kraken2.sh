@@ -86,7 +86,9 @@ elif [ "${3}" = "assembled" ]; then
 	echo "2"
 	module load kraken/0.10.5
 	. "${shareScript}/module_changers/perl_5221_to_5123.sh"
-	${shareScript}/kraken2_translate.sh ${1} ${4}
+	# ${shareScript}/kraken2_translate.sh ${1} ${4}
+	kraken-translate --db "${kraken_mini_db}" "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_BP.labels"
+
 	# Create an mpa report
 	echo "3"
 	kraken-mpa-report --db "${kraken_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.mpa"
