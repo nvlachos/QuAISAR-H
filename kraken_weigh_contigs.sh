@@ -61,7 +61,6 @@ total_size=0
 unclassified=0
 
 sort -t$'\t' -k4,4 -n "${OUTDATADIR}/${1}_assembled.${3}" > "${OUTDATADIR}/${1}_assembled_sorted.${3}"
-exit
 
 #Parses the kraken output list line by line
 while IFS= read -r line
@@ -78,7 +77,7 @@ do
 			echo "Contig not classified"
 			unclassified=$(( unclassified + 1 ))
 		fi
-done < "${OUTDATADIR}/${1}_assembled.${3}"
+done < "${OUTDATADIR}/${1}_assembled_sorted.${3}"
 
 contig_count=${#contig_sizes[@]}
 counter=0
@@ -86,9 +85,11 @@ for contiggy in ${contig_sizes[@]}; do
 	echo "${counter}-${contiggy}"
 	counter=$((counter + 1 ))
 done
+smallest=${contig_szies[0]}
 echo "Contig count = ${contig_count}"
 echo "Total Size = ${total_size}"
 echo "unclassified = ${unclassified}"
+echo "Smallest contig = ${smallest}"
 
 if [[ ! -s "${OUTDATADIR}/${1}_assembled_weighted.mpa" ]]; then
 	echo "${OUTDATADIR}/${1}_assembled_weighted.mpa does not exist, cant do mpa adjustment"
