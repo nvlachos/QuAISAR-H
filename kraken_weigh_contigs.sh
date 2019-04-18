@@ -96,9 +96,10 @@ echo "Adjusted contig count = ${adjusted_contig_count}"
 
 while IFS= read -r line
 do
-		IFS=' ' read -a arr_line <<< "$line"
+		IFS='	' read -a arr_line <<< "$line"
+		echo "Size:${#arr_line}"
 		original_size=${arr_line[2]}
-		echo "${arr_line[3]}"
+		echo "2-${arr_line[3]}"
 		adjusted_size=$(( original_size / smallest ))
 		arr_line[3]=${adjusted_size}
 		echo "${arr_line[0]}	${arr_line[1]}	${arr_line[2]}	${arr_line[3]}	${arr_line[4]}"
