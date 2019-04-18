@@ -98,8 +98,8 @@ while IFS= read -r line
 do
 		IFS='	' read -a arr_line <<< "$line"
 		echo "Size:${#arr_line}"
-		original_size=${arr_line[2]}
-		echo "2-${arr_line[3]}"
+		original_size=${arr_line[3]}
+		echo "3-${arr_line[3]}"
 		echo "OS = ${original_size}, smallest = ${smallest}"
 		adjusted_size=$(( original_size / smallest ))
 		echo "Adj_size = ${adjusted_size}"
