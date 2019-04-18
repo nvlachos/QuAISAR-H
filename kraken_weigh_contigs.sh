@@ -100,6 +100,7 @@ do
 		echo "Size:${#arr_line}"
 		original_size=${arr_line[2]}
 		echo "2-${arr_line[3]}"
+		echo "OS = ${original_size}, smallest = ${smallest}"
 		adjusted_size=$(( original_size / smallest ))
 		echo "Adj_size = ${adjusted_size}"
 		arr_line[3]=${adjusted_size}
