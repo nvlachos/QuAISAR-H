@@ -66,9 +66,9 @@ sort -t$'\t' -k4,4 -n "${OUTDATADIR}/${1}_assembled.${3}" > "${OUTDATADIR}/${1}_
 while IFS= read -r line
 do
 		prefix=$(echo "${line}" | cut -d'	' -f1,2,3,4)
-		echo "${prefix}"
+		#echo "${prefix}"
 		classified=$(echo "${line}" | cut -d'	' -f1)
-		echo "classified as:${classified}"
+		#echo "classified as:${classified}"
 		if [[ "${classified}" == "C" ]]; then
 			contig_size=$(echo "${line}" | cut -d'	' -f4)
 			contig_sizes+=(${contig_size})
@@ -81,10 +81,11 @@ done < "${OUTDATADIR}/${1}_assembled_sorted.${3}"
 
 contig_count=${#contig_sizes[@]}
 counter=0
-for contiggy in ${contig_sizes[@]}; do
-	echo "${counter}-${contiggy}"
-	counter=$((counter + 1 ))
-done
+#for contiggy in ${contig_sizes[@]}; do
+#	echo "${counter}-${contiggy}"
+#	counter=$((counter + 1 ))
+#done
+
 smallest=${contig_sizes[0]}
 adjusted_contig_count=$(( total_size / smallest ))
 echo "Contig count = ${contig_count}"
@@ -97,18 +98,9 @@ while IFS= read -r line
 do
 		IFS=' ' read -a arr_line <<< "$line"
 		original_size=${arr_line[3]}
-
-		echo "${prefix}"
-		classified=$(echo "${line}" | cut -d'	' -f1)
-		echo "classified as:${classified}"
-		if [[ "${classified}" == "C" ]]; then
-			contig_size=$(echo "${line}" | cut -d'	' -f4)
-			contig_sizes+=(${contig_size})
-			total_size=$(( total_size + contig_size ))
-		else
-			echo "Contig not classified"
-			unclassified=$(( unclassified + 1 ))
-		fi
+		adjusted_size=$(( original_size / smallest ))
+		arr_line[3]=${adjusted_size}
+		echo "${arr_line[0]}	${arr_line[1]}	${arr_line[2]}	${arr_line[3]}	${arr_line[4]}"
 done < "${OUTDATADIR}/${1}_assembled_sorted.${3}"
 
 if [[ ! -s "${OUTDATADIR}/${1}_assembled_weighted.mpa" ]]; then
