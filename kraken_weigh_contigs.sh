@@ -102,7 +102,7 @@ do
 		echo "2-${arr_line[3]}"
 		adjusted_size=$(( original_size / smallest ))
 		arr_line[3]=${adjusted_size}
-		echo ":|:${arr_line[0]}	${arr_line[1]}	${arr_line[2]}	${arr_line[3]}"
+		echo -e "${arr_line[0]}\n${arr_line[1]}\n${arr_line[2]}\n${arr_line[3]}"
 done < "${OUTDATADIR}/${1}_assembled_sorted.${3}"
 
 if [[ ! -s "${OUTDATADIR}/${1}_assembled_weighted.mpa" ]]; then
