@@ -101,6 +101,7 @@ do
 		original_size=${arr_line[2]}
 		echo "2-${arr_line[3]}"
 		adjusted_size=$(( original_size / smallest ))
+		echo "Adj_size = ${adjusted_size}"
 		arr_line[3]=${adjusted_size}
 		echo -e "${arr_line[0]}\n${arr_line[1]}\n${arr_line[2]}\n${arr_line[3]}"
 done < "${OUTDATADIR}/${1}_assembled_sorted.${3}"
