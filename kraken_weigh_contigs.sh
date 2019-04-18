@@ -85,11 +85,31 @@ for contiggy in ${contig_sizes[@]}; do
 	echo "${counter}-${contiggy}"
 	counter=$((counter + 1 ))
 done
-smallest=${contig_szies[0]}
+smallest=${contig_sizes[0]}
+adjusted_contig_count=$(( total_size / smallest ))
 echo "Contig count = ${contig_count}"
 echo "Total Size = ${total_size}"
 echo "unclassified = ${unclassified}"
 echo "Smallest contig = ${smallest}"
+echo "Adjusted contig count = ${adjusted_contig_count}"
+
+while IFS= read -r line
+do
+		IFS=' ' read -a arr_line <<< "$line"
+		original_size=${arr_line[3]}
+
+		echo "${prefix}"
+		classified=$(echo "${line}" | cut -d'	' -f1)
+		echo "classified as:${classified}"
+		if [[ "${classified}" == "C" ]]; then
+			contig_size=$(echo "${line}" | cut -d'	' -f4)
+			contig_sizes+=(${contig_size})
+			total_size=$(( total_size + contig_size ))
+		else
+			echo "Contig not classified"
+			unclassified=$(( unclassified + 1 ))
+		fi
+done < "${OUTDATADIR}/${1}_assembled_sorted.${3}"
 
 if [[ ! -s "${OUTDATADIR}/${1}_assembled_weighted.mpa" ]]; then
 	echo "${OUTDATADIR}/${1}_assembled_weighted.mpa does not exist, cant do mpa adjustment"
