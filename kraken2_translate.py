@@ -40,8 +40,7 @@ def get_mpa_string_From_NCBI(taxID, mpa_dict):
 			print(r["Rank"])
 			if r["Rank"] in recognized_ranks.keys():
 				current_rank=recognized_ranks[r["Rank"]]
-			else:
-				:
+			#else:
 				#current_rank="-"
 			current_taxa=(r["ScientificName"])
 			rank_and_taxa=current_rank+"__"+current_taxa
