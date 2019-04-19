@@ -23,11 +23,36 @@ def get_Taxon_Tree_From_NCBI(taxID):
 		return ";".join(lineage)
 		#print(' '.join(line.split()[1:]))
 
+# Script that will trim fasta files of any sequences that are smaller than the threshold
+def get_mpa_string_From_NCBI(taxID, mpa_dict):
+	Entrez.email = getpass.getuser()
+	#Creates the data structure from a pull from entrez nucleotide database using accession id with return type of genbank text mode
+	handle = Entrez.efetch(db="taxonomy", id=taxID, mode="text", rettype="xml")
+	#Parses the returned output into lines
+	result= Entrez.read(handle)
+	#Goes through each line until it finds (and prints) the organism name that the accession number represents
+	recognized_ranks={"superkingdom":"d", "kingdom":"k", "phylum":"p", "class":"c", "order":"o", "family":"f", "genus":"g", "species":"s", "species_group":"x"}
+	for entry in result:
+		#taxid = entry["Rank"]
+		mpa_string=""
+		for r in taxon["LineageEx"]:
+			if t["Rank"] in recognized_ranks.keys():
+				current_rank=recognized_ranks[t["Rank"]]
+				current_taxa=(t["ScientificName"])
+				rank_and_taxa=current_rank+"__"+current_taxa
+				print(rank_and_taxa)
+				mpa_string+=rank_and_taxa+"|"
+		lineage.append(name)
+		#print("%s\t|\t%s\t|\t%s" % (taxid, name, ";".join(lineage)))
+		return ";".join(lineage)
+		#print(' '.join(line.split()[1:]))
+
 
 def translate(input_kraken, output_labels):
 	kraken=open(input_kraken,'r')
 	line=kraken.readline().strip()
 	tax_tree_dict={}
+	mpa_dict={}
 	label_lines=[]
 	counter=0
 	while line != '':
@@ -47,4 +72,7 @@ def translate(input_kraken, output_labels):
 	for line in label_lines:
 		print(line)
 
-translate(sys.argv[1], sys.argv[2])
+#translate(sys.argv[1], sys.argv[2])
+
+blank_dick={}
+get_mpa_string_From_NCBI(470, blank_dick)
