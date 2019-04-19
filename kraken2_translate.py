@@ -40,4 +40,4 @@ def translate(input_kraken, output_labels):
 		label_lines.append(contig_id+"	"+tax_tree_dict[contig_taxID])
 	print("Lines:", len(label_lines))
 
-translate(sys.argv[1])
+translate(sys.argv[1], sys.argv[2])
