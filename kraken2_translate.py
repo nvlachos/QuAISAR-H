@@ -2,7 +2,7 @@ import sys
 import glob
 import fileinput
 import getpass
-
+from Bio import Entrez
 
 # Script that will trim fasta files of any sequences that are smaller than the threshold
 def get_Taxon_Tree_From_NCBI(taxID):
