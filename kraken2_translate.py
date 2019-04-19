@@ -36,9 +36,9 @@ def get_mpa_string_From_NCBI(taxID, mpa_dict):
 		#taxid = entry["Rank"]
 		mpa_string=""
 		for r in entry["LineageEx"]:
-			if t["Rank"] in recognized_ranks.keys():
-				current_rank=recognized_ranks[t["Rank"]]
-				current_taxa=(t["ScientificName"])
+			if r["Rank"] in recognized_ranks.keys():
+				current_rank=recognized_ranks[r["Rank"]]
+				current_taxa=(r["ScientificName"])
 				rank_and_taxa=current_rank+"__"+current_taxa
 				print(rank_and_taxa)
 				mpa_string+=rank_and_taxa+"|"
