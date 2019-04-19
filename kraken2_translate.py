@@ -47,7 +47,7 @@ def get_mpa_string_From_NCBI(taxID, mpa_dict):
 				print(rank_and_taxa)
 				mpa_string+=rank_and_taxa+"|"
 		entry_rank=entry["Rank"])
-		entry_name=entry["ScientificName"])
+		entry_name=entry["ScientificName"]
 		mpa_string+=entry_rank_and_entry_name
 		print(mpa_string)
 
