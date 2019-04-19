@@ -44,5 +44,7 @@ def translate(input_kraken, output_labels):
 	#for line in label_lines:
 		#label_file.write(line)
 	print("Lines:", len(label_lines))
+	for line in label_lines:
+		print(line)
 
 translate(sys.argv[1], sys.argv[2])
