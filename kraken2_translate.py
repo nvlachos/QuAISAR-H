@@ -41,9 +41,8 @@ def translate(input_kraken, output_labels):
 		line=kraken.readline().strip()
 		counter+=1
 	kraken.close()
-	label_file=open(output_labels, 'w')
-	for line in label_lines:
-		label_file.write(line)
+	#label_file=open(output_labels, 'w')
+	label_file.write("\n".join(label_lines))
 	print("Lines:", len(label_lines))
 	for line in label_lines:
 		print(line)
