@@ -48,7 +48,8 @@ def get_mpa_string_From_NCBI(taxID, mpa_dict):
 				mpa_string+=rank_and_taxa+"|"
 		entry_rank=entry["Rank"]
 		entry_name=entry["ScientificName"]
-		mpa_string+=entry_rank_and_entry_name
+		rank_and_taxa=entry_rank+"__"+entry_name
+		mpa_string+=rank_and_taxa
 		print(mpa_string)
 
 def translate(input_kraken, output_labels):
