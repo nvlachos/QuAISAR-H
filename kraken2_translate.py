@@ -38,6 +38,10 @@ def translate(input_kraken, output_labels):
 		else:
 			tax_tree_dict[contig_taxID]=get_Taxon_Tree_From_NCBI(contig_taxID)
 		label_lines.append(contig_id+"	"+tax_tree_dict[contig_taxID])
+	kraken.close()
+	#label_file=open(output_labels, 'w')
+	#for line in label_lines:
+		#label_file.write(line)
 	print("Lines:", len(label_lines))
 
 translate(sys.argv[1], sys.argv[2])
