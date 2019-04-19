@@ -36,7 +36,7 @@ def translate(input_kraken, output_labels):
 		contig_taxID = line_sections[2]
 		if contig_taxID not in tax_tree_dict.keys():
 			tax_tree_dict[contig_taxID]=get_Taxon_Tree_From_NCBI(contig_taxID)
-		print(counter, "adding", contig_id+"	"+tax_tree_dict[contig_taxID])
+		print(str(counter)+":"+contig_id+"	"+tax_tree_dict[contig_taxID])
 		label_lines.append(contig_id+"	"+tax_tree_dict[contig_taxID])
 		line=kraken.readline().strip()
 		counter+=1
