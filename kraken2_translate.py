@@ -50,7 +50,7 @@ def get_mpa_string_From_NCBI(taxID, mpa_dict):
 			current_rank=recognized_ranks[entry["Rank"]]
 		#else:
 			#current_rank="-"
-			current_taxa=(r["ScientificName"])
+			current_taxa=(entry["ScientificName"])
 			rank_and_taxa=current_rank+"__"+current_taxa
 			print(rank_and_taxa)
 			mpa_string+=rank_and_taxa
