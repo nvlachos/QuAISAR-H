@@ -35,17 +35,13 @@ def get_mpa_string_From_NCBI(taxID, mpa_dict):
 	for entry in result:
 		#taxid = entry["Rank"]
 		mpa_string=""
-		for r in taxon["LineageEx"]:
+		for r in entry["LineageEx"]:
 			if t["Rank"] in recognized_ranks.keys():
 				current_rank=recognized_ranks[t["Rank"]]
 				current_taxa=(t["ScientificName"])
 				rank_and_taxa=current_rank+"__"+current_taxa
 				print(rank_and_taxa)
 				mpa_string+=rank_and_taxa+"|"
-		lineage.append(name)
-		#print("%s\t|\t%s\t|\t%s" % (taxid, name, ";".join(lineage)))
-		return ";".join(lineage)
-		#print(' '.join(line.split()[1:]))
 
 
 def translate(input_kraken, output_labels):
