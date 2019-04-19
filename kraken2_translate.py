@@ -5,7 +5,7 @@ import getpass
 
 
 # Script that will trim fasta files of any sequences that are smaller than the threshold
-def get_Taxon_Tree_From_NCBI(taxID)
+def get_Taxon_Tree_From_NCBI(taxID):
 	Entrez.email = getpass.getuser()
 	#Creates the data structure from a pull from entrez nucleotide database using accession id with return type of genbank text mode
 	handle = Entrez.efetch(db="taxonomy", id=taxID, mode="text", rettype="xml")
@@ -40,4 +40,4 @@ def translate(input_kraken, output_labels):
 		label_lines.append(contig_id+"	"+tax_tree_dict[contig_taxID])
 	print("Lines:", len(label_lines))
 
-trim_assembly(sys.argv[1], sys.argv[2])
+translate(sys.argv[1])
