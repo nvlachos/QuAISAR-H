@@ -125,8 +125,6 @@ def organize_mpas(input_kraken, output_mpa):
 						mpa_taxon_counts["|".join(taxons[0:i])]+=1
 					else:
 						mpa_taxon_counts["|".join(taxons[0:i])]=1
-				else:
-
 		else:
 			print("Taxons is none")
 
