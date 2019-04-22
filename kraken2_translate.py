@@ -116,6 +116,7 @@ def organize_mpas(input_kraken, output_mpa):
 	for key in mpa_dict.keys():
 		print(key, mpa_dict[key])
 		taxons=mpa_dict[key].split("|")
+		print(taxons)
 		for i in range(0, len(taxons)):
 			print(taxons[0:i])
 			if taxons[i] != "":
