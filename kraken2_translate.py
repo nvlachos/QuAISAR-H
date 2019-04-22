@@ -93,12 +93,15 @@ def organize_mpas(input_kraken, output_mpa):
 		contig_id = line_sections[1]
 		contig_taxID = line_sections[2]
 		if contig_taxID not in mpa_dict.keys():
+			print("Adding", contig_taxID)
 			mpa_dict[contig_taxID]=get_mpa_string_From_NCBI(contig_taxID)
 			mpa_counts[contig_taxID]=1
 		else:
 			if contig_taxID not in mpa_counts.keys():
+				print("Doesnt exist???", contig_taxID)
 				mpa_counts[contig_taxID]=1
 			else:
+				print("Incrementing:", contig_taxID)
 				mpa_counts[contig_taxID]+=1
 	print("mpa_dict length:", len(mpa_dict))
 	for key in mpa_dict.keys():
