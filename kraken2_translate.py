@@ -107,7 +107,7 @@ def organize_mpas(input_kraken, output_mpa):
 	kraken.close()
 	print("mpa_dict length:", len(mpa_dict))
 	for key in mpa_dict.keys():
-		print(key, mpa.dict[key])
+		print(key, mpa_dict[key])
 	print("mpa_counts length:", len(mpa_counts))
 	for key in mpa_counts.keys():
 		print(key, mpa_counts[key])
