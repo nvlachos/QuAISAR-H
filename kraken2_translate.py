@@ -84,6 +84,8 @@ def get_mpa_string_From_NCBI(taxID):
 			rank_and_taxa=current_rank+"__"+current_taxa
 			#print(rank_and_taxa)
 			mpa_string+=rank_and_taxa
+		else:
+			print(entry["Rank"])
 		return(mpa_string)
 
 def organize_mpas(input_kraken, output_mpa):
