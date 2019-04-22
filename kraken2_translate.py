@@ -113,9 +113,9 @@ def organize_mpas(input_kraken, output_mpa):
 	kraken.close()
 	mpa_taxon_counts={}
 	print("mpa_dict length:", len(mpa_dict))
-	#for key in mpa_dict.keys():
-	#	print(key, mpa_dict[key])
-	#	taxons=mpa_dict[key].split("|")
+	for key in mpa_dict.keys():
+		print(key, mpa_dict[key])
+		taxons=mpa_dict[key].split("|")
 	#	for i in range(0, len(taxons)):
 	#		if taxons[i] != "":
 	#			if "|".join(taxons[0:i]) in mpa_taxon_counts:
