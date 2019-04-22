@@ -122,7 +122,7 @@ def organize_mpas(input_kraken, output_mpa):
 				print(taxons[0:i])
 				if taxons[0:i] != "":
 					if "|".join(taxons[0:i]) in mpa_taxon_counts:
-						print("Incrementing", "|".join(taxons[0:i]), "from" mpa_taxon_counts[taxons[0:i]], "to",  mpa_taxon_counts[taxons[0:i]]+1)
+						print("Incrementing", "|".join(taxons[0:i]), "from" mpa_taxon_counts["|".join(taxons[0:i])], "to",  mpa_taxon_counts[taxons[0:i]]+1)
 						mpa_taxon_counts["|".join(taxons[0:i])]+=1
 					else:
 						print("Creating", "|".join(taxons[0:i]), "at 1")
