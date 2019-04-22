@@ -110,7 +110,7 @@ def organize_mpas(input_kraken, output_mpa):
 		print(key, mpa.dict[key])
 	print("mpa_counts length:", len(mpa_counts))
 	for key in mpa_counts.keys():
-		print(key, mpa.counts[key])
+		print(key, mpa_counts[key])
 
 #get_mpa_string_From_NCBI(470, blank_dick)
 
