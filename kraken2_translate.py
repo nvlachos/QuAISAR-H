@@ -76,6 +76,7 @@ def get_mpa_string_From_NCBI(taxID):
 		if entry["Rank"] in recognized_ranks.keys() or entry["Rank"] == "no rank":
 			if entry["Rank"] == "no rank":
 				current_rank="-"
+				continue
 			else:
 				current_rank=recognized_ranks[entry["Rank"]]
 		#else:
