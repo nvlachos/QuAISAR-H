@@ -105,7 +105,7 @@ fi
 		#if [ -f "${sample_folder}/trimmed/${sample_name}.single.fq" ]; then
 		#	echo "Deleting catted single reads"
 		#	rm "${sample_folder}/trimmed/${sample_name}.single.fq"
-		fi
+		#fi
 		if [ -f "${sample_folder}/trimmed/${sample_name}_R1_001.unpaired.fq" ]; then
 			echo "Deleting unpaired R1 reads"
 			rm "${sample_folder}/trimmed/${sample_name}_R1_001.unpaired.fq"
