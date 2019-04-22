@@ -73,8 +73,11 @@ def get_mpa_string_From_NCBI(taxID):
 				rank_and_taxa=current_rank+"__"+current_taxa
 				#print(rank_and_taxa)
 				mpa_string+=rank_and_taxa+"|"
-		if entry["Rank"] in recognized_ranks.keys():
-			current_rank=recognized_ranks[entry["Rank"]]
+		if entry["Rank"] in recognized_ranks.keys() or entry["Rank"] == "no rank":
+			if entry["Rank"] == "no rank":
+				current_rank="-"
+			else:
+				current_rank=recognized_ranks[entry["Rank"]]
 		#else:
 			#current_rank="-"
 			current_taxa=(entry["ScientificName"])
@@ -106,12 +109,29 @@ def organize_mpas(input_kraken, output_mpa):
 				mpa_counts[contig_taxID]+=1
 		line=kraken.readline().strip()
 	kraken.close()
+	mpa_taxon_counts={}
 	print("mpa_dict length:", len(mpa_dict))
 	for key in mpa_dict.keys():
 		print(key, mpa_dict[key])
+		taxons=mpa_dict[key].split("|")
+		for i in range(0, len(taxons)):
+			if taxons[i] != "":
+				if "|".join(taxons[0:i]) in mpa_taxon_counts:
+					mpa_taxon_counts[taxons[0:i]]+=1
+				else
+					mpa_taxon_counts[taxons[0:i]]=1
+
+
+
+
+
+
+
+
 	print("mpa_counts length:", len(mpa_counts))
 	for key in mpa_counts.keys():
 		print(key, mpa_counts[key])
+
 
 #get_mpa_string_From_NCBI(470, blank_dick)
 
