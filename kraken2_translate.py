@@ -120,7 +120,7 @@ def organize_mpas(input_kraken, output_mpa):
 			if taxons[i] != "":
 				if "|".join(taxons[0:i]) in mpa_taxon_counts:
 					mpa_taxon_counts[taxons[0:i]]+=1
-				else
+				else:
 					mpa_taxon_counts[taxons[0:i]]=1
 
 
