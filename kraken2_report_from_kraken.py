@@ -183,7 +183,7 @@ def organize_mpas():
 	# 	line=kraken.readline().strip()
 	# kraken.close()
 	headNode = taxon_Node("unclassified", 0, None, 0, "u")
-	headNode.addChild(taxon_Node("Test1", 23, taxon_Node("Test2", 34, None, 470, "G"), 469, "S"))
+	headNode.addChild(taxon_Node("Test1", 23, None, 469, "S"))
 	print(headNode.find(469).showName())
 
 	# mpa_taxon_counts={}
