@@ -32,6 +32,7 @@ class taxon_Node:
 		self.taxonID = taxonID
 		self.taxLevel = taxonLevel
 		print("Initializing:2")
+		print(self.name, self.count, self.Parent, self.taxonID, self.taxonLevel)
 
 	#defining class methods
 	def showName(self):
