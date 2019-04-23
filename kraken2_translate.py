@@ -104,10 +104,10 @@ def organize_mpas(input_kraken, output_mpa):
 			mpa_counts[contig_taxID]=1
 		else:
 			if contig_taxID not in mpa_counts.keys():
-				print("Doesnt exist???", contig_taxID)
+				#print("Doesnt exist???", contig_taxID)
 				mpa_counts[contig_taxID]=1
 			else:
-				print("Incrementing:", contig_taxID)
+				#print("Incrementing:", contig_taxID)
 				mpa_counts[contig_taxID]+=1
 		line=kraken.readline().strip()
 	kraken.close()
