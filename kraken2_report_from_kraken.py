@@ -44,24 +44,31 @@ class taxon_Node:
 		print(self.ID)
 
 	def showChildren(self):
-		for child in self.children:
-			print(child.showName())
+		if len(self.children) == 0:
+			print("No Children")
+		else:
+			for child in self.children:
+				print(child.showName())
 
 	def addCounts(self, newReads):
 		self.count += newReads
 
 	def addChild(self, newChild):
+		print("Children:", len(children))
 		self.children.append(newChild)
+		print("Children:", len(children))
 
 	def Child_name(self, checkName):
 		for child in self.children:
 			if child.showName == checkName:
 				return True
+		return False
 
 	def isChild_taxon(self, checkName):
 		for child in self.children:
 			if child.showtaxID == checkName:
 				return True
+		return False
 
 	def find(self, checkName):
 		for child in self.children:
