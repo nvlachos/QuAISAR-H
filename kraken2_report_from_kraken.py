@@ -48,6 +48,8 @@ class taxon_Node:
 
 	def addChild(self, newChild):
 		if self.children is None:
+			self.children=[newChild]
+		else:
 			self.children.append(newChild)
 		print("Children:", len(self.children), self.children[0].showName(), self.children[len(self.children)-1].showName())
 
