@@ -45,7 +45,7 @@ class taxon_Node:
 
 	def showChildren(self):
 		for child in self.children:
-			print(child.showName)
+			print(child.showName())
 
 	def addCounts(self, newReads):
 		self.count += newReads
@@ -189,7 +189,8 @@ def organize_mpas():
 	cNode = taxon_Node("Gammaproteobacteria", 0, None, 1236, "c")
 	oNode = taxon_Node("Pseudomonadales", 0, None, 72274, "o")
 	headNode.addChild(dNode)
-	headNode.find(2).showName()
+	headNode.addChild(pNode)
+	#headNode.find(2).showName()
 
 	# mpa_taxon_counts={}
 	# #print("mpa_dict length:", len(mpa_dict))
