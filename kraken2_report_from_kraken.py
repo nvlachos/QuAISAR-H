@@ -199,7 +199,7 @@ def organize_mpas():
 	# 	line=kraken.readline().strip()
 	# kraken.close()
 	headNode = taxon_Node("unclassified", 0, None, 0, "u")
-	dNode = taxon_Node("Bacteria", 0, None, 2, "d")
+	dNode = taxon_Node("Bacteria", 0, None, ["FAKE"], 2, "d")
 	pNode = taxon_Node("Proteobacteria", 0, None, 1224, "p")
 	cNode = taxon_Node("Gammaproteobacteria", 0, None, 1236, "c")
 	oNode = taxon_Node("Pseudomonadales", 0, None, 72274, "o")
