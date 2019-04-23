@@ -12,6 +12,7 @@ class taxon_Node:
 	parent = None
 	taxLevel = "-"
 	children = []
+	print("Start")
 
 	#defining constructor
 	def __init__(self, taxonName, taxonCount, taxonParent, taxonChildren, taxonID, taxonLevel):
@@ -21,6 +22,7 @@ class taxon_Node:
 		self.children = taxonChildren
 		self.taxonID = taxonID
 		self.taxLevel = taxonLevel
+		print("Initializing:1")
 
 	#defining constructor
 	def __init__(self, taxonName, taxonCount, taxonParent, taxonID, taxonLevel):
@@ -29,6 +31,7 @@ class taxon_Node:
 		self.parent = taxonParent
 		self.taxonID = taxonID
 		self.taxLevel = taxonLevel
+		print("Initializing:2")
 
 	#defining class methods
 	def showName(self):
