@@ -12,7 +12,6 @@ class taxon_Node:
 	parent = None
 	taxLevel = "-"
 	children = []
-	print("Start")
 
 	#defining constructor
 	def __init__(self, taxonName, taxonCount, taxonParent, taxonChildren, taxonID, taxonLevel):
@@ -22,7 +21,6 @@ class taxon_Node:
 		self.children = taxonChildren
 		self.taxonID = taxonID
 		self.taxLevel = taxonLevel
-		print("Initializing:1")
 
 	#defining constructor
 	def __init__(self, taxonName, taxonCount, taxonParent, taxonID, taxonLevel):
@@ -31,13 +29,10 @@ class taxon_Node:
 		self.parent = taxonParent
 		self.taxonID = taxonID
 		self.taxLevel = taxonLevel
-		print("Initializing:2")
-		print(self.name, self.count, self.parent, self.taxID, self.taxLevel)
 
 	#defining class methods
 	def showName(self):
 		print(self.name)
-		print("Dunzo")
 
 	def showCount(self):
 		print(self.count)
@@ -190,9 +185,8 @@ def organize_mpas():
 	# 	line=kraken.readline().strip()
 	# kraken.close()
 	headNode = taxon_Node("unclassified", 0, None, 0, "u")
-	#headNode.addChild(taxon_Node("Test1", 23, taxon_Node("Test2", 34, None, 470, "G"), 469, "S"))
-	headNode.showName()
-	#print(headNode.find(469).showName)
+	headNode.addChild(taxon_Node("Test1", 23, taxon_Node("Test2", 34, None, 470, "G"), 469, "S"))
+	print(headNode.find(469).showName)
 
 	# mpa_taxon_counts={}
 	# #print("mpa_dict length:", len(mpa_dict))
