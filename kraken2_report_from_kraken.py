@@ -65,7 +65,7 @@ class taxon_Node:
 
 	def find(self, checkName):
 		for child in self.children:
-			print(child.showtaxID(), checkName)
+			print(len(self.children), child.showtaxID(), checkName)
 			if child.showtaxID == checkName:
 				return child
 		return None
