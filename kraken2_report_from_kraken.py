@@ -22,14 +22,6 @@ class taxon_Node:
 		self.ID = taxonID
 		self.level = taxonLevel
 
-	#defining constructor
-	def __init__(self, taxonName, taxonCount, taxonParent, taxonID, taxonLevel):
-		self.name = taxonName
-		self.count = taxonCount
-		self.parent = taxonParent
-		self.ID = taxonID
-		self.level = taxonLevel
-
 	#defining class methods
 	def showName(self):
 		print(self.name)
@@ -62,13 +54,13 @@ class taxon_Node:
 
 	def Child_name(self, checkName):
 		for child in self.children:
-			if child.showName == checkName:
+			if child.showName() == checkName:
 				return True
 		return False
 
 	def isChild_taxon(self, checkName):
 		for child in self.children:
-			if child.showtaxID == checkName:
+			if child.showtaxID() == checkName:
 				return True
 		return False
 
