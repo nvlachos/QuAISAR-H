@@ -120,14 +120,14 @@ def organize_mpas(input_kraken, output_mpa):
 			print(taxons)
 			for i in range(0, len(taxons)):
 				print(taxons[0:i+1])
-				if taxons[i] != "":
+				if taxons[i] != "" and taxons[i][0:1] != "-":
 					print(taxons[i])
 					if "|".join(taxons[0:i+1]) in mpa_taxon_counts:
-						print("Incrementing", "|".join(taxons[0:i+1]), "from", mpa_taxon_counts["|".join(taxons[0:i+1])], "to",  mpa_taxon_counts["|".join(taxons[0:i+1])]+1) #mpa_taxon_counts[key])
-						mpa_taxon_counts["|".join(taxons[0:i+1])]+=1 #mpa_taxon_counts[key]
+						print("Incrementing", "|".join(taxons[0:i+1]), "from", mpa_taxon_counts["|".join(taxons[0:i+1])], "to",  mpa_taxon_counts["|".join(taxons[0:i+1])]+mpa_counts[key])
+						mpa_taxon_counts["|".join(taxons[0:i+1])]+=mpa_counts[key]
 					else:
 						print("Creating", "|".join(taxons[0:i+1]), "at 1")
-						mpa_taxon_counts["|".join(taxons[0:i+1])]=1 #mpa_taxon_counts[key]
+						mpa_taxon_counts["|".join(taxons[0:i+1])]=mpa_counts[key]
 		else:
 			print("Taxons is none")
 
