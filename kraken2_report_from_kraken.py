@@ -190,7 +190,7 @@ def organize_mpas():
 	oNode = taxon_Node("Pseudomonadales", 0, None, 72274, "o")
 	headNode.addChild(dNode)
 	headNode.addChild(pNode)
-	headNode,showChildren()
+	headNode.showChildren()
 	#headNode.find(2).showName()
 
 	# mpa_taxon_counts={}
