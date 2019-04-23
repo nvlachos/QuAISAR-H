@@ -118,8 +118,8 @@ def organize_mpas(input_kraken, output_mpa):
 		taxons=mpa_dict[key].split("|")
 		if taxons is not None:
 			print(taxons)
-			for i in range(1, len(taxons)):
-				print(taxons[0:i])
+			for i in range(0, len(taxons)):
+				print(taxons[0:i+1])
 				if taxons[i] != "":
 					print(taxons[i])
 					if "|".join(taxons[0:i]) in mpa_taxon_counts:
