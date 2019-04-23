@@ -79,9 +79,12 @@ class taxon_Node:
 	def print(self):
 		print("Name:", self.name +"\nCounts:", str(self.count) +"\nID:", str(self.ID))
 		if self.children is not None:
+			counter=0
 			for child in self.children:
+				print("Child:", counter)
 				child.showName()
 				child.showtaxID()
+				counter+=1
 
 	#end of the class definition
 
