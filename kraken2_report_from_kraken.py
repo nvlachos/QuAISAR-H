@@ -8,9 +8,9 @@ class taxon_Node:
 	#initializing the variables
 	name = ""
 	count = 0
-	taxID = 0
+	ID = 0
 	parent = None
-	taxLevel = "-"
+	level = "-"
 	children = []
 
 	#defining constructor
@@ -19,16 +19,16 @@ class taxon_Node:
 		self.count = taxonCount
 		self.parent = taxonParent
 		self.children = taxonChildren
-		self.taxID = taxonID
-		self.taxLevel = taxonLevel
+		self.ID = taxonID
+		self.level = taxonLevel
 
 	#defining constructor
 	def __init__(self, taxonName, taxonCount, taxonParent, taxonID, taxonLevel):
 		self.name = taxonName
 		self.count = taxonCount
 		self.parent = taxonParent
-		self.taxID = taxonID
-		self.taxLevel = taxonLevel
+		self.ID = taxonID
+		self.level = taxonLevel
 
 	#defining class methods
 	def showName(self):
@@ -189,7 +189,7 @@ def organize_mpas():
 	cNode = taxon_Node("Gammaproteobacteria", 0, None, 1236, "c")
 	oNode = taxon_Node("Pseudomonadales", 0, None, 72274, "o")
 	headNode.addChild(dNode)
-	print(headNode.find(2).showName())
+	headNode.find(2).showName()
 
 	# mpa_taxon_counts={}
 	# #print("mpa_dict length:", len(mpa_dict))
