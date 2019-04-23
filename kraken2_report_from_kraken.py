@@ -78,7 +78,7 @@ class taxon_Node:
 		return None
 
 	def print(self):
-		print("Name:", self.name +"\nCounts:", str(self.count) +"\nID:", str(self.ID), +"\nLevel:", self.level)
+		print("Name:", self.name +"\nCounts:", str(self.count) +"\nID:", str(self.ID), +"\nLevel:", str(self.level))
 		for child in self.children:
 			child.showName()
 			child.showtaxID()
