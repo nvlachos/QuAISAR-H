@@ -132,7 +132,7 @@ def organize_mpas(input_kraken, output_mpa):
 			print("Taxons is none")
 
 	print("mpa_taxon_counts length:", len(mpa_taxon_counts))
-	for key in mpa_taxon_counts.keys():
+	for key in sorted(mpa_taxon_counts.keys()):
 		print(key, mpa_taxon_counts[key])
 
 
