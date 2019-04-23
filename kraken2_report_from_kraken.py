@@ -11,14 +11,15 @@ class taxon_Node:
 	ID = 0
 	parent = None
 	level = "-"
-	children = list()
+	children = None
 
 	#defining constructor
 	def __init__(self, taxonName, taxonCount, taxonParent, taxonChildren, taxonID, taxonLevel):
 		self.name = taxonName
 		self.count = taxonCount
 		self.parent = taxonParent
-		self.children = taxonChildren
+		if taxonChildren is not None:
+			self.children = taxonChildren
 		self.ID = taxonID
 		self.level = taxonLevel
 
@@ -36,7 +37,7 @@ class taxon_Node:
 		print(self.ID)
 
 	def showChildren(self):
-		if len(self.children) == 0:
+		if self.children is None or len(self.children) == 0:
 			print("No Children")
 		else:
 			for child in self.children:
@@ -46,29 +47,30 @@ class taxon_Node:
 		self.count += newReads
 
 	def addChild(self, newChild):
-		self.children.append(newChild)
-		if len(self.children) > 0:
-			print("Children:", len(self.children), self.children[0].showName(), self.children[len(self.children)-1].showName())
-		else:
-			print("Length is still 0")
+		if self.children is None:
+			self.children.append(newChild)
+		print("Children:", len(self.children), self.children[0].showName(), self.children[len(self.children)-1].showName())
 
 	def Child_name(self, checkName):
-		for child in self.children:
-			if child.showName() == checkName:
-				return True
+		if self.children is not None:
+			for child in self.children:
+				if child.showName() == checkName:
+					return True
 		return False
 
 	def isChild_taxon(self, checkName):
-		for child in self.children:
-			if child.showtaxID() == checkName:
-				return True
+		if self.children is not None:
+			for child in self.children:
+				if child.showtaxID() == checkName:
+					return True
 		return False
 
 	def find(self, checkName):
-		for child in self.children:
-			print(len(self.children), child.showtaxID(), checkName)
-			if child.showtaxID == checkName:
-				return child
+		if self.children is not None:
+			for child in self.children:
+				print(len(self.children), child.showtaxID(), checkName)
+				if child.showtaxID() == checkName:
+					return child
 		return None
 
 	def print(self):
