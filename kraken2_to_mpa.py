@@ -60,7 +60,7 @@ def get_mpa_string_From_NCBI(taxID):
 	recognized_ranks={"superkingdom":"d", "kingdom":"k", "phylum":"p", "class":"c", "order":"o", "family":"f", "genus":"g", "species":"s", "species_group":"x"}
 	for entry in result:
 		#taxid = entry["Rank"]
-		#print(entry)
+		print(entry)
 		mpa_string=""
 		for r in entry["LineageEx"]:
 			#print(r)
@@ -84,8 +84,8 @@ def get_mpa_string_From_NCBI(taxID):
 			rank_and_taxa=current_rank+"__"+current_taxa
 			#print(rank_and_taxa)
 			mpa_string+=rank_and_taxa
-		else:
-			#print(entry["Rank"])
+		#else:
+		#	print(entry["Rank"])
 		return(mpa_string)
 
 def organize_mpas(input_kraken, output_mpa):
