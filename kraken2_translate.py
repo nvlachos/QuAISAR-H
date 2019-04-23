@@ -24,8 +24,8 @@ def get_Taxon_Tree_From_NCBI(taxID):
 		#print(' '.join(line.split()[1:]))
 
 def translate(input_kraken, output_labels):
-	kraken=open(input_kraken,'r')
-	line=kraken.readline().strip()
+	kraken_file=open(input_kraken,'r')
+	line=kraken_file.readline().strip()
 	tax_tree_dict={}
 	mpa_dict={}
 	label_lines=[]
