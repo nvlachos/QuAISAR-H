@@ -19,7 +19,7 @@ class taxon_Node:
 		self.count = taxonCount
 		self.parent = taxonParent
 		self.children = taxonChildren
-		self.taxonID = taxonID
+		self.taxID = taxonID
 		self.taxLevel = taxonLevel
 
 	#defining constructor
@@ -27,7 +27,7 @@ class taxon_Node:
 		self.name = taxonName
 		self.count = taxonCount
 		self.parent = taxonParent
-		self.taxonID = taxonID
+		self.taxID = taxonID
 		self.taxLevel = taxonLevel
 
 	#defining class methods
@@ -65,7 +65,7 @@ class taxon_Node:
 
 	def find(self, checkName):
 		for child in self.children:
-			print(child.showtaxID())
+			print(child.showtaxID(), checkName)
 			if child.showtaxID == checkName:
 				return child
 		return None
