@@ -77,6 +77,11 @@ class taxon_Node:
 				return child
 		return None
 
+	def print(self):
+		print("Name:", self.name +"\nCounts:", self.count +"\nParent:", self.parent +"\nID:", self.ID, +"\nLevel:", self.level)
+		for child in self.children:
+			child.showName()
+
 	#end of the class definition
 
 
@@ -201,6 +206,7 @@ def organize_mpas():
 	print('2')
 	headNode.showChildren()
 	print('3')
+	dNode.print()
 	headNode.addChild(dNode)
 	print('4')
 	headNode.showChildren()
