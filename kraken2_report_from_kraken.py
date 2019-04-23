@@ -41,7 +41,7 @@ class taxon_Node:
 		print(self.parent)
 
 	def showtaxID(self):
-		print(self.taxID)
+		print(self.ID)
 
 	def showChildren(self):
 		for child in self.children:
