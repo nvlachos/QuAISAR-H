@@ -11,7 +11,7 @@ class taxon_Node:
 	ID = 0
 	parent = None
 	level = "-"
-	children = []
+	children = list()
 
 	#defining constructor
 	def __init__(self, taxonName, taxonCount, taxonParent, taxonChildren, taxonID, taxonLevel):
