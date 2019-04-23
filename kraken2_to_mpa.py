@@ -60,7 +60,7 @@ def get_mpa_string_From_NCBI(taxID):
 	recognized_ranks={"superkingdom":"d", "kingdom":"k", "phylum":"p", "class":"c", "order":"o", "family":"f", "genus":"g", "species":"s", "species_group":"x"}
 	for entry in result:
 		#taxid = entry["Rank"]
-		print(entry)
+		#print(entry)
 		mpa_string=""
 		for r in entry["LineageEx"]:
 			#print(r)
@@ -85,7 +85,7 @@ def get_mpa_string_From_NCBI(taxID):
 			#print(rank_and_taxa)
 			mpa_string+=rank_and_taxa
 		else:
-			print(entry["Rank"])
+			#print(entry["Rank"])
 		return(mpa_string)
 
 def organize_mpas(input_kraken, output_mpa):
@@ -112,21 +112,21 @@ def organize_mpas(input_kraken, output_mpa):
 		line=kraken.readline().strip()
 	kraken.close()
 	mpa_taxon_counts={}
-	print("mpa_dict length:", len(mpa_dict))
+	#print("mpa_dict length:", len(mpa_dict))
 	for key in mpa_dict.keys():
-		print(key, mpa_dict[key])
+		#print(key, mpa_dict[key])
 		taxons=mpa_dict[key].split("|")
 		if taxons is not None:
-			print(taxons)
+			#print(taxons)
 			for i in range(0, len(taxons)):
-				print(taxons[0:i+1])
+				#print(taxons[0:i+1])
 				if taxons[i] != "" and taxons[i][0:1] != "-":
-					print(taxons[i])
+					#print(taxons[i])
 					if "|".join(taxons[0:i+1]) in mpa_taxon_counts:
-						print("Incrementing", "|".join(taxons[0:i+1]), "from", mpa_taxon_counts["|".join(taxons[0:i+1])], "to",  mpa_taxon_counts["|".join(taxons[0:i+1])]+mpa_counts[key])
+						#print("Incrementing", "|".join(taxons[0:i+1]), "from", mpa_taxon_counts["|".join(taxons[0:i+1])], "to",  mpa_taxon_counts["|".join(taxons[0:i+1])]+mpa_counts[key])
 						mpa_taxon_counts["|".join(taxons[0:i+1])]+=mpa_counts[key]
 					else:
-						print("Creating", "|".join(taxons[0:i+1]), "at 1")
+						#print("Creating", "|".join(taxons[0:i+1]), "at 1")
 						mpa_taxon_counts["|".join(taxons[0:i+1])]=mpa_counts[key]
 		else:
 			print("Taxons is none")
@@ -140,9 +140,9 @@ def organize_mpas(input_kraken, output_mpa):
 
 
 
-	print("mpa_counts length:", len(mpa_counts))
-	for key in mpa_counts.keys():
-		print(key, mpa_counts[key])
+	#print("mpa_counts length:", len(mpa_counts))
+	#for key in mpa_counts.keys():
+	#	print(key, mpa_counts[key])
 
 
 #get_mpa_string_From_NCBI(470, blank_dick)
