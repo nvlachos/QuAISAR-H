@@ -5,37 +5,37 @@ import getpass
 from Bio import Entrez
 
 class taxon_Node:
-    #initializing the variables
-    name = ""
-    count = 0
+	#initializing the variables
+	name = ""
+	count = 0
 	taxID = 0
 	parent = None
 	taxLevel = "-"
 	children = []
 
-    #defining constructor
-    def __init__(self, taxonName, taxonCount, taxonParent, taxonChildren, taxonID, taxonLevel):
-        self.name = taxonName
-        self.count = taxonCount
+	#defining constructor
+	def __init__(self, taxonName, taxonCount, taxonParent, taxonChildren, taxonID, taxonLevel):
+		self.name = taxonName
+		self.count = taxonCount
 		self.parent = taxonParent
 		self.children = taxonChildren
 		self.taxonID = taxonID
 		self.taxLevel = taxonLevel
 
 	#defining constructor
-    def __init__(self, taxonName, taxonCount, taxonParent, taxonID, taxonLevel):
-        self.name = taxonName
-        self.count = taxonCount
+	def __init__(self, taxonName, taxonCount, taxonParent, taxonID, taxonLevel):
+		self.name = taxonName
+		self.count = taxonCount
 		self.parent = taxonParent
 		self.taxonID = taxonID
 		self.taxLevel = taxonLevel
 
-    #defining class methods
-    def showName(self):
-        print(self.name)
+	#defining class methods
+	def showName(self):
+		print(self.name)
 
-    def showCount(self):
-        print(self.count)
+	def showCount(self):
+		print(self.count)
 
 	def showParent(self):
 		print(self.parent)
@@ -71,7 +71,7 @@ class taxon_Node:
 				child.find(checkName)
 		return None
 
-    #end of the class definition
+	#end of the class definition
 
 
 
