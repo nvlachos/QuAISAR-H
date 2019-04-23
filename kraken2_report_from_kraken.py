@@ -54,7 +54,6 @@ class taxon_Node:
 		self.count += newReads
 
 	def addChild(self, newChild):
-		print("Children:", len(self.children), self.children[0], self.children[len(self.children)])
 		self.children.append(newChild)
 		print("Children:", len(self.children), self.children[0], self.children[len(self.children)])
 
