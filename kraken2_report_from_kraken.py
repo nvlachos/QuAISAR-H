@@ -56,7 +56,7 @@ class taxon_Node:
 	def addChild(self, newChild):
 		self.children.append(newChild)
 		if len(self.children) > 0:
-			print("Children:", len(self.children), self.children[0], self.children[len(self.children)])
+			print("Children:", len(self.children), self.children[0], self.children[len(self.children)-1])
 		else:
 			print("Length is still 0")
 
