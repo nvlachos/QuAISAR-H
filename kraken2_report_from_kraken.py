@@ -33,6 +33,7 @@ class taxon_Node:
 	#defining class methods
 	def showName(self):
 		print(self.name)
+		print("Dunzo")
 
 	def showCount(self):
 		print(self.count)
