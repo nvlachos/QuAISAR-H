@@ -168,6 +168,7 @@ def make_node_tree():
 		child.getParent().showName()
 	print('6')
 	for child in headNode.getChildren():
+		child.showName()
 		child.showChildren()
 	print('7')
 	#headNode.showChildren()
