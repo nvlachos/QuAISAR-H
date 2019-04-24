@@ -43,6 +43,7 @@ class taxon_Node:
 		if self.children is None or len(self.children) == 0:
 			print("No Children")
 		else:
+			print("Children:" len(self.children))
 			for child in self.children:
 				print(child.showName())
 
@@ -55,7 +56,7 @@ class taxon_Node:
 		newChild.showtaxID()
 		if self.children is None:
 			self.children=[newChild]
-			print("Children:", len(self.children), self.children[0].getName(), self.children[len(self.children)-1].getName())
+			print("Children:", len(self.children), self.children[0].getName())
 		else:
 			self.children.append(newChild)
 		print("Children:", len(self.children), self.children[0].getName(), self.children[len(self.children)-1].getName())
