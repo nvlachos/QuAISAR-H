@@ -164,9 +164,11 @@ def make_node_tree():
 	print('4')
 	headNode.showChildren()
 	print('5')
-	headNode.getChildren().showParent()
+	for child in headNode.getChildren():
+		child.showParent()
 	print('6')
-	headNode.getChildren().showChildren()
+	for child in headNode.getChildren():
+		child.showChildren()
 	print('7')
 	#headNode.showChildren()
 	print('7')
