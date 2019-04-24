@@ -47,8 +47,9 @@ class taxon_Node:
 		else:
 			print("Children:", len(self.children))
 			for child in self.children:
-				print("Chlid:")
+				print("Child:")
 				print(child.showName())
+				print("dlihc")
 
 	def addCounts(self, newReads):
 		self.count += newReads
