@@ -159,6 +159,7 @@ def make_node_tree():
 	print('3')
 	dNode.print()
 	link_Nodes(headNode, dNode)
+	link_Nodes(headNode, cNode)
 	#headNode.addChild(dNode)
 	print('4')
 	headNode.showChildren()
