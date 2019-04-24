@@ -148,7 +148,7 @@ def make_node_tree():
 	headNode = taxon_Node("unclassified", 0, None, None, 0, "u")
 	dNode = taxon_Node("Bacteria", 0, None, None, 2, "d")
 	pNode = taxon_Node("Proteobacteria", 0, None, None, 1224, "p")
-	cNode = taxon_Node("Gammaproteobacteria", 0, pNode, None, 1236, "c")
+	cNode = taxon_Node("Gammaproteobacteria", 0, None, None, 1236, "c")
 #	oNode = taxon_Node("Pseudomonadales", 0, None, 72274, "o")
 	print("1")
 	dNode.showChildren()
