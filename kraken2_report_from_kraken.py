@@ -39,7 +39,10 @@ class taxon_Node:
 		return self.count
 
 	def showParent(self):
-		print(self.parent)
+		if self.parent is not None:
+			print(self.parent)
+		else:
+			print("No parent assigned")
 
 	def getParent(self):
 		return self.parent
@@ -107,6 +110,16 @@ class taxon_Node:
 	def setParent(self, newParent):
 		self.parent = newParent
 
+	def getChildCount(self):
+		if self.children in None or len(self.children) == 0:
+			return 0
+		else:
+			return len(self.children)
+
+	def showLevel(self):
+		print(self.level)
+
+
 	def print(self):
 		print("Name:", self.name +"\nCounts:", str(self.count) +"\nID:", str(self.ID))
 		if self.children is not None:
@@ -115,6 +128,9 @@ class taxon_Node:
 				print("Child:", counter)
 				child.showName()
 				child.showtaxID()
+				print(child.getChildCount())
+				child.showParent()
+				child.showLevel()
 				counter+=1
 		#print("End Print")
 	#end of the class definition
