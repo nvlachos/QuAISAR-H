@@ -35,11 +35,20 @@ class taxon_Node:
 	def showCount(self):
 		print(self.count)
 
+	def getCount(self):
+		return self.count
+
 	def showParent(self):
 		print(self.parent)
 
+	def getParent(self):
+		return self.Parent
+
 	def showtaxID(self):
 		print(self.ID)
+
+	def getTaxID(self):
+		return taxID
 
 	def showChildren(self):
 		if self.children is None or len(self.children) == 0:
@@ -51,42 +60,50 @@ class taxon_Node:
 				child.showName()
 				#print("dlihc")
 
+	def getChildren(self):
+		return self.children
+
 	def addCounts(self, newReads):
 		self.count += newReads
 
 	def addChild(self, newChild):
 		#print("Adding")
-		newChild.showName()
-		newChild.showtaxID()
+		#newChild.showName()
+		#newChild.showtaxID()
 		if self.children is None:
 			self.children=[newChild]
 			#print("Children:", len(self.children), self.children[0].getName())
 		else:
 			self.children.append(newChild)
 			#print("Children:", len(self.children), self.children[0].getName(), self.children[len(self.children)-1].getName())
-		print("End Adding")
+		#print("End Adding")
 
-	def Child_name(self, checkName):
+	def isChild_name(self, checkName):
 		if self.children is not None:
 			for child in self.children:
-				if child.showName() == checkName:
+				if child.getName() == checkName:
 					return True
 		return False
 
 	def isChild_taxon(self, checkName):
 		if self.children is not None:
 			for child in self.children:
-				if child.showtaxID() == checkName:
+				if child.getTaxID() == checkName:
 					return True
 		return False
 
 	def find(self, checkName):
 		if self.children is not None:
 			for child in self.children:
-				print(len(self.children), child.showtaxID(), checkName)
-				if child.showtaxID() == checkName:
+				print(len(self.children), child.getTaxID(), checkName)
+				if child.getTaxID() == checkName:
 					return child
+				else:
+					self.find(checkName)
 		return None
+
+	def setParent(self, newParent):
+		self.parent = newParent
 
 	def print(self):
 		print("Name:", self.name +"\nCounts:", str(self.count) +"\nID:", str(self.ID))
@@ -100,10 +117,9 @@ class taxon_Node:
 		print("End Print")
 	#end of the class definition
 
-
-
-
-
+def link_Nodes(self, parent_node, child_node):
+	child_node.setParent(parent_Node)
+	parent_Node.addChild(child_node)
 
 #def organize_mpas(input_kraken, output_mpa):
 def make_node_tree():
@@ -132,22 +148,24 @@ def make_node_tree():
 	headNode = taxon_Node("unclassified", 0, None, None, 0, "u")
 	dNode = taxon_Node("Bacteria", 0, None, None, 2, "d")
 	pNode = taxon_Node("Proteobacteria", 0, None, None, 1224, "p")
-#	cNode = taxon_Node("Gammaproteobacteria", 0, None, 1236, "c")
+	cNode = taxon_Node("Gammaproteobacteria", pNode, None, 1236, "c")
 #	oNode = taxon_Node("Pseudomonadales", 0, None, 72274, "o")
 	print("1")
 	dNode.showChildren()
 	pNode.showChildren()
+	cNode.showChildren()
 	print('2')
 	headNode.showChildren()
 	print('3')
 	dNode.print()
-	headNode.addChild(dNode)
+	link_Nodes(headNode, dNode)
+	#headNode.addChild(dNode)
 	print('4')
 	headNode.showChildren()
 	print('5')
-	headNode.addChild(pNode)
+	#headNode.addChild(pNode)
 	print('6')
-	headNode.showChildren()
+	#headNode.showChildren()
 	print('7')
 	#headNode.find(2).showName()
 
