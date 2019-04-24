@@ -114,12 +114,12 @@ class taxon_Node:
 				child.showName()
 				child.showtaxID()
 				counter+=1
-		print("End Print")
+		#print("End Print")
 	#end of the class definition
 
 def link_Nodes(parent_node, child_node):
-	child_node.setParent(parent_Node)
-	parent_Node.addChild(child_node)
+	child_node.setParent(parent_node)
+	parent_node.addChild(child_node)
 
 #def organize_mpas(input_kraken, output_mpa):
 def make_node_tree():
