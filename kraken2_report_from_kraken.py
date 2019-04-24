@@ -47,6 +47,7 @@ class taxon_Node:
 		self.count += newReads
 
 	def addChild(self, newChild):
+		print("Adding")
 		newChild.showName()
 		newChild.showtaxID()
 		if self.children is None:
@@ -55,6 +56,7 @@ class taxon_Node:
 		else:
 			self.children.append(newChild)
 		print("Children:", len(self.children), self.children[0].showName(), self.children[len(self.children)-1].showName())
+		print("End Adding")
 
 	def Child_name(self, checkName):
 		if self.children is not None:
@@ -87,98 +89,16 @@ class taxon_Node:
 				child.showName()
 				child.showtaxID()
 				counter+=1
-
+		print("End Print")
 	#end of the class definition
 
 
 
 
-# Script that will trim fasta files of any sequences that are smaller than the threshold
-def get_Taxon_Tree_From_NCBI(taxID):
-	Entrez.email = getpass.getuser()
-	#Creates the data structure from a pull from entrez nucleotide database using accession id with return type of genbank text mode
-	handle = Entrez.efetch(db="taxonomy", id=taxID, mode="text", rettype="xml")
-	#Parses the returned output into lines
-	result= Entrez.read(handle)
-	#Goes through each line until it finds (and prints) the organism name that the accession number represents
-	for taxon in result:
-		taxid = taxon["TaxId"]
-		name = taxon["ScientificName"]
-		lineage=["root"]
-		for t in taxon["LineageEx"]:
-			lineage.append(t["ScientificName"])
-		lineage.append(name)
-		#print("%s\t|\t%s\t|\t%s" % (taxid, name, ";".join(lineage)))
-		return ";".join(lineage)
-		#print(' '.join(line.split()[1:]))
 
-def translate(input_kraken, output_labels):
-	kraken=open(input_kraken,'r')
-	line=kraken.readline().strip()
-	tax_tree_dict={}
-	mpa_dict={}
-	label_lines=[]
-	counter=0
-	while line != '':
-		line_sections = line.split("	")
-		contig_id = line_sections[1]
-		contig_taxID = line_sections[2]
-		if contig_taxID not in tax_tree_dict.keys():
-			tax_tree_dict[contig_taxID]=get_Taxon_Tree_From_NCBI(contig_taxID)
-		print(str(counter)+":"+contig_id+"	"+tax_tree_dict[contig_taxID])
-		label_lines.append(contig_id+"	"+tax_tree_dict[contig_taxID])
-		line=kraken.readline().strip()
-		counter+=1
-	kraken.close()
-	label_file=open(output_labels, 'w')
-	label_file.write("\n".join(label_lines))
-	print("Lines:", len(label_lines))
-	for line in label_lines:
-		print(line)
-
-#translate(sys.argv[1], sys.argv[2])
-
-# Script that will trim fasta files of any sequences that are smaller than the threshold
-def get_mpa_string_From_NCBI(taxID):
-	Entrez.email = getpass.getuser()
-	#Creates the data structure from a pull from entrez nucleotide database using accession id with return type of genbank text mode
-	handle = Entrez.efetch(db="taxonomy", id=taxID, mode="text", rettype="xml")
-	#Parses the returned output into lines
-	result= Entrez.read(handle)
-	#Will have to change this region to be able to handle more descriptive lists downstream
-	recognized_ranks={"superkingdom":"d", "kingdom":"k", "phylum":"p", "class":"c", "order":"o", "family":"f", "genus":"g", "species":"s"}
-	for entry in result:
-		#taxid = entry["Rank"]
-		#print(entry)
-		mpa_string=""
-		for r in entry["LineageEx"]:
-			#print(r)
-			#print(r["Rank"])
-			if r["Rank"] in recognized_ranks.keys():
-				current_rank=recognized_ranks[r["Rank"]]
-			#else:
-				#current_rank="-"
-				current_taxa=(r["ScientificName"])
-				rank_and_taxa=current_rank+"__"+current_taxa
-				#print(rank_and_taxa)
-				mpa_string+=rank_and_taxa+"|"
-		if entry["Rank"] in recognized_ranks.keys() or entry["Rank"] == "no rank":
-			if entry["Rank"] == "no rank":
-				current_rank="-"
-			else:
-				current_rank=recognized_ranks[entry["Rank"]]
-		else:
-			current_rank="-"
-			current_taxa=(entry["ScientificName"])
-			rank_and_taxa=current_rank+"__"+current_taxa
-			#print(rank_and_taxa)
-			mpa_string+=rank_and_taxa
-		#else:
-		#	print(entry["Rank"])
-		return(mpa_string)
 
 #def organize_mpas(input_kraken, output_mpa):
-def organize_mpas():
+def make_node_tree():
 	# kraken=open(input_kraken,'r')
 	# line=kraken.readline().strip()
 	# mpa_dict={}
@@ -260,4 +180,4 @@ def organize_mpas():
 #get_mpa_string_From_NCBI(470, blank_dick)
 
 #organize_mpas(sys.argv[1], sys.argv[2])
-organize_mpas()
+make_node_tree()
