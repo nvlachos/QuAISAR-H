@@ -42,7 +42,7 @@ class taxon_Node:
 		print(self.parent)
 
 	def getParent(self):
-		return self.Parent
+		return self.parent
 
 	def showtaxID(self):
 		print(self.ID)
@@ -165,7 +165,7 @@ def make_node_tree():
 	headNode.showChildren()
 	print('5')
 	for child in headNode.getChildren():
-		child.showParent()
+		child.getParent().showName()
 	print('6')
 	for child in headNode.getChildren():
 		child.showChildren()
