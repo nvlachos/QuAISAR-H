@@ -25,7 +25,9 @@ class taxon_Node:
 
 	#defining class methods
 	def showName(self):
+		print("A")
 		print(self.name)
+		print("B")
 
 	def getName(self):
 		return self.name
