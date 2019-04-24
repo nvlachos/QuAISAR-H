@@ -11,7 +11,7 @@ class taxon_Node:
 	ID = 0
 	parent = None
 	level = "-"
-	children = None
+	children = []
 
 	#defining constructor
 	def __init__(self, taxonName, taxonCount, taxonParent, taxonChildren, taxonID, taxonLevel):
@@ -59,7 +59,7 @@ class taxon_Node:
 			print("Children:", len(self.children), self.children[0].getName())
 		else:
 			self.children.append(newChild)
-		print("Children:", len(self.children), self.children[0].getName(), self.children[len(self.children)-1].getName())
+			print("Children:", len(self.children), self.children[0].getName(), self.children[len(self.children)-1].getName())
 		print("End Adding")
 
 	def Child_name(self, checkName):
