@@ -71,9 +71,11 @@ class taxon_Node:
 		#newChild.showName()
 		#newChild.showtaxID()
 		if self.children is None:
+			newChild.setParent(self)
 			self.children=[newChild]
 			#print("Children:", len(self.children), self.children[0].getName())
 		else:
+			newChild.setParent(self)
 			self.children.append(newChild)
 			#print("Children:", len(self.children), self.children[0].getName(), self.children[len(self.children)-1].getName())
 		#print("End Adding")
@@ -117,10 +119,6 @@ class taxon_Node:
 		#print("End Print")
 	#end of the class definition
 
-def link_Nodes(parent_node, child_node):
-	child_node.setParent(parent_node)
-	parent_node.addChild(child_node)
-
 #def organize_mpas(input_kraken, output_mpa):
 def make_node_tree():
 	# kraken=open(input_kraken,'r')
@@ -150,20 +148,20 @@ def make_node_tree():
 	pNode = taxon_Node("Proteobacteria", 0, None, None, 1224, "p")
 	cNode = taxon_Node("Gammaproteobacteria", 0, None, None, 1236, "c")
 #	oNode = taxon_Node("Pseudomonadales", 0, None, 72274, "o")
-	print("1")
+	print("1-Show 3 Nodes Childrens")
 	dNode.showChildren()
 	pNode.showChildren()
 	cNode.showChildren()
-	print('2')
+	print('2-Show headNode children')
 	headNode.showChildren()
-	print('3')
+	print('3-Print dNode and link headnode to dNode and cNode')
 	dNode.print()
-	link_Nodes(headNode, dNode)
-	link_Nodes(headNode, cNode)
+	headNode.addChild(dNode)
+
 	#headNode.addChild(dNode)
-	print('4')
+	print('4-Show headNode Children')
 	headNode.showChildren()
-	print('5')
+	print('5-Show Parents of all children of headNode')
 	for child in headNode.getChildren():
 		child.getParent().showName()
 	print('6')
