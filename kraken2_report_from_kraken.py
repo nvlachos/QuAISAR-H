@@ -25,9 +25,9 @@ class taxon_Node:
 
 	#defining class methods
 	def showName(self):
-		print("A")
+		#print("A")
 		print(self.name)
-		print("B")
+		#print("B")
 
 	def getName(self):
 		return self.name
@@ -47,23 +47,23 @@ class taxon_Node:
 		else:
 			print("Children:", len(self.children))
 			for child in self.children:
-				print("Child:")
+				#print("Child:")
 				child.showName()
-				print("dlihc")
+				#print("dlihc")
 
 	def addCounts(self, newReads):
 		self.count += newReads
 
 	def addChild(self, newChild):
-		print("Adding")
+		#print("Adding")
 		newChild.showName()
 		newChild.showtaxID()
 		if self.children is None:
 			self.children=[newChild]
-			print("Children:", len(self.children), self.children[0].getName())
+			#print("Children:", len(self.children), self.children[0].getName())
 		else:
 			self.children.append(newChild)
-			print("Children:", len(self.children), self.children[0].getName(), self.children[len(self.children)-1].getName())
+			#print("Children:", len(self.children), self.children[0].getName(), self.children[len(self.children)-1].getName())
 		print("End Adding")
 
 	def Child_name(self, checkName):
