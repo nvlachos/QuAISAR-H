@@ -117,7 +117,7 @@ class taxon_Node:
 		print("End Print")
 	#end of the class definition
 
-def link_Nodes(self, parent_node, child_node):
+def link_Nodes(parent_node, child_node):
 	child_node.setParent(parent_Node)
 	parent_Node.addChild(child_node)
 
@@ -159,12 +159,15 @@ def make_node_tree():
 	print('3')
 	dNode.print()
 	link_Nodes(headNode, dNode)
+	link_Nodes(dNode, cNode)
 	#headNode.addChild(dNode)
 	print('4')
 	headNode.showChildren()
 	print('5')
-	#headNode.addChild(pNode)
+	headNode.getChildren.showParent()
 	print('6')
+	headNode.getChildren.showChildren()
+	print('7')
 	#headNode.showChildren()
 	print('7')
 	#headNode.find(2).showName()
