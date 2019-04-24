@@ -111,7 +111,7 @@ class taxon_Node:
 		self.parent = newParent
 
 	def getChildCount(self):
-		if self.children in None or len(self.children) == 0:
+		if self.children is None or len(self.children) == 0:
 			return 0
 		else:
 			return len(self.children)
