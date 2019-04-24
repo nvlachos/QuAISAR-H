@@ -43,7 +43,7 @@ class taxon_Node:
 		if self.children is None or len(self.children) == 0:
 			print("No Children")
 		else:
-			print("Children:" len(self.children))
+			print("Children:", len(self.children))
 			for child in self.children:
 				print(child.showName())
 
