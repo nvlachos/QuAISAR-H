@@ -73,12 +73,12 @@ class taxon_Node:
 		#print("Adding")
 		#newChild.showName()
 		#newChild.showtaxID()
-		if self.children is None:
-			newChild.setParent(self)
+		if self.getChildCount() == 0:
+			#newChild.setParent(self)
 			self.children=[newChild]
 			#print("Children:", len(self.children), self.children[0].getName())
 		else:
-			newChild.setParent(self)
+			#newChild.setParent(self)
 			self.children.append(newChild)
 			#print("Children:", len(self.children), self.children[0].getName(), self.children[len(self.children)-1].getName())
 		#print("End Adding")
