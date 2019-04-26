@@ -130,7 +130,7 @@ class taxon_Node:
 	def print_All(self):
 		print("Name:", self.name +"\nCounts:", str(self.count) +"\nID:", str(self.ID))
 		print(self.getChildCount())
-		self.showParent()
+		self.showParentName()
 		self.showLevel()
 		if self.getChildCount() is not 0:
 			for child in self.children:
