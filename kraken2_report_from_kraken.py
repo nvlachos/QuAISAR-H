@@ -116,14 +116,14 @@ class taxon_Node:
 		return None
 
 	def find_name(self, checkName):
-		if self.getChildCount() > 1:
+		if self.name == checkname:
+			return self
+		elif self.getChildCount() > 0:
 			for child in self.children:
 				print(len(self.children), child.getName(), checkName)
-				if child.getName() == checkName:
-					return child
-				else:
-					child.find(checkName)
-		return None
+				return child.find_name(checkName)
+		else:
+			return None
 
 	def setParent(self, newParent):
 		self.parent = newParent
