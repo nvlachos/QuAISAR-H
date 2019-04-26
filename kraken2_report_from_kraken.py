@@ -116,7 +116,7 @@ class taxon_Node:
 		return None
 
 	def find_name(self, checkName):
-		if self.name == checkname:
+		if self.name == checkName:
 			return self
 		elif self.getChildCount() > 0:
 			for child in self.children:
