@@ -24,10 +24,10 @@ class taxon_Node:
 		self.level = taxonLevel
 
 	def __eq__(self, other):
-        return self.count == other.count
+		return self.count == other.count
 
-    def __lt__(self, other):
-        return self.count < other.count
+	def __lt__(self, other):
+		return self.count < other.count
 
 	#defining class methods
 	def showName(self):
