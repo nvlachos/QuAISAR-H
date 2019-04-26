@@ -122,7 +122,10 @@ class taxon_Node:
 		elif self.getChildCount() > 0:
 			for child in self.children:
 				print(len(self.children), child.getName(), checkName)
-				child.find_name(checkName)
+				temp_result = child.find_name(checkName)
+				if temp_result is not None:
+					return temp_result
+				
 		else:
 			return None
 
