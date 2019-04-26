@@ -133,11 +133,12 @@ class taxon_Node:
 		self.showParentName()
 		self.showLevel()
 		if self.getChildCount() is not 0:
+			self.sort_Children()
 			for child in self.children:
 				child.print_All()
 
 	def sort_Children(self):
-		if self.getChildCount() is not 0:
+		if self.getChildCount() > 1:
 			for child_index in range(0, len(self.children):
 				biggest_count=-1
 				biggest_Node_index=-1
