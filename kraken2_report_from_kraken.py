@@ -142,7 +142,7 @@ class taxon_Node:
 			for child_index in range(0, len(self.children)):
 				biggest_count=-1
 				biggest_Node_index=-1
-				for child in range(child_index, len(self.children):
+				for child in range(child_index, len(self.children)):
 					if child.getCount() > biggest_count:
 						biggest_count = child.getCount()
 						biggest_Node_index = child_index
