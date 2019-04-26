@@ -197,8 +197,8 @@ def get_mpa_string_From_NCBI(taxID):
 		for r in entry["LineageEx"]:
 			#print(r)
 			#print(r["Rank"])
-			special_mpa_string+=r["TaxId"]+"|"
-	return(special_mpa_string+taxID)
+			special_mpa_string+=r["TaxId"]+":"r["ScientificName"]+"|"
+	return(special_mpa_string+taxID+":"entry{"ScientificName"})
 
 def order_list(input_kraken, output_list):
 	kraken=open(input_kraken,'r')
@@ -246,9 +246,16 @@ def order_list(input_kraken, output_list):
 	print("mpa_taxon_counts length:", len(mpa_taxon_counts))
 	for key in sorted(mpa_taxon_counts.keys()):
 		print(key, mpa_taxon_counts[key])
+	top_Node = taxon_Node("root", 0, None, None, 0, "-")
+	unclass_Node = taxon_Node("unclassified", 154, None, None, 0, "U")
 	for key in sorted(mpa_taxon_counts.keys()):
 		key_breakdown=key.split("|")
-		print(key_breakdown[-1])
+		for index in range(0,len(key_breakdown)):
+			if key_breakdown[index] == 0:
+				unclass_Node.addCounts(mpa_taxon_counts(key))
+			elif index == 0:
+				print("Huh")
+
 
 #def organize_mpas(input_kraken, output_mpa):
 def make_node_tree():
