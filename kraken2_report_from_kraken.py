@@ -139,7 +139,7 @@ class taxon_Node:
 
 	def sort_Children(self):
 		if self.getChildCount() > 1:
-			for child_index in range(0, len(self.children):
+			for child_index in range(0, len(self.children)):
 				biggest_count=-1
 				biggest_Node_index=-1
 				for child in range(child_index, len(self.children):
