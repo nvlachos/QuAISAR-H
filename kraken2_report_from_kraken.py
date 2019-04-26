@@ -180,9 +180,9 @@ class taxon_Node:
 # Script that will trim fasta files of any sequences that are smaller than the threshold
 def get_mpa_string_From_NCBI(taxID):
 	if taxID == 0:
-		return "|U__unclassified"
+		return "|0:unclassified:U"
 	elif taxID == 1:
-		return "|r__root"
+		return "|1:root:-"
 	Entrez.email = getpass.getuser()
 	#Creates the data structure from a pull from entrez nucleotide database using accession id with return type of genbank text mode
 	handle = Entrez.efetch(db="taxonomy", id=taxID, mode="text", rettype="xml")
@@ -195,9 +195,15 @@ def get_mpa_string_From_NCBI(taxID):
 		#print(entry)
 		special_mpa_string=""
 		for r in entry["LineageEx"]:
-			#print(r)
-			#print(r["Rank"])
+			if r["Rank"] in recognized_ranks.keys():
+				current_rank=recognized_ranks[r["Rank"]]
+			else:
+				current_rank="-"
 			special_mpa_string+=r["TaxId"]+":"+r["ScientificName"]+"|"
+	if entry["Rank"] in recognized_ranks.keys():
+		current_rank=recognized_ranks[entry["Rank"]]
+	else:
+		current_rank="-"
 	return(special_mpa_string+taxID+":"+entry["ScientificName"])
 
 def order_list(input_kraken, output_list):
@@ -247,15 +253,17 @@ def order_list(input_kraken, output_list):
 	for key in sorted(mpa_taxon_counts.keys()):
 		print(key, mpa_taxon_counts[key])
 	top_Node = taxon_Node("root", 0, None, None, 0, "-")
-	unclass_Node = taxon_Node("unclassified", 154, None, None, 0, "U")
+	unclass_Node = taxon_Node("unclassified", 0, None, None, 0, "U")
 	for key in sorted(mpa_taxon_counts.keys()):
 		key_breakdown=key.split("|")
 		for index in range(0,len(key_breakdown)):
-			if key_breakdown[index] == 0:
+			if key_breakdown[index] == "0:unclassified":
 				unclass_Node.addCounts(mpa_taxon_counts(key))
 			elif index == 0:
-				print("Huh")
-
+				name=key_breakdown[index].split(":")[1]
+				current_tax=key_breakdown[index].split(":")[0]
+				if top_Node.find_taxID(current_tax) is None:
+					temp_Node = taxon_Node(name, mpa_taxon_counts(key), None, None, current_tax, "U")
 
 #def organize_mpas(input_kraken, output_mpa):
 def make_node_tree():
