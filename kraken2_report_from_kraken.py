@@ -149,7 +149,7 @@ class taxon_Node:
 		if self.getChildCount() > 1:
 			print("Testing rearrangement")
 			self.showChildren()
-			self.children.sort(key=lambda x: x.count)
+			self.children.sort(key=lambda x: x.count, reverse = True)
 			self.showChildren()
 			# for child_index in range(0, len(self.children)):
 			# 	print("Outer:", child_index)
