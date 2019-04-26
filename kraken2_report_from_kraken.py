@@ -214,7 +214,7 @@ def make_node_tree():
 	# 			mpa_counts[contig_taxID]+=1
 	# 	line=kraken.readline().strip()
 	# kraken.close()
-	headNode = taxon_Node("unclassified", 0, None, None, 0, "u")
+	headNode = taxon_Node("unclassified", 154, None, None, 0, "u")
 	dNode = taxon_Node("Bacteria", 10000, None, None, 2, "d")
 	pNode = taxon_Node("Proteobacteria", 9988, None, None, 1224, "p")
 	cNode = taxon_Node("Gammaproteobacteria", 9988, None, None, 1236, "c")
