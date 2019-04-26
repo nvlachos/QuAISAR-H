@@ -105,14 +105,24 @@ class taxon_Node:
 					return True
 		return False
 
-	def find(self, checkName):
-		if self.children is not None:
+	def find_taxID(self, checkName):
+		if self.getChildCount > 1:
 			for child in self.children:
 				print(len(self.children), child.getTaxID(), checkName)
 				if child.getTaxID() == checkName:
 					return child
 				else:
-					self.find(checkName)
+					child.find(checkName)
+		return None
+
+	def find_name(self, checkName):
+		if self.getChildCount > 1:
+			for child in self.children:
+				print(len(self.children), child.getName(), checkName)
+				if child.getName() == checkName:
+					return child
+				else:
+					child.find(checkName)
 		return None
 
 	def setParent(self, newParent):
@@ -218,6 +228,8 @@ def make_node_tree():
 	dNode.setParent(headNode)
 	headNode.addChild(dNode)
 	headNode.print_All()
+	print("\n\n\n")
+	headNode.findName("coli")
 
 	# print('1-Show 3 Nodes Childrens')
 	# dNode.showChildren()
