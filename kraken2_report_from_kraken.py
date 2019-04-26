@@ -174,21 +174,79 @@ class taxon_Node:
 			self.showChildren()
 			self.children.sort(key=lambda x: x.count, reverse = True)
 			self.showChildren()
-			# for child_index in range(0, len(self.children)):
-			# 	print("Outer:", child_index)
-			# 	biggest_count=-1
-			# 	biggest_Node_index=-1
-			# 	for child_inner_index in range(child_index, len(self.children)):
-			# 		if self.children[child_inner_index].getCount() > biggest_count:
-			# 			biggest_count = self.children[child_inner_index].getCount()
-			# 			biggest_Node_index = child_index
-			# 	print("biggest:", biggest_count, biggest_Node_index)
-			# 	if biggest_Node_index is not child_index:
-			# 		temp_Node = self.children[child_index]
-			# 		self.children[child_index] = self.children[biggest_Node_index]
-			# 		self.children[biggest_Node_index] = temp_Node
 
 	#end of the class definition
+
+# Script that will trim fasta files of any sequences that are smaller than the threshold
+def get_mpa_string_From_NCBI(taxID):
+	if taxID == 0:
+		return "|U__unclassified"
+	elif taxID == 1:
+		return "|r__root"
+	Entrez.email = getpass.getuser()
+	#Creates the data structure from a pull from entrez nucleotide database using accession id with return type of genbank text mode
+	handle = Entrez.efetch(db="taxonomy", id=taxID, mode="text", rettype="xml")
+	#Parses the returned output into lines
+	result= Entrez.read(handle)
+	#Will have to change this region to be able to handle more descriptive lists downstream
+	recognized_ranks={"cellular organisms":"-", "superkingdom":"d", "kingdom":"k", "phylum":"p", "class":"c", "order":"o", "family":"f", "genus":"g", "species":"s"}
+	for entry in result:
+		#taxid = entry["Rank"]
+		#print(entry)
+		special_mpa_string=""
+		for r in entry["LineageEx"]:
+			#print(r)
+			#print(r["Rank"])
+			special_mpa_string+=r["TaxID"]+"|"
+	return(mpa_string+"taxID")
+
+def order_list(input_kraken, output_list):
+	kraken=open(input_kraken,'r')
+	line=kraken.readline().strip()
+	mpa_dict={}
+	mpa_counts={}
+	counter=0
+	while line != '':
+		line_sections = line.split("	")
+		contig_id = line_sections[1]
+		contig_taxID = line_sections[2]
+		if contig_taxID not in mpa_dict.keys():
+			print("Adding", contig_taxID)
+			mpa_dict[contig_taxID]=get_mpa_string_From_NCBI(contig_taxID)
+			mpa_counts[contig_taxID]=1
+		else:
+			if contig_taxID not in mpa_counts.keys():
+				#print("Doesnt exist???", contig_taxID)
+				mpa_counts[contig_taxID]=1
+			else:
+				#print("Incrementing:", contig_taxID)
+				mpa_counts[contig_taxID]+=1
+		line=kraken.readline().strip()
+	kraken.close()
+	mpa_taxon_counts={}
+	#print("mpa_dict length:", len(mpa_dict))
+	for key in mpa_dict.keys():
+		#print(key, mpa_dict[key])
+		taxons=mpa_dict[key].split("|")
+		if taxons is not None:
+			#print(taxons)
+			for i in range(0, len(taxons)):
+				#print(taxons[0:i+1])
+				if taxons[i] != "" and taxons[i][0:1] != "-":
+					#print(taxons[i])
+					if "|".join(taxons[0:i+1]) in mpa_taxon_counts:
+						#print("Incrementing", "|".join(taxons[0:i+1]), "from", mpa_taxon_counts["|".join(taxons[0:i+1])], "to",  mpa_taxon_counts["|".join(taxons[0:i+1])]+mpa_counts[key])
+						mpa_taxon_counts["|".join(taxons[0:i+1])]+=mpa_counts[key]
+					else:
+						#print("Creating", "|".join(taxons[0:i+1]), "at 1")
+						mpa_taxon_counts["|".join(taxons[0:i+1])]=mpa_counts[key]
+		else:
+			print("Taxons is none")
+
+	print("mpa_taxon_counts length:", len(mpa_taxon_counts))
+	for key in sorted(mpa_taxon_counts.keys()):
+		print(key, mpa_taxon_counts[key])
+
 
 #def organize_mpas(input_kraken, output_mpa):
 def make_node_tree():
@@ -248,36 +306,6 @@ def make_node_tree():
 	print("Total reads:", total_reads)
 
 
-	# print('1-Show 3 Nodes Childrens')
-	# dNode.showChildren()
-	# dNode.showParent()
-	# dNode.print()
-	# print('2-Show headNode children')
-	# headNode.showChildren()
-	# headNode.showParent()
-	# headNode.print()
-	# print('3-Print dNode and link headnode to dNode and cNode')
-	# dNode.print()
-	# dNode.addChild(cNode)
-	# headNode.addChild(dNode)
-	# dNode.print()
-	# #headNode.addChild(dNode)
-	# print('4-Show headNode Children')
-	# headNode.showChildren()
-	# print('5-Show Parents of all children of headNode(', len(headNode.getChildren()), ")")
-	# for child in headNode.getChildren():
-	# 	if child.getParent() is not None:
-	# 		child.getParent().showName()
-	# print('6-Show grand children')
-	# for child in headNode.getChildren():
-	# 	child.showName()
-	# 	#print(child.getChildCount())
-	# 	child.showChildren()
-	# print('7')
-	# #headNode.showChildren()
-	# print('7')
-	# #headNode.find(2).showName()
-
 	# mpa_taxon_counts={}
 	# #print("mpa_dict length:", len(mpa_dict))
 	# for key in mpa_dict.keys():
@@ -314,5 +342,5 @@ def make_node_tree():
 
 #get_mpa_string_From_NCBI(470, blank_dick)
 
-#organize_mpas(sys.argv[1], sys.argv[2])
-make_node_tree()
+order_list(sys.argv[1], sys.argv[2])
+#make_node_tree()
