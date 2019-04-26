@@ -40,7 +40,7 @@ class taxon_Node:
 
 	def showParentName(self):
 		if self.parent is not None:
-			print(self.parent.showName())
+			self.parent.showName()
 		else:
 			print("No parent assigned")
 
