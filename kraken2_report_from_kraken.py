@@ -106,7 +106,7 @@ class taxon_Node:
 		return False
 
 	def find_taxID(self, checkName):
-		if self.getChildCount > 1:
+		if self.getChildCount() > 1:
 			for child in self.children:
 				print(len(self.children), child.getTaxID(), checkName)
 				if child.getTaxID() == checkName:
@@ -116,7 +116,7 @@ class taxon_Node:
 		return None
 
 	def find_name(self, checkName):
-		if self.getChildCount > 1:
+		if self.getChildCount() > 1:
 			for child in self.children:
 				print(len(self.children), child.getName(), checkName)
 				if child.getName() == checkName:
