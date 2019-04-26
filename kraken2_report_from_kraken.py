@@ -26,20 +26,21 @@ class taxon_Node:
 	#defining class methods
 	def showName(self):
 		#print("A")
-		print(self.name)
+		print("Name:", self.name)
 		#print("B")
 
 	def getName(self):
 		return self.name
 
 	def showCount(self):
-		print(self.count)
+		print("Counts:", self.count)
 
 	def getCount(self):
 		return self.count
 
 	def showParentName(self):
 		if self.parent is not None:
+			print("Parent:")
 			self.parent.showName()
 		else:
 			print("No parent assigned")
@@ -48,7 +49,7 @@ class taxon_Node:
 		return self.parent
 
 	def showtaxID(self):
-		print(self.ID)
+		print("taxID:", self.ID)
 
 	def getTaxID(self):
 		return taxID
@@ -117,7 +118,7 @@ class taxon_Node:
 			return len(self.children)
 
 	def showLevel(self):
-		print(self.level)
+		print("level:", self.level)
 
 
 	def print(self):
@@ -177,14 +178,14 @@ def make_node_tree():
 	# 	line=kraken.readline().strip()
 	# kraken.close()
 	headNode = taxon_Node("unclassified", 0, None, None, 0, "u")
-	dNode = taxon_Node("Bacteria", 0, None, None, 2, "d")
-	pNode = taxon_Node("Proteobacteria", 0, None, None, 1224, "p")
-	cNode = taxon_Node("Gammaproteobacteria", 0, None, None, 1236, "c")
-	oNode = taxon_Node("Enterobacteriales", 0, None, None, 91347, "o")
-	fNode = taxon_Node("Enterobacteriaceae", 0, None, None, 543, "f")
-	gNode = taxon_Node("Eschrichia", 100, None, None, 516, "g")
-	gNode2 = taxon_Node("Klebsiella", 250, None, None, 570, "g")
-	sNode = taxon_Node("coli", 0, None, None, 562, "s")
+	dNode = taxon_Node("Bacteria", 10000, None, None, 2, "d")
+	pNode = taxon_Node("Proteobacteria", 9988, None, None, 1224, "p")
+	cNode = taxon_Node("Gammaproteobacteria", 9988, None, None, 1236, "c")
+	oNode = taxon_Node("Enterobacteriales", 9990, None, None, 91347, "o")
+	fNode = taxon_Node("Enterobacteriaceae", 9990, None, None, 543, "f")
+	gNode = taxon_Node("Escherichia", 1052, None, None, 516, "g")
+	gNode2 = taxon_Node("Klebsiella", 8845, None, None, 570, "g")
+	sNode = taxon_Node("coli", 1050, None, None, 562, "s")
 
 	sNode.setParent(gNode)
 	gNode.addChild(sNode)
