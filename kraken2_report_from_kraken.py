@@ -197,7 +197,7 @@ def get_mpa_string_From_NCBI(taxID):
 		for r in entry["LineageEx"]:
 			#print(r)
 			#print(r["Rank"])
-			special_mpa_string+=r["TaxID"]+"|"
+			special_mpa_string+=r["TaxId"]+"|"
 	return(mpa_string+"taxID")
 
 def order_list(input_kraken, output_list):
