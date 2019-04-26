@@ -180,7 +180,8 @@ def make_node_tree():
 	print('6-Show grand children')
 	for child in headNode.getChildren():
 		child.showName()
-		print(child.getChildCount())
+		#print(child.getChildCount())
+		child.showChildren()
 	print('7')
 	#headNode.showChildren()
 	print('7')
