@@ -38,9 +38,9 @@ class taxon_Node:
 	def getCount(self):
 		return self.count
 
-	def showParent(self):
+	def showParentName(self):
 		if self.parent is not None:
-			print(self.parent)
+			print(self.parent.showName())
 		else:
 			print("No parent assigned")
 
