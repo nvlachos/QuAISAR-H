@@ -125,7 +125,7 @@ class taxon_Node:
 				temp_result = child.find_name(checkName)
 				if temp_result is not None:
 					return temp_result
-				
+
 		else:
 			return None
 
@@ -233,7 +233,8 @@ def make_node_tree():
 	headNode.addChild(dNode)
 	headNode.print_All()
 	print("\n\n\n")
-	headNode.find_name("coli").showtaxID()
+	headNode.find_name("coli").addCounts(1450)
+	headNode.print_All()
 
 	# print('1-Show 3 Nodes Childrens')
 	# dNode.showChildren()
