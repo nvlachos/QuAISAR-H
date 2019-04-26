@@ -147,7 +147,7 @@ class taxon_Node:
 	def sort_Children(self):
 		if self.getChildCount() > 1:
 			print("Testing rearrangement")
-			self.children = sorted(children)
+			self.children = sorted(self.children)
 			# for child_index in range(0, len(self.children)):
 			# 	print("Outer:", child_index)
 			# 	biggest_count=-1
