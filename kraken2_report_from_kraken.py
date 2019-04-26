@@ -136,6 +136,19 @@ class taxon_Node:
 			for child in self.children:
 				child.print_All()
 
+	def sort(self):
+		if self.getChildCount() is not 0:
+			for child_index in range(0, len(self.children):
+				biggest_count=-1
+				biggest_Node_index=-1
+				for child in self.children[child_index]:
+					if child.getCount() > biggest_count:
+						biggest_count = child.getCount()
+						biggest_Node_index = child_index
+				if biggest_Node_index is not child_index:
+					temp_Node = self.children[child_index]
+					self.children[child_index] = self.children[biggest_Node_index]
+
 	#end of the class definition
 
 #def organize_mpas(input_kraken, output_mpa):
@@ -168,8 +181,8 @@ def make_node_tree():
 	cNode = taxon_Node("Gammaproteobacteria", 0, None, None, 1236, "c")
 	oNode = taxon_Node("Enterobacteriales", 0, None, None, 91347, "o")
 	fNode = taxon_Node("Enterobacteriaceae", 0, None, None, 543, "f")
-	gNode = taxon_Node("Eschrichia", 0, None, None, 516, "g")
-	gNode2 = taxon_Node("Klebsiella", 0, None, None, 570, "g")
+	gNode = taxon_Node("Eschrichia", 100, None, None, 516, "g")
+	gNode2 = taxon_Node("Klebsiella", 250, None, None, 570, "g")
 	sNode = taxon_Node("coli", 0, None, None, 562, "s")
 
 	sNode.setParent(gNode)
