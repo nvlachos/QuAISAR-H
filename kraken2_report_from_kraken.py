@@ -186,6 +186,7 @@ def make_node_tree():
 	pNode.addChild(cNode)
 	pNode.setParent(dNode)
 	dNode.addChild(pNode)
+	dNode.setParent(headNode)
 	headNode.addChild(dNode)
 	headNode.print_All()
 
