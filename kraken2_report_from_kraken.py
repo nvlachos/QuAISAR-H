@@ -105,6 +105,15 @@ class taxon_Node:
 					return True
 		return False
 
+	def getUnpassableCounts(self):
+		if self.getChildCount() = 0:
+			return self.count
+		else:
+			unpassable=self.count
+			for child in self.children:
+				unpassable-=child.getCount()
+			return unpassable
+
 	def find_taxID(self, checkName):
 		if self.getChildCount() > 1:
 			for child in self.children:
@@ -235,6 +244,9 @@ def make_node_tree():
 	print("\n\n\n")
 	headNode.find_name("coli").addCounts(1450)
 	headNode.print_All()
+	total_reads=headNode.getCount()+headNode.getChildren()[0].getCount()
+	print("Total reads:", total_reads)
+
 
 	# print('1-Show 3 Nodes Childrens')
 	# dNode.showChildren()
