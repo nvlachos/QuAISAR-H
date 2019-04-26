@@ -167,6 +167,7 @@ def make_node_tree():
 	headNode.print()
 	print('3-Print dNode and link headnode to dNode and cNode')
 	dNode.print()
+	dNode.addChild(cNode)
 	headNode.addChild(dNode)
 	dNode.print()
 	#headNode.addChild(dNode)
