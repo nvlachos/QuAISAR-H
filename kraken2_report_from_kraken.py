@@ -248,7 +248,7 @@ def order_list(input_kraken, output_list):
 		print(key, mpa_taxon_counts[key])
 	for key in sorted(mpa_taxon_counts.keys()):
 		key_breakdown=key.split("|")
-		print(key_breakdown[::-1])
+		print(key_breakdown[-1])
 
 #def organize_mpas(input_kraken, output_mpa):
 def make_node_tree():
