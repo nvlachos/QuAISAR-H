@@ -106,7 +106,7 @@ class taxon_Node:
 		return False
 
 	def getUnpassableCounts(self):
-		if self.getChildCount() = 0:
+		if self.getChildCount() == 0:
 			return self.count
 		else:
 			unpassable=self.count
