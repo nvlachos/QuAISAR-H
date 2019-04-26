@@ -229,7 +229,7 @@ def make_node_tree():
 	headNode.addChild(dNode)
 	headNode.print_All()
 	print("\n\n\n")
-	headNode.find_name("coli")
+	headNode.find_name("coli").showtaxID()
 
 	# print('1-Show 3 Nodes Childrens')
 	# dNode.showChildren()
