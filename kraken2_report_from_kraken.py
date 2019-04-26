@@ -153,6 +153,7 @@ class taxon_Node:
 				if biggest_Node_index is not child_index:
 					temp_Node = self.children[child_index]
 					self.children[child_index] = self.children[biggest_Node_index]
+					self.children[biggest_Node_index] = temp_Node
 
 	#end of the class definition
 
