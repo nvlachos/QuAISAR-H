@@ -174,7 +174,8 @@ def make_node_tree():
 	headNode.showChildren()
 	print('5-Show Parents of all children of headNode(', len(headNode.getChildren()), ")")
 	for child in headNode.getChildren():
-		child.getParent().showName()
+		if child.getParent() is not None:
+			child.getParent().showName()
 	print('6-Show grand children')
 	for child in headNode.getChildren():
 		child.showName()
