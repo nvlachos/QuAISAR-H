@@ -23,6 +23,12 @@ class taxon_Node:
 		self.ID = taxonID
 		self.level = taxonLevel
 
+	def __eq__(self, other):
+        return self.count == other.count
+
+    def __lt__(self, other):
+        return self.count < other.count
+
 	#defining class methods
 	def showName(self):
 		#print("A")
@@ -141,19 +147,20 @@ class taxon_Node:
 	def sort_Children(self):
 		if self.getChildCount() > 1:
 			print("Testing rearrangement")
-			for child_index in range(0, len(self.children)):
-				print("Outer:", child_index)
-				biggest_count=-1
-				biggest_Node_index=-1
-				for child_inner_index in range(child_index, len(self.children)):
-					if self.children[child_inner_index].getCount() > biggest_count:
-						biggest_count = self.children[child_inner_index].getCount()
-						biggest_Node_index = child_index
-				print("biggest:", biggest_count, biggest_Node_index)
-				if biggest_Node_index is not child_index:
-					temp_Node = self.children[child_index]
-					self.children[child_index] = self.children[biggest_Node_index]
-					self.children[biggest_Node_index] = temp_Node
+			self.children = sorted(children)
+			# for child_index in range(0, len(self.children)):
+			# 	print("Outer:", child_index)
+			# 	biggest_count=-1
+			# 	biggest_Node_index=-1
+			# 	for child_inner_index in range(child_index, len(self.children)):
+			# 		if self.children[child_inner_index].getCount() > biggest_count:
+			# 			biggest_count = self.children[child_inner_index].getCount()
+			# 			biggest_Node_index = child_index
+			# 	print("biggest:", biggest_count, biggest_Node_index)
+			# 	if biggest_Node_index is not child_index:
+			# 		temp_Node = self.children[child_index]
+			# 		self.children[child_index] = self.children[biggest_Node_index]
+			# 		self.children[biggest_Node_index] = temp_Node
 
 	#end of the class definition
 
