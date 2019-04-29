@@ -60,6 +60,7 @@ elif [[ "${3}" == "plasmid_on_plasmidAssembly" ]]; then
 	if 	[[ -f "${processed}/${2}/${1}/${3}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.fasta" ]]; then
 		outpath="plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.fasta"
 	else
+		echo "No ${processed}/${2}/${1}/${3}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.fasta"
 		exit
 	fi
 else
