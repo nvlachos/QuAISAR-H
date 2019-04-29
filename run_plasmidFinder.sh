@@ -59,6 +59,9 @@ elif [[ "${3}" == "plasmid_on_plasmidAssembly" ]]; then
 	fi
 	if 	[[ -f "${processed}/${2}/${1}/${3}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.fasta" ]]; then
 		outpath="plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.fasta"
+	else
+		exit
+	fi
 else
 	echo "Non standard output location, using full assembly to find plasmids"
 	outpath="Assembly/${1}_scaffolds_trimmed.fasta"
