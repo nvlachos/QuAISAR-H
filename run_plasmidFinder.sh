@@ -53,14 +53,14 @@ OUTDATADIR=${processed}/${2}/${1}/${3}
 if [[ "${3}" == "plasmid" ]]; then
 	outpath="Assembly/${1}_scaffolds_trimmed.fasta"
 elif [[ "${3}" == "plasmid_on_plasmidAssembly" ]]; then
-	if [[ -f "${processed}/${2}/${1}/${3}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.fasta" ]]; then
-		mv "${processed}/${2}/${1}/${3}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.fasta" "${processed}/${2}/${1}/${3}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.fasta"
-		mv "${processed}/${2}/${1}/${3}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.gfa" "${processed}/${2}/${1}/${3}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.gfa"
+	if [[ -f "${processed}/${2}/${1}//plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.fasta" ]]; then
+		mv "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.fasta" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.fasta"
+		mv "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.gfa" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.gfa"
 	fi
-	if 	[[ -f "${processed}/${2}/${1}/${3}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.fasta" ]]; then
+	if 	[[ -f "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.fasta" ]]; then
 		outpath="plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.fasta"
 	else
-		echo "No ${processed}/${2}/${1}/${3}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.fasta"
+		echo "No ${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.fasta"
 		exit
 	fi
 else
