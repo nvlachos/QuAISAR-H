@@ -67,7 +67,7 @@ elif [ -f "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq.gz" ]; then
 	echo "2A"
 		gunzip < "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq.gz" > "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq"
 	fi
-elif [ -f "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq.gz"]; then
+elif [ -f "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq.gz" ]; then
 	echo "3"
 	gunzip -k "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq.gz"
 else
