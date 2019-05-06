@@ -23,7 +23,7 @@ for record in SeqIO.parse(sys.argv[1],"fasta"):
     name=name[3:]
     name='_'.join(name[::-1])
     #print(name)
-    record.id = record.id.split("_cov")[0].replace("NODE",name)
+    #record.id = record.id.split("_cov")[0].replace("NODE",name)
     contig = record.id.split(" ")[0]
     length = record.id.split(" ")[1].split("=")[1]
     depth = record.id.split(" ")[2].split("=")[1]
