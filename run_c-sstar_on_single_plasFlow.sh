@@ -68,18 +68,22 @@ else
 	sim=${csstar_high}
 fi
 # Check if there was a request to run it on the plasmid assembly of the sample, change fasta source as necessary
-if [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.fasta" ]]; then
-		source_assembly="${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.fasta"
+if [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta" ]]; then
+		source_assembly="${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta"
 		OUTDATADIR="${OUTDATADIR}/c-sstar_plasFlow"
-	else
-		if [[ "${2}" = "g" ]]; then
-			suffix="gapped"
-		elif [[ "${2}" = "u" ]]; then
-			suffix="ungapped"
-		fi
-		"No anti-microbial genes were found using c-SSTAR because there were No Plasmids Found" > "${OUTDATADIR}/${resGANNOT_srst2_filename}_${suffix}/${1}.${resGANNOT_srst2_filename}.${suffix}_${sim}.sstar"
-		exit
+else
+	echo "Not found: ${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta"
+	if [[ "${2}" = "g" ]]; then
+		suffix="gapped"
+	elif [[ "${2}" = "u" ]]; then
+		suffix="ungapped"
 	fi
+	if [[ ! -d "${OUTDATADIR}/${resGANNOT_srst2_filename}_${suffix}" ]]; then
+		mkdir -p "${OUTDATADIR}/${resGANNOT_srst2_filename}_${suffix}"
+	fi
+	echo "No anti-microbial genes were found using c-SSTAR because there were No Plasmids Found" > "${OUTDATADIR}/${resGANNOT_srst2_filename}_${suffix}/${1}.${resGANNOT_srst2_filename}.${suffix}_${sim}.sstar"
+	exit
+fi
 
 
 # Creates the output c-sstar folder if it does not exist yet
