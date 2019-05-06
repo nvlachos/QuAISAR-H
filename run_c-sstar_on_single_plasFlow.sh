@@ -18,7 +18,7 @@ module load ncbi-blast+/2.6.0
 #
 # Finds anti-microbial resistance genes in the resFinder and ARG-ANNOT databases and exports a file containing list of all genes found
 #
-# Usage ./run_c-sstar.sh sample_name run_type(g/u for gapped/ungapped) similarity(l/m/h/u/p/o for low(80),medium(95),high(98),ultra-high(99),perfect(100),other(set in config.sh)) run_id (DONT USE-plasmid(optional))
+# Usage ./run_c-sstar.sh sample_name run_type(g/u for gapped/ungapped) similarity(l/m/h/u/p/o for low(80),medium(95),high(98),ultra-high(99),perfect(100),other(set in config.sh)) run_id
 #
 # Python/3.5.2
 #
@@ -32,8 +32,8 @@ elif [[ -z "${1}" ]]; then
 	exit 1
 # Gives the user a brief usage and help section if requested with the -h option argument
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_c-sstar.sh   sample_name   run-type[g/u](for gapped/ungapped)   similarity[l/m/h/u/p/o](for low/medium/high/ultra-high/perfect as 80/95/98/99/100, other(st in config.sh) run_id (DONT USE-plasmid(optional))"
-	echo "Output is saved to ${processed}/sample_name/c-sstar"
+	echo "Usage is ./run_c-sstar.sh   sample_name   run-type[g/u](for gapped/ungapped)   similarity[l/m/h/u/p/o](for low/medium/high/ultra-high/perfect as 80/95/98/99/100, other(st in config.sh) run_id"
+	echo "Output is saved to ${processed}/sample_name/c-sstar_plasFlow"
 	exit
 elif [ -z "$2" ]; then
 	echo "Empty run type supplied to run_c-sstar.sh, exiting"
@@ -68,11 +68,7 @@ else
 	sim=${csstar_high}
 fi
 # Check if there was a request to run it on the plasmid assembly of the sample, change fasta source as necessary
-if [[ "${5}" == "--plasmid" ]] || [[ "${5}" == "-p" ]]; then
-	if [[ -s "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta" ]]; then
-	#if [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.fasta" ]]; then
-		#source_assembly="${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta"
-		#OUTDATADIR="${OUTDATADIR}/c-sstar_plasmid"
+if [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.fasta" ]]; then
 		source_assembly="${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.fasta"
 		OUTDATADIR="${OUTDATADIR}/c-sstar_plasFlow"
 	else
@@ -84,15 +80,6 @@ if [[ "${5}" == "--plasmid" ]] || [[ "${5}" == "-p" ]]; then
 		"No anti-microbial genes were found using c-SSTAR because there were No Plasmids Found" > "${OUTDATADIR}/${resGANNOT_srst2_filename}_${suffix}/${1}.${resGANNOT_srst2_filename}.${suffix}_${sim}.sstar"
 		exit
 	fi
-else
-	if [[ ! -s "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
-		echo "No Assembly found to run c-sstar with (${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta does not exist)"
-		exit
-	fi
-	source_assembly="${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
-	OUTDATADIR="${OUTDATADIR}/c-sstar"
-fi
-
 
 
 # Creates the output c-sstar folder if it does not exist yet
