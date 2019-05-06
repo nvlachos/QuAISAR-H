@@ -99,8 +99,11 @@ if [[ -s "${processed}/${2}/${1}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
 	samtools view -bS "${processed}/${2}/${1}/plasFlow/filtered_reads_70/${1}.sam" > "${processed}/${2}/${1}/plasFlow/filtered_reads_70/${1}.bam"
 	bam2fastq --no-aligned -o "${processed}/${2}/${1}/plasFlow/filtered_reads_70/${1}_R#_bacterial.fastq" "${processed}/${2}/${1}/plasFlow/filtered_reads_70/${1}.bam"
 	unicycler -1 "${processed}/${2}/${1}/plasFlow/filtered_reads_70/${1}_R_1_bacterial.fastq" -2 "${processed}/${2}/${1}/plasFlow/filtered_reads_70/${1}_R_2_bacterial.fastq" -o "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly"
-	mv "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.fasta" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta"
+	mv "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.fasta" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_original.fasta"
 	mv "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.gfa" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.gfa"
+	${shareScript}/fasta_headers_plasFlow.sh "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_original.fasta" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta"
+	python2 "${shareScript}/removeShortContigs.py" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta" 500
+	mv "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta.trimmed.fasta" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta" 
 fi
 
 module unload PlasFlow/1.1
