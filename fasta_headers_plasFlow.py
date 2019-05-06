@@ -24,7 +24,10 @@ for record in SeqIO.parse(sys.argv[1],"fasta"):
     name='_'.join(name[::-1])
     #print(name)
     #record.id = record.id.split("_cov")[0].replace("NODE",name)
+    print(name)
+    print(record.id.split(" ")[0])
     contig = record.id.split(" ")[0]
+    record.id.split(" ")[1]
     length = record.id.split(" ")[1].split("=")[1]
     depth = record.id.split(" ")[2].split("=")[1]
     record.id = name+"_"+contig+"_length_"+length+"_depth_"+depth
