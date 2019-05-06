@@ -26,11 +26,11 @@ for record in SeqIO.parse(sys.argv[1],"fasta"):
     #record.id = record.id.split("_cov")[0].replace("NODE",name)
     print(record)
     print(name)
-    print(record.id.split(" ")[0])
-    contig = record.id.split(" ")[0]
-    record.id.split(" ")[1]
-    length = record.id.split(" ")[1].split("=")[1]
-    depth = record.id.split(" ")[2].split("=")[1]
+    print(record.description.split(" ")[0])
+    contig = record.description.split(" ")[0]
+    record.description.split(" ")[1]
+    length = record.description.split(" ")[1].split("=")[1]
+    depth = record.description.split(" ")[2].split("=")[1]
     record.id = name+"_"+contig+"_length_"+length+"_depth_"+depth
 
     #print(record.id)
