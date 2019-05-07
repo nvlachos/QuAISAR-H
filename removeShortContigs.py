@@ -38,7 +38,7 @@ def trim_assembly(input_assembly, trim_threshold, input_type):
 			else:
 				#print ("Nope",line)
 				total_cuts+=1
-				total_no_size=total_no_size+int(line_sections[3])
+				total_no_size=total_no_size+int(contig_size)
 				line=assembly.readline().strip()
 		else:
 			line=assembly.readline().strip()
