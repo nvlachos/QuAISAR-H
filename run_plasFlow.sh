@@ -88,7 +88,7 @@ fi
 # Trim contigs a little to 2000 and larger and put through plasflow.
 # The remaining analysis steps have not yet been completed
 if [[ -s "${processed}/${2}/${1}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
-	python2 "${shareScript}/removeShortContigs.py" "${processed}/${2}/${1}/Assembly/scaffolds.fasta" "2000"
+	python2 "${shareScript}/removeShortContigs.py" "${processed}/${2}/${1}/Assembly/scaffolds.fasta" 2000 "normal_SPAdes"
 	${shareScript}/fasta_headers.py "${processed}/${2}/${1}/Assembly/scaffolds.fasta.TRIMMED.fasta" "${processed}/${2}/${1}/plasFlow/${1}_scaffolds_trimmed_2000.fasta"
 	rm -r "${processed}/${2}/${1}/Assembly/scaffolds.fasta.TRIMMED.fasta"
 	PlasFlow.py --input "${processed}/${2}/${1}/plasFlow/${1}_scaffolds_trimmed_2000.fasta" --output "${processed}/${2}/${1}/plasFlow/${1}_plasFlow_results.tsv" --threshold 0.7
@@ -102,7 +102,7 @@ if [[ -s "${processed}/${2}/${1}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
 	mv "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.fasta" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_original.fasta"
 	mv "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.gfa" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.gfa"
 	python ${shareScript}/fasta_headers_plasFlow.py "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_original.fasta" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta"
-	python2 "${shareScript}/removeShortContigs.py" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta" 500
+	python2 "${shareScript}/removeShortContigs.py" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta" 500 "plasFlow"
 	mv "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta.trimmed.fasta" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta"
 fi
 

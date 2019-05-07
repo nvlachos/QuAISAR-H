@@ -441,12 +441,12 @@ process_samples()	{
 
 	### Removing Short Contigs  ###
 	echo "----- Removing Short Contigs -----"
-	python "${shareScript}/removeShortContigs.py" "${OUTDATADIR}/${filename}/Assembly/scaffolds.fasta" 500
+	python "${shareScript}/removeShortContigs.py" "${OUTDATADIR}/${filename}/Assembly/scaffolds.fasta" 500 "normal_SPAdes"
 	mv "${OUTDATADIR}/${filename}/Assembly/scaffolds.fasta.TRIMMED.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta"
 
 	### Removing Short Contigs  ###
 	echo "----- Removing Short plasmid Contigs -----"
-	python "${shareScript}/removeShortContigs.py" "${OUTDATADIR}/${filename}/plasmidAssembly/scaffolds.fasta" 500
+	python "${shareScript}/removeShortContigs.py" "${OUTDATADIR}/${filename}/plasmidAssembly/scaffolds.fasta" 500 "normal_SPAdes"
 	mv "${OUTDATADIR}/${filename}/plasmidAssembly/scaffolds.fasta.TRIMMED.fasta" "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed.fasta"
 
 	# Checks to see that the trimming and renaming worked properly, returns if unsuccessful
