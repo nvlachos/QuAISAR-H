@@ -19,5 +19,5 @@ import os
 sequence = ""
 main_record = SeqIO.read(sys.argv[1],"fasta")
 print(":"+str(sys.argv[2])+":"+str(sys.argv[3])+":")
-search_DNA_seq = main_record.format("fasta")[sys.argv[2]:sys.argv[3]]
+search_DNA_seq = str(main_record)[sys.argv[2]:sys.argv[3]]
 print(search_DNA_seq)
