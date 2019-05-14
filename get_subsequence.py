@@ -23,6 +23,7 @@ end = int(sys.argv[3]) + 1
 print(":"+str(start)+":"+str(end)+":")
 print(main_record.id)
 print(main_record.description)
-print(str(main_record))
+saqw=str(main_record)
+print(saqw)
 search_DNA_seq = main_record.description[start:end]
 print(search_DNA_seq)
