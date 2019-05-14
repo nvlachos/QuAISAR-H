@@ -18,8 +18,8 @@ import os
 
 sequence = ""
 main_record = SeqIO.read(sys.argv[1],"fasta")
-start = int(sys.argv[2])
-end = int(sys.argv[3]) + 1
+start = int(sys.argv[2])-1
+end = int(sys.argv[3])
 print(":"+str(start)+":"+str(end)+":")
 print(main_record.id)
 print(main_record.description)
