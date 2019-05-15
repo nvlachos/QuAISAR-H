@@ -24,7 +24,7 @@ print(":"+str(start)+":"+str(end)+":")
 print(main_record.id)
 print(main_record.description)
 search_DNA_seq = main_record.seq[start:end]
-if len(sys.argv) > 3:
+if len(sys.argv) > 4:
     if sys.argv[4] == "REVERSE" or sys.argv[4] == "R":
         search_DNA_seq=search_DNA_seq[::-1]
 print(search_DNA_seq)
