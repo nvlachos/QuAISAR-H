@@ -11,6 +11,8 @@ Usage: ./get_subsequence.py input.fasta output.fasta
 '''
 
 from Bio import SeqIO
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
 import sys
 import os
 
