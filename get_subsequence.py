@@ -34,5 +34,6 @@ print(reverse_record.seq)
 
 if len(sys.argv) > 4:
     if sys.argv[4] == "REVERSE" or sys.argv[4] == "R":
-        search_DNA_seq=search_DNA_seq[::-1]
+        print(reverse_record.seq)
+        exit()
 print(search_DNA_seq)
