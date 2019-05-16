@@ -33,7 +33,13 @@ reverse_record=reverse_record.reverse_complement()
 #print(reverse_record.seq)
 
 if len(sys.argv) > 4:
+    if len(sys.argv) == 7:
+        start_sub = int(sys.argv[5])
+        end_sub = int(sys.argv[6])
+    else:
+        start_sub = 0
+        end_sub = len(str(reverse_record.seq))
     if sys.argv[4] == "REVERSE" or sys.argv[4] == "R":
-        print(reverse_record.seq)
+        print(reverse_record.seq)[start_sub:end_sub]
         exit()
 print(search_DNA_seq)
