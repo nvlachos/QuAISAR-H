@@ -38,15 +38,7 @@ elif [[ -z "${2}" ]]; then
 fi
 
 module load PlasFlow/1.1
-module load Python/3.5.4
-module load bowtie2/2.2.9
-module load samtools/1.4.1
-module load bam2fastq/1.1.0
-module load Unicycler/0.4.4;
-module load gcc/5.5;
-module load SPAdes/3.11.1;
-module load racon/1.2.0;
-module load perl/5.22.1
+
 
 
 . ./module_changers/list_modules.sh
@@ -92,6 +84,15 @@ if [[ -s "${processed}/${2}/${1}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
 	${shareScript}/fasta_headers.py "${processed}/${2}/${1}/Assembly/scaffolds.fasta.TRIMMED.fasta" "${processed}/${2}/${1}/plasFlow/${1}_scaffolds_trimmed_2000.fasta"
 	rm -r "${processed}/${2}/${1}/Assembly/scaffolds.fasta.TRIMMED.fasta"
 	PlasFlow.py --input "${processed}/${2}/${1}/plasFlow/${1}_scaffolds_trimmed_2000.fasta" --output "${processed}/${2}/${1}/plasFlow/${1}_plasFlow_results.tsv" --threshold 0.7
+	module load Python/3.5.4;
+	module load bowtie2/2.2.9;
+	module load samtools/1.4.1;
+	module load bam2fastq/1.1.0;
+	module load Unicycler/0.4.4;
+	module load gcc/5.5;
+	module load SPAdes/3.11.1;
+	module load racon/1.2.0;
+	module load perl/5.22.1
 	mkdir ${processed}/${2}/${1}/plasFlow/bowtie2-index/
 	bowtie2-build -f "${processed}/${2}/${1}/plasFlow/${1}_plasFlow_results.tsv_chromosomes.fasta" "${processed}/${2}/${1}/plasFlow/bowtie2-index/bowtie2_${1}_chr"
 	mkdir ${processed}/${2}/${1}/plasFlow/filtered_reads_70/

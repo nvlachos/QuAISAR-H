@@ -27,7 +27,7 @@ print(main_record.id)
 print(main_record.description)
 
 search_DNA_seq = main_record.seq[start:end]
-reverse_record = Seq(search_DNA_seq, generic_dna)
+reverse_record = SeqRecord(Seq(search_DNA_seq), main_record.id, '', '')
 print(reverse_record.seq)
 reverse_record=reverse_record.reverse_complement()
 print(reverse_record.seq)
