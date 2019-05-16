@@ -35,6 +35,8 @@ reverse_record=reverse_record.reverse_complement()
 if len(sys.argv) > 4:
     if len(sys.argv) == 7:
         start_sub = int(sys.argv[5])
+        if start_sub > 0:
+            start_sub-=1
         end_sub = int(sys.argv[6])
     else:
         start_sub = 0
