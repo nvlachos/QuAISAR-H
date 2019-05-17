@@ -530,6 +530,12 @@ totaltime=$((totaltime + timeplasfin))
 "${shareScript}/sample_cleaner.sh" "${filename}" "${project}"
 "${shareScript}/validate_piperun.sh" "${filename}" "${project}" > "${processed}/${project}/${filename}/${filename}_pipeline_stats.txt"
 
+# Run plasFlow if isolate is from the Enterobacteriaceae family  ##### When should we check if this will be expanded?
+if [[ "${family}" == "Enterobacteriaceae" ]]; then
+	${shareScript}/run_plasFlow.sh "${filename}" "${project}"
+	${shareScript}/run_c-sstar_on_single_plasFlow.sh "${filename}" g o "${project}" -p
+fi
+
 # Extra dump cleanse in case anything else failed
 	if [ -n "$(find "${shareScript}" -maxdepth 1 -name 'core.*' -print -quit)" ]; then
 		echo "Found core dump files at end of processing ${filename} and attempting to delete"
