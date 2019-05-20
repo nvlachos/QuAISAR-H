@@ -22,11 +22,11 @@ import os
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--iput', help='input file', required='True')
-parser.add_argument('-s', '--start', help='start position', required='True', type=int)
-parser.add_argument('-e', '--end', help='end position', required='True', type=int)
+parser.add_argument('-s', '--start', help='start position', required='True', type=int, dest=start)
+parser.add_argument('-e', '--end', help='end position', required='True', type=int, dest=end)
 parser.add_argument('-r', '--reverse', help='reverse complement strand?', required='False')
-parser.add_argument('-b', '--begin', help='rev-comp begin position', required='False', type=int)
-parser.add_argument('-f', '--finish', help='rev-comp finish position', required='False', type=int)
+parser.add_argument('-b', '--begin', help='rev-comp begin position', required='False', type=int, dest=begin)
+parser.add_argument('-f', '--finish', help='rev-comp finish position', required='False', type=int, dest=finish)
 
 
 
@@ -34,9 +34,7 @@ sequence = ""
 #main_record = SeqIO.read(sys.argv[1],"fasta")
 main_record = SeqIO.read(i, "fasta")
 #start = int(sys.argv[2])-1
-start = s
 #end = int(sys.argv[3])
-end = e
 print(":"+str(start)+":"+str(end)+":")
 print(main_record.id)
 print(main_record.description)
