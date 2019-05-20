@@ -24,9 +24,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--iput', help='input file', required=True, dest='input_file')
 parser.add_argument('-s', '--start', help='start position', required=True, type=int, dest='start')
 parser.add_argument('-e', '--end', help='end position', required=True, type=int, dest='end')
-parser.add_argument('-r', '--reverse', help='reverse complement strand?', required=False)
-parser.add_argument('-b', '--begin', help='rev-comp begin position', required=False, type=int, dest='begin')
-parser.add_argument('-f', '--finish', help='rev-comp finish position', required=False, type=int, dest='finish')
+parser.add_argument('-r', '--reverse', help='reverse complement strand?', required=False, type=boolean, dest='reverse', default=False)
+parser.add_argument('-b', '--begin', help='rev-comp begin position', required=False, type=int, dest='begin', default=0)
+parser.add_argument('-f', '--finish', help='rev-comp finish position', required=False, type=int, dest='finish', default=0)
 parameters=parser.parse_args()
 
 
@@ -45,16 +45,15 @@ reverse_record = SeqRecord(Seq(str(search_DNA_seq)), main_record.id, '', '')
 reverse_record=reverse_record.reverse_complement()
 #print(reverse_record.seq)
 
-if len(sys.argv) > 4:
-    if len(sys.argv) == 7:
-        start_sub = int(sys.argv[5])
-        if start_sub > 0:
-            start_sub-=1
-        end_sub = int(sys.argv[6])
-    else:
-        start_sub = 0
-        end_sub = len(str(reverse_record.seq))
-    if sys.argv[4] == "REVERSE" or sys.argv[4] == "R":
-        print(reverse_record.seq)[start_sub:end_sub]
+if parameters.reverse:
+    start_sub = parameters.begin
+    if start_sub > 0:
+        start_sub-=1
+    if parameters.finish <= parameters.begin:
+        print("Reverse finish is less than reverse begin???")
         exit()
+    else:
+        end_sub = parameters.finish
+    print(reverse_record.seq)[start_sub:end_sub]
+    exit()
 print(search_DNA_seq)
