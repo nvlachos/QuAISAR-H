@@ -27,19 +27,19 @@ parser.add_argument('-e', '--end', help='end position', required='True', type=in
 parser.add_argument('-r', '--reverse', help='reverse complement strand?', required='False')
 parser.add_argument('-b', '--begin', help='rev-comp begin position', required='False', type=int, dest='begin')
 parser.add_argument('-f', '--finish', help='rev-comp finish position', required='False', type=int, dest='finish')
-
+parameters=parser.parse_args()
 
 
 sequence = ""
 #main_record = SeqIO.read(sys.argv[1],"fasta")
-main_record = SeqIO.read(input_file, "fasta")
+main_record = SeqIO.read(parameters.input_file, "fasta")
 #start = int(sys.argv[2])-1
 #end = int(sys.argv[3])
-print(":"+str(start)+":"+str(end)+":")
+print(":"+str(parameters.start)+":"+str(parameters.end)+":")
 print(main_record.id)
 print(main_record.description)
 
-search_DNA_seq = main_record.seq[start:end]
+search_DNA_seq = main_record.seq[parameters.start:parameters.end]
 reverse_record = SeqRecord(Seq(str(search_DNA_seq)), main_record.id, '', '')
 #print(reverse_record.seq)
 reverse_record=reverse_record.reverse_complement()
