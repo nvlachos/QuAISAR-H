@@ -288,7 +288,15 @@ else
 	if [[ "${accession}" == "No_Accession_Number" ]]; then
 		best_organism_guess="${def_array[3]} ${def_array[4]}"
 	else
-		best_organism_guess=$(python "${shareScript}/entrez_get_taxon_from_accession.py" "${accession}" "${me}")
+		attempts=0
+		while [[ ${attempts} -lt 5 ]]; do
+			best_organism_guess=$(python "${shareScript}/entrez_get_taxon_from_accession.py" "${accession}" "${me}")
+			if [[ ! -z ${best_organism_guess} ]]; then
+				break
+			else
+				attempts=$(( attempts + 1 ))
+			fi
+		done
 	fi
 fi
 # Uncomment this if you want to restrict ID to only genus species, without more resolute definition
