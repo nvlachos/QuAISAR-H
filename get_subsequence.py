@@ -21,7 +21,7 @@ import os
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-i', '--iput', help='input file', required=True, dest='input_file')
+parser.add_argument('-i', '--input', help='input file', required=True, dest='input_file')
 parser.add_argument('-s', '--start', help='start position', required=True, type=int, dest='start')
 parser.add_argument('-e', '--end', help='end position', required=True, type=int, dest='end')
 parser.add_argument('-r', '--reverse', help='reverse complement strand?', required=False, type=bool, dest='reverse', default=False)
