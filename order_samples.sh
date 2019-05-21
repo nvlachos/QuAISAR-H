@@ -52,10 +52,10 @@ while IFS= read -r var; do
 	# If the run_id matches, then add ID to list (automatically placing them in the proper order)
 	if [[ "${line_project}" = "${1}" ]]; then
 		line_id=$(echo "${var}" | cut -d'	' -f3)
-		echo "Adding ${counter}: ${1}/${line_id}"
+	#	echo "Adding ${counter}: ${1}/${line_id}"
 		echo "${1}/${line_id}" >> "${processed}/${1}/${1}_list_ordered.txt"
 	else
-		echo "${counter} not in ${1}"
+		#echo "${counter} not in ${1}"
 		:
 	fi
 	counter=$(( counter + 1 ))
@@ -63,8 +63,8 @@ done < ${processed}/${1}/2019_MMBSeq_Log.tsv
 
 
 # Remove intermediate files from sorting
-#rm -r ${processed}/${1}/2019_MMBSeq_Log.tsv
-#rm -r ${processed}/${1}/2019_MMBSeq_Log.xlsx
+rm -r ${processed}/${1}/2019_MMBSeq_Log.tsv
+rm -r ${processed}/${1}/2019_MMBSeq_Log.xlsx
 
 # Check if the sorted file has content, else delete it since something went wrong
 if [[ ! -s "${processed}/${1}/${1}_list_ordered.txt" ]]; then
