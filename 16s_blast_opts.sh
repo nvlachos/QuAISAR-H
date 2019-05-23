@@ -125,7 +125,7 @@ do
 		if [ "${ribosome}" = "16S" ]; then
 			# Replace with subsequence once it can handle multi-fastas
 			#make_fasta $1 $2 $contig $cstart $cstop
-			python3 ${shareScript}/get_subsequence.py -i "${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta" -s ${cstart} -e ${cstop} -t ${contig}
+			python3 ${shareScript}/get_subsequence.py -i "${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta" -s ${cstart} -e ${cstop} -t ${contig} >> ${processed}/${project}/${sample_name}/16s/${sample_name}_16s_rna_seqs.txt
 			found_16s="true"
 		fi
 	fi
