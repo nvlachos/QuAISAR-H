@@ -38,21 +38,27 @@ while getopts ":h?n:p:" option; do
 	options_found=$(( options_found + 1 ))
 	case "${option}" in
 		\?)
+			echo "Invalid option found: ${OPTARG}"
       show_help
       exit 0
       ;;
-		n) 
+		n)
+			echo "Option -n triggered, argument = ${OPTARG}"
 			sample_name=${OPTARG};;
 		p)
+			echo "Option -p triggered, argument = ${OPTARG}"
 			project=${OPTARG};;
-		:|h)
+		:)
+			echo "Option -${OPTARG} requires as argument"
+		h)
 			show_help
 			exit 0
 			;;
 	esac
 done
 
-if [[ "${optinos_found}" -eq 0 ]]; then
+if [[ "${options_found}" -eq 0 ]]; then
+	echo "No options found"
 	show_help
 	exit
 fi
