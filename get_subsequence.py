@@ -58,7 +58,7 @@ else:
             match_record = record
             print("Found match for %s in %s", parameters.title, record.id)
             break
-if match_record == None:
+if match_record is None:
     print("No matching header found, exiting...")
 else:
     print(match_record.id)
