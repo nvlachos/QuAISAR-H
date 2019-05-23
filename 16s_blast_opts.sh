@@ -38,13 +38,17 @@ while getopts ":h?n:p:" option; do
 	options_found=$(( options_found + 1 ))
 	case "${option}" in
 		\?)
-        show_help
-        exit 0
-        ;;
-		n) sample_name=${OPTARG};;
-		p) project=${OPTARG};;
-		:|h) show_help
-				exit();;
+      show_help
+      exit 0
+      ;;
+		n) 
+			sample_name=${OPTARG};;
+		p)
+			project=${OPTARG};;
+		:|h)
+			show_help
+			exit 0
+			;;
 	esac
 done
 
