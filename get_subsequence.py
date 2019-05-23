@@ -42,8 +42,15 @@ match_record=None
 if sequence_count == 0:
     print("No sequences found in input fasta file, exiting")
     exit()
-elif sequence_count == 1 or parameters.title == None:
+elif sequence_count == 1:
     match_record = SeqIO.read(parameters.input_file, "fasta")
+elif parameters.title == None:
+    counter=0
+    for record in SeqIO.read(parameters.input_file, "fasta"):
+        match_record = record
+        print("Using first sequence:", record.id)
+        # Purposely left to break after first sequence is retrieved
+        break
 else:
     for record in SeqIO.read(parameters.input_file, "fasta"):
         if parameters.title in record.id:
