@@ -106,7 +106,8 @@ do
 		ribosome=$(echo ${line} | cut -d' ' -f9 | cut -d'=' -f3)
 		if [ "${ribosome}" = "16S" ]; then
 			# Replace with subsequence once it can handle multi-fastas
-			make_fasta $1 $2 $contig $cstart $cstop
+			#make_fasta $1 $2 $contig $cstart $cstop
+			python3 ${shareScript}/get_subsequence.py -i "${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta" -s ${cstart} -e ${cstop} -t ${contig}
 			found_16s="true"
 		fi
 	fi
