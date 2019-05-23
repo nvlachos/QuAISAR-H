@@ -60,11 +60,11 @@ else:
             break
 if match_record is None:
     print("No matching header found, exiting...")
-else:
+#else:
     #print(match_record.id)
     #print(match_record.description)
     #print(match_record.seq)
-    :
+
 exit()
 
 
