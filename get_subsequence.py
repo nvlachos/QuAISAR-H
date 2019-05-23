@@ -53,7 +53,7 @@ elif parameters.title == None:
         # Purposely left to break after first sequence is retrieved
         break
 else:
-    for record in SeqIO.read(parameters.input_file, "fasta"):
+    for record in SeqIO.parse(parameters.input_file, "fasta"):
         if parameters.title in record.id:
             match_record = record
             print("Found match for %s in %s", parameters.title, record.id)
