@@ -56,7 +56,7 @@ else:
     for record in SeqIO.parse(parameters.input_file, "fasta"):
         if parameters.title in record.id:
             match_record = record
-            print("Found match for %s in %s", parameters.title, record.id)
+            print("Found match for:", parameters.title, "as", record.id)
             break
 if match_record is None:
     print("No matching header found, exiting...")
