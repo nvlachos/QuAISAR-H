@@ -24,6 +24,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input', help='input file', required=True, dest='input_file')
 parser.add_argument('-s', '--start', help='start position', required=True, type=int, dest='start')
 parser.add_argument('-e', '--end', help='end position', required=True, type=int, dest='end')
+parser.add_argument('-t', '--title', help='header', required=False, type=str, dest='title')
 parser.add_argument('-r', '--reverse', help='reverse complement strand?', required=False, type=bool, dest='reverse', default=False)
 parser.add_argument('-b', '--begin', help='rev-comp begin position', required=False, type=int, dest='begin', default=0)
 parser.add_argument('-f', '--finish', help='rev-comp finish position', required=False, type=int, dest='finish', default=0)
@@ -34,11 +35,15 @@ with open(parameters.input_file, 'r') as myfile:
 print(data.split(' ').count(">"))
 exit()
 
-
+match_record=None
 
 for record in SeqIO.parse(parameters.input_file, "fasta"):
-    if record.id.starts_with(parameters)
-    print(record.id)
+    if record.id.starts_with(parameters.header):
+            match_record = record
+            print("Found matching header")
+
+if match_record == None:
+    print("No matching header found, exiting...")
 
 sequence = ""
 #match_record = SeqIO.read(sys.argv[1],"fasta")
