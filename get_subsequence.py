@@ -41,7 +41,7 @@ match_record=None
 
 #Cahnges how to handle a single entry vs multi-entry fasta file
 if sequence_count == 0:
-    print("No sequences found in input fasta file, exiting")
+    #print("No sequences found in input fasta file, exiting")
     exit()
 elif sequence_count == 1:
     match_record = SeqIO.read(parameters.input_file, "fasta")
@@ -49,14 +49,14 @@ elif parameters.title == None:
     counter=0
     for record in SeqIO.parse(parameters.input_file, "fasta"):
         match_record = record
-        print("Using first sequence:", record.id)
+        #print("Using first sequence:", record.id)
         # Purposely left to break after first sequence is retrieved
         break
 else:
     for record in SeqIO.parse(parameters.input_file, "fasta"):
         if parameters.title in record.id:
             match_record = record
-            print("Found match for:", parameters.title, "as", record.id)
+            #print("Found match for:", parameters.title, "as", record.id)
             break
 if match_record is None:
     print("No matching header found, exiting...")
