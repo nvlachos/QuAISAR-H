@@ -65,7 +65,7 @@ fi
 
 
 # Creates new output folder based on the universally set processed location from config.sh
-OUTDATADIR=${processed}/${sample_name}/${project}
+OUTDATADIR=${processed}/${project}/${sample_name}/
 if [ ! -d "${OUTDATADIR}/16s" ]; then
 	echo "Creating $OUTDATADIR/16s"
 	mkdir "${OUTDATADIR}/16s"
