@@ -49,7 +49,7 @@ while getopts ":h?n:p:" option; do
 			echo "Option -p triggered, argument = ${OPTARG}"
 			project=${OPTARG};;
 		:)
-			echo "Option -${OPTARG} requires as argument"
+			echo "Option -${OPTARG} requires as argument";;
 		h)
 			show_help
 			exit 0
