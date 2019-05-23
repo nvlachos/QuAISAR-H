@@ -65,17 +65,15 @@ if match_record is None:
     #print(match_record.description)
     #print(match_record.seq)
 
-exit()
-
 
 sequence = ""
 #match_record = SeqIO.read(sys.argv[1],"fasta")
-match_record = SeqIO.read(parameters.input_file, "fasta")
+#match_record = SeqIO.read(parameters.input_file, "fasta")
 #start = int(sys.argv[2])-1
 #end = int(sys.argv[3])
-print(":"+str(parameters.start)+":"+str(parameters.end)+":")
-print(match_record.id)
-print(match_record.description)
+#print(":"+str(parameters.start)+":"+str(parameters.end)+":")
+#print(match_record.id)
+#print(match_record.description)
 
 search_DNA_seq = match_record.seq[parameters.start:parameters.end]
 reverse_record = SeqRecord(Seq(str(search_DNA_seq)), match_record.id, '', '')
