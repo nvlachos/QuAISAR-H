@@ -34,7 +34,7 @@ parameters=parser.parse_args()
 with open(parameters.input_file, 'r') as myfile:
     data=myfile.read().replace('\n', ' ')
 sequence_count=data.count(">")
-print("SC:", sequence_count)
+#print("SC:", sequence_count)
 
 #Sets the initial record to catch if it has not been found during the parsing
 match_record=None
@@ -61,9 +61,10 @@ else:
 if match_record is None:
     print("No matching header found, exiting...")
 else:
-    print(match_record.id)
-    print(match_record.description)
-    print(match_record.seq)
+    #print(match_record.id)
+    #print(match_record.description)
+    #print(match_record.seq)
+    :
 exit()
 
 
