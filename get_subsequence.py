@@ -34,6 +34,7 @@ parameters=parser.parse_args()
 with open(parameters.input_file, 'r') as myfile:
     data=myfile.read().replace('\n', ' ')
 sequence_count=data.count(">")
+print("SC:", sequence_count)
 
 #Sets the initial record to catch if it has not been found during the parsing
 match_record=None
