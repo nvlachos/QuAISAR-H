@@ -30,20 +30,34 @@ parser.add_argument('-b', '--begin', help='rev-comp begin position', required=Fa
 parser.add_argument('-f', '--finish', help='rev-comp finish position', required=False, type=int, dest='finish', default=0)
 parameters=parser.parse_args()
 
+# Counts the number of sequences in the file using > as the delimiter
 with open(parameters.input_file, 'r') as myfile:
     data=myfile.read().replace('\n', ' ')
-print(data.count(">"))
-exit()
+sequence_count=data.count(">"))
 
+#Sets the initial record to catch if it has not been found during the parsing
 match_record=None
 
-for record in SeqIO.parse(parameters.input_file, "fasta"):
-    if record.id.starts_with(parameters.header):
+#Cahnges how to handle a single entry vs multi-entry fasta file
+if sequence_count == 0:
+    print("No sequences found in input fasta file, exiting")
+    exit()
+elif sequence_count == 1:
+    match_record = SeqIO.read(parameters.input_file, "fasta")
+else:
+    for record in SeqIO.read(parameters.input_file, "fasta"):
+        if parameters.title in record.id:
             match_record = record
-            print("Found matching header")
-
+            print("Found match for %s in %s", parameters.title, record.id)
+            break
 if match_record == None:
     print("No matching header found, exiting...")
+else:
+    print(match_record.id)
+    print(match_record.description)
+    print(match_record.seq)
+exit()
+
 
 sequence = ""
 #match_record = SeqIO.read(sys.argv[1],"fasta")
