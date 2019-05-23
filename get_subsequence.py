@@ -32,7 +32,7 @@ parameters=parser.parse_args()
 
 with open(parameters.input_file, 'r') as myfile:
     data=myfile.read().replace('\n', ' ')
-print(data.split(' ').count(">"))
+print(data.count(">"))
 exit()
 
 match_record=None
