@@ -42,7 +42,7 @@ match_record=None
 if sequence_count == 0:
     print("No sequences found in input fasta file, exiting")
     exit()
-elif sequence_count == 1:
+elif sequence_count == 1 or parameters.title == None:
     match_record = SeqIO.read(parameters.input_file, "fasta")
 else:
     for record in SeqIO.read(parameters.input_file, "fasta"):
