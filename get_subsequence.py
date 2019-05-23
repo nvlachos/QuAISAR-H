@@ -47,7 +47,7 @@ elif sequence_count == 1:
     match_record = SeqIO.read(parameters.input_file, "fasta")
 elif parameters.title == None:
     counter=0
-    for record in SeqIO.read(parameters.input_file, "fasta"):
+    for record in SeqIO.parse(parameters.input_file, "fasta"):
         match_record = record
         print("Using first sequence:", record.id)
         # Purposely left to break after first sequence is retrieved
