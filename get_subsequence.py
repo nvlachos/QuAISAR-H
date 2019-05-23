@@ -33,7 +33,7 @@ parameters=parser.parse_args()
 # Counts the number of sequences in the file using > as the delimiter
 with open(parameters.input_file, 'r') as myfile:
     data=myfile.read().replace('\n', ' ')
-sequence_count=data.count(">"))
+sequence_count=data.count(">")
 
 #Sets the initial record to catch if it has not been found during the parsing
 match_record=None
