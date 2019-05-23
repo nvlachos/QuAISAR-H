@@ -39,15 +39,15 @@ while getopts "h?n:p:" option; do
         show_help
         exit 0
         ;;
-		n) USER=${OPTARG};;
-		p) PRODUCT=${OPTARG};;
+		n) sample_name=${OPTARG};;
+		p) project=${OPTARG};;
 	esac
 done
 
 
 
 # Creates new output folder based on the universally set processed location from config.sh
-OUTDATADIR=${processed}/${2}/${1}
+OUTDATADIR=${processed}/${sample_name}/${project}
 if [ ! -d "${OUTDATADIR}/16s" ]; then
 	echo "Creating $OUTDATADIR/16s"
 	mkdir "${OUTDATADIR}/16s"
@@ -75,21 +75,21 @@ make_fasta() {
 		if [ $match -eq 1 ]; then
 			rna_seq="$rna_seq$line"
 		fi
-	done < "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
+	done < "${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta"
 	# Extracts appropriate sequence from contig using start and stop positions
 	rna="${rna_seq:$cstart:$clength}"
 	# Adds new fasta entry to the file
-	echo -e "${header}\n${rna_seq:$cstart:$clength}" >> ${processed}/${2}/${1}/16s/${1}_16s_rna_seqs.txt
+	echo -e "${header}\n${rna_seq:$cstart:$clength}" >> ${processed}/${project}/${sample_name}/16s/${sample_name}_16s_rna_seqs.txt
 }
 
 owd=$(pwd)
 cd ${OUTDATADIR}/16s
 
 # Run barrnap to discover ribosomal sequences
-barrnap --kingdom bac --threads ${procs} "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" > ${OUTDATADIR}/16s/${1}_scaffolds_trimmed.fasta_rRNA_seqs.fasta
+barrnap --kingdom bac --threads ${procs} "${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta" > ${OUTDATADIR}/16s/${sample_name}_scaffolds_trimmed.fasta_rRNA_seqs.fasta
 
 # Checks for successful output from barrnap, *rRNA_seqs.fasta
-if [[ ! -s ${OUTDATADIR}/16s/${1}_scaffolds_trimmed.fasta_rRNA_seqs.fasta ]]; then
+if [[ ! -s ${OUTDATADIR}/16s/${sample_name}_scaffolds_trimmed.fasta_rRNA_seqs.fasta ]]; then
 	echo "rNA_seqs.fasta does NOT exist"
 	exit 1
 fi
@@ -111,25 +111,25 @@ do
 		fi
 	fi
 	lines=$((lines + 1))
-done < "${OUTDATADIR}/16s/${1}_scaffolds_trimmed.fasta_rRNA_seqs.fasta"
+done < "${OUTDATADIR}/16s/${sample_name}_scaffolds_trimmed.fasta_rRNA_seqs.fasta"
 
 # Adds No hits found to output file in the case where no 16s ribosomal sequences were found
 if [[ "${found_16s}" == "false" ]]; then
-	echo -e "best_hit	${1}	No_16s_sequences_found" > "${OUTDATADIR}/16s/${1}_16s_blast_id.txt"
-	echo -e "largest_hit	${1}	No_16s_sequences_found" >> "${OUTDATADIR}/16s/${1}_16s_blast_id.txt"
+	echo -e "best_hit	${sample_name}	No_16s_sequences_found" > "${OUTDATADIR}/16s/${sample_name}_16s_blast_id.txt"
+	echo -e "largest_hit	${sample_name}	No_16s_sequences_found" >> "${OUTDATADIR}/16s/${sample_name}_16s_blast_id.txt"
 	exit
 fi
 
 # Blasts the NCBI database to find the closest hit to every entry in the 16s fasta list
 ###### MAX_TARGET_SEQS POSSIBLE ERROR
-blastn -word_size 10 -task blastn -remote -db nt -max_hsps 1 -max_target_seqs 1 -query ${processed}/${2}/${1}/16s/${1}_16s_rna_seqs.txt -out ${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen ssciname";
+blastn -word_size 10 -task blastn -remote -db nt -max_hsps 1 -max_target_seqs 1 -query ${processed}/${project}/${sample_name}/16s/${sample_name}_16s_rna_seqs.txt -out ${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen ssciname";
 # Sorts the list based on sequence match length to find the largest hit
-sort -k4 -n "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN" --reverse > "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN.sorted"
+sort -k4 -n "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN" --reverse > "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN.sorted"
 
 # Gets taxon info from the best (literal top) hit from the blast list
-if [[ -s "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN" ]]; then
+if [[ -s "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN" ]]; then
 	me=$(whoami)
-	accessions=$(head -n 1 "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN")
+	accessions=$(head -n 1 "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN")
 #	echo ${accessions}
 	gb_acc=$(echo "${accessions}" | cut -d' ' -f2 | cut -d'|' -f4)
 	echo ${gb_acc}
@@ -148,15 +148,15 @@ if [[ -s "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN" ]]; then
 		blast_id="No_16s_matches_found"
 	fi
 	#blast_id=$(echo ${blast_id} | tr -d '\n')
-	echo -e "best_hit	${1}	${blast_id}" > "${OUTDATADIR}/16s/${1}_16s_blast_id.txt"
+	echo -e "best_hit	${sample_name}	${blast_id}" > "${OUTDATADIR}/16s/${sample_name}_16s_blast_id.txt"
 else
 	echo "No remote blast file"
 fi
 
 # Gets taxon info from the largest hit from the blast list
-if [[ -s "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN.sorted" ]]; then
+if [[ -s "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN.sorted" ]]; then
 	me=$(whoami)
-	accessions=$(head -n 1 "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN.sorted")
+	accessions=$(head -n 1 "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN.sorted")
 	gb_acc=$(echo "${accessions}" | cut -d' ' -f2 | cut -d'|' -f4)
 	attempts=0
 	# Will try getting info from entrez up to 5 times, as it has a higher chance of not finishing correctly on the first try
@@ -173,7 +173,7 @@ if [[ -s "${OUTDATADIR}/16s/${1}.nt.RemoteBLASTN.sorted" ]]; then
 		blast_id="No_16s_matches_found"
 	fi
 #	blast_id$(echo ${blast_id} | tr -d '\n')
-	echo -e "largest	${1}	${blast_id}" >> "${OUTDATADIR}/16s/${1}_16s_blast_id.txt"
+	echo -e "largest	${sample_name}	${blast_id}" >> "${OUTDATADIR}/16s/${sample_name}_16s_blast_id.txt"
 else
 	echo "No sorted remote blast file"
 fi
