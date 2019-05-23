@@ -28,7 +28,7 @@ elif [[ -z "${1}" ]]; then
 	echo "Empty sample name supplied to run_plasmidFinder.sh, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_plasmidFinder.sh  sample_name run_id output_folder(either plasmid or (DONT USE-plasmid_on_plasmidAssembly) (-i number_minimum_identity, optional) (-f to force against all databases, optional)"
+	echo "Usage is ./run_plasmidFinder.sh  sample_name run_id output_folder(either plasmid or (DONT USE-plasmid_on_plasFlow) (-i number_minimum_identity, optional) (-f to force against all databases, optional)"
 	echo "Output by default is ${processed}/miseq_run_id/sample_name/plasmid"
 	exit 0
 elif [[ -z "${2}" ]]; then
@@ -47,12 +47,12 @@ fi
 # Set output directory
 OUTDATADIR=${processed}/${2}/${1}/${3}
 # Get proper input file based on output directory (whether it is full assembly or plasmid)
-# if [[ "${3}" == "plasmid_on_plasmidAssembly" ]]; then
+# if [[ "${3}" == "plasmid_on_plasFlow" ]]; then
 # 	outpath="plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta"
 # el
 if [[ "${3}" == "plasmid" ]]; then
 	outpath="Assembly/${1}_scaffolds_trimmed.fasta"
-elif [[ "${3}" == "plasmid_on_plasmidAssembly" ]]; then
+elif [[ "${3}" == "plasmid_on_plasFlow" ]]; then
 	if [[ -f "${processed}/${2}/${1}//plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.fasta" ]]; then
 		mv "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.fasta" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.fasta"
 		mv "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.gfa" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.gfa"

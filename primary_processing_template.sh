@@ -470,7 +470,7 @@ process_samples()	{
 	# Get ID fom 16s
 	echo "----- Identifying via 16s blast -----"
 	start=$SECONDS
-	"${shareScript}/16s_blast.sh" "${filename}" "${project}"
+	"${shareScript}/16s_blast.sh" "-n" "${filename}" "-p" "${project}"
 	end=$SECONDS
 	time16s=$((end - start))
 	echo "16S - ${time16s} seconds" >> "${time_summary}"
@@ -653,7 +653,7 @@ process_samples()	{
 	echo "----- Identifying plasmids using plasmidFinder -----"
 	start=$SECONDS
 	"${shareScript}/run_plasmidFinder.sh" "${filename}" "${project}" "plasmid"
-	"${shareScript}/run_plasmidFinder.sh" "${filename}" "${project}" "plasmid_on_plasmidAssembly"
+	"${shareScript}/run_plasmidFinder.sh" "${filename}" "${project}" "plasmid_on_plasFlow"
 	end=$SECONDS
 	timeplasfin=$((end - start))
 	echo "plasmidFinder - ${timeplasfin} seconds" >> "${time_summary}"

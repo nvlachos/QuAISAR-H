@@ -1235,8 +1235,8 @@ fi
 
 # # check plasmids (on plasmidAssembly)
 # if [[ "plasmidsFoundviaplasmidSPAdes" -eq 1 ]]; then
-# 	if [[ -d "${OUTDATADIR}/plasmid_on_plasmidAssembly/" ]]; then
-# 		if [[ -s "${OUTDATADIR}/plasmid_on_plasmidAssembly/${1}_results_table_summary.txt" ]]; then
+# 	if [[ -d "${OUTDATADIR}/plasmid_on_plasFlow/" ]]; then
+# 		if [[ -s "${OUTDATADIR}/plasmid_on_plasFlow/${1}_results_table_summary.txt" ]]; then
 # 			number_of_plasmids=0
 # 			while read line_in; do
 # 				line_in=$(echo ${line_in} | cut -d' ' -f1)
@@ -1253,7 +1253,7 @@ fi
 # 		fi
 # 	# No plasmid folder exists
 # 	else
-# 		printf "%-20s: %-8s : %s\\n" "plasmid-plasmidAsmb" "FAILED" "/plasmid_on_plasmidAssembly/ does not exist"
+# 		printf "%-20s: %-8s : %s\\n" "plasmid-plasmidAsmb" "FAILED" "/plasmid_on_plasFlow/ does not exist"
 # 		status="FAILED"
 # 	fi
 # fi

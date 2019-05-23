@@ -19,7 +19,7 @@ module load perl/5.12.3
 
 #
 # Creates a species prediction based on blasting the largest and also best hit of the suggested 16s sequences found using barrnap
-# Usage ./16s_blast.sh   sample_name   run_id
+# Usage ./16s_blast.sh -n sample_name -p run_id
 #
 # Required modules: barrnap/0.8
 # Sub-required modules (loaded by required modules): hmmer/3.1b2

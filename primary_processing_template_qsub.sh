@@ -730,7 +730,7 @@ make_relies_on_trimmed_assemblies() {
 		echo -e "#$ -cwd"  >> "${main_dir}/blast16sID_${sample}_${start_time}.sh"
 		echo -e "#$ -q short.q\n"  >> "${main_dir}/blast16sID_${sample}_${start_time}.sh"
 		echo -e "module load barrnap/0.8\n" >> "${main_dir}/blast16sID_${sample}_${start_time}.sh"
-		echo -e "\"${shareScript}/16s_blast.sh\" \"${sample}\" \"${project}\"" >> "${main_dir}/blast16sID_${sample}_${start_time}.sh"
+		echo -e "\"${shareScript}/16s_blast.sh\" \"-n\" \"${sample}\" \"-p\" \"${project}\"" >> "${main_dir}/blast16sID_${sample}_${start_time}.sh"
 		echo -e "echo $(date) > \"${main_dir}/${sample}/logs/${sample}_blast16sID_complete.txt\"" >> "${main_dir}/blast16sID_${sample}_${start_time}.sh"
 
 		# Create script to run Kraken on assembly
@@ -804,7 +804,7 @@ make_relies_on_trimmed_assemblies() {
 			echo -e "#$ -cwd"  >> "${main_dir}/pFinp_${sample}_${start_time}.sh"
 			echo -e "#$ -q short.q\n"  >> "${main_dir}/pFinp_${sample}_${start_time}.sh"
 			echo -e "module load PlasmidFinder/1.3\n" >> "${main_dir}/pFinp_${sample}_${start_time}.sh"
-			echo -e "\"${shareScript}/run_plasmidFinder.sh\" \"${sample}\" \"${project}\" \"plasmid_on_plasmidAssembly\"" >> "${main_dir}/pFinp_${sample}_${start_time}.sh"
+			echo -e "\"${shareScript}/run_plasmidFinder.sh\" \"${sample}\" \"${project}\" \"plasmid_on_plasFlow\"" >> "${main_dir}/pFinp_${sample}_${start_time}.sh"
 		fi
 	done
 }

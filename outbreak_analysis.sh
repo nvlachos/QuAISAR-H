@@ -492,7 +492,7 @@ while IFS= read -r line; do
 	# 		echo -e "${project}\t${sample_name}\tplasmid_assembly\t${plasmid}" >> ${output_directory}/${4}-plasmid_summary.txt
 	# 		added=1
 	# 	fi
-	# done < ${OUTDATADIR}/plasmid_on_plasmidAssembly/${sample_name}_results_table_summary.txt
+	# done < ${OUTDATADIR}/plasmid_on_plasFlow/${sample_name}_results_table_summary.txt
 	#
 	# if [[ "${added}" -eq 0 ]]; then
 	# 	echo -e "${project}\t${sample_name}\tplasmid_assembly\tNo_Plasmids_Found\t${plas_contigs}_contigs-${components}_components" >> ${output_directory}/${4}-plasmid_summary.txt
