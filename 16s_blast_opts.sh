@@ -33,17 +33,25 @@ show_help () {
 	echo "Output is saved to ${processed}/run_id/sample_name/16s"
 }
 
-while getopts "h?n:p:" option; do
+options_found=0
+while getopts ":h?n:p:" option; do
+	options_found=$(( options_found + 1 ))
 	case "${option}" in
-		h|\?)
+		\?)
         show_help
         exit 0
         ;;
 		n) sample_name=${OPTARG};;
 		p) project=${OPTARG};;
+		:|h) show_help
+				exit();;
 	esac
 done
 
+if [[ "${optinos_found}" -eq 0 ]]; then
+	show_help
+	exit
+fi
 
 
 # Creates new output folder based on the universally set processed location from config.sh
