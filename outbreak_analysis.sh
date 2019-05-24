@@ -4,7 +4,7 @@
 #$ -e outbreak_analysis.err
 #$ -N outbreak_analysis
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 #Import the config file with shortcuts and settings
 if [[ -f config_template.sh ]]; then

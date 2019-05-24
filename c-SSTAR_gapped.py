@@ -7,7 +7,7 @@
 #$ -e C-SSTAR.err
 #$ -N C-SSTAR
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 
 __version__ = '1.2c'

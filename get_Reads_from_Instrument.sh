@@ -4,7 +4,7 @@
 #$ -e get_Reads_from_Instruments.err
 #$ -N get_Reads_from_Instruments
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 # Import the config file with shortcuts and settings
 if [[ ! -f "./config.sh" ]]; then

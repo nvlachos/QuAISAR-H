@@ -4,7 +4,7 @@
 #$ -e load_python_3.6.1.err
 #$ -N load_python_3.6.1
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 # Script to load python 3.6.1 (only needed by busco currently)
 # Wouldnt load normally so had to make this file...sorry

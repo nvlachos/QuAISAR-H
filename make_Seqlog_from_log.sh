@@ -4,7 +4,7 @@
 #$ -e make_Seqlog_from_log.err
 #$ -N make_Seqlog_from_log
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 #Import the config file with shortcuts and settings
 . ./config.sh

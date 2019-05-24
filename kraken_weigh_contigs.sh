@@ -4,7 +4,7 @@
 #$ -e kraken_weigh_contigs.err
 #$ -N kraken_weigh_contigs
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 #Import the config file with shortcuts and settings
 if [[ ! -f "./config.sh" ]]; then

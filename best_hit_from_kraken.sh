@@ -4,7 +4,7 @@
 #$ -e best_hit_from_kraken.err
 #$ -N best_hit_from_kraken
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 #Import the config file with shortcuts and settings
 if [[ ! -f "./config.sh" ]]; then

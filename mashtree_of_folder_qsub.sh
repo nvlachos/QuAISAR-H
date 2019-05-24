@@ -4,7 +4,7 @@
 #$ -e mashdist.err
 #$ -N mashdist
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 #Import the config file with shortcuts and settings
 if [[ ! -f "./config.sh" ]]; then
