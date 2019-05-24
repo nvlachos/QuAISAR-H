@@ -26,7 +26,7 @@ module load krona/2.7
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
-	echo "No argument supplied to run_kraken2.sh, exiting"
+	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [[ -z "${1}" ]]; then
 	echo "Empty sample name supplied to run_kraken2.sh, exiting"
@@ -98,9 +98,9 @@ elif [ "${3}" = "assembled" ]; then
 	perl "${shareScript}/Methaplan_to_krona.pl" -p "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.mpa" -k "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.krona"
 	# Create taxonomy list file from kraken2 file
 	echo "5"
-	#python3 "${shareScript}/kraken2-report_from_mpa.py" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_.mpa"
-	#kraken-report --db "${kraken_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.list"
-
+	module load kraken/0.10.5
+	kraken-report --db "${kraken_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.list"
+	module unload kraken/0.10.5
 	# Weigh taxonomy list file
 	echo "6"
 	python3 ${shareScript}/Kraken_Assembly_Summary_Exe.py "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.labels" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.list" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP_data.list"

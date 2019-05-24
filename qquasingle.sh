@@ -26,7 +26,7 @@ fi
 
 # Checks for proper argumentation
 if [[ $# -lt 2 ]]; then
-	echo "Improper argument quantity supplied to act_by_list.sh, exiting"
+	echo "Improper argument quantity supplied to $0, exiting"
 	exit 1
 # Shows a brief uasge/help section if -h option used as first argument
 elif [[ "$1" = "-h" ]]; then

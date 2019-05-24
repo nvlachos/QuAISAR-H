@@ -20,7 +20,7 @@ fi
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
-	echo "No argument supplied to get_Reads_from_Instrument.sh, exiting"
+	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [[ -z "${1}" ]]; then
 	echo "Empty project name supplied to get_Reads_from_Instrument.sh, exiting"

@@ -19,7 +19,7 @@
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
-	echo "No argument supplied to make_Seqlog_from_log.sh, exiting"
+	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [[ -z "${1}" ]]; then
 	echo "Empty run name supplied to make_Seqlog_from_log.sh, exiting"

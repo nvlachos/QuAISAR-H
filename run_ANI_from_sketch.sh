@@ -21,7 +21,7 @@ ${shareScript}/module_changers/list_modules.sh
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
-	echo "No argument supplied to run_ANI_from_sketch.sh, exiting"
+	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [[ -z "${1}" ]]; then
 	echo "Empty sample name supplied to run_ANI_from_sketch.sh, exiting"

@@ -12,16 +12,16 @@
 . "${mod_changers}/pipeline_mods"
 
 #
-# Usage ./act_by_list_AR_completion_check.sh path_to_list ResGANNOT_identifier(YYYYMMDD)
+# Usage ./act_by_list_template.sh path_to_list ResGANNOT_identifier(YYYYMMDD)
 #
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
-	echo "No argument supplied to act_by_list.sh, exiting"
+	echo "No argument supplied to $0, exiting"
 	exit 1
 # Shows a brief uasge/help section if -h option used as first argument
 elif [[ "$1" = "-h" ]]; then
-	echo "Usage is ./act_by_list_AR_completion_check.sh path_to_list_file ResGANNOT_Identifier(YYYYMMDD)"
+	echo "Usage is ./act_by_list_template.sh path_to_list_file ResGANNOT_Identifier(YYYYMMDD)"
 	exit 0
 fi
 
@@ -60,5 +60,5 @@ done < "${1}"
 echo "All isolates completed"
 global_end_time=$(date "+%m-%d-%Y @ %Hh_%Mm_%Ss")
 #Script exited gracefully (unless something else inside failed)
-printf "%s %s" "Act_by_list.sh has completed updating MLST and pipeline_stats " "${global_end_time}" | mail -s "act_by_list complete" nvx4@cdc.gov
+printf "%s %s" "Act_by_list_template.sh has completed updating MLST and pipeline_stats " "${global_end_time}" | mail -s "act_by_list complete" nvx4@cdc.gov
 exit 0

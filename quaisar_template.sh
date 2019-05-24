@@ -16,7 +16,7 @@
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
-	echo "No argument supplied to quaisar.sh, exiting"
+	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
 	echo "Usage is ./quaisar.sh  sample_name miseq_run_id(or_project_name) config_file_to_use optional_alternate_directory"

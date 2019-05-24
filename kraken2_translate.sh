@@ -23,7 +23,7 @@ fi
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
-	echo "No argument supplied to best_hit_from_kraken.sh, exiting"
+	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [ -z "$1" ]; then
 	echo "Empty sample name supplied to best_hit_from_kraken.sh, exiting"
@@ -71,7 +71,7 @@ do
 			echo "Already in array"
 			tax_tree=${tax_trees[${taxid}]}
 		fi
-		
+
 		echo "${contig_info}	${tax_tree}" >> "${OUTDATADIR}/${1}_assembled_BP.labels"
 
 done < "${OUTDATADIR}/${1}_assembled_BP.kraken2"

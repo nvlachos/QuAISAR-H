@@ -23,7 +23,7 @@ fi
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
-	echo "No argument supplied to best_hit_from_kraken.sh, exiting"
+	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [ -z "$1" ]; then
 	echo "Empty sample name supplied to best_hit_from_kraken.sh, exiting"
@@ -95,7 +95,7 @@ if [[ ! -s "${OUTDATADIR}/${1}_${3}.list" ]]; then
 fi
 
 #Parses the kraken output list line by line
-while IFS= read -r line 
+while IFS= read -r line
 do
 	# Removes the whitespace at the end of the line
 	line=${line,,}
@@ -113,7 +113,7 @@ do
 	first_desc=$(echo "${description}" | cut -d' ' -f1)
 	# Unclassified read info (reads and percent) is captured if the classifier claims to be 'u'
 	# Kraken lists entries in order of abundance (highest first) therefore each time a new taxon level is encountered it will be the highest ranking representative
-	
+
 	#echo "${reads} ${domain_reads}"
 	if [ "${classification}" = "u" ]; then
 		unclass_percent=${percent}
@@ -154,7 +154,7 @@ do
 		genus_reads=${reads}
 	# Grabs all read info (identifier, reads and percent) for best species level entry
 	elif [ "${classification}" = "s" ] && [ "${reads}" -gt "${species_reads}" ]; then
-		
+
 		echo "Old: ${species}-${species_reads}"
 		gs=(${description^})
 		species=${gs[@]:1}

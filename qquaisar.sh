@@ -17,7 +17,7 @@ fi
 #
 # The wrapper script that runs the lowest possible primary_processing.sh script on the cluster
 #
-# Usage ./primary_processing.sh 
+# Usage ./primary_processing.sh
 # -p/l/s(project/list/single) identifier: project pulls every sample from a particular "project" (or run identifier). Samples will be downloaded from instruments also.
 # 							   			  list will only process samples found on the list
 #							   			  sample will process the single sample supplied
@@ -26,7 +26,7 @@ fi
 
 # Checks for proper argumentation
 if [[ $# -lt 2 ]]; then
-	echo "Improper argument quantity supplied to act_by_list.sh, exiting"
+	echo "Improper argument quantity supplied to $0, exiting"
 	exit 1
 # Shows a brief uasge/help section if -h option used as first argument
 elif [[ "$1" = "-h" ]]; then
