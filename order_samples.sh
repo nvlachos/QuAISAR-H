@@ -21,7 +21,7 @@
 
 #  Function to print out help blurb
 show_help () {
-	echo "Usage is ./mashtree_of_folder.sh -p project_name"
+	echo "Usage is ./order_samples.sh -p project_name"
 	echo "Output is saved to path_to_folder"
 }
 
