@@ -188,7 +188,7 @@ done < ${1}
 
 # Creating mashtree of all isolates in list
 echo "Creating mashtree of all samples"
-${shareScript}/mashtree_of_list.sh "${1}" "${output_directory}/mashtree" "${4}"
+${shareScript}/mashtree_of_list.sh -i "${1}" -d "${output_directory}/mashtree" -o "${4}"
 cp "${output_directory}/mashtree/${4}.dnd" "${output_directory}/${4}.nwk"
 sed -i "s/_scaffolds_trimmed//g" "${output_directory}/${4}.nwk"
 rm -r ${output_directory}/mashtree
