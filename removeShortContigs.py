@@ -1,7 +1,7 @@
 import sys
 import glob
 import fileinput
-
+import argparse
 
 # Parse all arguments from command line
 def parseArgs(args=None):

@@ -1,5 +1,6 @@
 import sys
 import glob
+import argparse
 from Bio import SeqIO
 
 

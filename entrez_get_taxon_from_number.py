@@ -11,6 +11,7 @@
 
 from Bio import Entrez
 import sys
+import argparse
 
 #Create an arg parser...someday
 def parseArgs(args=None):

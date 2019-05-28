@@ -2,6 +2,7 @@ import sys
 import glob
 import fileinput
 import getpass
+import argparse
 from Bio import Entrez
 
 # Parse all argument from command line

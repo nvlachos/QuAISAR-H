@@ -13,6 +13,7 @@ Usage: ./fasta_headers_plasFlow.py -i input.fasta -o output.fasta
 from Bio import SeqIO
 import sys
 import os
+import argparse
 
 #Create an arg parser...someday
 def parseArgs(args=None):

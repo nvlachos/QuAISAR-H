@@ -13,6 +13,7 @@ Usage: ./fasta_headers.py -i file.fasta -o output.fasta
 from Bio import SeqIO
 import sys
 import os
+import argparse
 
 #print("Starting")
 #Create an arg parser...someday
@@ -22,6 +23,7 @@ def parseArgs(args=None):
 	parser.add_argument('-o', '--output', required=True, help='output filename')
 	return parser.parse_args()
 
+args=parseArgs()
 sequences = []
 for record in SeqIO.parse(args.input,"fasta"):
     #print(record.id)

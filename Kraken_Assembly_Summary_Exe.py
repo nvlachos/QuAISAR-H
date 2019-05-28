@@ -1,6 +1,7 @@
 import sys
 import glob
 from Bio import SeqIO
+import argparse
 from decimal import Decimal, ROUND_HALF_UP
 
 def parseArgs(args=None):

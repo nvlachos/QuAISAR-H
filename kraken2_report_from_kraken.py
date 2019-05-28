@@ -3,6 +3,7 @@ import glob
 import fileinput
 import getpass
 from Bio import Entrez
+import argparse
 from operator import attrgetter
 
 # Parse all arguments from command line

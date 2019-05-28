@@ -1,7 +1,7 @@
 #!/bin/sh -l
 
 #$ -o mashfolder.out
-#$ -e mashdfoldererr
+#$ -e mashdfolder.err
 #$ -N mashfolder
 #$ -cwd
 #$ -q short.q
