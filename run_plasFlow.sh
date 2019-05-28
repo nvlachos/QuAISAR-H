@@ -12,7 +12,6 @@ if [[ ! -f "./config.sh" ]]; then
 fi
 . ./config.sh
 #. "${mod_changers}/pipeline_mods"
-#. ./module_changers/pipeline_mods
 #. ./module_changers/list_modules.sh
 
 #
@@ -40,7 +39,7 @@ fi
 module load PlasFlow/1.1
 
 
-
+# Show loaded modules
 . ./module_changers/list_modules.sh
 
 # Create output directory
@@ -48,6 +47,7 @@ if [[ ! -d "${processed}/${2}/${1}/plasFlow" ]]; then
 	mkdir "${processed}/${2}/${1}/plasFlow"
 fi
 
+# Prep any samples that don't have the paired.fq reads
 if [ -f "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq" ] && [ -f "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq" ]; then
 	echo "1"
 	#gzip -c "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq" > "${processed}/${2}/${1}/trimmed/${1}_S1_L001_R1_001.fastq.gz"
@@ -76,14 +76,17 @@ else
 fi
 
 
-
-# Trim contigs a little to 2000 and larger and put through plasflow.
-# The remaining analysis steps have not yet been completed
+# Check if sample has original assembly to process plasflow from
 if [[ -s "${processed}/${2}/${1}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
-	python2 "${shareScript}/removeShortContigs.py" "${processed}/${2}/${1}/Assembly/scaffolds.fasta" 2000 "normal_SPAdes"
-	${shareScript}/fasta_headers.py "${processed}/${2}/${1}/Assembly/scaffolds.fasta.TRIMMED.fasta" "${processed}/${2}/${1}/plasFlow/${1}_scaffolds_trimmed_2000.fasta"
+	# Trim contigs a little to 2000 and larger and put through plasflow.
+	python2 "${shareScript}/removeShortContigs.py" -i "${processed}/${2}/${1}/Assembly/scaffolds.fasta" -t 2000 -s "normal_SPAdes"
+	# Renames headers of fasta files accordingly
+	${shareScript}/fasta_headers.py -i "${processed}/${2}/${1}/Assembly/scaffolds.fasta.TRIMMED.fasta" -o "${processed}/${2}/${1}/plasFlow/${1}_scaffolds_trimmed_2000.fasta"
+	# Removes intermeidate fasta file
 	rm -r "${processed}/${2}/${1}/Assembly/scaffolds.fasta.TRIMMED.fasta"
+	# Run plasflow on newly trimmed assembly file
 	PlasFlow.py --input "${processed}/${2}/${1}/plasFlow/${1}_scaffolds_trimmed_2000.fasta" --output "${processed}/${2}/${1}/plasFlow/${1}_plasFlow_results.tsv" --threshold 0.7
+	# Load all necessary modules to complete the realignment portion of analysis
 	module load Python/3.5.4;
 	module load bowtie2/2.2.9;
 	module load samtools/1.4.1;
@@ -93,6 +96,7 @@ if [[ -s "${processed}/${2}/${1}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
 	module load SPAdes/3.11.1;
 	module load racon/1.2.0;
 	module load perl/5.22.1
+
 	mkdir ${processed}/${2}/${1}/plasFlow/bowtie2-index/
 	bowtie2-build -f "${processed}/${2}/${1}/plasFlow/${1}_plasFlow_results.tsv_chromosomes.fasta" "${processed}/${2}/${1}/plasFlow/bowtie2-index/bowtie2_${1}_chr"
 	mkdir ${processed}/${2}/${1}/plasFlow/filtered_reads_70/
@@ -102,8 +106,8 @@ if [[ -s "${processed}/${2}/${1}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
 	unicycler -1 "${processed}/${2}/${1}/plasFlow/filtered_reads_70/${1}_R_1_bacterial.fastq" -2 "${processed}/${2}/${1}/plasFlow/filtered_reads_70/${1}_R_2_bacterial.fastq" -o "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly"
 	mv "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.fasta" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_original.fasta"
 	mv "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.gfa" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.gfa"
-	python ${shareScript}/fasta_headers_plasFlow.py "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_original.fasta" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta"
-	python2 "${shareScript}/removeShortContigs.py" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta" 500 "plasFlow"
+	python ${shareScript}/fasta_headers_plasFlow.py -i "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_original.fasta" -o "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta"
+	python2 "${shareScript}/removeShortContigs.py" -i "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta" -t 500 -s "plasFlow"
 	mv "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta.TRIMMED.fasta" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta"
 	rm "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta"
 fi

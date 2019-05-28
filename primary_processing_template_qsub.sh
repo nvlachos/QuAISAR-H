@@ -435,7 +435,7 @@ make_relies_on_unzipped_fastqs() {
 		echo -e "#$ -q short.q\n"  >> "${main_dir}/QC_${sample}_${start_time}.sh"
 		echo -e "module load Python/2.7.15\n" >> "${main_dir}/QC_${sample}_${start_time}.sh"
 		echo -e "mkdir \"${main_dir}/${sample}/preQCcounts\"" >> "${main_dir}/QC_${sample}_${start_time}.sh"
-		echo -e "python \"${shareScript}/Fastq_Quality_Printer.py\" \"${main_dir}/${sample}/FASTQs/${sample}_R1_001.fastq\" \"${main_dir}/${sample}/FASTQs/${sample}_R2_001.fastq\" > \"${main_dir}/${sample}/preQCcounts/${sample}_counts.txt\"" >> "${main_dir}/QC_${sample}_${start_time}.sh"
+		echo -e "python \"${shareScript}/Fastq_Quality_Printer.py\" -1 \"${main_dir}/${sample}/FASTQs/${sample}_R1_001.fastq\" -2 \"${main_dir}/${sample}/FASTQs/${sample}_R2_001.fastq\" > \"${main_dir}/${sample}/preQCcounts/${sample}_counts.txt\"" >> "${main_dir}/QC_${sample}_${start_time}.sh"
 
 		#Create script to run BBDuk, Trimmomatic, and QC on trimmed reads
 		echo -e "#!/bin/bash -l\n" > "${main_dir}/BTQC_${sample}_${start_time}.sh"
@@ -453,7 +453,7 @@ make_relies_on_unzipped_fastqs() {
 		echo -e "mkdir \"${main_dir}/${sample}/trimmed\"" >> "${main_dir}/BTQC_${sample}_${start_time}.sh"
 		echo -e "bbduk.sh -\"${bbduk_mem}\" threads=\"${procs}\" in=\"${main_dir}/${sample}/FASTQs/${sample}_R1_001.fastq\" in2=\"${main_dir}/${sample}/FASTQs/${sample}_R2_001.fastq\" out=\"${main_dir}/${sample}/removedAdapters/${sample}-noPhiX-R1.fsq\" out2=\"${main_dir}/${sample}/removedAdapters/${sample}-noPhiX-R2.fsq\" ref=\"${local_DBs}/phiX.fasta\" k=\"${bbduk_k}\" hdist=\"${bbduk_hdist}\"" >> "${main_dir}/BTQC_${sample}_${start_time}.sh"
 		echo -e "trimmomatic \"${trim_endtype}\" -\"${trim_phred}\" -threads \"${procs}\" \"${main_dir}/${sample}/removedAdapters/${sample}-noPhiX-R1.fsq\" \"${main_dir}/${sample}/removedAdapters/${sample}-noPhiX-R2.fsq\" \"${main_dir}/${sample}/trimmed/${sample}_R1_001.paired.fq\" \"${main_dir}/${sample}/trimmed/${sample}_R1_001.unpaired.fq\" \"${main_dir}/${sample}/trimmed/${sample}_R2_001.paired.fq\" \"${main_dir}/${sample}/trimmed/${sample}_R2_001.unpaired.fq\" ILLUMINACLIP:\"${trim_adapter_location}:${trim_seed_mismatch}:${trim_palindrome_clip_threshold}:${trim_simple_clip_threshold}:${trim_min_adapt_length}:${trim_complete_palindrome}\" SLIDINGWINDOW:\"${trim_window_size}:${trim_window_qual}\" LEADING:\"${trim_leading}\" TRAILING:\"${trim_trailing}\" MINLEN:\"${trim_min_length}\"" >> "${main_dir}/BTQC_${sample}_${start_time}.sh"
-		echo -e "python \"${shareScript}/Fastq_Quality_Printer.py\" \"${main_dir}/${sample}/trimmed/${sample}_R1_001.paired.fq\" \"${main_dir}/${sample}/trimmed/${sample}_R2_001.paired.fq\" > \"${main_dir}/${sample}/preQCcounts/${sample}_trimmed_counts.txt\"" >> "${main_dir}/BTQC_${sample}_${start_time}.sh"
+		echo -e "python \"${shareScript}/Fastq_Quality_Printer.py\" -1 \"${main_dir}/${sample}/trimmed/${sample}_R1_001.paired.fq\" -2\"${main_dir}/${sample}/trimmed/${sample}_R2_001.paired.fq\" > \"${main_dir}/${sample}/preQCcounts/${sample}_trimmed_counts.txt\"" >> "${main_dir}/BTQC_${sample}_${start_time}.sh"
 		# Merge both unpaired fq files into one for GOTTCHA
 		echo -e "cat \"${main_dir}/${sample}/trimmed/${sample}_R1_001.paired.fq\" \"${main_dir}/${sample}/trimmed/${sample}_R2_001.paired.fq\" > \"${main_dir}/${sample}/trimmed/${sample}.paired.fq\"" >> "${main_dir}/BTQC_${sample}_${start_time}.sh"
 		echo -e "cat \"${main_dir}/${sample}/trimmed/${sample}_R1_001.unpaired.fq\" \"${main_dir}/${sample}/trimmed/${sample}_R2_001.unpaired.fq\" > \"${main_dir}/${sample}/trimmed/${sample}.single.fq\"" >> "${main_dir}/BTQC_${sample}_${start_time}.sh"
@@ -558,7 +558,7 @@ make_relies_on_trimmed_fastqs() {
 		echo -e "module load SPAdes/3.12.0\n" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
 		echo -e "\"${shareScript}/run_SPAdes.sh\" \"${sample}\" normal \"${project}\"" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
 		echo -e "echo $(date) > \"${main_dir}/${sample}/logs/${sample}_full_assembling_complete.txt\"" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
-		echo -e "python \"${shareScript}/removeShortContigs.py\" \"${main_dir}/${sample}/Assembly/scaffolds.fasta\" 500 \"normal_SPAdes\"" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
+		echo -e "python \"${shareScript}/removeShortContigs.py\" -i \"${main_dir}/${sample}/Assembly/scaffolds.fasta\" -t 500 -s \"normal_SPAdes\"" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
 		echo -e "mv \"${main_dir}/${sample}/Assembly/scaffolds.fasta.TRIMMED.fasta\" \"${main_dir}/${sample}/Assembly/${sample}_scaffolds_trimmed.fasta\"" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
 		echo -e "echo $(date) > \"${main_dir}/${sample}/logs/${sample}_full_assembly_trimming_complete.txt\"" >> "${main_dir}/SPAdn_${sample}_${start_time}.sh"
 
@@ -573,7 +573,7 @@ make_relies_on_trimmed_fastqs() {
 		echo -e "module load SPAdes/3.12.0\n" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
 		echo -e "\"${shareScript}/run_SPAdes.sh\" \"${sample}\" plasmid \"${project}\"" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
 		echo -e "echo $(date) > \"${main_dir}/${sample}/logs/${sample}_plasmid_assembling_complete.txt\"" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
-		echo -e "python \"${shareScript}/removeShortContigs.py\" \"${main_dir}/${sample}/plasmidAssembly/scaffolds.fasta\" 500 \"normal_SPAdes\"" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
+		echo -e "python \"${shareScript}/removeShortContigs.py\" -i \"${main_dir}/${sample}/plasmidAssembly/scaffolds.fasta\" -t 500 -s \"normal_SPAdes\"" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
 		echo -e "mv \"${main_dir}/${sample}/plasmidAssembly/scaffolds.fasta.TRIMMED.fasta\" \"${main_dir}/${sample}/plasmidAssembly/${sample}_plasmid_scaffolds_trimmed.fasta\"" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
 		echo -e "echo $(date) > \"${main_dir}/${sample}/logs/${sample}_plasmid_assembly_trimming_complete.txt\"" >> "${main_dir}/SPAdp_${sample}_${start_time}.sh"
 	done
@@ -687,7 +687,7 @@ make_relies_on_trimmed_assemblies() {
 		echo -e "module load prokka/1.12\n" >> "${main_dir}/PROKK_${sample}_${start_time}.sh"
 		echo -e "\"${shareScript}/run_prokka.sh\" \"${sample}\" \"${project}\"" >> "${main_dir}/PROKK_${sample}_${start_time}.sh"
 		echo -e "mv \"${main_dir}/${sample}/Assembly/scaffolds.fasta.TRIMMED.fasta\" \"${main_dir}/${sample}/Assembly/scaffolds.fasta.TRIMMED_original.fasta\""
-		echo -e "\"python3 ${shareScript}/fasta_headers.py\" \"${main_dir}/${sample}/Assembly/scaffolds.fasta.TRIMMED_original.fasta\" \"${main_dir}/${sample}/Assembly/scaffolds.fasta.TRIMMED.fasta\""
+		echo -e "\"python3 ${shareScript}/fasta_headers.py\" -i \"${main_dir}/${sample}/Assembly/scaffolds.fasta.TRIMMED_original.fasta\" -o \"${main_dir}/${sample}/Assembly/scaffolds.fasta.TRIMMED.fasta\""
 		echo -e "echo $(date) > \"${main_dir}/${sample}/logs/${sample}_PROKK_complete.txt\"" >> "${main_dir}/PROKK_${sample}_${start_time}.sh"
 
 		# Create scripts for c-SSTAR
@@ -785,7 +785,7 @@ make_relies_on_trimmed_assemblies() {
 		# Check if plasmid SPAdes produced any output...if so, make scripts to run csstar and plasmidFinder on it
 		if [[ -s "${main_dir}/${sample}/plasmidAssembly/${sample}_plasmid_scaffolds_trimmed.fasta}" ]]; then
 			echo -e "mv \"${main_dir}/${sample}/plasmidAssembly/${sample}_plasmid_scaffolds.fasta.TRIMMED.fasta\" \"${main_dir}/${sample}/plasmidAssembly/${sample}_plasmid_scaffolds.fasta.TRIMMED_original.fasta\""
-			echo -e "\"python3 ${shareScript}/fasta_headers.py\" \"${main_dir}/${sample}/Assembly/${sample}_plasmid_scaffolds.fasta.TRIMMED_original.fasta\" \"${main_dir}/${sample}/Assembly/${sample}_plasmid_scaffolds.fasta.TRIMMED.fasta\""
+			echo -e "\"python3 ${shareScript}/fasta_headers.py\" -i \"${main_dir}/${sample}/Assembly/${sample}_plasmid_scaffolds.fasta.TRIMMED_original.fasta\" -o \"${main_dir}/${sample}/Assembly/${sample}_plasmid_scaffolds.fasta.TRIMMED.fasta\""
 
 			echo -e "#!/bin/bash -l\n" > "${main_dir}/csstp_${sample}_${start_time}.sh"
 			echo -e "#$ -o csstp_${sample}.out" >> "${main_dir}/csstp_${sample}_${start_time}.sh"

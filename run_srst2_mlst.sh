@@ -4,7 +4,7 @@
 #$ -e srst2.err
 #$ -N srst2
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 #Import the config file with shortcuts and settings
 . ./config.sh
@@ -36,10 +36,12 @@ fi
 species="${4}"
 genus="${3}"
 
+# Creates folder for output
 if [[ ! -d "${processed}/${2}/${1}/srst2" ]]; then
 	mkdir "${processed}/${2}/${1}/srst2"
 fi
 
+# Preps reads if there are no current trimmed reads in the folder
 if [ ! -f "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" ]; then
 	if [ -f "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq.gz" ]; then
 		#echo "1"
@@ -80,13 +82,10 @@ fi
 
 cd "${processed}/${2}/${1}/MLST/srst2"
 
-
-#echo "do"
-#python2 "${shareScript}/srst2/scriptsgetmlst.py" --species "${3} ${4}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
 getmlst.py --species "${3} ${4}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
-#echo "done"
 
 db_name="Standard"
+# Checks for either of the 2 databases that have multiple scheme types and runs both
 if [[ "${3}" == "Acinetobacter" ]]; then
 	echo "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
 	if [[ "${4}" == "baumannii#1" ]]; then
@@ -116,8 +115,7 @@ elif [[ "${3}" == "Escherichia" ]]; then
 fi
 
 
-
-
+# Pulls suggested command info from the getmlst script
 suggested_command=$(tail -n2 "${processed}/${2}/${1}/MLST/srst2/getmlst.out" | head -n1)
 mlst_db=$(echo "${suggested_command}" | cut -d' ' -f11)
 mlst_defs=$(echo "${suggested_command}" | cut -d' ' -f13)
@@ -134,14 +132,14 @@ else
 	#echo "Delimiter is OK (${mlst_delimiter})"
 fi
 
+# Print out what command will be submitted
 echo "--input_pe ${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz ${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz --output ${processed}/${2}/${1}/MLST/srst2 --mlst_db ${mlst_db} --mlst_definitions ${mlst_defs} --mlst_delimiter ${mlst_delimiter}"
-
-#python "${shareScript}/srst2/scripts/srst2.py" --input_pe "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" --output "${processed}/${2}/${1}/MLST/srst2/${1}" --mlst_db "${mlst_db}" --mlst_definitions "${mlst_defs}" --mlst_delimiter "${mlst_delimiter}"
+# Run the srst2 command to find MLST types
 srst2 --input_pe "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" --output "${processed}/${2}/${1}/MLST/srst2/${1}" --mlst_db "${mlst_db}" --mlst_definitions "${mlst_defs}" --mlst_delimiter "${mlst_delimiter}"
-#srst2 --input_pe /scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/181109_M01025_0239_000000000-BWTC9/2018-35-19/srst2/2018-35-19_S1_L001_R1_001.fastq.gz /scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/181109_M01025_0239_000000000-BWTC9/2018-35-19/srst2/2018-35-19_S1_L001_R2_001.fastq.gz --output /scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/181109_M01025_0239_000000000-BWTC9/2018-35-19/MLST/srst2/2018-35-19 --mlst_db Escherichia_coli#1.fasta --mlst_definitions ecoli.txt --mlst_delimiter '_'
 
 today=$(date "+%Y-%m-%d")
 
+# Cleans up extra files and renames output file
 mv "${processed}/${2}/${1}/MLST/srst2/${1}__mlst__${3}_${4}__results.txt" "${processed}/${2}/${1}/MLST/${1}_srst2_${3}_${4}-${db_name}.mlst"
 mv "${processed}/${2}/${1}/MLST/srst2/mlst_data_download_${3}_${4}_${today}.log" "${processed}/${2}/${1}/MLST/"
 rm "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz"

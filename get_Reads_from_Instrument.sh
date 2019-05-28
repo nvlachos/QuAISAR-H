@@ -23,7 +23,7 @@ if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [[ -z "${1}" ]]; then
-	echo "Empty project name supplied to get_Reads_from_Instrument.sh, exiting"
+	echo "Empty project name supplied to $0, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
 	echo "Usage is ./get_Reads_from_Instrument.sh  miseq_run_id"

@@ -1,8 +1,8 @@
 #!/bin/sh -l
 
-#$ -o best_hit_from_kraken.out
-#$ -e best_hit_from_kraken.err
-#$ -N best_hit_from_kraken
+#$ -o best_hit_kraken.out
+#$ -e best_hit_kraken.err
+#$ -N best_hit_kraken
 #$ -cwd
 #$ -q short.q
 
@@ -11,6 +11,7 @@ if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
 . ./config.sh
+
 # No MODs needed
 
 #
@@ -26,20 +27,20 @@ if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [ -z "$1" ]; then
-	echo "Empty sample name supplied to best_hit_from_kraken.sh, exiting"
+	echo "Empty sample name supplied to $0, exiting"
 	exit 1
 elif [[ "$1" = "-h" ]]; then
 	echo "Usage is ./best_hit_from_kraken.sh  sample_name  [pre/post] [paired/assembled] run_id"
 	echo "Output is saved to ${processed}/miseq_run_id_id/sample_name/kraken/(pre/post)assembly/sample_name_kraken_summary_(paired/assembled)"
 	exit 0
 elif [ -z "$2" ]; then
-	echo "Empty assembly relativity supplied to best_hit_from_kraken.sh, exiting"
+	echo "Empty assembly relativity supplied to $0, exiting"
 	exit 1
 elif [ -z "$3" ]; then
-	echo "Empty source type supplied to best_hit_from_kraken.sh, exiting"
+	echo "Empty source type supplied to $0, exiting"
 	exit 1
 elif [ -z "$4" ]; then
-	echo "Empty project id supplied to best_hit_from_kraken.sh, exiting"
+	echo "Empty project id supplied to $0, exiting"
 	exit 1
 fi
 # Checks if full flag was set,indicating that it was a full kraken database comparison (and also in a different location)

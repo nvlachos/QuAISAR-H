@@ -4,7 +4,7 @@
 #$ -e run_c-sstar.err
 #$ -N run_c-sstar
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 #Import the config file with shortcuts and settings
 if [[ ! -f "./config.sh" ]]; then
@@ -178,14 +178,6 @@ do
 	len1=$(echo "${line}" | cut -d '	' -f7 | tr -d '[:space:]')
 	len2=$(echo "${line}" | cut -d '	' -f8 | tr -d '[:space:]')
 	plen=$(echo "${line}" | cut -d '	' -f9 | tr -d '[:space:]')
-	# Catch instances where match length is longer than gene (gaps cause extension)
-	#if [[ ${len1} -ge ${len2} ]]; then
-	#	plen=100
-	# Determine % length match
-	#else
-	#	plen=$( echo "${len1} ${len2}" | awk '{ printf "%d", ($1*100)/$2 }' )
-	#fi
-	# Check and display any flags found, otherwise mark it as normal
 	if [[ -z "${info1}" ]]; then
 		info1="normal"
 	else

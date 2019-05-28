@@ -19,17 +19,49 @@
 # No modules needed
 #
 
+#  Function to print out help blurb
+show_help () {
+	echo "Usage is ./mashtree_of_folder.sh -p project_name"
+	echo "Output is saved to path_to_folder"
+}
+
+options_found=0
+while getopts ":h?n:p:" option; do
+	options_found=$(( options_found + 1 ))
+	case "${option}" in
+		\?)
+			echo "Invalid option found: ${OPTARG}"
+      show_help
+      exit 0
+      ;;
+		p)
+			echo "Option -p triggered, argument = ${OPTARG}"
+			project=${OPTARG};;
+		:)
+			echo "Option -${OPTARG} requires as argument";;
+		h)
+			show_help
+			exit 0
+			;;
+	esac
+done
+
+if [[ "${options_found}" -eq 0 ]]; then
+	echo "No options found"
+	show_help
+	exit
+fi
 
 #### #copy MMBSEQLog to local
-> "${processed}/${1}/${1}_list_ordered.txt"
+> "${processed}/${project}/${project}_list_ordered.txt"
 
-echo "${processed}/${1}/2019_MMBSeq_Log.xlsx"
+echo "${processed}/${project}/2019_MMBSeq_Log.xlsx"
 
 # Copy the newest log file to the local directory
-cp "${local_DBs}/Seqlog_copies/2019_MMBSeq_Log.xlsx" "${processed}/${1}/2019_MMBSeq_Log.xlsx"
+cp "${local_DBs}/Seqlog_copies/2019_MMBSeq_Log.xlsx" "${processed}/${project}/2019_MMBSeq_Log.xlsx"
 
 # Convert log file to csv format for searchability
-python2 ${shareScript}/xlsx_converter.py "${processed}/${1}/2019_MMBSeq_Log.xlsx" "FY19 Miseq Isolate Log" > "${processed}/${1}/2019_MMBSeq_Log.tsv"
+python2 ${shareScript}/xlsx_converter.py "${processed}/${project}/2019_MMBSeq_Log.xlsx" "FY19 Miseq Isolate Log" > "${processed}/${project}/2019_MMBSeq_Log.tsv"
 
 echo "Excel file: 2019_MMBSeq_Log.xlsx has been converted to TSV"
 
@@ -48,28 +80,28 @@ while IFS= read -r var; do
 	# 	line_project=$(echo "${var}" | cut -d',' -f22)
 	# fi
 	line_project=$(echo "${var}" | cut -d'	' -f21)
-	# echo "${line_project}:${1}"
+	# echo "${line_project}:${project}"
 	# If the run_id matches, then add ID to list (automatically placing them in the proper order)
-	if [[ "${line_project}" = "${1}" ]]; then
+	if [[ "${line_project}" = "${project}" ]]; then
 		line_id=$(echo "${var}" | cut -d'	' -f3)
-	#	echo "Adding ${counter}: ${1}/${line_id}"
-		echo "${1}/${line_id}" >> "${processed}/${1}/${1}_list_ordered.txt"
+	#	echo "Adding ${counter}: ${project}/${line_id}"
+		echo "${project}/${line_id}" >> "${processed}/${project}/${project}_list_ordered.txt"
 	else
-		#echo "${counter} not in ${1}"
+		#echo "${counter} not in ${project}"
 		:
 	fi
 	counter=$(( counter + 1 ))
-done < ${processed}/${1}/2019_MMBSeq_Log.tsv
+done < ${processed}/${project}/2019_MMBSeq_Log.tsv
 
 
 # Remove intermediate files from sorting
-rm -r ${processed}/${1}/2019_MMBSeq_Log.tsv
-rm -r ${processed}/${1}/2019_MMBSeq_Log.xlsx
+rm -r ${processed}/${project}/2019_MMBSeq_Log.tsv
+rm -r ${processed}/${project}/2019_MMBSeq_Log.xlsx
 
 # Check if the sorted file has content, else delete it since something went wrong
-if [[ ! -s "${processed}/${1}/${1}_list_ordered.txt" ]]; then
+if [[ ! -s "${processed}/${project}/${project}_list_ordered.txt" ]]; then
 	echo "Isolates were not able to be sorted, something wrong with MiSeq Log entries or list file, or....?"
-	rm -r ${processed}/${1}/${1}_list_ordered.txt
+	rm -r ${processed}/${project}/${project}_list_ordered.txt
 	exit
 else
 	echo "sorted file contains entries"

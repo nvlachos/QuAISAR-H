@@ -501,7 +501,7 @@ while IFS= read -r line; do
 done < ${1}
 
 # Calls script that sorts and formats all isolates info into a atrix for easy viewing
-python3 "${shareScript}/project_parser.py" "${output_directory}/${4}-csstar_summary_full.txt" "${output_directory}/${4}-plasmid_summary.txt" "${output_directory}/${4}_AR_plasmid_report.csv" "${output_directory}/${4}-srst2.txt"
+python3 "${shareScript}/project_parser.py" -c "${output_directory}/${4}-csstar_summary_full.txt" -p "${output_directory}/${4}-plasmid_summary.txt" -o "${output_directory}/${4}_AR_plasmid_report.csv" -s "${output_directory}/${4}-srst2.txt"
 
 resGANNOT_date=$(echo "${resGANNOT_srst2_filename}" | cut -d'_' -f2)
 echo "${resGANNOT_date}"

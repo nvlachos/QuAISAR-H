@@ -4,7 +4,14 @@ import fileinput
 import getpass
 from Bio import Entrez
 
-# Script that will trim fasta files of any sequences that are smaller than the threshold
+# Parse all arguments from command line
+def parseArgs(args=None):
+	parser = argparse.ArgumentParser(description='Script to turn kraken2 file to mpa')
+	parser.add_argument('-i', '--input', required=True, help='input kraken2 filename')
+	parser.add_argument('-o', '--output', required=True, help='output mpa filename')
+	return parser.parse_args()
+
+# Script that will retrieve the taxonomic lineage of a sample from entrez
 def get_Taxon_Tree_From_NCBI(taxID):
 	Entrez.email = getpass.getuser()
 	#Creates the data structure from a pull from entrez nucleotide database using accession id with return type of genbank text mode
@@ -23,6 +30,7 @@ def get_Taxon_Tree_From_NCBI(taxID):
 		return ";".join(lineage)
 		#print(' '.join(line.split()[1:]))
 
+# Translate kraken output to a slightly more readable label format.
 def translate(input_kraken, output_labels):
 	kraken=open(input_kraken,'r')
 	line=kraken.readline().strip()
@@ -49,7 +57,7 @@ def translate(input_kraken, output_labels):
 
 #translate(sys.argv[1], sys.argv[2])
 
-# Script that will trim fasta files of any sequences that are smaller than the threshold
+# Script that will retrieve taxonomic info from entrez and convert it into mpa format
 def get_mpa_string_From_NCBI(taxID):
 	Entrez.email = getpass.getuser()
 	#Creates the data structure from a pull from entrez nucleotide database using accession id with return type of genbank text mode
@@ -88,6 +96,7 @@ def get_mpa_string_From_NCBI(taxID):
 		#	print(entry["Rank"])
 		return(mpa_string)
 
+# Sorts mpas to put similar entries together, easier for humans to look at
 def organize_mpas(input_kraken, output_mpa):
 	kraken=open(input_kraken,'r')
 	line=kraken.readline().strip()
@@ -147,4 +156,5 @@ def organize_mpas(input_kraken, output_mpa):
 
 #get_mpa_string_From_NCBI(470, blank_dick)
 
-organize_mpas(sys.argv[1], sys.argv[2])
+args = parseArg()
+organize_mpas(args.input, args.output)

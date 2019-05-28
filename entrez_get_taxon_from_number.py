@@ -13,11 +13,17 @@ from Bio import Entrez
 import sys
 
 #Create an arg parser...someday
+def parseArgs(args=None):
+	parser = argparse.ArgumentParser(description='Tool to retrieve taxonomy information from entrez using the ncbi assigned taxonomy number')
+	parser.add_argument('-e', '--email', required=True, help='email of submitter, required by entrez')
+	parser.add_argument('-n', '--number', required=True, help='taxonomy number to look up')
+	return parser.parse_args()
 
+args = parseArgs()
 #Set the required email value to the supplied 2nd argument
-Entrez.email = sys.argv[2]
+Entrez.email = args.email
 #Creates the data structure from a pull from entrez nucleotide database using accession id with return type of genbank text mode
-handle = Entrez.efetch(db="taxonomy", id=sys.argv[1], mode="text", rettype="xml")
+handle = Entrez.efetch(db="taxonomy", id=args.number, mode="text", rettype="xml")
 #Parses the returned output into lines
 result= Entrez.read(handle)
 #Goes through each line until it finds (and prints) the organism name that the accession number represents

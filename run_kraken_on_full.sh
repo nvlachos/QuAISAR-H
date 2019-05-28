@@ -4,7 +4,7 @@
 #$ -e run_kraken.err
 #$ -N run_kraken
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 #Import the config file with shortcuts and settings
 . ./config.sh
@@ -54,12 +54,12 @@ echo "[:] Running kraken.  Output: ${1}.kraken / ${1}.classified"
 # Runs chosen kraken db on the assembly
 kraken --db "${kraken_full_db}" --preload --threads "${procs}" --output "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full.kraken" --classified-out "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full.classified" "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
 # Attempting to weigh contigs and produce standard krona and list output using a modified version of Rich's weighting scripts (will also be done on pure contigs later)
-python ${shareScript}/Kraken_Assembly_Converter_2_Exe.py "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full.kraken"
+python ${shareScript}/Kraken_Assembly_Converter_2_Exe.py -i "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full.kraken"
 kraken-translate --db "${kraken_full_db}" "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_BP.kraken" > "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_BP.labels"
 kraken-mpa-report --db "${kraken_full_db}" "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_BP.kraken" > "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_weighted.mpa"
 perl "${shareScript}/Methaplan_to_krona.pl" -p "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_weighted.mpa" -k "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_weighted.krona"
 kraken-report --db "${kraken_full_db}" "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_BP.kraken" > "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_BP.list"
-python ${shareScript}/Kraken_Assembly_Summary_Exe.py "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_BP.kraken" "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_BP.labels" "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_BP.list" "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_BP_data.list"
+python ${shareScript}/Kraken_Assembly_Summary_Exe.py -k "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_BP.kraken" -l "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_BP.labels" -t "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_BP.list" -o "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_BP_data.list"
 . "${shareScript}/module_changers/perl_5221_to_5123.sh"
 ktImportText "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_weighted.krona" -o "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_weighted_BP_krona.html"
 . "${shareScript}/module_changers/perl_5123_to_5221.sh"

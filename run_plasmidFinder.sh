@@ -1,10 +1,10 @@
 #!/bin/sh -l
 
-#$ -o get_run_plasmidFinder.out
-#$ -e get_run_plasmidFinder.err
-#$ -N get_run_plasmidFinder
+#$ -o run_plasmidFinder.out
+#$ -e run_plasmidFinder.err
+#$ -N run_plasmidFinder
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 # Import the config file with shortcuts and settings
 if [[ ! -f "./config.sh" ]]; then

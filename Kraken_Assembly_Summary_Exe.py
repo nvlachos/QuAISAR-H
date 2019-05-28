@@ -3,6 +3,14 @@ import glob
 from Bio import SeqIO
 from decimal import Decimal, ROUND_HALF_UP
 
+def parseArgs(args=None):
+	parser = argparse.ArgumentParser(description='Script to summarize the kraken output files for weighted versions')
+	parser.add_argument('-k', '--kraken', required=True, help='input weighted kraken filename')
+	parser.add_argument('-l', '--label', required=True, help='input label filename')
+    parser.add_argument('-t', '--list', required=True, help='input list filename')
+	parser.add_argument('-o', '--output', required=True, help='output list filename')
+	return parser.parse_args()
+
 def In_List(item, list1):
     """determines if item is in list1"""
     for x in list1:
@@ -128,7 +136,7 @@ def Kraken_Assembly_Unclassified(input_kraken):
         String1 = f.readline()
     f.close()
     return Length
-    
+
 def Total_Length(input_kraken):
     f = open(input_kraken)
     Length = 0
@@ -218,12 +226,10 @@ def Assembly_Summary(input_summary, input_list, output_summary):
     f.close()
     g.close()
 
-print("1-KAS")
-List2 = Taxonomy_Totals(sys.argv[1], sys.argv[2])
-print("2-KAS")
+args = parseArgs()
+List2 = Taxonomy_Totals(args.kraken, args.label)
 List3 = List_Combiner(List2)
-print("3-KAS")
-Assembly_Summary(sys.argv[3], List3, sys.argv[4])
-    
+Assembly_Summary(args.list, List3, args.output)
+
 
 ##Kraken_Assembly_Converter(sys.argv[1], sys.argv[2], sys.argv[1][0:-3] + '_BP.in')

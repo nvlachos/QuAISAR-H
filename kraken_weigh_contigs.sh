@@ -26,17 +26,17 @@ if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [ -z "$1" ]; then
-	echo "Empty sample name supplied to kraken_weigh_contigs.sh, exiting"
+	echo "Empty sample name supplied to $0, exiting"
 	exit 1
 elif [[ "$1" = "-h" ]]; then
 	echo "Usage is ./kraken_weigh_contigs.sh  sample_name  [pre/post] [paired/assembled] run_id"
 	echo "Output is saved to ${processed}/miseq_run_id_id/sample_name/kraken/(pre/post)assembly/sample_name_kraken_summary_(paired/assembled)"
 	exit 0
 elif [ -z "$2" ]; then
-	echo "Empty project id supplied to kraken_weigh_contigs.sh, exiting"
+	echo "Empty project id supplied to $0, exiting"
 	exit 1
 elif [ -z "$3" ]; then
-	echo "Empty kraken version supplied to kraken_weigh_contigs.sh, exiting"
+	echo "Empty kraken version supplied to $0, exiting"
 	exit 1
 fi
 

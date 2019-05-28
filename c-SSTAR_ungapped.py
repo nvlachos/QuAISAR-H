@@ -1,11 +1,8 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
-#!/bin/sh -l
-
-#$ -o C-SSTAR.out
-#$ -e C-SSTAR.err
-#$ -N C-SSTAR
+#$ -o C-SSTAR_u.out
+#$ -e C-SSTAR_u.err
+#$ -N C-SSTAR_u
 #$ -cwd
 #$ -q short.q
 

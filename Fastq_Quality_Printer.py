@@ -2,6 +2,13 @@ import sys
 from decimal import *
 getcontext().prec = 4
 
+def parseArgs(args=None):
+	parser = argparse.ArgumentParser(description='Script to count quality metrics from paired fastq files')
+	parser.add_argument('-1', '--r1', required=True, help='input fasta filename')
+	parser.add_argument('-2', '--r2', required=True, help='output filename')
+	return parser.parse_args()
+
+
 def Q20(input_string):
     Q20_Total = 0
     for letters in input_string:
@@ -39,7 +46,7 @@ def Quality_Score(input_fastq):
     print('Q30 Bases: ' + str(Q30_Total))
     print('Q20 %: ' + str(float(Q20_Total) / Total_Bases))
     print('Q30 %: ' + str(float(Q30_Total) / Total_Bases))
-    
+
 def Quality_Score_2_Reads(fastq1, fastq2, output_file):
     Q20_Total_1 = 0
     Q30_Total_1 = 0
@@ -132,5 +139,7 @@ def Quality_Score_Printer(fastq1, fastq2):
     Q30_R2 = str(Decimal(Q30_Total_2) / Decimal(Total_Bases_2))
     String1 = fastq1 + '\t' + Q20_Total + '\t' + Q30_Total + '\t' + str(Q20_Total_1) + '\t' + str(Q20_Total_2) + '\t' + Q20_R1 + '\t' + Q20_R2 + '\t' + str(Q30_Total_1) + '\t' + str(Q30_Total_2) + '\t' + Q30_R1 + '\t' + Q30_R2+ '\t' + Total_Bases + '\t' + Total_Reads
     print(String1)
-    
-Quality_Score_Printer(sys.argv[1], sys.argv[2])
+
+
+args = parseArgs()
+Quality_Score_Printer(args.r1, args.r2)

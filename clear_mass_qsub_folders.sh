@@ -8,11 +8,9 @@
 
 #Import the config file with shortcuts and settings
 . ./config.sh
-#Import the module file that loads all necessary mods
-. "${mod_changers}/pipeline_mods"
 
 #
-# Usage ./clear_mass_qsub_fodlers [1,2,3] (1-qsub folders, 2-qsub outs/errs, 3-Both) folder_containinng_script_files_to_be_deleted
+# Usage ./clear_mass_qsub_folders [1,2,3] (1-qsub folders, 2-qsub outs/errs, 3-Both) folder_containinng_script_files_to_be_deleted
 #
 
 # Clears out script folder of all .sh, .err, and .out files and the complete folders within each qsub type folder

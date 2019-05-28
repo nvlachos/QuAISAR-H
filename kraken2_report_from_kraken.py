@@ -5,6 +5,14 @@ import getpass
 from Bio import Entrez
 from operator import attrgetter
 
+# Parse all arguments from command line
+def parseArgs(args=None):
+	parser = argparse.ArgumentParser(description='Script to convert kraken2 file to list')
+	parser.add_argument('-i', '--input', required=True, help='input kraken2 filename')
+	parser.add_argument('-o', '--output', required=True, help='output list filename')
+	return parser.parse_args()
+
+# Class to represent a taxonomic node
 class taxon_Node:
 	#initializing the variables
 	name = ""
@@ -175,9 +183,9 @@ class taxon_Node:
 			self.children.sort(key=lambda x: x.count, reverse = True)
 			self.showChildren()
 
-	#end of the class definition
+#end of the class definition
 
-# Script that will trim fasta files of any sequences that are smaller than the threshold
+# Gets taxonomic info from entrez and adds it to the file formatted in mpa format
 def get_mpa_string_From_NCBI(taxID):
 	if taxID == 0:
 		return "|0:unclassified:U"
@@ -206,6 +214,7 @@ def get_mpa_string_From_NCBI(taxID):
 		current_rank="-"
 	return(special_mpa_string+taxID+":"+entry["ScientificName"])
 
+# Orders the list based on read counts
 def order_list(input_kraken, output_list):
 	kraken=open(input_kraken,'r')
 	line=kraken.readline().strip()
@@ -359,5 +368,6 @@ def make_node_tree():
 
 #get_mpa_string_From_NCBI(470, blank_dick)
 
-order_list(sys.argv[1], sys.argv[2])
+args = parseArgs()
+order_list(args.input, args.output)
 #make_node_tree()

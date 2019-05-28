@@ -2,6 +2,13 @@ import sys
 import glob
 from Bio import SeqIO
 
+
+def parseArgs(args=None):
+	parser = argparse.ArgumentParser(description='Script to convert kraken file to weighted kraken file')
+	parser.add_argument('-i', '--input', required=True, help='input kraken filename')
+	return parser.parse_args()
+
+
 def String_Converter(Input_String):
     Counter = 0
     Character = Input_String[0]
@@ -55,4 +62,6 @@ def Kraken_Assembly_Converter_2(input_kraken, output_kraken):
     f.close()
     g.close()
 
-Kraken_Assembly_Converter_2(sys.argv[1], sys.argv[1][0:-7] + '_BP.kraken')
+
+args = parseArgs()
+Kraken_Assembly_Converter_2(args.input, args.input[0:-7] + '_BP.kraken')

@@ -1,8 +1,8 @@
 #!/bin/sh -l
 
-#$ -o mashdist.out
-#$ -e mashdist.err
-#$ -N mashdist
+#$ -o mashfolder.out
+#$ -e mashdfoldererr
+#$ -N mashfolder
 #$ -cwd
 #$ -q short.q
 
@@ -20,17 +20,51 @@ module load mashtree/0.20
 #
 # Script to create mashtree of specified isolates that were processed by Quaisar pipeline
 #
-# Usage ./mashtree_of_list.sh path_to_assemblies output_filename extension_of_files_to_process
+# Usage ./mashtree_of_folder.sh -f path_to_assemblies -o output_filename -e extension_of_files_to_process
 #
 
-# create output directory if it does not exist
-if [[ ! -d ${1} ]]; then
-	mkdir -p ${1}
+#  Function to print out help blurb
+show_help () {
+	echo "Usage is ./mashtree_of_folder.sh -f path_to_folder -o output_filename -e extension_of_fasta_files"
+	echo "Output is saved to path_to_folder"
+}
+
+options_found=0
+while getopts ":h?n:p:" option; do
+	options_found=$(( options_found + 1 ))
+	case "${option}" in
+		\?)
+			echo "Invalid option found: ${OPTARG}"
+      show_help
+      exit 0
+      ;;
+		f)
+			echo "Option -f triggered, argument = ${OPTARG}"
+			DATADIR=${OPTARG};;
+		p)
+			echo "Option -o triggered, argument = ${OPTARG}"
+			outfile=${OPTARG};;
+		e)
+			echo "Option -e triggered, argument = ${OPTARG}"
+			extension=${OPTARG};;
+		:)
+			echo "Option -${OPTARG} requires as argument";;
+		h)
+			show_help
+			exit 0
+			;;
+	esac
+done
+
+if [[ "${options_found}" -eq 0 ]]; then
+	echo "No options found"
+	show_help
+	exit
 fi
 
 # Call mashtree on all copied fasta
-cd ${1}
-mashtree.pl --numcpus ${procs} *.${3} --tempdir ${1}/temp > "${1}/${2}.dnd";
+cd ${DATADIR}
+mashtree.pl --numcpus ${procs} *.${extension} --tempdir ${DATADIR}/temp > "${DATADIR}/${outfile}.dnd";
 
 module unload perl/5.16.1-MT
 module load perl/5.22.1

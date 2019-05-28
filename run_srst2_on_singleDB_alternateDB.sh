@@ -4,7 +4,7 @@
 #$ -e srst2.err
 #$ -N srst2
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 #Import the config file with shortcuts and settings
 if [[ ! -f "./config.sh" ]]; then
@@ -35,9 +35,12 @@ alt_DB_path=${3}
 alt_DB=$(echo ${alt_DB_path##*/} | cut -d'.' -f1)
 alt_DB=${alt_DB//_srst2/}
 
+# Create output folder
+if [[ !-d "${processed}/${2}/${1}/srst2" ]]; then
+	mkdir "${processed}/${2}/${1}/srst2"
+fi
 
-mkdir "${processed}/${2}/${1}/srst2"
-
+# Prep any reads that have not been trimmed
 if [ ! -f "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" ]; then
 	if [ -f "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq.gz" ]; then
 		#echo "1"
@@ -63,20 +66,19 @@ else
 	echo "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz already exists"
 fi
 
-#cp "${argannot_srst2}" "${processed}/${2}/${1}/srst2/argannot.fna"
-#cp "${resFinder_srst2}" "${processed}/${2}/${1}/srst2/resFinder.fna"
-
+# Display command that will be submitted
 echo "--input_pe ${processed}/${2}/${1}/trimmed/${1}_S1_L001_R1_001.fastq.gz ${processed}/${2}/${1}/trimmed/${1}_S1_L001_R2_001.fastq.gz --output ${processed}/${2}/${1}/srst2/${alt_DB} --gene_db ${alt_DB_path}"
 
-#python2 "${shareScript}/srst2/scripts/srst2.py" --input_pe "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" --output "${processed}/${2}/${1}/srst2/${1}_${alt_DB}" --gene_db "${alt_DB_path}"
+# Submit command to run srst2 on alternate DB
 srst2 --input_pe "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" --output "${processed}/${2}/${1}/srst2/${1}_${alt_DB}" --gene_db "${alt_DB_path}"
 
+# Clean up extra files
 rm -r "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz"
 rm -r "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz"
 rm -r "${processed}/${2}/${1}/srst2/"*".bam"
 rm -r "${processed}/${2}/${1}/srst2/"*".pileup"
 
-
+# Rename files to reduce redundancy
 find ${processed}/${2}/${1}/srst2 -type f -name "*_${alt_DB}__*" | while read FILE ; do
 	#echo "Doing - $FILE"
   dirname=$(dirname $FILE)

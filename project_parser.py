@@ -2,6 +2,16 @@ import sys
 import glob
 import math
 
+# Parse all arguments from command line
+def parseArgs(args=None):
+	parser = argparse.ArgumentParser(description='Script to consolidate all info into a single report for outbreak analysis')
+	parser.add_argument('-c', '--csstar', required=True, help='input csstar filename')
+	parser.add_argument('-p', '--plasmid', required=True, help='input plasmid filename')
+	parser.add_argument('-s', '--srst2', required=True, help='input srst2 filename')
+	parser.add_argument('-o', '--output', required=True, help='output csv filename')
+	return parser.parse_args()
+
+
 # main function that sorts and formats all AR genes found using csstar and srst2 that have already been filtered for % identity and % length
 def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 	all_ARs_in_file=[]
@@ -217,4 +227,5 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 
 
 print("Parsing project AR files ...\n")
-do_AR(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
+args = parseArgs()
+do_AR(args.csstar, args.plasmid, args.output, args.srst2)

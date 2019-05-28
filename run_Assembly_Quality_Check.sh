@@ -4,7 +4,7 @@
 #$ -e run_Assembly_Quality_Check.err
 #$ -N run_Assembly_Quality_Check
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 #Import the config file with shortcuts and settings
 if [[ ! -f "./config.sh" ]]; then

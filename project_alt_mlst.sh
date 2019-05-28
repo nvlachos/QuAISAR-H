@@ -4,7 +4,7 @@
 #$ -e proj_alt_mlst.err
 #$ -N pam
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 #Import the config file with shortcuts and settings
 . ./config.sh

@@ -4,7 +4,7 @@
 #$ -e run_ANI.err
 #$ -N run_ANI
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 #Import the config file with shortcuts and settings
 . ./config.sh
@@ -183,7 +183,7 @@ else
 	#Extracts the accession number from the definition line
 	accession=$(echo "${def_array[2]}" | cut -d' ' -f1  | cut -d'>' -f2)
 	#Looks up the NCBI genus species from the accession number
-	#best_organism_guess=$(python "${shareScript}/entrez_get_taxon_from_accession.py" "${accession}" "${me}")
+	#best_organism_guess=$(python "${shareScript}/entrez_get_taxon_from_accession.py" -a "${accession}" -e "${me}")
 
 fi
 

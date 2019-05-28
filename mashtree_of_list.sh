@@ -1,8 +1,8 @@
 #!/bin/sh -l
 
-#$ -o mashdist.out
-#$ -e mashdist.err
-#$ -N mashdist
+#$ -o mashlist.out
+#$ -e mashlist.err
+#$ -N mashlist
 #$ -cwd
 #$ -q short.q
 
@@ -19,24 +19,64 @@ module load perl/5.16.1-MT
 #
 # Script to create mashtree of specified isolates that were processed by Quaisar pipeline
 #
-# Usage ./mashtree_of_list.sh absolute_path_to_list absolute_output_directory tree_output_name
+# Usage ./mashtree_of_list.sh -i absolute_path_to_list -d absolute_output_directory -o tree_output_name
 #
 
+#  Function to print out help blurb
+show_help () {
+	echo "Usage is ./mashtree_of_list.sh -i path_to_list -d output_directory -o tree_output_name"
+	echo "Output is saved to output_directory/tree_output_namepath_to_folder"
+}
+
+options_found=0
+while getopts ":h?n:p:" option; do
+	options_found=$(( options_found + 1 ))
+	case "${option}" in
+		\?)
+			echo "Invalid option found: ${OPTARG}"
+      show_help
+      exit 0
+      ;;
+		i)
+			echo "Option -i triggered, argument = ${OPTARG}"
+			input=${OPTARG};;
+		d)
+			echo "Option -d triggered, argument = ${OPTARG}"
+			outdir=${OPTARG};;
+		o)
+			echo "Option -o triggered, argument = ${OPTARG}"
+			output_file=${OPTARG};;
+		:)
+			echo "Option -${OPTARG} requires as argument";;
+		h)
+			show_help
+			exit 0
+			;;
+	esac
+done
+
+if [[ "${options_found}" -eq 0 ]]; then
+	echo "No options found"
+	show_help
+	exit
+fi
+
+
 # create output directory if it does not exist
-if [[ ! -d ${2} ]]; then
-	mkdir -p ${2}
+if [[ ! -d ${outdir} ]]; then
+	mkdir -p ${outdir}
 fi
 
 # Copy over all fasta files from original locations to the output directory
 while IFS= read -r line || [[ "$line" ]];  do
 	sample_name=$(echo "${line}" | cut -d'/' -f2 | tr -d '[:space:]')
 	project=$(echo "${line}" | cut -d'/' -f1 | tr -d '[:space:]')
-	cp ${processed}/${project}/${sample_name}/Assembly/${sample_name}_scaffolds_trimmed.fasta ${2}
-done < ${1}
+	cp ${processed}/${project}/${sample_name}/Assembly/${sample_name}_scaffolds_trimmed.fasta ${outdir}
+done < ${input}
 
 # Call mashtree on all copied fasta
-cd ${2}
-mashtree.pl --numcpus ${procs} *.fasta --tempdir ${2}/temp > "${2}/${3}.dnd";
+cd ${outdir}
+mashtree.pl --numcpus ${procs} *.fasta --tempdir ${outdir}/temp > "${outdir}/${output_file}.dnd";
 
 module unload perl/5.16.1-MT
 module load perl/5.22.1

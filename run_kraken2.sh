@@ -4,7 +4,7 @@
 #$ -e run_kraken2.err
 #$ -N run_kraken2
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 #Import the config file with shortcuts and settings
 if [[ ! -f "./config.sh" ]]; then
@@ -81,15 +81,15 @@ elif [ "${3}" = "assembled" ]; then
 
 	# Attempting to weigh contigs and produce standard krona and list output using a modified version of Rich's weighting scripts (will also be done on pure contigs later)
 	echo "1"
-	python ${shareScript}/Kraken_Assembly_Converter_2_Exe.py "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2"
+	python ${shareScript}/Kraken_Assembly_Converter_2_Exe.py -i "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2"
 	mv "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}._BP.kraken" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2"
 	echo "2"
-	python3 ${shareScript}/kraken2_translate.py "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.labels"
+	python3 ${shareScript}/kraken2_translate.py -i "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" -o "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.labels"
 	#kraken-translate --db "${kraken_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.labels"
 
 	# Create an mpa report
 	echo "3"
-	python3 ${shareScript}/kraken2_to_mpa.py "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.mpa"
+	python3 ${shareScript}/kraken2_to_mpa.py -i "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" -o "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.mpa"
 	#kraken-mpa-report --db "${kraken_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.mpa"
 
 	# Convert mpa to krona file# Convert mpa to krona file
@@ -103,7 +103,7 @@ elif [ "${3}" = "assembled" ]; then
 	module unload kraken/0.10.5
 	# Weigh taxonomy list file
 	echo "6"
-	python3 ${shareScript}/Kraken_Assembly_Summary_Exe.py "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.labels" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.list" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP_data.list"
+	python3 ${shareScript}/Kraken_Assembly_Summary_Exe.py -k "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.kraken2" -l "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.labels" -t "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP.list" -o "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_BP_data.list"
 	# Change perl version to allow ktimporttext to work ( cant use anything but 5.12.3
 
 	# Run the krona graph generator from krona output

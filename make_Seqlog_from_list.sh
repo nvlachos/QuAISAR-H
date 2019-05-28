@@ -22,15 +22,17 @@ if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [[ -z "${1}" ]]; then
-	echo "Empty sample name supplied to make_Seqlog_from_list.sh, exiting"
+	echo "Empty sample name supplied to $0, exiting"
 	exit 1
 # Gives the user a brief usage and help section if requested with the -h option argument
 elif [[ "${1}" = "-h" ]]; then
 	echo "Usage is ./make_Seqlog_from_list.sh list_of_samples"
-	echo "Output is saved to ${1}/Seqlog_output.txt (Only do one consolidation at a time)"
+	temp_dir=$(dirname ${1})
+	echo "Output is saved to ${temp_dir}/Seqlog_output.txt"
 	exit 0
 fi
 
+# Creates a dictionary of commonly found bugs to use when looking up sizes and assembly ratios later
 declare -A mmb_bugs
 while IFS= read -r bug_lines; do
 	bug_genus=$(echo "${bug_lines}" | cut -d'	' -f1)
@@ -42,6 +44,7 @@ while IFS= read -r bug_lines; do
 	mmb_bugs["${bug_name}"]="${bug_size}"
 done < ${local_DBs}/MMB_Bugs.txt
 
+# Set output folder as directory of input list
 output_folder=$(dirname ${1})
 > "${output_folder}/Seqlog_output.txt"
 
@@ -84,7 +87,7 @@ while IFS= read -r var; do
 	g_s_reads="Unidentified"
 	genus_reads="not_assigned"
 	species_reads="not_assigned"
-	# Pulls species and genus_16s information from kraken out of assembly
+	# Pulls species and genus_16s information from kraken out of reads
 	if [[ -s "${OUTDATADIR}/kraken/preAssembly/${sample_name}_kraken_summary_paired.txt" ]]; then
 		while IFS= read -r line;
 		do

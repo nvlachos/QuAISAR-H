@@ -18,7 +18,7 @@ fi
 #
 # Usage ./best_hit_from_gottcha1.sh sample_name run_id
 #
-# No modules needed to run
+# No modules required
 #
 
 # Checks for proper argumentation
@@ -26,10 +26,10 @@ if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [ -z "$1" ]; then
-	echo "Empty sample name supplied to best_hit_from_gottcha1.sh, exiting"
+	echo "Empty sample name supplied to $0, exiting"
 	exit 1
 elif [ -z "$2" ]; then
-	echo "Empty project_id supplied to best_hit_from_gottcha1.sh, exiting"
+	echo "Empty project_id supplied to $0, exiting"
 	exit 1
 # command line version of usage for script
 elif [[ "$1" = "-h" ]]; then

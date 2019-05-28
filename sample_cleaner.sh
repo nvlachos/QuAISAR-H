@@ -4,7 +4,7 @@
 #$ -e sample_cleaner.err
 #$ -N sample_cleaner
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 #Import the config file with shortcuts and settings
 if [[ ! -f "./config.sh" ]]; then
@@ -15,7 +15,7 @@ fi
 #
 # Usage ./sample_cleaner.sh   sample_name   run_ID
 #
-# script uses Gulviks SPAdes cleaner  along with general folder cleanup to decrease footprint of samples after processing
+# script uses Gulviks SPAdes cleaner along with general folder cleanup to decrease footprint of samples after processing
 #
 
 # Checks for proper argumentation

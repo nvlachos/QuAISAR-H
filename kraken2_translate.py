@@ -4,6 +4,13 @@ import fileinput
 import getpass
 from Bio import Entrez
 
+# Parse all argument from command line
+def parseArgs(args=None):
+	parser = argparse.ArgumentParser(description='Script to translate kraken2 file to label file')
+	parser.add_argument('-i', '--input', required=True, help='input kraken2 filename')
+	parser.add_argument('-o', '--output', required=True, help='output label filename')
+	return parser.parse_args()
+
 # Script that will trim fasta files of any sequences that are smaller than the threshold
 def get_Taxon_Tree_From_NCBI(taxID):
 	Entrez.email = getpass.getuser()
@@ -23,6 +30,7 @@ def get_Taxon_Tree_From_NCBI(taxID):
 		return ";".join(lineage)
 		#print(' '.join(line.split()[1:]))
 
+# Translate kraken output to a slightly more readable label format.
 def translate(input_kraken, output_labels):
 	kraken_file=open(input_kraken,'r')
 	line=kraken_file.readline().strip()
@@ -47,4 +55,6 @@ def translate(input_kraken, output_labels):
 	for line in label_lines:
 		print(line)
 
-translate(sys.argv[1], sys.argv[2])
+args = parseArg()
+# Start program
+translate(args.input, args.output)

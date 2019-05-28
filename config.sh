@@ -3,8 +3,9 @@
 
 
 #
-# Script to consolidate all configuration type settings for primary_processing.sh and any tools contained within
+# Script to consolidate all configuration type settings for quasar pipeline and any tools contained within
 #
+
 # Get hostname to help determine if certain tools can be run and how to specifically get others to run with the right options
 hostname=$(hostname -f)
 host=$(echo ${hostname} | cut -d'.' -f1)

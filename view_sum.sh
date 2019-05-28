@@ -4,7 +4,7 @@
 #$ -e run_sum.err
 #$ -N run_sum
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 #Import the config file with shortcuts and settings
 if [[ ! -f "./config.sh" ]]; then
@@ -13,7 +13,7 @@ fi
 . ./config.sh
 
 #
-# Creates a summary file for the run and prints out a one word status for each sample in the run
+# Parses through summary file for the run and prints out a one word status for each sample in the run
 #
 # Usage ./run_sum.sh run_id
 #
@@ -33,6 +33,7 @@ elif [[ "${1}" = "-h" ]]; then
 	exit 0
 fi
 
+# Finds the newest summary file to use when parsing out info
 if [[ -z "${2}" ]]; then
 	proj="${1}"
 	for summary in ${processed}/${proj}/*.sum; do

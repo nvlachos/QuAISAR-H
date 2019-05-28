@@ -4,7 +4,7 @@
 #$ -e 16s_blast.err
 #$ -N 16s_blast
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 #Import the config file with shortcuts and settings
 if [[ ! -f "./config.sh" ]]; then
@@ -72,33 +72,33 @@ if [ ! -d "${OUTDATADIR}/16s" ]; then
 fi
 
 
-# Function to create and add a "fasta" entry to the list of 16s hits
-make_fasta() {
-	header=">$3"
-	rna_seq=""
-	cstart=$4
-	cstart=$(( cstart - 1 ))
-	cstop=$5
-	clength=$(( cstop - cstart + 1))
-	match=0
-	# Finds the matching contig and extracts sequence ##### REPLACE WITH SUBSEQUENCE ONCE IT CAN HANDLE MULTI_FASTAS !!!
-	while IFS='' read -r line;
-	do
-		if [ "$line" == "${header}" ]; then
-			match=1
-			continue
-		elif [[ "$line" = ">"* ]]; then
-			match=0
-		fi
-		if [ $match -eq 1 ]; then
-			rna_seq="$rna_seq$line"
-		fi
-	done < "${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta"
-	# Extracts appropriate sequence from contig using start and stop positions
-	rna="${rna_seq:$cstart:$clength}"
-	# Adds new fasta entry to the file
-	echo -e "${header}\n${rna_seq:$cstart:$clength}" >> ${processed}/${project}/${sample_name}/16s/${sample_name}_16s_rna_seqs.txt
-}
+# # Function to create and add a "fasta" entry to the list of 16s hits
+# make_fasta() {
+# 	header=">$3"
+# 	rna_seq=""
+# 	cstart=$4
+# 	cstart=$(( cstart - 1 ))
+# 	cstop=$5
+# 	clength=$(( cstop - cstart + 1))
+# 	match=0
+# 	# Finds the matching contig and extracts sequence ##### REPLACE WITH SUBSEQUENCE ONCE IT CAN HANDLE MULTI_FASTAS !!!
+# 	while IFS='' read -r line;
+# 	do
+# 		if [ "$line" == "${header}" ]; then
+# 			match=1
+# 			continue
+# 		elif [[ "$line" = ">"* ]]; then
+# 			match=0
+# 		fi
+# 		if [ $match -eq 1 ]; then
+# 			rna_seq="$rna_seq$line"
+# 		fi
+# 	done < "${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta"
+# 	# Extracts appropriate sequence from contig using start and stop positions
+# 	rna="${rna_seq:$cstart:$clength}"
+# 	# Adds new fasta entry to the file
+# 	echo -e "${header}\n${rna_seq:$cstart:$clength}" >> ${processed}/${project}/${sample_name}/16s/${sample_name}_16s_rna_seqs.txt
+# }
 
 owd=$(pwd)
 cd ${OUTDATADIR}/16s
@@ -112,7 +112,7 @@ if [[ ! -s ${OUTDATADIR}/16s/${sample_name}_scaffolds_trimmed.fasta_rRNA_seqs.fa
 	exit 1
 fi
 
-# Checks barrnap output and finds all 16s hits and creates a fasta sequence to add to list of possible matches
+# Checks barrnap output and finds all 16s hits and creates a multi-fasta file to list all possible matches
 lines=0
 found_16s="false"
 while IFS='' read -r line;
@@ -155,7 +155,7 @@ if [[ -s "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN" ]]; then
 	attempts=0
 	# Will try getting info from entrez up to 5 times, as it has a higher chance of not finishing correctly on the first try
 	while [[ ${attempts} -lt 5 ]]; do
-		blast_id=$(python ${shareScript}/entrez_get_taxon_from_accession.py "${gb_acc}" "${me}@cdc.gov")
+		blast_id=$(python ${shareScript}/entrez_get_taxon_from_accession.py -a "${gb_acc}" -e "${me}@cdc.gov")
 		if [[ ! -z ${blast_id} ]]; then
 			break
 		else
@@ -180,7 +180,7 @@ if [[ -s "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN.sorted" ]]; then
 	attempts=0
 	# Will try getting info from entrez up to 5 times, as it has a higher chance of not finishing correctly on the first try
 	while [[ ${attempts} -lt 5 ]]; do
-		blast_id=$(python ${shareScript}/entrez_get_taxon_from_accession.py "${gb_acc}" "${me}@cdc.gov")
+		blast_id=$(python ${shareScript}/entrez_get_taxon_from_accession.py -a "${gb_acc}" -e "${me}@cdc.gov")
 		if [[ ! -z ${blast_id} ]]; then
 			break
 		else

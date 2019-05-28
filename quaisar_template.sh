@@ -5,7 +5,7 @@
 #$ -N quasX
 #$ -pe smp 10
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 #
 # The straight pipeline that runs all the tools that have been designated as necessary (and some others that are typically run also)
@@ -117,7 +117,7 @@ if [ ! -d "$OUTDATADIR/$filename/preQCcounts" ]; then
 	mkdir -p "$OUTDATADIR/$filename/preQCcounts"
 fi
 # Run qc count check on raw reads
-python "${shareScript}/Fastq_Quality_Printer.py" "${OUTDATADIR}/${filename}/FASTQs/${filename}_R1_001.fastq" "${OUTDATADIR}/${filename}/FASTQs/${filename}_R2_001.fastq" > "${OUTDATADIR}/$filename/preQCcounts/${filename}_counts.txt"
+python "${shareScript}/Fastq_Quality_Printer.py" -1 "${OUTDATADIR}/${filename}/FASTQs/${filename}_R1_001.fastq" -2 "${OUTDATADIR}/${filename}/FASTQs/${filename}_R2_001.fastq" > "${OUTDATADIR}/$filename/preQCcounts/${filename}_counts.txt"
 
 	# Get end time of qc count and calculate run time and append to time summary (and sum to total time used)
 end=$SECONDS
@@ -177,7 +177,7 @@ if [ ! -d "$OUTDATADIR/$filename/preQCcounts" ]; then
 	mkdir -p "$OUTDATADIR/$filename/preQCcounts"
 fi
 # Run qc count check on filtered reads
-python "${shareScript}/Fastq_Quality_Printer.py" "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.paired.fq" "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.paired.fq" > "${OUTDATADIR}/${filename}/preQCcounts/${filename}_trimmed_counts.txt"
+python "${shareScript}/Fastq_Quality_Printer.py" -1 "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.paired.fq" -2 "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.paired.fq" > "${OUTDATADIR}/${filename}/preQCcounts/${filename}_trimmed_counts.txt"
 
 # Merge both unpaired fq files into one for GOTTCHA
 cat "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.paired.fq" "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.paired.fq" > "${OUTDATADIR}/${filename}/trimmed/${filename}.paired.fq"
@@ -282,19 +282,14 @@ totaltime=$((totaltime + timeSPAdes))
 
 ### Removing Short Contigs  ###
 echo "----- Removing Short Contigs -----"
-python "${shareScript}/removeShortContigs.py" "${OUTDATADIR}/${filename}/Assembly/scaffolds.fasta" 500 "normal_SPAdes"
+python "${shareScript}/removeShortContigs.py" -i "${OUTDATADIR}/${filename}/Assembly/scaffolds.fasta" -t 500 -s "normal_SPAdes"
 mv "${OUTDATADIR}/${filename}/Assembly/scaffolds.fasta.TRIMMED.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta"
 
 ### Removing Short Contigs  ###
 echo "----- Removing Short Contigs -----"
-python "${shareScript}/removeShortContigs.py" "${OUTDATADIR}/${filename}/Assembly/contigs.fasta" 500 "normal_SPAdes"
+python "${shareScript}/removeShortContigs.py" -i "${OUTDATADIR}/${filename}/Assembly/contigs.fasta" -t 500 -s "normal_SPAdes"
 mv "${OUTDATADIR}/${filename}/Assembly/contigs.fasta.TRIMMED.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_contigs_trimmed.fasta"
 
-
-### Removing Short Contigs  ###
-#echo "----- Removing Short plasmid Contigs -----"
-#python "${shareScript}/removeShortContigs.py" "${OUTDATADIR}/${filename}/plasmidAssembly/scaffolds.fasta" 500 "normal_SPAdes"
-#mv "${OUTDATADIR}/${filename}/plasmidAssembly/scaffolds.fasta.TRIMMED.fasta" "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed.fasta"
 
 # Checks to see that the trimming and renaming worked properly, returns if unsuccessful
 if [ ! -s "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta" ]; then
@@ -394,17 +389,11 @@ totaltime=$((totaltime + timeProk))
 
 # Rename contigs to something helpful (Had to wait until after prokka runs due to the strict naming requirements
 mv "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed_original.fasta"
-python3 "${shareScript}/fasta_headers.py" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed_original.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta"
+python3 "${shareScript}/fasta_headers.py" -i "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed_original.fasta" -o "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta"
 
 # Rename contigs to something helpful (Had to wait until after prokka runs due to the strict naming requirements
 mv "${OUTDATADIR}/${filename}/Assembly/${filename}_contigs_trimmed.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_contigs_trimmed_original.fasta"
-python3 "${shareScript}/fasta_headers.py" "${OUTDATADIR}/${filename}/Assembly/${filename}_contigs_trimmed_original.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_contigs_trimmed.fasta"
-
-
-#if [[ -s "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed.fasta" ]]; then
-#	mv "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed.fasta" "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed_original.fasta"
-#	python3 "${shareScript}/fasta_headers.py" "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed_original.fasta" "${OUTDATADIR}/${filename}/plasmidAssembly/${filename}_plasmid_scaffolds_trimmed.fasta"
-#fi
+python3 "${shareScript}/fasta_headers.py" -i "${OUTDATADIR}/${filename}/Assembly/${filename}_contigs_trimmed_original.fasta" -o "${OUTDATADIR}/${filename}/Assembly/${filename}_contigs_trimmed.fasta"
 
 ### Average Nucleotide Identity ###
 echo "----- Running ANI for Species confirmation -----"

@@ -23,14 +23,14 @@ if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [[ -z "${1}" ]]; then
-	echo "Empty project name supplied to get_Reads_from_folder.sh, exiting"
+	echo "Empty project name supplied to $0, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
 	echo "Usage is ./get_Reads_from_folder.sh  run_id location_of_fastqs"
 	echo "Output by default is downloaded to ${processed}/run_id and extracted to ${processed}/run_id/sample_name/FASTQs"
 	exit 0
 elif [[ -z "${2}" ]]; then
-	echo "Empty source supplied to get_Reads_from_Folder.sh, exiting"
+	echo "Empty source supplied to $0, exiting"
 	exit 1
 fi
 

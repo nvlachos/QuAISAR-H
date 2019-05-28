@@ -4,7 +4,7 @@
 #$ -e run_sum.err
 #$ -N run_sum
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 #Import the config file with shortcuts and settings
 if [[ ! -f "./config.sh" ]]; then
@@ -35,6 +35,7 @@ fi
 
 echo "Checking for ${processed}/${1}/${1}_list(_ordered).txt"
 
+# Checks for existence of list files in specific order
 if [[ -z ${2} ]]; then
 	if [[ -f ${processed}/${1}/${1}_list_ordered.txt ]]; then
 		list="${processed}/${1}/${1}_list_ordered.txt"
@@ -49,6 +50,8 @@ else
 	type="list"
 	list=${1}
 fi
+
+# Gets todays date to show when summary was run
 runsumdate=$(date "+%Y_%m_%d_at_%Hh_%Mm")
 echo "Creating run summary at ${runsumdate}"
 # Status of each individual sample is updated in its own folder and the run_summary file
@@ -60,8 +63,7 @@ else
 	echo "named as list"
 fi
 
-echo "${list}"
-
+# Run validate_piperun.sh on every sample in the list and cat output into one summary file
 while IFS= read -r samples;
 do
 	echo ${file}

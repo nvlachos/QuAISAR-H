@@ -22,7 +22,7 @@ if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [[ -z "${1}" ]]; then
-	echo "Empty run name supplied to make_Seqlog_from_log.sh, exiting"
+	echo "Empty run name supplied to $0, exiting"
 	exit 1
 # Gives the user a brief usage and help section if requested with the -h option argument
 elif [[ "${1}" = "-h" ]]; then
@@ -31,6 +31,7 @@ elif [[ "${1}" = "-h" ]]; then
 	exit 0
 fi
 
+# Creates a dictionary of commonly found bugs to use when looking up sizes and assembly ratios later
 declare -A mmb_bugs
 while IFS= read -r bug_lines; do
 	bug_genus=$(echo "${bug_lines}" | cut -d'	' -f1)

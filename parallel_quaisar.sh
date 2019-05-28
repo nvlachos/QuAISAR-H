@@ -4,7 +4,7 @@
 #$ -e parqua.err
 #$ -N parqua
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 # Copy config file into working directory to allow changes to made to output directory if necessary
 shareScript=$(pwd)
@@ -43,7 +43,7 @@ done
 #
 # The wrapper script that runs all the tools that have been designated as necessary (and some others that are typically run also)
 #
-# Usage ./primary_processing.sh
+# Usage ./parallel_quisar.sh
 # -i path (1,2,3)						: Path to directory containing all zipped fastq files, must include numerical identifier of postfix naming scheme (1=_SX_RX_00X_fastq.gz. 2=_RX.fastq.gz. 3=X.fastq.gz)
 # -p/l/s(project/list/single) identifier: project pulls every sample from a particular "project" (or run identifier). Samples will be downloaded from instruments also.
 # 							   			  list will only process samples found on the list
@@ -175,39 +175,6 @@ for ((i=1 ; i <= nopts ; i++)); do
 			postfix=1
 			shift 2
 			;;
-		# #Tells the script to run analyses from already downloaded fastq files
-		# -n | --no_download)
-		# 	do_download=false
-		# 	shift
-		# 	;;
-		# #Tells the script that only the files found in the attached list need to be run
-		# -l | --list)
-		# 	list_path="$2"
-		# 	quick_list=$(echo "${2}" | cut -d'.' -f1)
-		# 	#INDATADIR="${processed}/${PROJECT}" # NOT USED yet in list mode
-		# 	if [[ -z ${BASEDIR} ]]; then
-		# 		BASEDIR="${processed}"
-		# 	fi
-		# 	do_download="false"
-		# 	PROJECT="list_${quick_list}"
-		# 	is_full_run="false"
-		# 	shift 2
-		# 	;;
-		# #Tells the script that only the single isolate needs to be run
-		# -s | --single)
-		# 	echo "${2}/${3}" > "./tempList_${global_time}.txt"
-		# 	list_path="./tempList_${global_time}.txt"
-		# 	INDATADIR="${processed}/${3}"
-		# 	if [[ -z ${BASEDIR} ]]; then
-		# 		BASEDIR="${processed}"
-		# 	fi
-			#trn=$(echo "${2}" | sed 's/\//-/')
-			#PROJECT="single_${trn}"
-			# PROJECT="run_for_sample_${3}"
-			# do_download="false"
-			# is_full_run="false"
-			# shift 3
-			# ;;
 		#Captures any other characters in the args
 		\?)
 			echo "ERROR: ${BOLD}$2${NORM} is not a valid argument" >&2
@@ -324,6 +291,7 @@ if [[ -f "${processed}/${PROJECT}/${PROJECT}_list_original.txt" ]]; then
 	mv "${processed}/${PROJECT}/${PROJECT}_list_original.txt" "${processed}/${PROJECT}/${PROJECT}_list.txt"
 fi
 
+# Get run summary info to send in an email
 runsumdate=$(date "+%m_%d_%Y_at_%Hh_%Mm")
 ${shareScript}/run_sum.sh ${PROJECT}
 runsum=$(echo ${shareScript}/view_sum.sh ${PROJECT})
@@ -342,15 +310,15 @@ echo "Finished with run ${PROJECT} at ${global_end_time}"
 outarray+=("
 ${PROJECT} finished at ${global_end_time}")
 exit
-#Send email to submitter and Nick with run status
 
+#Send email to submitter and Nick with run status
 if [ "${requestor}" != "nvx4" ]; then
 	echo "Sending summary email to ${requestor}@cdc.gov & nvx4@cdc.gov"
-	printf "%s\\n" "${outarray[@]}" | mail -s "Run Status for ${PROJECT}_on_${run_start_time}_run.log" "nvx4@cdc.gov"
-	printf "%s\\n" "${outarray[@]}" | mail -s "Run Status for ${PROJECT}_on_${run_start_time}_run.log" "${requestor}@cdc.gov"
+	printf "%s\\n" "${outarray}" | mail -s "Run Status for ${PROJECT}_on_${run_start_time}_run.log" "nvx4@cdc.gov"
+	printf "%s\\n" "${outarray}" | mail -s "Run Status for ${PROJECT}_on_${run_start_time}_run.log" "${requestor}@cdc.gov"
 else
 	echo "Sending summary email to nvx4@cdc.gov"
-	printf "%s\\n" "${outarray[@]}" | mail -s "Run Status for ${PROJECT}_on_${run_start_time}_run.log" "nvx4@cdc.gov"
+	printf "%s\\n" "${outarray}" | mail -s "Run Status for ${PROJECT}_on_${run_start_time}_run.log" "nvx4@cdc.gov"
 fi
 
 # One final check for any dump files
@@ -359,6 +327,7 @@ if [ -n "$(find "${shareScript}" -maxdepth 1 -name 'core.*' -print -quit)" ]; th
 	find "${shareScript}" -maxdepth 1 -name 'core.*' -exec rm -f {} \;
 fi
 
+# Copy the config file to the log directory so as not to hold up any future quaisar runs that count the number of config files present
 if [[ -f "${shareScript}/config_${config_counter}.sh" ]]; then
 	mv "${shareScript}/config_${config_counter}.sh" ${log_dir}
 	:

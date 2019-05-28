@@ -3,6 +3,14 @@ import glob
 import fileinput
 
 
+# Parse all arguments from command line
+def parseArgs(args=None):
+	parser = argparse.ArgumentParser(description='Script to trim contigs')
+	parser.add_argument('-i', '--input', required=True, help='input assembly filename')
+	parser.add_argument('-t', '--threshold', required=True, help='threshold size to trim below')
+	parser.add_argument('-s', '--source', required=True, help='Source filetype (SPAdes or plasFlow)')
+	return parser.parse_args()
+
 # Script that will trim fasta files of any sequences that are smaller than the threshold
 
 def trim_assembly(input_assembly, trim_threshold, input_type):
@@ -46,4 +54,5 @@ def trim_assembly(input_assembly, trim_threshold, input_type):
 	assembly.close
 	print("size:", total_size, "cut:", total_cuts,"contigs", total_no_size, "bps")
 
-trim_assembly(sys.argv[1], sys.argv[2], sys.argv[3])
+arg = parseArg()
+trim_assembly(args.input, args.threshold, args.source)

@@ -4,7 +4,7 @@
 #$ -e validate_piperun.err
 #$ -N validate_piperun
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 # Import the config file with shortcuts and settings
 if [[ ! -f "./config.sh" ]]; then

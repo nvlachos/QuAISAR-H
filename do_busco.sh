@@ -2,7 +2,7 @@
 
 #$ -o do_busco.out
 #$ -e do_busco.err
-#$ -N do_busco_ANI
+#$ -N do_busco
 #$ -cwd
 #$ -q short.q
 
@@ -11,6 +11,7 @@ if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
 . ./config.sh
+
 . "${mod_changers}/load_python_3.6.1.sh"
 
 #
@@ -26,7 +27,7 @@ if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [[ -z "${1}" ]]; then
-	echo "Empty sample name supplied to do_busco.sh, exiting"
+	echo "Empty sample name supplied to $0, exiting"
 	exit 1
 # Gives the user a brief usage and help section if requested with the -h option argument
 elif [[ "${1}" = "-h" ]]; then
@@ -34,7 +35,7 @@ elif [[ "${1}" = "-h" ]]; then
 	echo "Output is saved to ${processed}/miseq_run_id/sample_name/busco"
 	exit 0
 elif [ -z "$2" ]; then
-	echo "Empty database name supplied to do_busco.sh, exiting"
+	echo "Empty database name supplied to$0, exiting"
 	exit 1
 elif [ ! -s "${local_DBs}/BUSCO/${2,}" ]; then
 	echo "Exists? - ${local_DBs}/BUSCO/${2,}"

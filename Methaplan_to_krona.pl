@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env perl
 
 # ==============================================================================
 # Conversion script: from MetaPhlAn output to Krona text input file # Author: Daniel Brami (daniel.brami@gmail.com) # ==============================================================================
@@ -27,7 +27,7 @@ def main():
         metaPhLan = f.readlines()
     f.close()
 
-    krona_tmp = options.krona 
+    krona_tmp = options.krona
     metaPhLan_FH = open(krona_tmp, 'w')
 
     for aline in (metaPhLan):
@@ -37,7 +37,7 @@ def main():
 
             x_cells = x.split('\t')
             lineage = '\t'.join(x_cells[0:(len(x_cells) -1)])
-            abundance = float(x_cells[-1].rstrip('\n')) 
+            abundance = float(x_cells[-1].rstrip('\n'))
 
             metaPhLan_FH.write('%s\n'%(str(abundance) + '\t' + lineage))
 

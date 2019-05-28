@@ -11,6 +11,7 @@ if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
 . ./config.sh
+
 #Import the module file that loads all necessary mods
 . "${mod_changers}/pipeline_mods"
 
@@ -113,15 +114,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 				echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarn_complete.txt\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
 				cd "${main_dir}"
 				echo "submitting ${main_dir}/csstn_${sample}_${start_time}.sh"
-				#if [[ "${counter}" -lt "${last_index}" ]]; then
-					qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
-				#else
-				#	if [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
-				#		qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
-				#	else
-				#		qsub -sync y "${main_dir}/csstn_${sample}_${start_time}.sh"
-				#	fi
-				#fi
+				qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
 			# Old data exists
 			else
 				echo "${project}/${sample} already has the newest ResGANNOT (${resGANNOT_srst2_filename})"
@@ -188,15 +181,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 						echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g h \"${project}\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
 						echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarn_complete.txt\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
 						cd ${main_dir}
-						#if [[ "${counter}" -lt "${last_index}" ]]; then
-							qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
-						#else
-						#	if [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
-						#		qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
-						#	else
-						#		qsub -sync y "${main_dir}/csstn_${sample}_${start_time}.sh"
-						#	fi
-						#fi
+						qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
 					# Skipping because old data exists
 					else
 						echo "${project}/${sample} already has the newest ResGANNOT (${resGANNOT_srst2_filename})"

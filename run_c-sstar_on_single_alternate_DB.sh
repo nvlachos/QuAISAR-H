@@ -4,7 +4,7 @@
 #$ -e run_c-sstar.err
 #$ -N run_c-sstar
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 #Import the config file with shortcuts and settings
 if [[ ! -f "./config.sh" ]]; then
@@ -165,11 +165,6 @@ do
 	len2=$(echo "${line}" | cut -d '	' -f8 | tr -d '[:space:]')
 	SNPs=$(echo "${line}" | cut -d '	' -f10 | tr -d '[:space:]')
 	plen=$(echo "${line}" | cut -d '	' -f9 | tr -d '[:space:]')
-	#if [[ ${len1} -ge ${len2} ]]; then
-	#	plen=100
-	#else
-	#	plen=$( echo "${len1} ${len2}" | awk '{ printf "%2.f", ($1*100)/$2 }' )
-	#fi
 	if [[ -z "${info1}" ]]; then
 		info1="normal"
 	else
@@ -178,10 +173,7 @@ do
 	#printf "%-10s %-50s %-15s %-25s %-25s %-40s %-4s %-5d %-5d %-5d\\n" "${source}" "${resistance}" "${label1}" "${info1}" "${label2}" "${contig}" "${percent}" "${len1}" "${len2}" "${plen}" "${SNPs}"
 	echo "${source}	${resistance}	${label1}	${info1}	${label2}	${contig}	${percent}	${len1}	${len2}	${plen}" "${SNPs}"
 done < "${OUTDATADIR}/${alt_database}_${suffix}/${1}.${alt_database}.${suffix}_${sim}.sstar" > "${OUTDATADIR}/${alt_database}_${suffix}/${1}.${alt_database}.${suffix}_${sim}.sstar_grouped"
-#echo "${OUTDATADIR}/${alt_database}_${suffix}/${1}.${alt_database}.${suffix}_${sim}.sstar_grouped"
-#echo "${OUTDATADIR}/${1}.${alt_database}.${suffix}_${sim}_sstar_summary.txt"
 sort -k7,7nr -k10,10nr -k8,8n "${OUTDATADIR}/${alt_database}_${suffix}/${1}.${alt_database}.${suffix}_${sim}.sstar_grouped" > "${OUTDATADIR}/${1}.${alt_database}.${suffix}_${sim}_sstar_summary.txt"
-#sort -k7,7nr -k10,10nr -k8,8n "/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/151217_M02103_0050_000000000-AKVY1/2013732586/c-sstar/ResGANNOT_20180608_gapped/2013732586.ResGANNOT_20180608.gapped_98.sstar_grouped" > "/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/151217_M02103_0050_000000000-AKVY1/2013732586/c-sstar/2013732586.ResGANNOT_20180608.gapped_98_sstar_summary.txt"
 
 # Catches an empty or missing file
 if [ ! -s "${OUTDATADIR}/${1}.${alt_database}.${suffix}_${sim}_sstar_summary.txt" ]; then

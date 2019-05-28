@@ -4,7 +4,7 @@
 #$ -e run_ANI.err
 #$ -N run_ANI
 #$ -cwd
-#$ -q all.q
+#$ -q short.q
 
 #Import the config file with shortcuts and settings
 if [[ ! -f "./config.sh" ]]; then
@@ -290,7 +290,7 @@ else
 	else
 		attempts=0
 		while [[ ${attempts} -lt 5 ]]; do
-			best_organism_guess=$(python "${shareScript}/entrez_get_taxon_from_accession.py" "${accession}" "${me}")
+			best_organism_guess=$(python "${shareScript}/entrez_get_taxon_from_accession.py" -a "${accession}" -e "${me}")
 			if [[ ! -z ${best_organism_guess} ]]; then
 				break
 			else
