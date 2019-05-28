@@ -29,7 +29,7 @@ show_help () {
 }
 
 options_found=0
-while getopts ":h?n:p:" option; do
+while getopts ":h?i:d:o:" option; do
 	options_found=$(( options_found + 1 ))
 	case "${option}" in
 		\?)
