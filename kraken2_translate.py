@@ -56,6 +56,6 @@ def translate(input_kraken, output_labels):
 	for line in label_lines:
 		print(line)
 
-args = parseArg()
+args = parseArgs()
 # Start program
 translate(args.input, args.output)

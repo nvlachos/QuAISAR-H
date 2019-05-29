@@ -157,5 +157,5 @@ def organize_mpas(input_kraken, output_mpa):
 
 #get_mpa_string_From_NCBI(470, blank_dick)
 
-args = parseArg()
+args = parseArgs()
 organize_mpas(args.input, args.output)
