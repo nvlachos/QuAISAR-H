@@ -24,7 +24,7 @@ args = parseArgs()
 #Set the required email value to the supplied 2nd argument
 Entrez.email = args.email
 #Creates the data structure from a pull from entrez nucleotide database using accession id with return type of genbank text mode
-handle = Entrez.efetch(db="nucleotide", id=sys.arg.accession, rettype="gb", retmode="text")
+handle = Entrez.efetch(db="nucleotide", id=arg.accession, rettype="gb", retmode="text")
 #Parses the returned output into lines
 result=handle.read().split('\n')
 #Goes through each line until it finds (and prints) the organism name that the accession number represents
