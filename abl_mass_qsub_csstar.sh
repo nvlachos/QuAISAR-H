@@ -11,7 +11,6 @@ if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
 . ./config.sh
-
 #Import the module file that loads all necessary mods
 . "${mod_changers}/pipeline_mods"
 
@@ -52,7 +51,7 @@ if [[ "${4}" != "keep" ]] && [[ "${4}" != "clobber" ]]; then
 	echo "Clobberness was not input, be sure to add keep or clobber as 5th parameter...exiting"
 	exit 1
 else
-	clobberness="${5}"
+	clobberness="${4}"
 fi
 
 # create an array of all samples in the list
@@ -89,7 +88,8 @@ while [ ${counter} -lt ${arr_size} ] ; do
 	sample=$(echo "${arr[${counter}]}" | cut -d'/' -f2)
 	project=$(echo "${arr[${counter}]}" | cut -d'/' -f1)
 	if [[ "${clobberness}" = "clobber" ]]; then
-		rm ${processed}/${project}/${sample}/c-sstar/${sample}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary
+		echo "Removing old c-sstar for ${project}/${sample} and ${resGANNOT_srst2_filename}"
+		rm ${processed}/${project}/${sample}/c-sstar/${sample}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt
 		rm -r ${processed}/${project}/${sample}/c-sstar/${resGANNOT_srst2_filename}_gapped/
 	fi
 	#echo ${counter}-${project}-${sample}
@@ -114,7 +114,15 @@ while [ ${counter} -lt ${arr_size} ] ; do
 				echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarn_complete.txt\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
 				cd "${main_dir}"
 				echo "submitting ${main_dir}/csstn_${sample}_${start_time}.sh"
-				qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
+				#if [[ "${counter}" -lt "${last_index}" ]]; then
+					qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
+				#else
+				#	if [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
+				#		qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
+				#	else
+				#		qsub -sync y "${main_dir}/csstn_${sample}_${start_time}.sh"
+				#	fi
+				#fi
 			# Old data exists
 			else
 				echo "${project}/${sample} already has the newest ResGANNOT (${resGANNOT_srst2_filename})"
@@ -181,13 +189,21 @@ while [ ${counter} -lt ${arr_size} ] ; do
 						echo -e "\"${shareScript}/run_c-sstar_on_single.sh\" \"${sample}\" g h \"${project}\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
 						echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_csstarn_complete.txt\"" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
 						cd ${main_dir}
-						qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
+						#if [[ "${counter}" -lt "${last_index}" ]]; then
+							qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
+						#else
+						#	if [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
+						#		qsub "${main_dir}/csstn_${sample}_${start_time}.sh"
+						#	else
+						#		qsub -sync y "${main_dir}/csstn_${sample}_${start_time}.sh"
+						#	fi
+						#fi
 					# Skipping because old data exists
 					else
 						echo "${project}/${sample} already has the newest ResGANNOT (${resGANNOT_srst2_filename})"
 						echo -e "$(date)" > "${main_dir}/complete/${sample}_csstarn_complete.txt"
 					fi
-					# # Check if plasmid folder exists
+					# Check if plasmid folder exists
 					# if [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
 					# 	# Check if old data exists, skip if so
 					# 	if [[ ! -f "${processed}/${project}/${sample}/c-sstar_plasmid/${sample}.${resGANNOT_srst2_filename}.gapped_40_sstar_summary.txt" ]]; then
@@ -243,30 +259,30 @@ for item in "${arr[@]}"; do
 		if [[ -f "${shareScript}/csstn_${sample}.err" ]]; then
 			mv "${shareScript}/csstn_${sample}.err" "${main_dir}"
 		fi
-	# 	# Check if plasmid csstar is complete also and wait a total of 30 minutes for all samples to be checked
-	# 	if [[ -f "${main_dir}/complete/${waiting_sample}_csstarp_complete.txt" ]] || [[ ! -s "${processed}/${project}/${waiting_sample}/plasmidAssembly/${waiting_sample}_plasmid_scaffolds_trimmed.fasta" ]]; then
-	# 		while :
-	# 		do
-	# 				if [[ ${ptimer} -gt 1800 ]]; then
-	# 					echo "Timer exceeded limit of 1800 seconds = 30 minutes"
-	# 					exit 1
-	# 				fi
-	# 				if [[ -f "${main_dir}/complete/${waiting_sample}_csstarp_complete.txt" ]]; then
-	# 					echo "${item} is complete plasmid"
-	# 					if [[ -f "${shareScript}/csstp_${sample}.out" ]]; then
-	# 						mv "${shareScript}/csstp_${sample}.out" "${main_dir}"
-	# 					fi
-	# 					if [[ -f "${shareScript}/csstp_${sample}.err" ]]; then
-	# 						mv "${shareScript}/csstp_${sample}.err" "${main_dir}"
-	# 					fi
-	# 					break
-	# 				else
-	# 					ptimer=$(( ptimer + 5 ))
-	# 					echo "sleeping for 5 seconds, so far slept for ${ptimer}"
-	# 					sleep 5
-	# 				fi
-	# 		done
-	# fi
+		# # Check if plasmid csstar is complete also and wait a total of 30 minutes for all samples to be checked
+		# if [[ -f "${main_dir}/complete/${waiting_sample}_csstarp_complete.txt" ]] || [[ ! -s "${processed}/${project}/${waiting_sample}/plasmidAssembly/${waiting_sample}_plasmid_scaffolds_trimmed.fasta" ]]; then
+		# 	while :
+		# 	do
+		# 			if [[ ${ptimer} -gt 1800 ]]; then
+		# 				echo "Timer exceeded limit of 1800 seconds = 30 minutes"
+		# 				exit 1
+		# 			fi
+		# 			if [[ -f "${main_dir}/complete/${waiting_sample}_csstarp_complete.txt" ]]; then
+		# 				echo "${item} is complete plasmid"
+		# 				if [[ -f "${shareScript}/csstp_${sample}.out" ]]; then
+		# 					mv "${shareScript}/csstp_${sample}.out" "${main_dir}"
+		# 				fi
+		# 				if [[ -f "${shareScript}/csstp_${sample}.err" ]]; then
+		# 					mv "${shareScript}/csstp_${sample}.err" "${main_dir}"
+		# 				fi
+		# 				break
+		# 			else
+		# 				ptimer=$(( ptimer + 5 ))
+		# 				echo "sleeping for 5 seconds, so far slept for ${ptimer}"
+		# 				sleep 5
+		# 			fi
+		# 	done
+		# fi
 	else
 		# Check every 5 seconds to see if the sample has completed normal csstar analysis
 		while :
@@ -287,4 +303,9 @@ for item in "${arr[@]}"; do
 	fi
 done
 
+echo "All isolates completed"
+global_end_time=$(date "+%m-%d-%Y @ %Hh_%Mm_%Ss")
+printf "%s %s" "abl_mass_qsub_csstar.sh has completed" "${global_end_time}" | mail -s "abl_mass_qsub_csstar.sh complete" nvx4@cdc.gov
+
+#Script exited gracefully (unless something else inside failed)
 exit 0
