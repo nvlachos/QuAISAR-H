@@ -54,5 +54,5 @@ def trim_assembly(input_assembly, trim_threshold, input_type):
 	assembly.close
 	print("size:", total_size, "cut:", total_cuts,"contigs", total_no_size, "bps")
 
-arg = parseArg()
+arg = parseArgs()
 trim_assembly(args.input, args.threshold, args.source)
