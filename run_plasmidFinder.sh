@@ -99,8 +99,8 @@ else
 	# Checks to see if a post assembly kraken file is available to extract the family of the sample
 	if [[ -f ${processed}/${2}/${1}/kraken/postAssembly/${1}_kraken_summary_assembled_BP_data.txt ]]; then
 		#Extracts the 6th line from the kraken file containing all family information
-		family=$(sed -n '6p' < ${processed}/${2}/${1}/kraken/postAssembly/${1}_kraken_summary_assembled.txt)
-		genus=$(sed -n '7p' < ${processed}/${2}/${1}/kraken/postAssembly/${1}_kraken_summary_assembled.txt)
+		family=$(sed -n '6p' < ${processed}/${2}/${1}/${1}.tax)
+		genus=$(sed -n '7p' < ${processed}/${2}/${1}/${1}.tax)
 		#Extracts family name from line
 		family=$(echo ${family}  | cut -d' ' -f4)
 		genus=$(echo ${genus}  | cut -d' ' -f4)
