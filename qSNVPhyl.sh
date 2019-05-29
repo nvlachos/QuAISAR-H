@@ -15,7 +15,7 @@ fi
 . "${mod_changers}/pipeline_mods"
 
 #
-# The wrapper script that runs the lowest possible primary_processing.sh script on the cluster
+# The wrapper script that runs the lowest possible run_SNVPhyl.sh script on the cluster
 #
 # Usage ./qSNVPhyl path_to_list_file output_directory project_identifier
 #
@@ -38,7 +38,6 @@ if [[ ${host} != "cluster"* ]]; then
 	echo "No scheduling system, can not run qSNVPhyl.sh"
 	#exit 1
 fi
-
 sleep 5
 
 # Loop through and act on each sample name in the passed/provided list
