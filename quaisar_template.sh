@@ -117,7 +117,7 @@ if [ ! -d "$OUTDATADIR/$filename/preQCcounts" ]; then
 	mkdir -p "$OUTDATADIR/$filename/preQCcounts"
 fi
 # Run qc count check on raw reads
-python "${shareScript}/Fastq_Quality_Printer.py" -1 "${OUTDATADIR}/${filename}/FASTQs/${filename}_R1_001.fastq" -2 "${OUTDATADIR}/${filename}/FASTQs/${filename}_R2_001.fastq" > "${OUTDATADIR}/$filename/preQCcounts/${filename}_counts.txt"
+python2 "${shareScript}/Fastq_Quality_Printer.py" -1 "${OUTDATADIR}/${filename}/FASTQs/${filename}_R1_001.fastq" -2 "${OUTDATADIR}/${filename}/FASTQs/${filename}_R2_001.fastq" > "${OUTDATADIR}/$filename/preQCcounts/${filename}_counts.txt"
 
 	# Get end time of qc count and calculate run time and append to time summary (and sum to total time used)
 end=$SECONDS
@@ -177,7 +177,7 @@ if [ ! -d "$OUTDATADIR/$filename/preQCcounts" ]; then
 	mkdir -p "$OUTDATADIR/$filename/preQCcounts"
 fi
 # Run qc count check on filtered reads
-python "${shareScript}/Fastq_Quality_Printer.py" -1 "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.paired.fq" -2 "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.paired.fq" > "${OUTDATADIR}/${filename}/preQCcounts/${filename}_trimmed_counts.txt"
+python2 "${shareScript}/Fastq_Quality_Printer.py" -1 "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.paired.fq" -2 "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.paired.fq" > "${OUTDATADIR}/${filename}/preQCcounts/${filename}_trimmed_counts.txt"
 
 # Merge both unpaired fq files into one for GOTTCHA
 cat "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.paired.fq" "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.paired.fq" > "${OUTDATADIR}/${filename}/trimmed/${filename}.paired.fq"
@@ -253,27 +253,7 @@ else
 	echo "Assembly FAILED 3 times, continuing to next sample..." >&2
 	return 1
 fi
-#for i in 1 2 3
-#do
-#	# If plasmid Assembly exists already and this is the first attempt (then the previous run will be used) [should not happen anymore as old runs are now renamed]
-#	if [ -f "${OUTDATADIR}/${filename}/plasmidAssembly/scaffolds.fasta" ]; then
-#		echo "Previous plasmid assembly already exists, using it (delete/rename the assembly folder at ${OUTDATADIR}/ if you'd like to try to reassemble"
-#	else
-#		"${shareScript}/run_SPAdes.sh" "${filename}" plasmid "${project}"
-#		# Removes any core dump files created from SPAdes (occurred fairly regularly during testing/tweaking)
-#		if [ -n "$(find "${shareScript}" -maxdepth 1 -name 'core.*' -print -quit)" ]; then
-#			echo "Found core dump files in plasmid Assembly (assumed to be from SPAdes, but could be anything before that as well) and attempting to delete"
-#			find "${shareScript}" -maxdepth 1 -name 'core.*' -exec rm -f {} \;
-#			else
-#			echo "No core dump files during plasmid assembly attempt number ${i}, plasmidSPAdes finished successfully and found nothing, creating dummy scaffolds file"
-#			>> "${OUTDATADIR}/${filename}/plasmidAssembly/scaffolds.fasta"
-#		fi
-#	fi
-#done
-## Returns if all 3 assembly attempts fail
-#if [ ! -f "${OUTDATADIR}/${filename}/plasmidAssembly/scaffolds.fasta" ]; then
-#	echo "plasmid Assembly FAILED 3 times, continuing to next step..." >&2
-#fi
+
 # Get end time of SPAdes and calculate run time and append to time summary (and sum to total time used)
 end=$SECONDS
 timeSPAdes=$((end - start))
@@ -478,29 +458,37 @@ totaltime=$((totaltime + timestar))
 echo "----- Running MLST -----"
 start=$SECONDS
 "${shareScript}/run_MLST.sh" "${filename}" "${project}"
+python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}.mlst" -t standard
 if [[ "${genus}_${species}" = "Acinetobacter_baumannii" ]]; then
 	"${shareScript}/run_MLST.sh" "${filename}" "${project}" "-f" "abaumannii"
+	python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_abaumannii.mlst" -t standard
 	#Check for "-", unidentified type
 	type1=$(tail -n1 ${processed}/${project}/${filename}/MLST/${filename}_abaumannii.mlst | cut -d' ' -f3)
 	type2=$(head -n1 ${processed}/${project}/${filename}/MLST/${filename}.mlst | cut -d' ' -f3)
 	if [[ "${type1}" = "-" ]]; then
-		"${shareScript}/run_srst2_mlst" "${filename}" "${project}" "Acinetobacter" "baumannii#1"
+		"${shareScript}/run_srst2_mlst.sh" "${filename}" "${project}" "Acinetobacter" "baumannii#1"
+		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_srst2_acinetobacter_baumannii-baumannii#1.mlst" -t srst2
 	fi
 	if [[ "${type2}" = "-" ]]; then
-		"${shareScript}/run_srst2_mlst" "${filename}" "${project}" "Acinetobacter" "baumannii#2"
+		"${shareScript}/run_srst2_mlst.sh" "${filename}" "${project}" "Acinetobacter" "baumannii#2"
+		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_srst2_acinetobacter_baumannii-baumannii#2.mlst" -t srst2
 	fi
 elif [[ "${genus}_${species}" = "Escherichia_coli" ]]; then
 	# Verify that ecoli_2 is default and change accordingly
 	"${shareScript}/run_MLST.sh" "${filename}" "${project}" "-f" "ecoli_2"
+	python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_ecoli_2.mlst" -t standard
 	type2=$(tail -n1 ${processed}/${project}/${filename}/MLST/${filename}_ecoli_2.mlst | cut -d' ' -f3)
 	type1=$(head -n1 ${processed}/${project}/${filename}/MLST/${filename}.mlst | cut -d' ' -f3)
 	if [[ "${type1}" = "-" ]]; then
-		"${shareScript}/run_srst2_mlst" "${filename}" "${project}" "Escherichia" "coli#1"
+		"${shareScript}/run_srst2_mlst.sh" "${filename}" "${project}" "Escherichia" "coli#1"
+		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_srst2_escherichia_coli-coli#1.mlst" -t srst2
 	fi
 	if [[ "${type2}" = "-" ]]; then
-		"${shareScript}/run_srst2_mlst" "${filename}" "${project}" "Escherichia" "coli#2"
+		"${shareScript}/run_srst2_mlst.sh" "${filename}" "${project}" "Escherichia" "coli#2"
+		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_srst2_escherichia_coli-coli#2.mlst" -t srst2
 	fi
 fi
+python3 "${shareScript}/check_and_fix_MLST.py" -i -t
 end=$SECONDS
 timeMLST=$((end - start))
 echo "MLST - ${timeMLST} seconds" >> "${time_summary}"
