@@ -17,7 +17,7 @@
 
 
 #
-# Usage ./run_srst2_mlst.sh   sample_name   MiSeq_Run_ID
+# Usage ./run_srst2_mlst.sh   sample_name   MiSeq_Run_ID	Genus	species
 #
 # script uses srst2 to find MLST types
 #
@@ -33,8 +33,8 @@ elif [[ "$1" = "-h" ]]; then
 	exit 0
 fi
 
-species="${4}"
-genus="${3}"
+species="${4,,}"
+genus="${3,,}"
 
 # Creates folder for output
 if [[ ! -d "${processed}/${2}/${1}/srst2" ]]; then
@@ -82,31 +82,31 @@ fi
 
 cd "${processed}/${2}/${1}/MLST/srst2"
 
-getmlst.py --species "${3} ${4}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
+getmlst.py --species "${genus} ${species}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
 
 db_name="Standard"
 # Checks for either of the 2 databases that have multiple scheme types and runs both
-if [[ "${3}" == "Acinetobacter" ]]; then
-	echo "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
-	if [[ "${4}" == "baumannii#1" ]]; then
-		#sed -i -e 's/>/>Oxf_/g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
+if [[ "${genus}" == "Acinetobacter" ]]; then
+	echo "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
+	if [[ "${species}" == "baumannii#1" ]]; then
+		#sed -i -e 's/>/>Oxf_/g' "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
 		#sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/abaumannii(Oxford).txt"
 		db_name="Oxford"
-	elif [[ "${4}" == "baumannii#2" ]]; then
-		sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
+	elif [[ "${species}" == "baumannii#2" ]]; then
+		sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
 	#	sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/abaumannii_2(Pasteur).txt"
 		db_name="Pasteur"
 	else
 		echo "Unknown species in Acinetobacter MLST lookup"
 	fi
-elif [[ "${3}" == "Escherichia" ]]; then
-	echo "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
-	if [[ "${4}" == "coli#1" ]]; then
-		sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
+elif [[ "${genus}" == "Escherichia" ]]; then
+	echo "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
+	if [[ "${species}" == "coli#1" ]]; then
+		sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
 	#	sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/ecoli(Achtman).txt"
 		db_name="Achtman"
-	elif [[ "${4}" == "coli#2" ]]; then
-		sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/${3}_${4}.fasta"
+	elif [[ "${species}" == "coli#2" ]]; then
+		sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
 	#	sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/ecoli_2(Pasteur).txt"
 		db_name="Pasteur"
 	else
@@ -140,16 +140,16 @@ srst2 --input_pe "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" "${
 today=$(date "+%Y-%m-%d")
 
 # Cleans up extra files and renames output file
-mv "${processed}/${2}/${1}/MLST/srst2/${1}__mlst__${3}_${4}__results.txt" "${processed}/${2}/${1}/MLST/${1}_srst2_${3}_${4}-${db_name}.mlst"
-mv "${processed}/${2}/${1}/MLST/srst2/mlst_data_download_${3}_${4}_${today}.log" "${processed}/${2}/${1}/MLST/"
+mv "${processed}/${2}/${1}/MLST/srst2/${1}__mlst__${genus}_${species}__results.txt" "${processed}/${2}/${1}/MLST/${1}_srst2_${genus}_${species}-${db_name}.mlst"
+mv "${processed}/${2}/${1}/MLST/srst2/mlst_data_download_${genus}_${species}_${today}.log" "${processed}/${2}/${1}/MLST/"
 rm "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz"
 rm "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz"
 #rm -r "${processed}/${2}/${1}/MLST/srst2"
-if [[ -f "${processed}/${2}/${1}/MLST/srst2/${1}__${1}.${3}_${4}.pileup" ]]; then
-	rm -r "${processed}/${2}/${1}/MLST/srst2/${1}__${1}.${3}_${4}.pileup"
+if [[ -f "${processed}/${2}/${1}/MLST/srst2/${1}__${1}.${genus}_${species}.pileup" ]]; then
+	rm -r "${processed}/${2}/${1}/MLST/srst2/${1}__${1}.${genus}_${species}.pileup"
 fi
-if [[ -f "${processed}/${2}/${1}/MLST/${1}__${1}.${3}_${4}.sorted.bam" ]]; then
-	rm -r "${processed}/${2}/${1}/MLST/${1}__${1}.${3}_${4}.sorted.bam"
+if [[ -f "${processed}/${2}/${1}/MLST/${1}__${1}.${genus}_${species}.sorted.bam" ]]; then
+	rm -r "${processed}/${2}/${1}/MLST/${1}__${1}.${genus}_${species}.sorted.bam"
 fi
 
 

@@ -36,7 +36,7 @@ alt_DB=$(echo ${alt_DB_path##*/} | cut -d'.' -f1)
 alt_DB=${alt_DB//_srst2/}
 
 # Create output folder
-if [[ !-d "${processed}/${2}/${1}/srst2" ]]; then
+if [[ ! -d "${processed}/${2}/${1}/srst2" ]]; then
 	mkdir "${processed}/${2}/${1}/srst2"
 fi
 
