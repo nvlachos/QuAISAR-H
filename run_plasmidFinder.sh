@@ -96,9 +96,9 @@ if [[ "${force}" == "true" ]]; then
 	cat	${OUTDATADIR}/${1}_results_table_gramp.txt ${OUTDATADIR}/${1}_results_table_entero.txt > ${OUTDATADIR}/${1}_results_table_summary.txt
 # Else, if the force flag is not set, then TRY to limit search to family (it will still check against all if it does not match the family)
 else
-	# Checks to see if a post assembly kraken file is available to extract the family of the sample
-	if [[ -f ${processed}/${2}/${1}/kraken/postAssembly/${1}_kraken_summary_assembled_BP_data.txt ]]; then
-		#Extracts the 6th line from the kraken file containing all family information
+	# Checks to see if a tax file is available to extract the family of the sample
+	if [[ -f ${processed}/${2}/${1}/${1}.tax ]]; then
+		#Extracts the 6th line from the tax file containing all family information
 		family=$(sed -n '6p' < ${processed}/${2}/${1}/${1}.tax)
 		genus=$(sed -n '7p' < ${processed}/${2}/${1}/${1}.tax)
 		#Extracts family name from line
@@ -147,6 +147,6 @@ else
 		fi
 	# No assembly file exists and cannot be used to determine family of sample
 	else
-		echo "Cant guess the genus of the sample, please try again with the force option or check the contents of the postAssembly kraken folder for a proper summary file (${processed}/${2}/${1}/kraken/postAssembly/${1}_kraken_summary_assembled_BP_data.txt)"
+		echo "Cant guess the genus of the sample, please try again with the force option or check the contents of the .tax file for complete taxonomic classification (${processed}/${2}/${1}/${1}.tax)"
 	fi
 fi
