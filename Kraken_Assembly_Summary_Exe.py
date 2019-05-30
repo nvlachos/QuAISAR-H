@@ -8,7 +8,7 @@ def parseArgs(args=None):
 	parser = argparse.ArgumentParser(description='Script to summarize the kraken output files for weighted versions')
 	parser.add_argument('-k', '--kraken', required=True, help='input weighted kraken filename')
 	parser.add_argument('-l', '--label', required=True, help='input label filename')
-    parser.add_argument('-t', '--list', required=True, help='input list filename')
+	parser.add_argument('-t', '--list', required=True, help='input list filename')
 	parser.add_argument('-o', '--output', required=True, help='output list filename')
 	return parser.parse_args()
 
