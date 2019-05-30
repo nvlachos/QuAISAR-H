@@ -20,7 +20,7 @@ fi
 
 #
 # Usage ./outbreak_analysis.sh path_to_list gapped/ungapped (analysis ran) identity (80/95/98/99/100) analysis_identifier(e.g. outbreak identifier) output_directory(will create a folder at this location with name of analysis_identifier) clobberness[keep|clobber]
-#
+# ***Must be submitted as a job (or run on the cluster) if there are isolates that need to have csstar or srst2 updated
 # Pulls out MLST, AR genes, and plasmid repicons and creates a mashtree for the listed samples and consolidates them into one sheet
 #
 
