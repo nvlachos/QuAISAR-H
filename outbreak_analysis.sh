@@ -136,7 +136,7 @@ while IFS= read -r line; do
 		#echo "${project}/${sample_name} has newest ResGANNOT for normal csstar already"
 		:
 	else
-		echo "${project}/${sample_name} - ccstar needs to be run against ${resGANNOT_srst2_filename}"
+		echo "${project}/${sample_name} - ccstar needs to be run against ${resGANNOT_srst2_filename} at ${sim}"
 		echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
 		run_csstar="true"
 	fi
