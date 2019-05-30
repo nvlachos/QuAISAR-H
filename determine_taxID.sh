@@ -81,14 +81,14 @@ Check_source() {
 			#echo "largest:${largest_species}:"
 			#echo "best:${best_species}:"
 			if [[ "${largest_arr_size}" -ge 3 ]]; then
-				if [[ "${largest_array[2]}" == "Unidentified" ]] || [[ "${largest_array[2]}" == "No_16s_"* ]]; then
+				if [[ "${largest_array[2]}" == "Unidentified" ]] || [[ "${largest_array[2]}" == "No_16s_"* ]] || [[ "${largest_array[2]}" == "uncultured" ]]; then
 					:
 				else
 					do_16s "largest"
 					return
 				fi
 			elif [[ "${best_arr_size}" -ge 3 ]] ; then
-				if [[ "${best_array[2]}" == "Unidentified" ]]  || [[ "${best_array[2]}" == "No_16s_"* ]]; then
+				if [[ "${best_array[2]}" == "Unidentified" ]]  || [[ "${best_array[2]}" == "No_16s_"* ]] || [[ "${best_array[2]}" == "uncultured" ]]; then
 					:
 				else
 					do_16s "best"
