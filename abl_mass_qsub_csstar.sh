@@ -71,6 +71,7 @@ else
 		sim="p"
 	elif [ "${5}" == 40 ]; then
 		sim="o"
+	fi
 fi
 
 # create an array of all samples in the list
