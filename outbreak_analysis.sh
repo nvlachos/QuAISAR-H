@@ -66,6 +66,8 @@ fi
 if [[ "${3}" != 80 ]] && [[ "${3}" != 95 ]] && [[ "${3}" != 98 ]] && [[ "${3}" != 99 ]] && [[ "${3}" != 100 ]]; then
 	echo "Identity is not one of the presets for csstar and therefore will fail, exiting..."
 	exit 1
+else
+	sim=${3}
 fi
 
 # Creates the output directory if it does not exist
@@ -95,25 +97,6 @@ if [[ -f ${output_directory}/${4}-srst2.txt ]]; then
 fi
 if [[ -f ${output_directory}/${4}-srst2_rejects.txt ]]; then
 	rm ${output_directory}/${4}-srst2_rejects.txt
-fi
-
-if [ "${3}" == 98 ]; then
-	sim="h"
-elif [ "${3}" == 80 ]; then
-	sim="l"
-elif [ "${3}" == 99 ]; then
-	sim="u"
-elif [ "${3}" == 95 ]; then
-	sim="m"
-elif [ "${3}" == 100 ]; then
-	sim="p"
-elif [ "${3}" == 40 ]; then
-	sim="o"
-fi
-if [[ -z "${6}" ]]; then
-	plaid=40
-else
-	plaid="${6}"
 fi
 
 # Creates a dictionary to match genes to AR conferred when parsing srst files
