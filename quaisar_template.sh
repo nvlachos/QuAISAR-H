@@ -488,7 +488,6 @@ elif [[ "${genus}_${species}" = "Escherichia_coli" ]]; then
 		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_srst2_escherichia_coli-coli#2.mlst" -t srst2
 	fi
 fi
-python3 "${shareScript}/check_and_fix_MLST.py" -i -t
 end=$SECONDS
 timeMLST=$((end - start))
 echo "MLST - ${timeMLST} seconds" >> "${time_summary}"
