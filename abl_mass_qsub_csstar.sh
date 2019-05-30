@@ -58,6 +58,7 @@ fi
 if [[ "${5}" != 80 ]] && [[ "${5}" != 95 ]] && [[ "${5}" != 98 ]] && [[ "${5}" != 99 ]] && [[ "${5}" != 100 ]]; then
 	echo "Identity is not one of the presets for csstar and therefore will fail, defaulting to 98..."
 	sim="h"
+	sim_num=98
 else
 	if [ "${5}" == 98 ]; then
 		sim="h"
@@ -72,6 +73,7 @@ else
 	elif [ "${5}" == 40 ]; then
 		sim="o"
 	fi
+	simnum=${5}
 fi
 
 # create an array of all samples in the list
@@ -109,7 +111,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 	project=$(echo "${arr[${counter}]}" | cut -d'/' -f1)
 	if [[ "${clobberness}" = "clobber" ]]; then
 		echo "Removing old c-sstar for ${project}/${sample} and ${resGANNOT_srst2_filename}"
-		rm ${processed}/${project}/${sample}/c-sstar/${sample}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt
+		rm ${processed}/${project}/${sample}/c-sstar/${sample}.${resGANNOT_srst2_filename}.gapped_${simnum}_sstar_summary.txt
 		rm -r ${processed}/${project}/${sample}/c-sstar/${resGANNOT_srst2_filename}_gapped/
 	fi
 	#echo ${counter}-${project}-${sample}
@@ -119,7 +121,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 		# Check if counter is below max number of concurrent submissions
 		if [[ ${counter} -lt ${max_subs} ]]; then
 			# Check if old data exists, skip if so
-			if [[ ! -f "${processed}/${project}/${sample}/c-sstar/${sample}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt" ]]; then
+			if [[ ! -f "${processed}/${project}/${sample}/c-sstar/${sample}.${resGANNOT_srst2_filename}.gapped_${simnum}_sstar_summary.txt" ]]; then
 				echo  "Index is below max submissions, submitting"
 				echo -e "#!/bin/bash -l\n" > "${main_dir}/csstn_${sample}_${start_time}.sh"
 				echo -e "#$ -o csstn_${sample}.out" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
@@ -195,7 +197,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 				# Check if usable assembly exists for current sample or that one does not exist for the waiting sample (therefore there would be no need to wait on it)
 				if [[ -f "${main_dir}/complete/${waiting_sample}_csstarn_complete.txt" ]] || [[ ! -s "${processed}/${project}/${waiting_sample}/Assembly/${waiting_sample}_scaffolds_trimmed.fasta" ]]; then
 					# Check if old data exists, skip if so
-					if [[ ! -f "${processed}/${project}/${sample}/c-sstar/${sample}.${resGANNOT_srst2_filename}.gapped_98_sstar_summary.txt" ]]; then
+					if [[ ! -f "${processed}/${project}/${sample}/c-sstar/${sample}.${resGANNOT_srst2_filename}.gapped_${simnum}_sstar_summary.txt" ]]; then
 						echo  "Index is below max submissions, submitting"
 						echo -e "#!/bin/bash -l\n" > "${main_dir}/csstn_${sample}_${start_time}.sh"
 						echo -e "#$ -o csstn_${sample}.out" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
