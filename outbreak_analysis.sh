@@ -147,8 +147,8 @@ while IFS= read -r line; do
 	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
 	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
 	OUTDATADIR="${processed}/${project}/${sample_name}"
-	#echo "checking for ${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
-	if [[ -s "${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]];
+	#echo "checking for ${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${sim}_sstar_summary.txt"
+	if [[ -s "${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${sim}_sstar_summary.txt" ]];
 	then
 		#echo "${project}/${sample_name} has newest ResGANNOT for normal csstar already"
 		:
@@ -157,9 +157,9 @@ while IFS= read -r line; do
 		echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
 		run_csstar="true"
 	fi
-	#echo "checking for ${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
+	#echo "checking for ${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${sim}_sstar_summary.txt"
 	# if [[ -s "${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta" ]]; then
-	# 	if [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]] || [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_40_sstar_summary.txt" ]]; then
+	# 	if [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${sim}_sstar_summary.txt" ]] || [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_40_sstar_summary.txt" ]]; then
 	# 		#echo "${project}/${sample_name} has newest ResGANNOT for plasmid csstar already"
 	# 		:
 	# 	else
@@ -196,7 +196,7 @@ rm -r ${output_directory}/mashtree
 # Submits the list of isolates that need the newest ResGANNOT file for csstar
 if [[ "${run_csstar}" = "true" ]]; then
 	echo "Submitting list for csstar qsub analysis"
-	qsub -sync y ${shareScript}/abl_mass_qsub_csstar.sh "${output_directory}/${4}_csstar_todo.txt" 25 "${mass_qsub_folder}" "${clobberness}"
+	qsub -sync y ${shareScript}/abl_mass_qsub_csstar.sh "${output_directory}/${4}_csstar_todo.txt" 25 "${mass_qsub_folder}" "${clobberness}" "${sim}"
 fi
 # Submits the list of isolates that need the newest ResGANNOT file for srst2
 if [[ "${run_srst2}" = "true" ]]; then
@@ -216,13 +216,13 @@ while IFS= read -r line; do
 	oar_list=""
 	# Looks at all the genes found for a sample
 	#ls ${OUTDATADIR}/c-sstar/
-	#echo "looking for ${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
-	if [[ -f "${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]]; then
-		ARDB_full="${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
+	#echo "looking for ${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${sim}_sstar_summary.txt"
+	if [[ -f "${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${sim}_sstar_summary.txt" ]]; then
+		ARDB_full="${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${sim}_sstar_summary.txt"
 	else
 		echo "IT STILL thinks it needs to run ${sample_name} through normal csstar"
 		#${shareScript}/run_c-sstar_on_single.sh "${sample_name}" "${gapping}" "${sim}" "${project}"
-		#ARDB_full="${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
+		#ARDB_full="${OUTDATADIR}/c-sstar/${sample_name}.${resGANNOT_srst2_filename}.${2}_${sim}_sstar_summary.txt"
 		exit
 	fi
 	#echo "${ARDB_full}"
@@ -398,12 +398,12 @@ while IFS= read -r line; do
 	# 	# Repeat the c-sstar output organization of the plasmidAssembly
 	# 	oar_list=""
 	# 	# Looks at all the genes found on the plasmid assembly for a sample
-	# 	if [[ -f "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt" ]]; then
-	# 		ARDB_plasmid="${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
+	# 	if [[ -f "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${sim}_sstar_summary.txt" ]]; then
+	# 		ARDB_plasmid="${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${sim}_sstar_summary.txt"
 	# 	else
 	# 		echo "It STILL STILL thinks it needs to put ${sample_name} trhough plasmid csstar"
 	# 		#${shareScript}/run_c-sstar_on_single.sh "${sample_name}" "${gapping}" "${sim}" "${project}" "--plasmid"
-	# 		#ARDB_plasmid="${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${3}_sstar_summary.txt"
+	# 		#ARDB_plasmid="${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${sim}_sstar_summary.txt"
 	# 	fi
 	# 	while IFS= read -r line; do
 	# 		# exit if no genes were found for the sample
