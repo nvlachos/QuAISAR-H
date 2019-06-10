@@ -329,7 +329,8 @@ fi
 
 # Copy the config file to the log directory so as not to hold up any future quaisar runs that count the number of config files present
 if [[ -f "${shareScript}/config_${config_counter}.sh" ]]; then
-	mv "${shareScript}/config_${config_counter}.sh" ${log_dir}
+	echo "Supposedly moving config file(config_${config_counter}.sh) to log directory ($log_dir)"
+	mv "${shareScript}/config_${config_counter}.sh" "${log_dir}/config_${PROJECT}.sh"
 	:
 fi
 
