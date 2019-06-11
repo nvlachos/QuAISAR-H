@@ -84,10 +84,10 @@ while IFS= read -r var; do
 	# If the run_id matches, then add ID to list (automatically placing them in the proper order)
 	if [[ "${line_project}" = "${project}" ]]; then
 		line_id=$(echo "${var}" | cut -d'	' -f3)
-	#	echo "Adding ${counter}: ${project}/${line_id}"
+		echo "Adding ${counter}: ${project}/${line_id}"
 		echo "${project}/${line_id}" >> "${processed}/${project}/${project}_list_ordered.txt"
 	else
-		#echo "${counter} not in ${project}"
+		echo "${counter} not in ${project}"
 		:
 	fi
 	counter=$(( counter + 1 ))
