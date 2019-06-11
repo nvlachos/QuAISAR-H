@@ -6,14 +6,11 @@ import argparse
 import itertools as it
 from pathlib import Path
 
-#Create an arg parser...someday
 def parseArgs(args=None):
 	parser = argparse.ArgumentParser(description='Script to check MLST types for duplicate alleles and implications on final typing')
 	parser.add_argument('-i', '--input', required=True, help='input mlst filename')
 	parser.add_argument('-t', '--filetype', required=True, help='filetype of mlst file (standard or srst2)')
 	return parser.parse_args()
-
-args = parseArgs()
 
 # main function that looks if all MLST types are defined for an outptu mlst file
 def do_MLST_check(input_MLST_file, MLST_filetype):
@@ -275,4 +272,5 @@ def find_DB_taxonomy(genus, species):
 
 
 print("Parsing MLST file ...\n")
+args = parseArgs()
 do_MLST_check(args.input, args.filetype) #, "/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/mlst/abaumannii_Pasteur.txt") #sys.argv[3])

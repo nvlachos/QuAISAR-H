@@ -289,7 +289,7 @@ else
 		best_organism_guess="${def_array[3]} ${def_array[4]}"
 	else
 		attempts=0
-		while [[ ${attempts} -lt 5 ]]; do
+		while [[ ${attempts} -lt 25 ]]; do
 			best_organism_guess=$(python "${shareScript}/entrez_get_taxon_from_accession.py" -a "${accession}" -e "${me}")
 			if [[ ! -z ${best_organism_guess} ]]; then
 				break
