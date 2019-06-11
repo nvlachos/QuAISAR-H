@@ -87,7 +87,7 @@ while IFS= read -r var; do
 		echo "Adding ${counter}: ${project}/${line_id}"
 		echo "${project}/${line_id}" >> "${processed}/${project}/${project}_list_ordered.txt"
 	else
-		echo "${counter} not in ${project}"
+		echo "${counter}-${line_project} not in ${project}"
 		:
 	fi
 	counter=$(( counter + 1 ))
