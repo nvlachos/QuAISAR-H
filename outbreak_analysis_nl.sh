@@ -125,7 +125,7 @@ run_srst2="false"
 
 # Check that each isolate has been compared to the newest ResGANNOT DB file
 echo -e "\nMaking sure all isolates use the latest AR Database - ${resGANNOT_srst2_filename}\n"
-while IFS= read -r line || [ -n "$line" ] && [ ! -z "$line" ]; do
+while IFS= read -r line || [ -n "$line" ] && [ ! -z "$line" ] && [ "$line" != "" ]; do
 	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
 	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
 	OUTDATADIR="${processed}/${project}/${sample_name}"
