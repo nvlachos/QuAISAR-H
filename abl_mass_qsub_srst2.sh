@@ -57,7 +57,7 @@ fi
 
 # create an array of all samples in the list
 arr=()
-while IFS= read -r line || [[ "$line" ]];  do
+while IFS= read -r line || [ "$line" ];  do
   arr+=("$line")
 done < ${1}
 

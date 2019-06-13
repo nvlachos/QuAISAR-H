@@ -199,8 +199,7 @@ fi
 
 # Loops through list file to create an array of all isolates to run through pipeline
 declare -a file_list=()
-while IFS= read -r file;
-do
+while IFS= read -r file || [ -n "$file" ]; do
 	echo "Found: ${file}"
 	file=$(echo "${file}" | tr -d '[:space:]')
 	file_list+=("${file}")

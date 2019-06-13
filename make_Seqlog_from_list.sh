@@ -34,7 +34,7 @@ fi
 
 # Creates a dictionary of commonly found bugs to use when looking up sizes and assembly ratios later
 declare -A mmb_bugs
-while IFS= read -r bug_lines; do
+while IFS= read -r bug_lines  || [ -n "$bug_lines" ]; do
 	bug_genus=$(echo "${bug_lines}" | cut -d'	' -f1)
 	bug_species=$(echo "${bug_lines}" | cut -d'	' -f2)
 	bug_info=$(echo "${bug_lines}" | cut -d'	' -f3-)
@@ -49,7 +49,7 @@ output_folder=$(dirname ${1})
 > "${output_folder}/Seqlog_output.txt"
 
 # Goes through each item on the list and pulls all relevant info
-while IFS= read -r var; do
+while IFS= read -r var || [ -n "$var" ]; do
 	# Current (12/17/18) order of expected run output
 	#  kraken - QC - estimated coverage - #contigs - cumulative length assembly - BUSCO - ANI
 
@@ -66,8 +66,7 @@ while IFS= read -r var; do
 	species_post="not_assigned"
 	# Pulls species and genus_post information from kraken out of assembly
 	if [[ -s "${OUTDATADIR}/kraken/postAssembly/${sample_name}_kraken_summary_assembled_BP_data.txt" ]]; then
-		while IFS= read -r line;
-		do
+		while IFS= read -r line  || [ -n "$line" ]; do
 			first=${line::1}
 			if [ "${first}" = "S" ]
 			then
@@ -89,8 +88,7 @@ while IFS= read -r var; do
 	species_reads="not_assigned"
 	# Pulls species and genus_16s information from kraken out of reads
 	if [[ -s "${OUTDATADIR}/kraken/preAssembly/${sample_name}_kraken_summary_paired.txt" ]]; then
-		while IFS= read -r line;
-		do
+		while IFS= read -r line  || [ -n "$line" ]; do
 			first=${line::1}
 			if [ "${first}" = "S" ]
 			then
@@ -134,8 +132,7 @@ while IFS= read -r var; do
 	fi
 
 	source_call=$(head -n1 "${OUTDATADIR}/${sample_name}.tax")
-	while IFS= read -r line;
-	do
+	while IFS= read -r line  || [ -n "$line" ]; do
 		# Grab first letter of line (indicating taxonomic level)
 		first=${line:0:1}
 		# Assign taxonomic level value from 4th value in line (1st-classification level,2nd-% by kraken, 3rd-true % of total reads, 4th-identifier)
@@ -154,8 +151,7 @@ while IFS= read -r var; do
 	contig_info="0(0)\\t0\tNot_in_DB"
 		if [[ -s "${OUTDATADIR}/Assembly_Stats/${sample_name}_report.tsv" ]]; then
 		counter=0
-		while IFS= read -r line;
-		do
+		while IFS= read -r line  || [ -n "$line" ]; do
 			if [ ${counter} -eq 0 ]
 			then
 				num_contigs=$(sed -n '14p' "${OUTDATADIR}/Assembly_Stats/${sample_name}_report.tsv"| sed -r 's/[\t]+/ /g' | cut -d' ' -f3 )
@@ -189,8 +185,7 @@ while IFS= read -r var; do
 	# Pulls busco info from summary file
 	busco_info="No BUSCO performed"
 	if [[ -s "${OUTDATADIR}/BUSCO/short_summary_${sample_name}.txt" ]]; then
-		while IFS= read -r line;
-		do
+		while IFS= read -r line  || [ -n "$line" ]; do
 			if [[ ${line} == *"Complete BUSCOs (C)"* ]]
 			then
 				#echo "C-"${line}

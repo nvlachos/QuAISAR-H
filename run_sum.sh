@@ -64,8 +64,7 @@ else
 fi
 
 # Run validate_piperun.sh on every sample in the list and cat output into one summary file
-while IFS= read -r samples;
-do
+while IFS= read -r samples || [ -n "$samples" ]; do
 	echo ${file}
 	file=$(echo "${samples}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
 	proj=$(echo "${samples}" | awk -F/ '{ print $1}' | tr -d '[:space:]')

@@ -78,7 +78,7 @@ fi
 
 # create an array of all samples in the list
 arr=()
-while IFS= read -r line || [[ "$line" ]];  do
+while IFS= read -r line || [ "$line" ];  do
 	if [[ ! -z "${line}" ]]; then
 		line=$(echo ${line} | tr -d '\n' | tr -d '\r')
 		arr+=($line)

@@ -68,7 +68,7 @@ if [[ ! -d ${outdir} ]]; then
 fi
 
 # Copy over all fasta files from original locations to the output directory
-while IFS= read -r line || [[ "$line" ]];  do
+while IFS= read -r line || [ "$line" ];  do
 	sample_name=$(echo "${line}" | cut -d'/' -f2 | tr -d '[:space:]')
 	project=$(echo "${line}" | cut -d'/' -f1 | tr -d '[:space:]')
 	cp ${processed}/${project}/${sample_name}/Assembly/${sample_name}_scaffolds_trimmed.fasta ${outdir}

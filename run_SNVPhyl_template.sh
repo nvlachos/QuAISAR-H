@@ -63,8 +63,7 @@ fi
 
 
 counter=0
-while IFS= read -r var
-do
+while IFS= read -r var || [ -n "$var" ]; do
 	echo "var:$var"
 	sample=$(echo "${var}" | awk -F"/" '{print $2}' | tr -d '[:space:]')
 	# Lists are used in both SNVPhyl and SNVPhyl, but SNVPhyl can simulate reads on assemblies, :asm at the end of the filename is the designation for this action, It is unused in SNVPhyl and just removed

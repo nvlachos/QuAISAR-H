@@ -96,8 +96,7 @@ if [[ ! -s "${OUTDATADIR}/${1}_${3}.list" ]]; then
 fi
 
 #Parses the kraken output list line by line
-while IFS= read -r line
-do
+while IFS= read -r line  || [ -n "$line" ]; do
 	# Removes the whitespace at the end of the line
 	line=${line,,}
 	# Turns the line into an array delimited by whitespace

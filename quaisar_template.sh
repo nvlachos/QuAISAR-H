@@ -305,8 +305,7 @@ echo "----- Extracting Taxonomy from Taxon Summary -----"
 # Checks to see if the kraken on assembly completed successfully
 if [ -s "${OUTDATADIR}/${filename}/${filename}.tax" ]; then
 	# Read each line of the kraken summary file and pull out each level  taxonomic unit and store for use later in busco and ANI
-	while IFS= read -r line;
-	do
+	while IFS= read -r line  || [ -n "$line" ]; do
 		# Grab first letter of line (indicating taxonomic level)
 		first=${line::1}
 		# Assign taxonomic level value from 4th value in line (1st-classification level,2nd-% by kraken, 3rd-true % of total reads, 4th-identifier)
@@ -510,6 +509,7 @@ totaltime=$((totaltime + timeplasfin))
 if [[ "${family}" == "Enterobacteriaceae" ]]; then
 	${shareScript}/run_plasFlow.sh "${filename}" "${project}"
 	${shareScript}/run_c-sstar_on_single_plasFlow.sh "${filename}" g o "${project}" -p
+	${shareScript}/run_plasmidFinder.sh "${filename}" "${project}" plasmid_on_plasFlow
 fi
 
 # Extra dump cleanse in case anything else failed

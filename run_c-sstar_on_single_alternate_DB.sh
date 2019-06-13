@@ -126,8 +126,7 @@ fi
 
 # Goes through ResGANNOT outfile and adds labels as well as resistance conferred to the beginning of the line
 # Takes .sstar file in and outputs as .sstar_grouped
-while IFS= read -r line
-do
+while IFS= read -r line || [ -n "$line" ]; do
 	line=${line,,}
 	#echo ${line}
 	label1=$(echo "${line}" | cut -d '	' -f3 | tr '[:upper:]' '[:lower:]')

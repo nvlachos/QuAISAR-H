@@ -70,8 +70,7 @@ counter=0
 threshold=0
 cp "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" "${OUTDATADIR}/ANI/localANIDB/sample_${1}.fasta"
 > "${OUTDATADIR}/ANI/twenty_closest_mash.list"
-while IFS='' read -r line;
-do
+while IFS='' read -r line || [ -n "$line" ]; do
 	source_path=$(echo "${line}" | cut -d'	' -f1)
 	source=$(echo "${source_path}" | rev | cut -d'/' -f1 | rev)
 	source=${source:0:-4}
@@ -108,8 +107,7 @@ echo "${OUTDATADIR}/ANI/localANIDB/"
 #. "${shareScript}/module_changers/unload_python_3.6.sh"
 
 #Extracts the query sample info line for percentage identity from the percent identity file
-while IFS='' read -r line;
-do
+while IFS='' read -r line || [ -n "$line" ]; do
 #	echo "!-${line}"
 	if [[ ${line:0:7} = "sample_" ]]; then
 		sampleline=${line}
@@ -162,13 +160,11 @@ echo "${best_file}"
 # If the best match comes from the additional file, extract the taxonomy from that file
 if [[ "${best_file}" = *"_scaffolds_trimmed" ]]; then
 	best_outbreak_match=$(echo "${best_file}" | rev | cut -d'_' -f3- | rev)
-	while IFS= read -r var
-	do
+	while IFS= read -r var  || [ -n "$var" ]; do
 		sample_name=$(echo "${var}" | cut -d'/' -f2 | tr -d '[:space:]')
 		if [[ "${sample_name}" = "${best_outbreak_match}" ]]; then
 			project=$(echo "${var}" | cut -d'/' -f1 | tr -d '[:space:]')
-			while IFS= read -r pstats_line
-				do
+			while IFS= read -r pstats_line || [ -n "$pstats_line" ]; do
 					tool=$(echo "${pstats_line}" | cut -d':' -f1 | tr -s " ")
 					#echo ":${tool}:"
 					if [[ "${tool}" = "weighted Classify " ]]; then

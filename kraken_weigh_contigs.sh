@@ -63,8 +63,7 @@ unclassified=0
 sort -t$'\t' -k4,4 -n "${OUTDATADIR}/${1}_assembled.${3}" > "${OUTDATADIR}/${1}_assembled_sorted.${3}"
 
 #Parses the kraken output list line by line
-while IFS= read -r line
-do
+while IFS= read -r line  || [ -n "$line" ]; do
 		prefix=$(echo "${line}" | cut -d'	' -f1,2,3,4)
 		#echo "${prefix}"
 		classified=$(echo "${line}" | cut -d'	' -f1)
@@ -94,8 +93,7 @@ echo "unclassified = ${unclassified}"
 echo "Smallest contig = ${smallest}"
 echo "Adjusted contig count = ${adjusted_contig_count}"
 
-while IFS= read -r line
-do
+while IFS= read -r line  || [ -n "$line" ]; do
 		IFS='	' read -a arr_line <<< "$line"
 		#echo "Size:${#arr_line}"
 		original_size=${arr_line[3]}

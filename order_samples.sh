@@ -67,7 +67,7 @@ echo "Excel file: 2019_MMBSeq_Log.xlsx has been converted to TSV"
 
 # Parse log file csv until run_if matches
 counter=0
-while IFS= read -r var; do
+while IFS= read -r var || [ -n "$var" ]; do
 	# Check the format of the city/state column in the log file to determine how many tabs need to be used to find run_id in line
 	#echo "checking ${var}"
 	# city_state=$(echo "${var}" | cut -d',' -f17)

@@ -89,7 +89,7 @@ genus="unk"
 species="unk"
 sample_name=""
 #echo "TEST-${proj}:::::${sum_name}"
-while IFS= read -r var; do
+while IFS= read -r var || [ -n "$var" ]; do
 	#echo "${var}"
 	first=$(echo "${var}" | cut -d' ' -f1)
 	if [[ "${sample_name}" = "" ]]; then
