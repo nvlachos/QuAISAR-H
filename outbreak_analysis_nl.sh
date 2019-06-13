@@ -126,7 +126,7 @@ run_srst2="false"
 
 # Check that each isolate has been compared to the newest ResGANNOT DB file
 echo -e "\nMaking sure all isolates use the latest AR Database - ${resGANNOT_srst2_filename}\n"
-while IFS= read -r line || [ -n "$line" ];; do
+while IFS= read -r line; do
 	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
 	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
 	OUTDATADIR="${processed}/${project}/${sample_name}"
@@ -191,7 +191,7 @@ echo $(date)
 sleep 10
 
 # # Loop through and extracts and formats AR genes found in all isolates, as well as the primary MLST type and plasmid replicons. Each are output to separate files. Any AR genes that do not meet the length or % identity are copied to the rejects file.
-while IFS= read -r line; do
+while IFS= read -r line || [ -n "$line" ]; do
  	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
  	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
  	OUTDATADIR="${processed}/${project}/${sample_name}"
