@@ -123,6 +123,9 @@ run_srst2="false"
 > "${output_directory}/${4}_csstar_todo.txt"
 > "${output_directory}/${4}_srst2_todo.txt"
 
+# Remove blank lines in list files
+sed '/^$/d' ${1}
+
 # Check that each isolate has been compared to the newest ResGANNOT DB file
 echo -e "\nMaking sure all isolates use the latest AR Database - ${resGANNOT_srst2_filename}\n"
 while IFS= read -r line || [ -n "$line" ] && [ ! -z "$line" ] && [ "$line" != "" ]; do
@@ -441,7 +444,7 @@ while IFS= read -r line || [ -n "$line" ] && [ ! -z "$line" ] && [ "$line" != ""
 	full_contigs=">"
 	full_contigs=$(grep -c ${full_contigs} "${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta")
 	added=0
-	while IFS= read -r plasmid || [ -n "$plasmid" ] && [ ! -z "$plasmid" ] && [ "$plasmid" != "" ]; do; do
+	while IFS= read -r plasmid || [ -n "$plasmid" ] && [ ! -z "$plasmid" ] && [ "$plasmid" != "" ]; do
 		line_in=$(echo ${plasmid} | cut -d' ' -f1)
 		if [[ "${line_in}" = "No" ]] || [[ "${line_in}" = "Enterococcus,Streptococcus,Staphylococcus" ]] || [[ "${line_in}" = "Enterobacteriaceae" ]] || [[ "${line_in}" = "Plasmid" ]]; then
 			# echo "Not using line: $plasmid"
