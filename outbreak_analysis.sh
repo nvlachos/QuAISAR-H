@@ -104,7 +104,7 @@ declare -A groups
 echo ""
 echo "Creating AR lookup list from ${local_DBs}/star/group_defs.txt"
 counter=0
-while IFS= read -r line  || [ -n "$line" ]; do
+while IFS= read -r line || [ -n "$line" ] && [ ! -z "$line" ] && [ "$line" != "" ]; do
 	line=${line,,}
 	gene=$(echo "${line}" | cut -d ':' -f1)
 	first=${gene:0:1}
@@ -123,9 +123,12 @@ run_srst2="false"
 > "${output_directory}/${4}_csstar_todo.txt"
 > "${output_directory}/${4}_srst2_todo.txt"
 
+# Remove blank lines in list files
+sed -i '/^$/d' ${i}
+
 # Check that each isolate has been compared to the newest ResGANNOT DB file
 echo -e "\nMaking sure all isolates use the latest AR Database - ${resGANNOT_srst2_filename}\n"
-while IFS= read -r line  || [ -n "$line" ]; do
+while IFS= read -r line || [ -n "$line" ] && [ ! -z "$line" ] && [ "$line" != "" ]; do
 	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
 	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
 	OUTDATADIR="${processed}/${project}/${sample_name}"
@@ -190,7 +193,7 @@ echo $(date)
 sleep 10
 
 # # Loop through and extracts and formats AR genes found in all isolates, as well as the primary MLST type and plasmid replicons. Each are output to separate files. Any AR genes that do not meet the length or % identity are copied to the rejects file.
-while IFS= read -r line  || [ -n "$line" ]; do
+while IFS= read -r line || [ -n "$line" ] && [ ! -z "$line" ] && [ "$line" != "" ]; do
  	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
  	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
  	OUTDATADIR="${processed}/${project}/${sample_name}"
@@ -209,7 +212,7 @@ while IFS= read -r line  || [ -n "$line" ]; do
 	fi
 	#echo "${ARDB_full}"
 	# Extracts all AR genes from normal csstar output file and creates a lits of all genes that pass the filtering steps
-	while IFS= read -r line  || [ -n "$line" ]; do
+	while IFS= read -r line || [ -n "$line" ] && [ ! -z "$line" ] && [ "$line" != "" ]; do
 		# exit if no genes were found for the sample
 		if [[ -z "${line}" ]] || [[ "${line}" == *"No anti-microbial genes were found"* ]]; then
 			break
@@ -304,7 +307,7 @@ while IFS= read -r line  || [ -n "$line" ]; do
 	# Adding in srst2 output in a similar fashion as to how the csstar genes are output to the file.
 	if [[ -s "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${resGANNOT_srst2_filename}_srst2__results.txt" ]]; then
 		srst2_results=""
-		while IFS= read -r line  || [ -n "$line" ]; do
+		while IFS= read -r line || [ -n "$line" ] && [ ! -z "$line" ] && [ "$line" != "" ]; do
 		#	echo "Start"
 			gene=$(echo "${line}" | cut -d'	' -f3)
 			#ODD WAY to do this right now, must look into later, but
@@ -387,7 +390,7 @@ while IFS= read -r line  || [ -n "$line" ]; do
 	# 		#${shareScript}/run_c-sstar_on_single.sh "${sample_name}" "${gapping}" "${sim}" "${project}" "--plasmid"
 	# 		#ARDB_plasmid="${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${resGANNOT_srst2_filename}.${2}_${sim}_sstar_summary.txt"
 	# 	fi
-	# 	while IFS= read -r line  || [ -n "$line" ]; do
+	# 	while IFS= read -r line || [ -n "$line" ] && [ ! -z "$line" ] && [ "$line" != "" ]; do; do
 	# 		# exit if no genes were found for the sample
 	# 		if [[ "${line}" == *"No anti-microbial genes were found"* ]]; then
 	# 			break
@@ -441,7 +444,7 @@ while IFS= read -r line  || [ -n "$line" ]; do
 	full_contigs=">"
 	full_contigs=$(grep -c ${full_contigs} "${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta")
 	added=0
-	while IFS= read -r plasmid || [ -n "$plasmid" ]; do
+	while IFS= read -r plasmid || [ -n "$plasmid" ] && [ ! -z "$plasmid" ] && [ "$plasmid" != "" ]; do
 		line_in=$(echo ${plasmid} | cut -d' ' -f1)
 		if [[ "${line_in}" = "No" ]] || [[ "${line_in}" = "Enterococcus,Streptococcus,Staphylococcus" ]] || [[ "${line_in}" = "Enterobacteriaceae" ]] || [[ "${line_in}" = "Plasmid" ]]; then
 			# echo "Not using line: $plasmid"
@@ -457,7 +460,7 @@ while IFS= read -r line  || [ -n "$line" ]; do
 	# plas_contigs=">"
 	# plas_contigs=$(grep -c ${plas_contigs} "${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta")
 	# components=-1
-	# while IFS= read -r contigs || [ -n "$contigs" ]; do
+	# while IFS= read -r contigs || [ -n "$contigs" ] && [ ! -z "$contigs" ] && [ "$contig" != "" ]; do; do
 	# 	if [[ "${contigs}" = ">"* ]]; then
 	# 		components_temp=$(echo "${contigs}" | cut -d'_' -f8)
 	# 		if [[ ${components_temp} -gt ${components} ]]; then
@@ -466,7 +469,7 @@ while IFS= read -r line  || [ -n "$line" ]; do
 	# 	fi
 	# done < ${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta
 	# components=$(( components + 1 ))
-	# while IFS= read -r plasmid || [ -n "$plasmid" ]; do
+	# while IFS= read -r plasmid || [ -n "$plasmid" ] && [ ! -z "$plasmid" ] && [ "$plasmid" != "" ]; do; do
 	# 	line_in=$(echo ${plasmid} | cut -d' ' -f1)
 	# 	if [[ "${line_in}" = "No" ]] || [[ "${line_in}" = "Enterococcus,Streptococcus,Staphylococcus" ]] || [[ "${line_in}" = "Enterobacteriaceae" ]] || [[ "${line_in}" = "Plasmid" ]]; then
 	# 		:
