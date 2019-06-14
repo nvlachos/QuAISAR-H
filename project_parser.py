@@ -10,11 +10,12 @@ def parseArgs(args=None):
 	parser.add_argument('-p', '--plasmid', required=True, help='input plasmid filename')
 	parser.add_argument('-s', '--srst2', required=True, help='input srst2 filename')
 	parser.add_argument('-o', '--output', required=True, help='output csv filename')
+	parser.add_argument('-d', '--database', required=True, help='database file used in AR discovery')
 	return parser.parse_args()
 
 
 # main function that sorts and formats all AR genes found using csstar and srst2 that have already been filtered for % identity and % length
-def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
+def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR, DB_name):
 	all_ARs_in_file=[]
 	samples=[]
 	csstar_file=open(input_csstar_AR,'r')
@@ -190,7 +191,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 	#all_AR_to_write.insert(0,",")
 	#all_AR_to_write.insert(0,",")
 	#all_AR_to_write=','.join(map(str, all_AR_to_write))
-	header="id, Project__autocolour, Species__autocolour, Species_determinant__autocolour, Species_Support__autocolour , MLST__autocolour, ALT_MLST__autocolour,"
+	header="id, Project__autocolour, Species__autocolour, Species_determinant__autocolour, Species_Support__autocolour , MLST__autocolour, ALT_MLST__autocolour, AR_Database__autocolour"
 	for thing in all_ar_and_plasmids:
 		header = header + " " + thing + "__autocolour,"
 	header = header[:-1]
@@ -202,7 +203,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 	#	print ("2:",sample[0])
 	#return
 	for sample in samples:
-		sample_details=[sample[1], sample[0], sample[2], sample[3], sample[4], sample[5], sample[6]]
+		sample_details=[sample[1], sample[0], sample[2], sample[3], sample[4], sample[5], sample[6], DB_name]
 		#print("pre:",sample)
 		for gene in all_ar_and_plasmids:
 			status=" "
@@ -229,4 +230,4 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR):
 
 print("Parsing project AR files ...\n")
 args = parseArgs()
-do_AR(args.csstar, args.plasmid, args.output, args.srst2)
+do_AR(args.csstar, args.plasmid, args.output, args.srst2, args.DB)
