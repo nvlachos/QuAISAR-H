@@ -230,4 +230,4 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR, DB_name):
 
 print("Parsing project AR files ...\n")
 args = parseArgs()
-do_AR(args.csstar, args.plasmid, args.output, args.srst2, args.DB)
+do_AR(args.csstar, args.plasmid, args.output, args.srst2, args.database)
