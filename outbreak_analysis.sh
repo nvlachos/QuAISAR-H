@@ -125,8 +125,9 @@ run_srst2="false"
 
 # Remove blank lines in list files
 #dos2unix ${1}
-sed -i "" '/^[[:space:]]*$/d' ${i}
-cat ${1} | tr -s '\n' '\n'
+#sed -i "" '/^[[:space:]]*$/d' ${i}
+#cat ${1} | tr -s '\n' '\n'
+ex -s +'v/\S/d' -cwq ${1}
 
 # Check that each isolate has been compared to the newest ResGANNOT DB file
 echo -e "\nMaking sure all isolates use the latest AR Database - ${resGANNOT_srst2_filename}\n"
