@@ -124,7 +124,8 @@ run_srst2="false"
 > "${output_directory}/${4}_srst2_todo.txt"
 
 # Remove blank lines in list files
-grep -v -e '^[[:space:]]*$' ${i}
+dos2unix ${1}
+grep -v "^$" ${i}
 
 # Check that each isolate has been compared to the newest ResGANNOT DB file
 echo -e "\nMaking sure all isolates use the latest AR Database - ${resGANNOT_srst2_filename}\n"
