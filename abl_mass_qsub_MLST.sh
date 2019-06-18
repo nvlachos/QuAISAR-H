@@ -163,11 +163,11 @@ for item in "${arr[@]}"; do
 	waiting_sample=$(echo "${item}" | cut -d'/' -f2)
 	if [[ -f "${main_dir}/complete/${waiting_sample}_mlst_complete.txt" ]] || [[ ! -s "${processed}/${project}/${waiting_sample}/Assembly/${waiting_sample}_scaffolds_trimmed.fasta" ]]; then
 		echo "${item} is complete"
-		if [[ -f "${shareScript}/mlst_${sample}.out" ]]; then
-			mv "${shareScript}/mlst_${sample}.out" ${main_dir}
+		if [[ -f "${shareScript}/mlst_${waiting_sample}.out" ]]; then
+			mv "${shareScript}/mlst_${waiting_sample}.out" ${main_dir}
 		fi
-		if [[ -f "${shareScript}/mlst_${sample}.err" ]]; then
- 			mv "${shareScript}/mlst_${sample}.err" ${main_dir}
+		if [[ -f "${shareScript}/mlst_${waiting_sample}.err" ]]; then
+ 			mv "${shareScript}/mlst_${waiting_sample}.err" ${main_dir}
 		fi
 	else
 		while :
@@ -178,11 +178,11 @@ for item in "${arr[@]}"; do
 				fi
 				if [[ -f "${main_dir}/complete/${waiting_sample}_mlst_complete.txt" ]]; then
 					echo "${item} is complete"
-					if [[ -f "${shareScript}/mlst_${sample}.out" ]]; then
-						mv "${shareScript}/mlst_${sample}.out" ${main_dir}
+					if [[ -f "${shareScript}/mlst_${waiting_sample}.out" ]]; then
+						mv "${shareScript}/mlst_${waiting_sample}.out" ${main_dir}
 					fi
-					if [[ -f "${shareScript}/mlst_${sample}.err" ]]; then
-			 			mv "${shareScript}/mlst_${sample}.err" ${main_dir}
+					if [[ -f "${shareScript}/mlst_${waiting_sample}.err" ]]; then
+			 			mv "${shareScript}/mlst_${waiting_sample}.err" ${main_dir}
 					fi
 					break
 				else
