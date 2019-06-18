@@ -57,10 +57,14 @@ elif [[ "${3}" == "plasmid_on_plasFlow" ]]; then
 		mv "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.fasta" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.fasta"
 		mv "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.gfa" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.gfa"
 	fi
-	if 	[[ -f "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.fasta" ]]; then
-		inpath="plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.fasta"
+	if 	[[ -f "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta" ]]; then
+		inpath="plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta"
 	else
-		echo "No ${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_assembly.fasta"
+		if [[ ! -d "${processed}/${2}/${1}/plasFlow" ]]; then
+			echo "plasFlow folder does not exist for ${2}/${1}, it likely is not in the Enterobacteriaceae family"
+		else
+			echo "No ${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta"
+		fi
 		exit
 	fi
 else
