@@ -110,15 +110,17 @@ while IFS= read -r var || [ -n "$var" ]; do
 	fi
 	counter=$((counter + 1))
 done < ${1}
+
+submitter=$(whoami)
 echo "Reference is ${ref} from ${ref_proj}"
-cp "${processed}/${ref_proj}/${ref}/Assembly/${ref}_scaffolds_trimmed.fasta" "${OUTDATADIR}/reference(${ref}).fasta"
+cp "${processed}/${ref_proj}/${ref}/Assembly/${ref}_scaffolds_trimmed.fasta" "${OUTDATADIR}/reference(${ref}-${submitter}).fasta"
 
 owd=$(pwd)
 cd ${OUTDATADIR}/
 
 #snvphyl --fastq-dir ./FASTQs --reference-file "./reference(${ref}).fasta" --output-dir ./output --relative-snv-abundance 0.95 --min-coverage 5 --min-mean-mapping 10 --filter-density-window 20 --filter-density-threshold 2
 #snvphyl --fastq-dir ./FASTQs --reference-file "./reference(${ref}).fasta" --output-dir --deploy-docker ./output --relative-snv-abundance 0.75 --min-coverage 10 --min-mean-mapping 30 --filter-density-threshold 2
-snvphyl --fastq-dir ./FASTQs --reference-file "./reference(${ref}).fasta" --output-dir ./output --relative-snv-abundance 0.75 --min-coverage 10 --min-mean-mapping 30 --filter-density-threshold 2 --filter-density-window 11 --workflow-id "f2db41e1fa331b3e"
+snvphyl --fastq-dir ./FASTQs --reference-file "./reference(${ref}-${submitter}).fasta" --output-dir ./output --relative-snv-abundance 0.75 --min-coverage 10 --min-mean-mapping 30 --filter-density-threshold 2 --filter-density-window 11 --workflow-id "f2db41e1fa331b3e"
 #snvphyl --fastq-dir ./FASTQs --reference-file "./reference(${ref}).fasta" --output-dir ./output --relative-snv-abundance 0.75 --min-coverage 10 --min-mean-mapping 30 --filter-density-threshold 2 --filter-density-window 11
 
 snv_all_est=$(tail -n 1 "${OUTDATADIR}/output/vcf2core.tsv")
