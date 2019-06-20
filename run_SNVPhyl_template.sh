@@ -61,6 +61,8 @@ if [[ -d "${OUTDATADIR}/output" ]]; then
 	rm -r "${OUTDATADIR}/output"
 fi
 
+centroid_filename=$(basename ${1}).centroid
+python ${shareScript}/Mash_centroid.py "${1}" "${OUTDATADIR}/${centroid_filename}"
 
 counter=0
 while IFS= read -r var || [ -n "$var" ]; do
@@ -109,7 +111,7 @@ while IFS= read -r var || [ -n "$var" ]; do
 		exit
 	fi
 	counter=$((counter + 1))
-done < ${1}
+done < ${OUTDATADIR}/${centroid_filename}
 
 submitter=$(whoami)
 echo "Reference is ${ref} from ${ref_proj}"
