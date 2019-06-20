@@ -11,3 +11,4 @@
 #module unload Python/2.7
 #module unload Python/3.5.2
 module load snvphyl-galaxy-cli/1.3.0
+module load Mash/2.0

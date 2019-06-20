@@ -62,7 +62,7 @@ if [[ -d "${OUTDATADIR}/output" ]]; then
 fi
 
 centroid_filename=$(basename ${1}).centroid
-python ${shareScript}/Mash_centroid.py "${1}" "${OUTDATADIR}/${centroid_filename}"
+python ${shareScript}/Mash_centroid.py ${1} ${OUTDATADIR}/${centroid_filename}
 
 counter=0
 while IFS= read -r var || [ -n "$var" ]; do
