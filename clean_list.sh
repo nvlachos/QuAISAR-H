@@ -46,6 +46,12 @@ while IFS= read -r line; do
 	echo "O:${line}:"
 #	line=$(sed 's/*[[:space:]]*//g')
 #	echo "N:${line}:"
+done < "${1}.original"
+
+while IFS= read -r line; do
+	echo "N:${line}:"
+#	line=$(sed 's/*[[:space:]]*//g')
+#	echo "N:${line}:"
 done < "${1}"
 
 #Script exited gracefully (unless something else inside failed)
