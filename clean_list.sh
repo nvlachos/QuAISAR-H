@@ -41,7 +41,7 @@ dos2unix ${1}.original
 #done < "${1}.original"
 
 tr -d ' \t\r\f' < ${1}.original > ${1}
-echo "\n" >> ${1}
+ex -s +'v/\S/d' -cwq ${1}
 
 while IFS= read -r line; do
 	echo "O:${line}:"
