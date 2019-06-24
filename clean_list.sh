@@ -40,7 +40,8 @@ dos2unix ${1}.original
 #	echo "N:${line}:"
 #done < "${1}.original"
 
-tr -d ' \t\n\r\f' < ${1}.original > ${1}
+tr -d ' \t\r\f' < ${1}.original > ${1}
+echo "\n" >> ${1}
 
 while IFS= read -r line; do
 	echo "O:${line}:"
