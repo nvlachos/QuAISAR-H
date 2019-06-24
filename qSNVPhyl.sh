@@ -68,5 +68,9 @@ rm ${shareScript}/run_SNVPhyl_${counter}.sh
 
 global_end_time=$(date "+%m-%d-%Y @ %Hh_%Mm_%Ss")
 #Script exited gracefully (unless something else inside failed)
+me=$(whoami)
+global_end_time=$(date "+%m-%d-%Y @ %Hh_%Mm_%Ss")
+printf "%s %s" "qSNVPhyl.sh has completed running run_SNVPhyl_${counter}.sh" "${global_end_time}" | mail -s "SNVPhyl ${counter} analysis complete" "${submitter}@cdc.gov"
+
 printf "%s %s" "qSNVPhyl.sh has completed running run_SNVPhyl_${counter}.sh " "${global_end_time}"
 exit 0

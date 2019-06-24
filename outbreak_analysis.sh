@@ -498,3 +498,7 @@ month_AR_made="${resGANNOT_date:4:2}"
 day_AR_made="${resGANNOT_date:6:2}"
 
 #echo -e "\n\tResGANNOT AR Database created on:\t${month_AR_made}/${day_AR_made}/${year_AR_made}" >> "${output_directory}/${4}_AR_plasmid_report.csv"
+
+me=$(whoami)
+global_end_time=$(date "+%m-%d-%Y @ %Hh_%Mm_%Ss")
+printf "%s %s" "outbreak_analysis.sh has completed" "${global_end_time}" | mail -s "outbreak analysis complete" "${submitter}@cdc.gov"
