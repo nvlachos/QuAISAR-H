@@ -33,9 +33,10 @@ fi
 
 cp ${1} ${1}.original
 > ${1}
-while IFS='' read -r line || [ -n "$line" ]; do
+while IFS= read -r line; do
+	echo "O:${line}"
 	line=$(sed 's/*[[:space:]]*//g')
-	echo ":${line}:"
+	echo "N:${line}:"
 done < "${1}.original"
 
 
