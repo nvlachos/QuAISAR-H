@@ -61,8 +61,8 @@ if [[ -d "${OUTDATADIR}/output" ]]; then
 	rm -r "${OUTDATADIR}/output"
 fi
 
-centroid_filename=$(basename ${1}).centroid
 ex -s +'v/\S/d' -cwq ${centroid_filename}
+centroid_filename=$(basename ${1}).centroid
 python ${shareScript}/Mash_centroid.py ${1} ${OUTDATADIR}/${centroid_filename}
 
 counter=0
