@@ -42,5 +42,11 @@ dos2unix ${1}.original
 
 tr -d ' \t\n\r\f' < ${1}.original > ${1}
 
+while IFS= read -r line; do
+	echo "O:${line}:"
+#	line=$(sed 's/*[[:space:]]*//g')
+#	echo "N:${line}:"
+done < "${1}"
+
 #Script exited gracefully (unless something else inside failed)
 exit 0
