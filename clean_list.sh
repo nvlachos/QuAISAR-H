@@ -27,7 +27,7 @@ elif [[ -z "${1}" ]] || [[ ! -f ${1} ]]; then
 	exit 1
 # Gives the user a brief usage and help section if requested with the -h option argument
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./clean_list.sh   path_to_list"
+	echo "Usage is ./clean_list.sh  path_to_list"
 	exit 0
 fi
 
@@ -35,8 +35,8 @@ cp ${1} ${1}.original
 > ${1}
 while IFS='' read -r line || [ -n "$line" ]; do
 	line=$(sed 's/^[[:space:]]*//g')
-	print(":${line}:")
-done < "${1}"
+	echo ":${line}:"
+done < "${1}.original"
 
 
 #Script exited gracefully (unless something else inside failed)
