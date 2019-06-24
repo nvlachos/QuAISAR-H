@@ -32,7 +32,8 @@ elif [[ "${1}" = "-h" ]]; then
 fi
 
 cp ${1} ${1}.original
-> ${1}
+dos2unix ${1}.original
+#> ${1}
 while IFS='' read -r line; do
 	echo "O:${line}"
 	line=$(sed 's/*[[:space:]]*//g')
