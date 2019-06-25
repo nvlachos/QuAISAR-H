@@ -31,7 +31,7 @@ do
 done
 
 #Import the config file with shortcuts and settings
-. ${shareScript}/config_${config_counter}.sh
+. ${shareScript}/config.sh
 
 #Import the module file that loads all necessary mods
 . ${mod_changers}/pipeline_mods
@@ -175,6 +175,11 @@ for ((i=1 ; i <= nopts ; i++)); do
 			postfix=1
 			shift 2
 			;;
+			# If the target files assemblies only
+			-a | --assemblies)
+				assemblies="true"
+				shift
+				;;
 		#Captures any other characters in the args
 		\?)
 			echo "ERROR: ${BOLD}$2${NORM} is not a valid argument" >&2
@@ -195,7 +200,11 @@ if [ "${INDATADIR:0:1}" != "/" ] && [ "${INDATADIR:0:1}" != "$" ]; then
 fi
 
 # Copies reads from source location to working directory and creates a list of IDs
-"${shareScript}/get_Reads_from_folder.sh" "${PROJECT}" "${INDATADIR}" "${postfix}"
+if [[ "${assemblies}" == "true" ]]; then
+	"${shareScript}/get_assemblies_from_folder.sh" "${PROJECT}" "${INDATADIR}"
+else
+	"${shareScript}/get_Reads_from_folder.sh" "${PROJECT}" "${INDATADIR}" "${postfix}"
+fi
 
 # Loops through list file to create an array of all isolates to run through pipeline
 declare -a file_list=()
@@ -228,28 +237,53 @@ outarray+=("${PROJECT} started at ${run_start_time} and saved to ${PROJECT}_on_$
 
 
 #Each file in the list is put through the full pipeline
-counter=1
-for projfile in "${file_list[@]}";
-do
-	echo "${projfile}"
-	file=$(echo "${projfile}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
-	proj=$(echo "${projfile}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
-	echo "${file} ${proj} ${BASEDIR}"
-	if [[ -f "${processed}/${proj}/${file}/${file}_pipeline_stats.txt" ]]; then
-		rm "${processed}/${proj}/${file}/${file}_pipeline_stats.txt"
-	fi
-	if [[ ! -f ${shareScript}/quaisar_${file}.sh ]]; then
-		cp ${shareScript}/quaisar_template.sh ${shareScript}/quaisar_${file}.sh
-		sed -i -e "s/quaisar_X/quaisar_${file}/g" "${shareScript}/quaisar_${file}.sh"
-		sed -i -e "s/quasX/quasp_${file}/g" "${shareScript}/quaisar_${file}.sh"
-		echo "Entering ${shareScript}/quaisar_${file}.sh" "${file}" "${proj}"
-		qsub "${shareScript}/quaisar_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
-		echo "Created and ran quaisar_${file}.sh"
-	else
-		echo "${shareScript}/quaisar_${file}.sh already exists, will resubmit"
-		qsub "${shareScript}/quaisar_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
-	fi
-done
+if [[ "${assemblies}" == "true" ]]; then
+	counter=1
+	for projfile in "${file_list[@]}";
+	do
+		echo "${projfile}"
+		file=$(echo "${projfile}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
+		proj=$(echo "${projfile}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
+		echo "${file} ${proj} ${BASEDIR}"
+		if [[ -f "${processed}/${proj}/${file}/${file}_pipeline_stats.txt" ]]; then
+			rm "${processed}/${proj}/${file}/${file}_pipeline_stats.txt"
+		fi
+		if [[ ! -f ${shareScript}/quaisar_on_assembly_${file}.sh ]]; then
+			cp ${shareScript}/quaisar_on_assembly_template.sh ${shareScript}/quaisar_on_assembly_${file}.sh
+			sed -i -e "s/qoa_X/qoa_${file}/g" "${shareScript}/quaisar_on_assembly_${file}.sh"
+			sed -i -e "s/qoaX/qoa_${file}/g" "${shareScript}/quaisar_on_assembly_${file}.sh"
+			echo "Entering ${shareScript}/quaisar_on_assembly_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
+			qsub "${shareScript}/quaisar_on_assembly_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
+			echo "Created and ran quaisar_on_assembly_${file}.sh"
+		else
+			echo "${shareScript}/quaisar_on_assembly_${file}.sh already exists, will resubmit"
+			qsub "${shareScript}/quaisar_on_assembly_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
+		fi
+	done
+else
+	counter=1
+	for projfile in "${file_list[@]}";
+	do
+		echo "${projfile}"
+		file=$(echo "${projfile}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
+		proj=$(echo "${projfile}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
+		echo "${file} ${proj} ${BASEDIR}"
+		if [[ -f "${processed}/${proj}/${file}/${file}_pipeline_stats.txt" ]]; then
+			rm "${processed}/${proj}/${file}/${file}_pipeline_stats.txt"
+		fi
+		if [[ ! -f ${shareScript}/quaisar_${file}.sh ]]; then
+			cp ${shareScript}/quaisar_template.sh ${shareScript}/quaisar_${file}.sh
+			sed -i -e "s/quaisar_X/quaisar_${file}/g" "${shareScript}/quaisar_${file}.sh"
+			sed -i -e "s/quasX/quasp_${file}/g" "${shareScript}/quaisar_${file}.sh"
+			echo "Entering ${shareScript}/quaisar_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
+			qsub "${shareScript}/quaisar_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
+			echo "Created and ran quaisar_${file}.sh"
+		else
+			echo "${shareScript}/quaisar_${file}.sh already exists, will resubmit"
+			qsub "${shareScript}/quaisar_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
+		fi
+	done
+fi
 
 # Hold for completion of all submited single quaisars
 for run_sample in "${file_list[@]}"; do
