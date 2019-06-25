@@ -164,13 +164,13 @@ while [ ${counter} -lt ${arr_size} ] ; do
 					echo -e "\"${shareScript}/run_srst2_on_singleDB.sh\" \"${sample}\" \"${project}\"" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 					echo -e "echo \"$(date)\" > \"${main_dir}/complete/${sample}_srst2AR_complete.txt\"" >> "${main_dir}/srst2AR_${sample}_${start_time}.sh"
 					cd "${main_dir}"
-					if [[ "${counter}" -lt "${last_index}" ]]; then
+					#if [[ "${counter}" -lt "${last_index}" ]]; then
 						qsub "${main_dir}/srst2AR_${sample}_${start_time}.sh"
-					else
-						qsub -sync y "${main_dir}/srst2AR_${sample}_${start_time}.sh"
-					fi
-					mv "${shareScript}/srst2AR_${sample}.err" ${main_dir}
-					mv "${shareScript}/srst2AR_${sample}.out" ${main_dir}
+					#else
+					#	qsub -sync y "${main_dir}/srst2AR_${sample}_${start_time}.sh"
+					#fi
+					#mv "${shareScript}/srst2AR_${sample}.err" ${main_dir}
+					#mv "${shareScript}/srst2AR_${sample}.out" ${main_dir}
 				# Old data existed, skipping
 				else
 					echo -e $(date) > "${main_dir}/complete/${sample}_srst2AR_complete.txt"

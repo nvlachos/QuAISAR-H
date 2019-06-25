@@ -58,8 +58,9 @@ do
 
 		mkdir -p ${OUTDATADIR}/${sample}/Assembly
 		cp ${file} ${OUTDATADIR}/${sample}/Assembly/${sample}.fasta
+		cp ${OUTDATADIR}/${sample}/Assembly/${sample}.fasta ${OUTDATADIR}/${sample}/Assembly/scaffolds.fasta
 		echo -e "${1}/${sample}" >> "${OUTDATADIR}/${1}_list.txt"
-		python3 ${shareScript}/removeShortContigs.py -i ${OUTDATADIR}/${sample}/Assembly/${sample}.fasta -t 500 -s normal_SPAdes
+		#python3 ${shareScript}/removeShortContigs.py -i ${OUTDATADIR}/${sample}/Assembly/${sample}.fasta -t 500 -s normal_SPAdes
 	else
 		echo "${file} is not an fna or fasta file, not acting on it"
 	fi
