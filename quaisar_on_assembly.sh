@@ -11,7 +11,7 @@
 # Partial quaisar pipeline that runs all the tools starting AFTER assembly that have been designated as necessary (and some others that are typically run also)
 #
 # Usage ./quaisar_on_assembly.sh isolate_name project_name path_to_config_file_to_use [output_directory_to_put_project/isolate_name]
-#  project/isolate_name must already have a populated FASTQs folder to work with
+#  project/isolate_name must already have a populated Assembly folder with sample_name.fasta present (use get_assemblies from fodler to prep if there are lots)
 #
 
 # Checks for proper argumentation
@@ -19,7 +19,7 @@ if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./quaisar_template.sh  sample_name miseq_run_id(or_project_name) config_file_to_use optional_alternate_directory"
+	echo "Usage is ./quaisar_on_assembly.sh  sample_name miseq_run_id(or_project_name) config_file_to_use optional_alternate_directory"
 	echo "Output by default is processed to processed/miseq_run_id/sample_name"
 	exit 0
 elif [[ -z "{2}" ]]; then
