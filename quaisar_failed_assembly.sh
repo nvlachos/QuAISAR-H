@@ -61,19 +61,25 @@ echo "${project}/${sample_name} started at ${global_time}"
 # unzipping paired reads for SPAdes
 if [[ ! -f ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R1_001.paired.fq ]]; then
 		if [[ -f ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R1_001.paired.fq.gz ]]; then
+			echo "unzipping paired1"
 			gunzip -k ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R1_001.paired.fq.gz
 		else
 			echo "No R1 trimmed paired read, can NOT continue...exiting)"
 			exit 3
 		fi
+else
+	echo "paired1 trimmed exists"
 fi
 if [[ ! -f ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R2_001.paired.fq ]]; then
 		if [[ -f ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R2_001.paired.fq.gz ]]; then
+			echo "Unzipping paired2"
 			gunzip -k ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R2_001.paired.fq.gz
 		else
 			echo "No R2 trimmed paired read, can NOT continue...exiting)"
 			exit 3
 		fi
+else
+		echo "paired2 trimmed exists"
 fi
 
 echo "Starting processing of ${project}/${sample_name}"
