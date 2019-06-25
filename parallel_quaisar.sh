@@ -238,7 +238,6 @@ outarray+=("${PROJECT} started at ${run_start_time} and saved to ${PROJECT}_on_$
 
 #Each file in the list is put through the full pipeline
 if [[ "${assemblies}" == "true" ]]; then
-	counter=1
 	for projfile in "${file_list[@]}";
 	do
 		echo "${projfile}"
@@ -261,7 +260,6 @@ if [[ "${assemblies}" == "true" ]]; then
 		fi
 	done
 else
-	counter=1
 	for projfile in "${file_list[@]}";
 	do
 		echo "${projfile}"
