@@ -61,7 +61,7 @@ elif [ -f "${processed}/${2}/${1}/trimmed/${1}_R1_001.paired.fq.gz" ]; then
 	fi
 elif [ -f "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq.gz" ]; then
 	echo "3"
-	gunzip -k "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq.gz"
+	gunzip < "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq.gz" > "${processed}/${2}/${1}/trimmed/${1}_R2_001.paired.fq"
 else
 	echo "4"
 	if [[ -f "${processed}/${2}/${1}/FASTQs/${1}_R1_001.fastq.gz" ]] && [[ ! -f "${processed}/${2}/${1}/FASTQs/${1}_R1_001.fastq" ]]; then
