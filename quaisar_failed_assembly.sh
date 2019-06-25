@@ -62,7 +62,7 @@ echo "${project}/${sample_name} started at ${global_time}"
 if [[ ! -f ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R1_001.paired.fq ]]; then
 		if [[ -f ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R1_001.paired.fq.gz ]]; then
 			echo "unzipping paired1"
-			gunzip -k ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R1_001.paired.fq.gz
+			gunzip < ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R1_001.paired.fq.gz > ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R1_001.paired.fq.gz
 		else
 			echo "No R1 trimmed paired read, can NOT continue...exiting)"
 			exit 3
@@ -73,7 +73,7 @@ fi
 if [[ ! -f ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R2_001.paired.fq ]]; then
 		if [[ -f ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R2_001.paired.fq.gz ]]; then
 			echo "Unzipping paired2"
-			gunzip -k ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R2_001.paired.fq.gz
+			gunzip < ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R2_001.paired.fq.gz ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R2_001.paired.fq.gz
 		else
 			echo "No R2 trimmed paired read, can NOT continue...exiting)"
 			exit 3
