@@ -7,6 +7,12 @@
 #$ -cwd
 #$ -q short.q
 
+#Import the config file with shortcuts and settings
+if [[ ! -f "./config.sh" ]]; then
+	cp config_template.sh config.sh
+fi
+. ./config.sh
+
 #
 # Accessory to original quaisar that only completes from assembly on for any failed assembly isolates
 #
