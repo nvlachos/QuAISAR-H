@@ -14,7 +14,9 @@ fi
 
 #Import list of mods used during pipeline analysis (or downstream)
 module purge
-. "${mod_changers}/load_SNVPhyl.sh"
+#. "${mod_changers}/load_SNVPhyl.sh"
+module load snvphyl-galaxy-cli/1.3.0
+module load Mash/2.0
 . ${mod_changers}/list_modules.sh
 
 #
