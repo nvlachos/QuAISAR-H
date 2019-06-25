@@ -61,7 +61,7 @@ if [[ -d "${OUTDATADIR}/output" ]]; then
 	rm -r "${OUTDATADIR}/output"
 fi
 
-${shareScript}/clean_list.sh ${centroid_filename}
+${shareScript}/clean_list.sh ${1}
 centroid_filename=$(basename ${1}).centroid
 python ${shareScript}/Mash_centroid.py ${1} ${OUTDATADIR}/${centroid_filename}
 
