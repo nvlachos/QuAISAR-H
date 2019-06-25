@@ -16,7 +16,8 @@ fi
 module purge
 #. "${mod_changers}/load_SNVPhyl.sh"
 module load snvphyl-galaxy-cli/1.3.0
-module load Python/3.5.2
+module unload Python/2.7.15
+module load Python/2.7.13
 module load Mash/2.0
 . ${mod_changers}/list_modules.sh
 
