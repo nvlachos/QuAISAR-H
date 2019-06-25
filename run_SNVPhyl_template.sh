@@ -64,7 +64,7 @@ if [[ -d "${OUTDATADIR}/output" ]]; then
 	rm -r "${OUTDATADIR}/output"
 fi
 
-$(python3 -V)
+echo $(python3 -V)
 
 ${shareScript}/clean_list.sh ${1}
 centroid_filename=$(basename ${1}).centroid
