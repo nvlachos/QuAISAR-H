@@ -38,12 +38,12 @@ fi
 totaltime=0
 start_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 
-# Set arguments to filename(sample name) project (miseq run id) and outdatadir(${processed}/project/filename)
-filename="${1}"
+# Set arguments to sample_name(sample name) project (miseq run id) and outdatadir(${processed}/project/sample_name)
+sample_name="${1}"
 project="${2}"
-OUTDATADIR="${processed}/${2}"
+OUTDATADIR="${processed}/${project}"
 if [[ ! -z "${4}" ]]; then
-	OUTDATADIR="${4}/${2}"
+	OUTDATADIR="${4}/${project}"
 fi
 
 # Remove old run stats as the presence of the file indicates run completion
@@ -52,13 +52,31 @@ if [[ -f "${processed}/${proj}/${file}/${file}_pipeline_stats.txt" ]]; then
 fi
 
 # Create an empty time_summary_redo file that tracks clock time of tools used
-touch "${OUTDATADIR}/${filename}/${filename}_time_summary_redo.txt"
-time_summary_redo=${OUTDATADIR}/${filename}/${filename}_time_summary_redo.txt
+touch "${OUTDATADIR}/${sample_name}/${sample_name}_time_summary_redo.txt"
+time_summary_redo=${OUTDATADIR}/${sample_name}/${sample_name}_time_summary_redo.txt
 
-echo "Time summary for ${project}/${filename}: Started ${global_time}" >> "${time_summary_redo}"
-echo "${project}/${filename} started at ${global_time}"
+echo "Time summary for ${project}/${sample_name}: Started ${global_time}" >> "${time_summary_redo}"
+echo "${project}/${sample_name} started at ${global_time}"
 
-echo "Starting processing of ${project}/${filename}"
+# unzipping paired reads for SPAdes
+if [[ ! -f ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R1_001.paired.fq ]]; then
+		if [[ -f ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R1_001.paired.fq.gz ]]; then
+			gunzip -k ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R1_001.paired.fq.gz
+		else
+			echo "No R1 trimmed paired read, can NOT continue...exiting)"
+			exit 3
+		fi
+fi
+if [[ ! -f ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R2_001.paired.fq ]]; then
+		if [[ -f ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R2_001.paired.fq.gz ]]; then
+			gunzip -k ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R2_001.paired.fq.gz
+		else
+			echo "No R2 trimmed paired read, can NOT continue...exiting)"
+			exit 3
+		fi
+fi
+
+echo "Starting processing of ${project}/${sample_name}"
 ######  Assembling Using SPAdes  ######
 echo "----- Assembling Using SPAdes -----"
 # Get start time of SPAdes
@@ -67,11 +85,11 @@ start=$SECONDS
 for i in 1 2 3
 do
 	# If assembly exists already and this is the first attempt (then the previous run will be used) [should not happen anymore as old runs are now renamed]
-	if [ -s "${OUTDATADIR}/${filename}/Assembly/scaffolds.fasta" ]; then
+	if [ -s "${OUTDATADIR}/${sample_name}/Assembly/scaffolds.fasta" ]; then
 		echo "Previous assembly already exists, using it (delete/rename the assembly folder at ${OUTDATADIR}/ if you'd like to try to reassemble"
 	# Run normal mode if no assembly file was found
 	else
-		"${shareScript}/run_SPAdes.sh" "${filename}" normal "${project}"
+		"${shareScript}/run_SPAdes.sh" "${sample_name}" normal "${project}"
 	fi
 	# Removes any core dump files (Occured often during testing and tweaking of memory parameter
 	if [ -n "$(find "${shareScript}" -maxdepth 1 -name 'core.*' -print -quit)" ]; then
@@ -80,7 +98,7 @@ do
 	fi
 done
 # Returns if all 3 assembly attempts fail
-if [[ -f "${OUTDATADIR}/${filename}/Assembly/scaffolds.fasta" ]] && [[ -s "${OUTDATADIR}/${filename}/Assembly/scaffolds.fasta" ]]; then
+if [[ -f "${OUTDATADIR}/${sample_name}/Assembly/scaffolds.fasta" ]] && [[ -s "${OUTDATADIR}/${sample_name}/Assembly/scaffolds.fasta" ]]; then
 	echo "Assembly completed and created a non-empty scaffolds file"
 else
 	echo "Assembly FAILED 3 times, continuing to next sample..." >&2
@@ -95,17 +113,17 @@ totaltime=$((totaltime + timeSPAdes))
 
 ### Removing Short Contigs  ###
 echo "----- Removing Short Contigs -----"
-python "${shareScript}/removeShortContigs.py" -i "${OUTDATADIR}/${filename}/Assembly/scaffolds.fasta" -t 500 -s "normal_SPAdes"
-mv "${OUTDATADIR}/${filename}/Assembly/scaffolds.fasta.TRIMMED.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta"
+python "${shareScript}/removeShortContigs.py" -i "${OUTDATADIR}/${sample_name}/Assembly/scaffolds.fasta" -t 500 -s "normal_SPAdes"
+mv "${OUTDATADIR}/${sample_name}/Assembly/scaffolds.fasta.TRIMMED.fasta" "${OUTDATADIR}/${sample_name}/Assembly/${sample_name}_scaffolds_trimmed.fasta"
 
 ### Removing Short Contigs  ###
 echo "----- Removing Short Contigs -----"
-python "${shareScript}/removeShortContigs.py" -i "${OUTDATADIR}/${filename}/Assembly/contigs.fasta" -t 500 -s "normal_SPAdes"
-mv "${OUTDATADIR}/${filename}/Assembly/contigs.fasta.TRIMMED.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_contigs_trimmed.fasta"
+python "${shareScript}/removeShortContigs.py" -i "${OUTDATADIR}/${sample_name}/Assembly/contigs.fasta" -t 500 -s "normal_SPAdes"
+mv "${OUTDATADIR}/${sample_name}/Assembly/contigs.fasta.TRIMMED.fasta" "${OUTDATADIR}/${sample_name}/Assembly/${sample_name}_contigs_trimmed.fasta"
 
 
 # Checks to see that the trimming and renaming worked properly, returns if unsuccessful
-if [ ! -s "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta" ]; then
+if [ ! -s "${OUTDATADIR}/${sample_name}/Assembly/${sample_name}_scaffolds_trimmed.fasta" ]; then
 	echo "Trimmed contigs file does not exist continuing to next sample">&2
 	return 1
 fi
@@ -115,7 +133,7 @@ echo "----- Running Kraken on Assembly -----"
 # Get start time of kraken on assembly
 start=$SECONDS
 # Run kraken on assembly
-"${shareScript}/run_kraken.sh" "${filename}" post assembled "${project}"
+"${shareScript}/run_kraken.sh" "${sample_name}" post assembled "${project}"
 # Get end time of kraken on assembly and calculate run time and append to time summary (and sum to total time used)
 end=$SECONDS
 timeKrakAss=$((end - start))
@@ -125,18 +143,18 @@ totaltime=$((totaltime + timeKrakAss))
 # Get ID fom 16s
 echo "----- Identifying via 16s blast -----"
 start=$SECONDS
-"${shareScript}/16s_blast.sh" "-n" "${filename}" "-p" "${project}"
+"${shareScript}/16s_blast.sh" "-n" "${sample_name}" "-p" "${project}"
 end=$SECONDS
 time16s=$((end - start))
 echo "16S - ${time16s} seconds" >> "${time_summary_redo}"
 totaltime=$((totaltime + time16s))
 
 # Get taxonomy from currently available files (Only ANI, has not been run...yet, will change after discussions)
-"${shareScript}/determine_taxID.sh" "${filename}" "${project}"
+"${shareScript}/determine_taxID.sh" "${sample_name}" "${project}"
 # Capture the anticipated taxonomy of the sample using kraken on assembly output
 echo "----- Extracting Taxonomy from Taxon Summary -----"
 # Checks to see if the kraken on assembly completed successfully
-if [ -s "${OUTDATADIR}/${filename}/${filename}.tax" ]; then
+if [ -s "${OUTDATADIR}/${sample_name}/${sample_name}.tax" ]; then
 	# Read each line of the kraken summary file and pull out each level  taxonomic unit and store for use later in busco and ANI
 	while IFS= read -r line  || [ -n "$line" ]; do
 		# Grab first letter of line (indicating taxonomic level)
@@ -167,7 +185,7 @@ if [ -s "${OUTDATADIR}/${filename}/${filename}.tax" ]; then
 		then
 			domain=$(echo "${line}" | awk -F ' ' '{print $2}')
 		fi
-	done < "${OUTDATADIR}/${filename}/${filename}.tax"
+	done < "${OUTDATADIR}/${sample_name}/${sample_name}.tax"
 # Print out taxonomy for confirmation/fun
 echo "Taxonomy - ${domain} ${kingdom} ${phylum} ${class} ${order} ${family} ${genus} ${species}"
 # If no kraken summary file was found
@@ -180,7 +198,7 @@ echo "----- Running quality checks on Assembly -----"
 # Get start time of QC assembly check
 start=$SECONDS
 # Run qc assembly check
-"${shareScript}/run_Assembly_Quality_Check.sh" "${filename}" "${project}"
+"${shareScript}/run_Assembly_Quality_Check.sh" "${sample_name}" "${project}"
 # Get end time of qc quality check and calculate run time and append to time summary (and sum to total time used)
 end=$SECONDS
 timeQCcheck=$((end - start))
@@ -192,7 +210,7 @@ echo "----- Running Prokka on Assembly -----"
 # Get start time for prokka
 start=$SECONDS
 # Run prokka
-"${shareScript}/run_prokka.sh" "${filename}" "${project}"
+"${shareScript}/run_prokka.sh" "${sample_name}" "${project}"
 # Get end time of prokka and calculate run time and append to time summary (and sum to total time used)
 end=$SECONDS
 timeProk=$((end - start))
@@ -200,12 +218,12 @@ echo "Identifying Genes (Prokka) - ${timeProk} seconds" >> "${time_summary_redo}
 totaltime=$((totaltime + timeProk))
 
 # Rename contigs to something helpful (Had to wait until after prokka runs due to the strict naming requirements
-mv "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed_original.fasta"
-python3 "${shareScript}/fasta_headers.py" -i "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed_original.fasta" -o "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta"
+mv "${OUTDATADIR}/${sample_name}/Assembly/${sample_name}_scaffolds_trimmed.fasta" "${OUTDATADIR}/${sample_name}/Assembly/${sample_name}_scaffolds_trimmed_original.fasta"
+python3 "${shareScript}/fasta_headers.py" -i "${OUTDATADIR}/${sample_name}/Assembly/${sample_name}_scaffolds_trimmed_original.fasta" -o "${OUTDATADIR}/${sample_name}/Assembly/${sample_name}_scaffolds_trimmed.fasta"
 
 # Rename contigs to something helpful (Had to wait until after prokka runs due to the strict naming requirements
-mv "${OUTDATADIR}/${filename}/Assembly/${filename}_contigs_trimmed.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_contigs_trimmed_original.fasta"
-python3 "${shareScript}/fasta_headers.py" -i "${OUTDATADIR}/${filename}/Assembly/${filename}_contigs_trimmed_original.fasta" -o "${OUTDATADIR}/${filename}/Assembly/${filename}_contigs_trimmed.fasta"
+mv "${OUTDATADIR}/${sample_name}/Assembly/${sample_name}_contigs_trimmed.fasta" "${OUTDATADIR}/${sample_name}/Assembly/${sample_name}_contigs_trimmed_original.fasta"
+python3 "${shareScript}/fasta_headers.py" -i "${OUTDATADIR}/${sample_name}/Assembly/${sample_name}_contigs_trimmed_original.fasta" -o "${OUTDATADIR}/${sample_name}/Assembly/${sample_name}_contigs_trimmed.fasta"
 
 ### Average Nucleotide Identity ###
 echo "----- Running ANI for Species confirmation -----"
@@ -217,8 +235,8 @@ start=$SECONDS
 if [[ "${genus}" = "Peptoclostridium" ]] || [[ "${genus}" = "Clostridioides" ]]; then
 	genus="Clostridium"
 fi
-"${shareScript}/run_ANI.sh" "${filename}" "${genus}" "${species}" "${project}"
-#"${shareScript}/run_ANI.sh" "${filename}" "All" "All" "${project}"
+"${shareScript}/run_ANI.sh" "${sample_name}" "${genus}" "${species}" "${project}"
+#"${shareScript}/run_ANI.sh" "${sample_name}" "All" "All" "${project}"
 # Get end time of ANI and calculate run time and append to time summary (and sum to total time used
 end=$SECONDS
 timeANI=$((end - start))
@@ -226,13 +244,13 @@ echo "autoANI - ${timeANI} seconds" >> "${time_summary_redo}"
 totaltime=$((totaltime + timeANI))
 
 # Get taxonomy from currently available files (Only ANI, has not been run...yet, will change after discussions)
-"${shareScript}/determine_taxID.sh" "${filename}" "${project}"
-"${OUTDATADIR}/${filename}/${filename}.tax"
+"${shareScript}/determine_taxID.sh" "${sample_name}" "${project}"
+"${OUTDATADIR}/${sample_name}/${sample_name}.tax"
 
 ### BUSCO on prokka output ###
 echo "----- Running BUSCO on Assembly -----"
 # Check to see if prokka finished successfully
-if [ -s "${OUTDATADIR}/${filename}/prokka/${filename}_PROKKA.gbf" ] || [ -s "${OUTDATADIR}/${filename}/prokka/${filename}_PROKKA.gff" ]; then
+if [ -s "${OUTDATADIR}/${sample_name}/prokka/${sample_name}_PROKKA.gbf" ] || [ -s "${OUTDATADIR}/${sample_name}/prokka/${sample_name}_PROKKA.gff" ]; then
 	# Get start time of busco
 	start=$SECONDS
 	# Set default busco database as bacteria in event that we dont have a database match for sample lineage
@@ -251,12 +269,12 @@ if [ -s "${OUTDATADIR}/${filename}/prokka/${filename}_PROKKA.gbf" ] || [ -s "${O
 	# Report an unknown sample to the maintenance file to look into
 	if [[ "${busco_found}" -eq 0 ]]; then
 		global_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
-		echo "BUSCO: ${domain} ${kingdom} ${phylum} ${class} ${order} ${family} ${genus} ${species} - Found as ${project}/${filename} on ${global_time}" >> "${shareScript}/maintenance_To_Do.txt"
+		echo "BUSCO: ${domain} ${kingdom} ${phylum} ${class} ${order} ${family} ${genus} ${species} - Found as ${project}/${sample_name} on ${global_time}" >> "${shareScript}/maintenance_To_Do.txt"
 	fi
 	# Show which database entry will be used for comparison
 	echo "buscoDB:${buscoDB}"
 	# Run busco
-	"${shareScript}/do_busco.sh" "${filename}" "${buscoDB}" "${project}"
+	"${shareScript}/do_busco.sh" "${sample_name}" "${buscoDB}" "${project}"
 	# Get end time of busco and calculate run time and append to time summary (and sum to total time used
 	end=$SECONDS
 	timeBUSCO=$((end - start))
@@ -274,11 +292,11 @@ echo "----- Running c-SSTAR for AR Gene identification -----"
 start=$SECONDS
 
 # Run csstar in default mode from config.sh
-"${shareScript}/run_c-sstar_on_single.sh" "${filename}" "${csstar_gapping}" "${csstar_identity}" "${project}"
-"${shareScript}/run_c-sstar_on_single_alternate_DB.sh" "${filename}" "${csstar_gapping}" "${csstar_identity}" "${project}" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
+"${shareScript}/run_c-sstar_on_single.sh" "${sample_name}" "${csstar_gapping}" "${csstar_identity}" "${project}"
+"${shareScript}/run_c-sstar_on_single_alternate_DB.sh" "${sample_name}" "${csstar_gapping}" "${csstar_identity}" "${project}" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
 # Should the parameters be different when checking on plasmids specifically
-"${shareScript}/run_c-sstar_on_single.sh" "${filename}" "${csstar_gapping}" "${csstar_plasmid_identity}" "${project}" "--plasmid"
-"${shareScript}/run_c-sstar_on_single_alternate_DB.sh" "${filename}" "${csstar_gapping}" "${csstar_plasmid_identity}" "${project}" "--plasmid" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
+"${shareScript}/run_c-sstar_on_single.sh" "${sample_name}" "${csstar_gapping}" "${csstar_plasmid_identity}" "${project}" "--plasmid"
+"${shareScript}/run_c-sstar_on_single_alternate_DB.sh" "${sample_name}" "${csstar_gapping}" "${csstar_plasmid_identity}" "${project}" "--plasmid" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
 
 # Get end time of csstar and calculate run time and append to time summary (and sum to total time used
 end=$SECONDS
@@ -289,35 +307,35 @@ totaltime=$((totaltime + timestar))
 # Get MLST profile
 echo "----- Running MLST -----"
 start=$SECONDS
-"${shareScript}/run_MLST.sh" "${filename}" "${project}"
-python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}.mlst" -t standard
+"${shareScript}/run_MLST.sh" "${sample_name}" "${project}"
+python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${sample_name}/MLST/${sample_name}.mlst" -t standard
 if [[ "${genus}_${species}" = "Acinetobacter_baumannii" ]]; then
-	"${shareScript}/run_MLST.sh" "${filename}" "${project}" "-f" "abaumannii"
-	python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_abaumannii.mlst" -t standard
+	"${shareScript}/run_MLST.sh" "${sample_name}" "${project}" "-f" "abaumannii"
+	python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${sample_name}/MLST/${sample_name}_abaumannii.mlst" -t standard
 	#Check for "-", unidentified type
-	type1=$(tail -n1 ${processed}/${project}/${filename}/MLST/${filename}_abaumannii.mlst | cut -d' ' -f3)
-	type2=$(head -n1 ${processed}/${project}/${filename}/MLST/${filename}.mlst | cut -d' ' -f3)
+	type1=$(tail -n1 ${processed}/${project}/${sample_name}/MLST/${sample_name}_abaumannii.mlst | cut -d' ' -f3)
+	type2=$(head -n1 ${processed}/${project}/${sample_name}/MLST/${sample_name}.mlst | cut -d' ' -f3)
 	if [[ "${type1}" = "-" ]]; then
-		"${shareScript}/run_srst2_mlst.sh" "${filename}" "${project}" "Acinetobacter" "baumannii#1"
-		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_srst2_acinetobacter_baumannii-baumannii#1.mlst" -t srst2
+		"${shareScript}/run_srst2_mlst.sh" "${sample_name}" "${project}" "Acinetobacter" "baumannii#1"
+		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${sample_name}/MLST/${sample_name}_srst2_acinetobacter_baumannii-baumannii#1.mlst" -t srst2
 	fi
 	if [[ "${type2}" = "-" ]]; then
-		"${shareScript}/run_srst2_mlst.sh" "${filename}" "${project}" "Acinetobacter" "baumannii#2"
-		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_srst2_acinetobacter_baumannii-baumannii#2.mlst" -t srst2
+		"${shareScript}/run_srst2_mlst.sh" "${sample_name}" "${project}" "Acinetobacter" "baumannii#2"
+		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${sample_name}/MLST/${sample_name}_srst2_acinetobacter_baumannii-baumannii#2.mlst" -t srst2
 	fi
 elif [[ "${genus}_${species}" = "Escherichia_coli" ]]; then
 	# Verify that ecoli_2 is default and change accordingly
-	"${shareScript}/run_MLST.sh" "${filename}" "${project}" "-f" "ecoli_2"
-	python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_ecoli_2.mlst" -t standard
-	type2=$(tail -n1 ${processed}/${project}/${filename}/MLST/${filename}_ecoli_2.mlst | cut -d' ' -f3)
-	type1=$(head -n1 ${processed}/${project}/${filename}/MLST/${filename}.mlst | cut -d' ' -f3)
+	"${shareScript}/run_MLST.sh" "${sample_name}" "${project}" "-f" "ecoli_2"
+	python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${sample_name}/MLST/${sample_name}_ecoli_2.mlst" -t standard
+	type2=$(tail -n1 ${processed}/${project}/${sample_name}/MLST/${sample_name}_ecoli_2.mlst | cut -d' ' -f3)
+	type1=$(head -n1 ${processed}/${project}/${sample_name}/MLST/${sample_name}.mlst | cut -d' ' -f3)
 	if [[ "${type1}" = "-" ]]; then
-		"${shareScript}/run_srst2_mlst.sh" "${filename}" "${project}" "Escherichia" "coli#1"
-		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_srst2_escherichia_coli-coli#1.mlst" -t srst2
+		"${shareScript}/run_srst2_mlst.sh" "${sample_name}" "${project}" "Escherichia" "coli#1"
+		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${sample_name}/MLST/${sample_name}_srst2_escherichia_coli-coli#1.mlst" -t srst2
 	fi
 	if [[ "${type2}" = "-" ]]; then
-		"${shareScript}/run_srst2_mlst.sh" "${filename}" "${project}" "Escherichia" "coli#2"
-		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_srst2_escherichia_coli-coli#2.mlst" -t srst2
+		"${shareScript}/run_srst2_mlst.sh" "${sample_name}" "${project}" "Escherichia" "coli#2"
+		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${sample_name}/MLST/${sample_name}_srst2_escherichia_coli-coli#2.mlst" -t srst2
 	fi
 fi
 end=$SECONDS
@@ -328,21 +346,21 @@ totaltime=$((totaltime + timeMLST))
 # Try to find any plasmids
 echo "----- Identifying plasmids using plasmidFinder -----"
 start=$SECONDS
-"${shareScript}/run_plasmidFinder.sh" "${filename}" "${project}" "plasmid"
+"${shareScript}/run_plasmidFinder.sh" "${sample_name}" "${project}" "plasmid"
 end=$SECONDS
 timeplasfin=$((end - start))
 echo "plasmidFinder - ${timeplasfin} seconds" >> "${time_summary_redo}"
 totaltime=$((totaltime + timeplasfin))
 
-"${shareScript}/sample_cleaner.sh" "${filename}" "${project}"
-"${shareScript}/validate_piperun.sh" "${filename}" "${project}" > "${processed}/${project}/${filename}/${filename}_pipeline_stats.txt"
+"${shareScript}/sample_cleaner.sh" "${sample_name}" "${project}"
+"${shareScript}/validate_piperun.sh" "${sample_name}" "${project}" > "${processed}/${project}/${sample_name}/${sample_name}_pipeline_stats.txt"
 
 # Run plasFlow if isolate is from the Enterobacteriaceae family  ##### When should we check if this will be expanded?
 if [[ "${family}" == "Enterobacteriaceae" ]]; then
 	start=$SECONDS
-	${shareScript}/run_plasFlow.sh "${filename}" "${project}"
-	${shareScript}/run_c-sstar_on_single_plasFlow.sh "${filename}" g o "${project}" -p
-	${shareScript}/run_plasmidFinder.sh "${filename}" "${project}" plasmid_on_plasFlow
+	${shareScript}/run_plasFlow.sh "${sample_name}" "${project}"
+	${shareScript}/run_c-sstar_on_single_plasFlow.sh "${sample_name}" g o "${project}" -p
+	${shareScript}/run_plasmidFinder.sh "${sample_name}" "${project}" plasmid_on_plasFlow
 	end=$SECONDS
 	timeplasflow=$((end - start))
 	echo "plasmidFlow - ${timeplasflow} seconds" >> "${time_summary_redo}"
@@ -351,7 +369,7 @@ fi
 
 # Extra dump cleanse in case anything else failed
 	if [ -n "$(find "${shareScript}" -maxdepth 1 -name 'core.*' -print -quit)" ]; then
-		echo "Found core dump files at end of processing ${filename} and attempting to delete"
+		echo "Found core dump files at end of processing ${sample_name} and attempting to delete"
 		find "${shareScript}" -maxdepth 1 -name 'core.*' -exec rm -f {} \;
 	fi
 
@@ -364,7 +382,7 @@ echo "Completed at ${global_end_time}"
 # Designate end of this sample #
 echo "
 
-				End of sample ${filename}
+				End of sample ${sample_name}
 				completed at ${global_end_time}
 
 "
