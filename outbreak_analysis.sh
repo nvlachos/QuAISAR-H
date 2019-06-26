@@ -260,6 +260,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 	if [[ -f "${OUTDATADIR}/MLST/${sample_name}.mlst" ]]; then
 		mlst=$(head -n 1 ${OUTDATADIR}/MLST/${sample_name}.mlst)
 		mlst=$(echo "${mlst}" | cut -d'	' -f3)
+		mlst="ST${mlst}"
 	else
 		mlst="N/A"
 	fi
@@ -276,6 +277,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 	if [[ ! -z "${alt_mlst_file}" ]]; then
 		alt_mlst=$(tail -n 1 "${alt_mlst_file}")
 		alt_mlst=$(echo "${alt_mlst}" | cut -d'	' -f3)
+		alt_mlst="ST${alt_mlst}"
 	else
 		alt_mlst="N/A"
 	fi
