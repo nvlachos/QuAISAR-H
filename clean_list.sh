@@ -31,7 +31,7 @@ elif [[ "${1}" = "-h" ]]; then
 	exit 0
 fi
 
-cp ${1} ${1}.original
+cp -f ${1} ${1}.original
 dos2unix ${1}.original
 #> ${1}
 #while IFS= read -r line; do

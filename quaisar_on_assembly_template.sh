@@ -2,7 +2,7 @@
 
 #$ -o qoa_X.out
 #$ -e qao_X.err
-#$ -N qaosX
+#$ -N qaoX
 #$ -pe smp 10
 #$ -cwd
 #$ -q short.q
