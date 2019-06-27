@@ -13,6 +13,8 @@ fi
 . ./config.sh
 . ${mod_changers}/pipeline_mods
 
+ml Python3/3.5.2 pyani/0.2.7 mashtree/0.29
+
 #
 # Script to calculate the All vs. All average nucleotide identity of a folder of fasta files
 #

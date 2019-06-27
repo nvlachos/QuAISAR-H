@@ -10,6 +10,8 @@
 . ./config.sh
 ${shareScript}/module_changers/list_modules.sh
 
+ml Python3/3.5.2 pyani/0.2.7 mashtree/0.29
+
 #
 # Script to calculate the average nucleotide identity of a sample to a sketch file
 # The most similar match is identified and provided for confirmation

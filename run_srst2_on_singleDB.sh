@@ -18,7 +18,7 @@ fi
 #ml purge
 ml Python2/2.7.12 samtools/0.1.18 perl/5.16.1-MT srst2 bowtie2/2.2.4
 
-ml
+#ml
 
 #
 # Usage ./run_srst2.sh   sample_name   run_ID
