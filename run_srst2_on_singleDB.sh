@@ -13,7 +13,7 @@ fi
 . ./config.sh
 #Import the module file that loads all necessary mods
 . "${mod_changers}/prep_srst2.sh"
-ml Python2/2.7.13
+ml -Python/2.7.15 Python2/2.7.13
 ml bowtie2/2.2.4
 
 ml
