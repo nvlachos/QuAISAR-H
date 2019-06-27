@@ -13,16 +13,15 @@ fi
 . ./config.sh
 #Import the module file that loads all necessary mods
 . "${mod_changers}/prep_srst2.sh"
-ml -Python2/2.7.15 Python2/2.7.11
-ml bowtie2/2.2.4
+#ml -Python2/2.7.15 Python2/2.7.11
+#ml bowtie2/2.2.4
 
-ml
 #
 # Usage ./run_srst2.sh   sample_name   run_ID
 #
 # script uses srst2 to find AR genes from ResGANNOT DBs.
 #
-#  Modules needed (loaded via prep_srst2.sh script - Python/2.7.15, bowtie2/2.2.9, samtools/0.1.18
+#  Modules needed (loaded via prep_srst2.sh script - Python2/2.7.11, bowtie2/2.2.4, samtools/0.1.18
 #
 
 # Checks for proper argumentation
