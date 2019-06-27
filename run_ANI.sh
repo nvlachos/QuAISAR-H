@@ -62,6 +62,8 @@ elif [ ! -z "$5" ]; then
 	others="true"
 fi
 
+ml Python3/3.5.2 pyani/0.2.7 mashtree/0.29
+
 start_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 echo "Started ANI at ${start_time}"
 
