@@ -15,7 +15,7 @@ fi
 #. "${mod_changers}/prep_srst2.sh"
 #ml -Python2/2.7.15 Python2/2.7.11
 #ml bowtie2/2.2.4
-ml purge
+#ml purge
 ml Python2/2.7.12 samtools/0.1.18 perl/5.16.1-MT srst2 bowtie2/2.2.4
 
 ml
@@ -102,4 +102,4 @@ find ${processed}/${2}/${1}/srst2 -type f -name "*ResGANNOT__*" | while read FIL
 done
 
 # Close out modules that were loaded specifically for srst2
-. "${mod_changers}/close_srst2.sh"
+#. "${mod_changers}/close_srst2.sh"
