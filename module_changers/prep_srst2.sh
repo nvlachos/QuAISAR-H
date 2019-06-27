@@ -21,4 +21,4 @@
 
 
 ml -Python/2.7 -Python/3.5.2 -perl/5.22.1
-ml Python/2.7.11 bowtie2/2.2.4 samtools/0.1.18 perl/5.16.1-MT srst2
+ml Python2/2.7.11 bowtie2/2.2.4 samtools/0.1.18 perl/5.16.1-MT srst2
