@@ -16,6 +16,8 @@ fi
 #ml -Python2/2.7.15 Python2/2.7.11
 #ml bowtie2/2.2.4
 
+ml
+
 #
 # Usage ./run_srst2.sh   sample_name   run_ID
 #
