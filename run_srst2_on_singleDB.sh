@@ -12,9 +12,11 @@ if [[ ! -f "./config.sh" ]]; then
 fi
 . ./config.sh
 #Import the module file that loads all necessary mods
-. "${mod_changers}/prep_srst2.sh"
+#. "${mod_changers}/prep_srst2.sh"
 #ml -Python2/2.7.15 Python2/2.7.11
 #ml bowtie2/2.2.4
+ml purge
+ml Python2/2.7.11 bowtie2/2.2.4 samtools/0.1.18 perl/5.16.1-MT srst2
 
 ml
 
