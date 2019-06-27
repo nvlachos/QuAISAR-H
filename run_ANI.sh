@@ -103,7 +103,7 @@ genus_in=${2}
 
 #Creates a local copy of the database folder
 echo "trying to copy ${local_DBs}/aniDB/${genus_in,}/"
-cp "${local_DBs}/aniDB/${genus_in,}/"*".fna" "${OUTDATADIR}/ANI/localANIDB/"
+cp "${local_DBs}/aniDB/${genus_in,}/"*".fna.gz" "${OUTDATADIR}/ANI/localANIDB/"
 gunzip ${OUTDATADIR}/ANI/localANIDB/*.gz
 
 exit
