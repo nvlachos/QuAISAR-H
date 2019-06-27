@@ -22,6 +22,8 @@ fi
 # Python/3.5.2 (pyani is located in Nick_DIR/script folder, not run from scicomp module)
 #
 
+
+
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
@@ -101,6 +103,8 @@ genus_in=${2}
 echo "trying to copy ${local_DBs}/aniDB/${genus_in,}/"
 cp "${local_DBs}/aniDB/${genus_in,}/"*".fna" "${OUTDATADIR}/ANI/localANIDB/"
 gunzip ${OUTDATADIR}/ANI/localANIDB/*.gz
+
+exit
 
 #Copies the samples assembly contigs to the local ANI db folder
 cp "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" "${OUTDATADIR}/ANI/localANIDB/sample_${2}_${3}.fasta"
