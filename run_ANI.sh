@@ -120,7 +120,7 @@ if [[ "${others}" = "true" ]]; then
 			if [[ "${project}" == "${4}" ]] && [[ "${sample_name}" == "${1}" ]]; then
 				echo "Already in there as ref sample"
 			else
-				cp "${processed}/${project}/${sample_name}/Assembly/${sample_name}_scaffolds_trimmed.fasta" "${OUTDATADIR}/ANI/localANIDB/temp"
+				cp "${processed}/${project}/${sample_name}/Assembly/${sample_name}_scaffolds_trimmed.fasta" "${OUTDATADIR}/ANI/localANIDB"
 			fi
 		done < ${5}
 	else
@@ -208,6 +208,14 @@ cd ${owd}
 if [ -d "${OUTDATADIR}/ANI/aniM" ]; then
 	echo "Removing old ANIm results in ${OUTDATADIR}/ANI/aniM"
 	rm -r "${OUTDATADIR}/ANI/aniM"
+fi
+
+if [[ -d "${OUTDATADIR}/ANI/localANIDB_full" ]]; then
+	rm -r "${OUTDATADIR}/ANI/localANIDB_full"
+fi
+
+if [[ -d "${OUTDATADIR}/ANI/temp" ]]; then
+	rm -r "${OUTDATADIR}/ANI/temp"
 fi
 
 #Calls pyani on local db folder
