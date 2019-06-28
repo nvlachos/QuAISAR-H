@@ -15,7 +15,7 @@ fi
 #
 # Will find all fastq.gz files within the given folder
 #
-# Usage ./get_Reads_from_folder.sh run_id folder_with_fastqs postfix_for_reads(1:_l001_SX_RX_00X.fastq.gz 2: _(R)X.fastq.gz 3: _RX_00X.fastq.gz 4: _SX_RX_00X.fastq.gz)
+# Usage ./get_Reads_from_folder.sh run_id folder_with_fastqs postfix_for_reads(1:_L001_SX_RX_00X.fastq.gz 2: _(R)X.fastq.gz 3: _RX_00X.fastq.gz 4: _SX_RX_00X.fastq.gz)
 #
 
 number='^[0-9]+$'
@@ -28,7 +28,7 @@ elif [[ -z "${1}" ]]; then
 	echo "Empty project name supplied to $0, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./get_Reads_from_folder.sh  run_id location_of_fastqs"
+	echo "Usage is ./get_Reads_from_folder.sh  run_id location_of_fastqs postfix_for_reads(1:_L001_SX_RX_00X.fastq.gz 2: _(R)X.fastq.gz 3: _RX_00X.fastq.gz 4: _SX_RX_00X.fastq.gz)"
 	echo "Output by default is downloaded to ${processed}/run_id and extracted to ${processed}/run_id/sample_name/FASTQs"
 	exit 0
 elif ! [[ ${2} =~ $number ]] || [[ -z "${2}" ]]; then

@@ -44,7 +44,7 @@ done
 # The wrapper script that runs all the tools that have been designated as necessary (and some others that are typically run also)
 #
 # Usage ./parallel_quisar.sh
-# -i path (1,2,3)						: Path to directory containing all zipped fastq files, must include numerical identifier of postfix naming scheme (1=_SX_RX_00X_fastq.gz. 2=_RX.fastq.gz. 3=X.fastq.gz)
+# -i path (1,2,3)						: Path to directory containing all zipped fastq files, must include numerical identifier of postfix naming scheme (1:_L001_SX_RX_00X.fastq.gz 2: _(R)X.fastq.gz 3: _RX_00X.fastq.gz 4: _SX_RX_00X.fastq.gz)
 # -p/l/s(project/list/single) identifier: project pulls every sample from a particular "project" (or run identifier). Samples will be downloaded from instruments also.
 # 							   			  list will only process samples found on the list
 #							   			  sample will process the single sample supplied
