@@ -15,8 +15,10 @@ fi
 #
 # Will find all fastq.gz files within the given folder
 #
-# Usage ./get_Reads_from_folder.sh run_id folder_with_fastqs postfix_for_reads(1:_l001_SX_RX_00X.fastq.gz 2: _RX.fastq.gz 3: _X.fastq.gz 4: _RX_00X.fastq.gz)
+# Usage ./get_Reads_from_folder.sh run_id folder_with_fastqs postfix_for_reads(1:_l001_SX_RX_00X.fastq.gz 2: _(R)X.fastq.gz 3: _RX_00X.fastq.gz 4: _SX_RX_00X.fastq.gz)
 #
+
+number='^[0-9]+$'
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -29,9 +31,14 @@ elif [[ "${1}" = "-h" ]]; then
 	echo "Usage is ./get_Reads_from_folder.sh  run_id location_of_fastqs"
 	echo "Output by default is downloaded to ${processed}/run_id and extracted to ${processed}/run_id/sample_name/FASTQs"
 	exit 0
-elif [[ -z "${2}" ]]; then
-	echo "Empty source supplied to $0, exiting"
-	exit 1
+elif ! [[ ${2} =~ $number ]] || [[ -z "${2}" ]]; then
+	echo "${2} is not a number or is empty. Please input max number of concurrent qsub submissions...exiting"
+	exit 2
+fi
+
+if [[ "${2}" -gt 4 ]]; then
+	echo "postfix for reads is TOO high, only 4 options...1:_L001_SX_RX_00X.fastq.gz 2: _(R)X.fastq.gz 3: _RX_00X.fastq.gz 4: _SX_RX_00X.fastq.gz , exiting"
+	exit
 fi
 
 
@@ -73,9 +80,18 @@ do
 			# Create an array out of the full sample name, delimited by _
 			#IFS='_' read -r -a name_array <<< "${full_sample_name}"
 			#long_name=${name_array[0]}_${name_array[1]}_${name_array[2]}_${name_array[3]}
+		elif [[ "${match}" -eq 4 ]]; then
+			short_name=$(echo "${full_sample_name}" | rev | cut -d'_' -f4- | rev)
+			postfix=$(echo "${full_sample_name}" | rev | cut -d'_' -f1,2,3 | rev)
+		elif [[ "${match}" -eq 3 ]]; then
+			short_name=$(echo "${full_sample_name}" | rev | cut -d'_' -f3- | rev)
+			postfix=$(echo "${full_sample_name}" | rev | cut -d'_' -f1,2 | rev)
+		elif [[ "${match}" -eq 2 ]]; then
+			short_name=$(echo "${full_sample_name}" | rev | cut -d'_' -f2- | rev)
+			postfix=$(echo "${full_sample_name}" | rev | cut -d'_' -f1 | rev)
 		else
-			short_name=$(echo "${full_sample_name}" | cut -d'_' -f1)
-			postfix=$(echo "${full_sample_name}" | cut -d'_' -f2-)
+			echo "Magic - should have never gotten here as this number does not match any of the input numbers... 1:_L001_SX_RX_00X.fastq.gz 2: _(R)X.fastq.gz 3: _RX_00X.fastq.gz 4: _SX_RX_00X.fastq.gz , exiting"
+			exit
 		fi
 
 		#long_name=$(echo "${full_sample_name}" | cut -d'_' -f1,2,3)
