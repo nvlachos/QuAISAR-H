@@ -31,12 +31,15 @@ elif [[ "${1}" = "-h" ]]; then
 	echo "Usage is ./get_Reads_from_folder.sh  run_id location_of_fastqs postfix_for_reads(1:_L001_SX_RX_00X.fastq.gz 2: _(R)X.fastq.gz 3: _RX_00X.fastq.gz 4: _SX_RX_00X.fastq.gz)"
 	echo "Output by default is downloaded to ${processed}/run_id and extracted to ${processed}/run_id/sample_name/FASTQs"
 	exit 0
-elif ! [[ ${2} =~ $number ]] || [[ -z "${2}" ]]; then
-	echo "${2} is not a number or is empty. Please input max number of concurrent qsub submissions...exiting"
+elif [[ -z "${2}" ]]; then
+	echo "Empty folder supplied to $0, exiting"
+	exit 1
+elif ! [[ ${3} =~ $number ]] || [[ -z "${3}" ]]; then
+	echo "postfix is not a number or is empty. Please input max number of concurrent qsub submissions...exiting"
 	exit 2
 fi
 
-if [[ "${2}" -gt 4 ]]; then
+if [[ "${3}" -gt 4 ]]; then
 	echo "postfix for reads is TOO high, only 4 options...1:_L001_SX_RX_00X.fastq.gz 2: _(R)X.fastq.gz 3: _RX_00X.fastq.gz 4: _SX_RX_00X.fastq.gz , exiting"
 	exit
 fi
