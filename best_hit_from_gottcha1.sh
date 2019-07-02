@@ -73,7 +73,7 @@ if [[ ! -s "${OUTDATADIR}/gottcha_S/${1}.gottcha.tsv" ]]; then
 fi
 
 # Process the TSV output of gottcha (species level analysis) line by line
-while IFS='\t' read -r -a line  || [ -n "$line" ]; do
+while IFS='	' read -r -a line  || [ -n "$line" ]; do
 	# Convert the perfect match to proper format from 1.00 to 100
 	if [[ "${line[2]}" = "1.0000" ]]; then
 		percent=100
