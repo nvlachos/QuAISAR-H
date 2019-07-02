@@ -11,8 +11,10 @@ if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
 . ./config.sh
-. ${mod_changers}/pipeline_mods
-. ${mod_changers}/list_modules.sh
+#. ${mod_changers}/pipeline_mods
+#. ${mod_changers}/list_modules.sh
+
+ml plasmidFinder/1.3
 
 #
 # Will attempt to find any plasmids in sample
@@ -153,4 +155,6 @@ else
 	else
 		echo "Cant guess the genus of the sample, please try again with the force option or check the contents of the .tax file for complete taxonomic classification (${processed}/${2}/${1}/${1}.tax)"
 	fi
+
+	ml -plasmidFinder/1.3
 fi
