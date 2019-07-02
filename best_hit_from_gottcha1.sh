@@ -91,6 +91,7 @@ while IFS='\t' read -r -a line  || [ -n "$line" ]; do
 	description="${line[1]}"
 	# Pulls the reads/hits matching the current taxa from the 8th column
 	reads="${line[7]}"
+	echo "${line[6]}:${line[7]}:${line[8]}"
 	# Acts to properly categorize each lines info based on the classifcation
 	# Does not exist in GOTTCHA but kept for later if ever introduced, Place-holder for all unclassified reads
 	if [ "${classification}" = "u" ]; then
