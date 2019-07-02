@@ -13,9 +13,11 @@ fi
 . ./config.sh
 
 # Load modules necessary for barrnap (that arent automatically loaded)
-module load barrnap/0.8
-module unload perl/5.22.1
-module load perl/5.12.3
+#module load barrnap/0.8
+#module unload perl/5.22.1
+#module load perl/5.12.3
+
+ml perl/5.12.3 barrnap/0.8 ncbi-blast+/LATEST
 
 #
 # Creates a species prediction based on blasting the largest and also best hit of the suggested 16s sequences found using barrnap
@@ -199,9 +201,7 @@ fi
 cd ${owd}
 
 # Return modules to original versions
-module unload perl/5.12.3
-module load perl/5.22.1
-module unload barrnap/0.8
+ml -perl/5.12.3 -barrnap/0.8 -ncbi-blast+/LATEST
 
 #Script exited gracefully (unless something else inside failed)
 exit 0
