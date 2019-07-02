@@ -73,7 +73,7 @@ if [[ ! -s "${OUTDATADIR}/gottcha_S/${1}.gottcha.tsv" ]]; then
 fi
 
 # Process the TSV output of gottcha (species level analysis) line by line
-while IFS='\t' read -r -a line; do
+while IFS='\t' read -r -a line  || [ -n "$line" ]; do
 	# Convert the perfect match to proper format from 1.00 to 100
 	if [[ "${line[2]}" = "1.0000" ]]; then
 		percent=100
@@ -91,7 +91,7 @@ while IFS='\t' read -r -a line; do
 	description="${line[1]}"
 	# Pulls the reads/hits matching the current taxa from the 8th column
 	reads="${line[7]}"
-	echo "${line[6]}:${line[7]}:${line[8]}"
+	echo "${line}"
 	# Acts to properly categorize each lines info based on the classifcation
 	# Does not exist in GOTTCHA but kept for later if ever introduced, Place-holder for all unclassified reads
 	if [ "${classification}" = "u" ]; then
