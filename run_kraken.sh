@@ -19,6 +19,8 @@ fi
 # requires kraken/0.10.5 perl/5.12.3 (NOT!!! 5.16.1-MT or 5.22.1)
 #
 
+ml kraken/0.10.5 perl/5.12.3 krona/2.7
+
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
@@ -54,7 +56,7 @@ elif [ ! -d "$OUTDATADIR/kraken/{2}Assembly" ]; then
 	mkdir -p "$OUTDATADIR/kraken/${2}Assembly"
 fi
 
-. "${shareScript}/module_changers/perl_5221_to_5123.sh"
+#. "${shareScript}/module_changers/perl_5221_to_5123.sh"
 # Prints out version of kraken
 kraken --version
 # Status view of run
@@ -91,7 +93,7 @@ elif [ "${3}" = "assembled" ]; then
 	echo "7"
 	ktImportText "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_weighted.krona" -o "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_weighted_BP_krona.html"
 	# Return perl version back to 5.22.1
-	. "${shareScript}/module_changers/perl_5123_to_5221.sh"
+#	. "${shareScript}/module_changers/perl_5123_to_5221.sh"
 	# Runs the extractor for pulling best taxonomic hit from a kraken run
 	echo "8"
 	"${shareScript}/best_hit_from_kraken.sh" "${1}" "${2}" "${3}_BP_data" "${4}"
@@ -112,7 +114,7 @@ perl "${shareScript}/Methaplan_to_krona.pl" -p "${OUTDATADIR}/kraken/${2}Assembl
 # Run the krona graph generator from krona output
 ktImportText "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}.krona" -o "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}.html"
 # Return perl version back to 5.22.1
-. "${shareScript}/module_changers/perl_5123_to_5221.sh"
+#. "${shareScript}/module_changers/perl_5123_to_5221.sh"
 
 # Creates the taxonomy list file from the kraken output
 echo "[:] Creating alternate report for taxonomic extraction"
@@ -121,6 +123,8 @@ kraken-report --db "${kraken_mini_db}" "${OUTDATADIR}/kraken/${2}Assembly/${1}_$
 echo "[:] Extracting best taxonomic matches"
 # Runs the extractor for pulling best taxonomic hit from a kraken run
 "${shareScript}/best_hit_from_kraken.sh" "${1}" "${2}" "${3}" "${4}"
+
+ml -kraken/0.10.5 -perl/5.12.3 -krona/2.7
 
 #Script exited gracefully (unless something else inside failed)
 exit 0
