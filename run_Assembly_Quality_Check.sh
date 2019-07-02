@@ -13,7 +13,7 @@ fi
 . ./config.sh
 
 module load quast/4.3
-module load Python/2.7.15
+module load Python2/2.7.15
 
 #
 # Checks the Assembly quality  using Toms tool and QUAST and comparing the output of both
