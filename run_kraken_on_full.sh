@@ -8,8 +8,8 @@
 
 #Import the config file with shortcuts and settings
 . ./config.sh
-. ./module_changers/pipeline_mods
-. ./module_changers/list_modules.sh
+#. ./module_changers/pipeline_mods
+#. ./module_changers/list_modules.sh
 
 # Runs the kraken classification tool which identifies the most likely taxonomic classification for the sample
 #

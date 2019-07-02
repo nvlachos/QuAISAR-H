@@ -33,12 +33,6 @@ done
 #Import the config file with shortcuts and settings
 . ${shareScript}/config.sh
 
-#Import the module file that loads all necessary mods
-. ${mod_changers}/pipeline_mods
-
-
-
-
 
 #
 # The wrapper script that runs all the tools that have been designated as necessary (and some others that are typically run also)
@@ -62,14 +56,6 @@ elif [[ "${host}" = "cluster"* ]];
 then
 	echo "Running pipeline on Aspen ${host}"
 fi
-
-# Remove all modules as to not interfere when the new list is load in
-yes | bash "${mod_changers}/clear_mods.sh"
-
-#load all proper modules and output currently loaded ones
-echo "Loading necessary modules for pipeline"
-. ${mod_changers}/pipeline_mods
-${mod_changers}/list_modules.sh
 
 # Checking BASH version
 if [ "${BASH_VERSINFO}" -lt 4 ];
