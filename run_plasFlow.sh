@@ -25,7 +25,7 @@ if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [[ -z "${1}" ]]; then
-	echo "Empty sample name supplied to run_plasmidFinder.sh, exiting"
+	echo "Empty sample name supplied to run_plasmidFlow.sh, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
 	echo "Usage is ./run_plasmFlow.sh  sample_name run_id"

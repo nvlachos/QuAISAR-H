@@ -18,6 +18,8 @@
 # requires kraken/0.10.5 perl/5.12.3 (NOT!!! 5.16.1-MT or 5.22.1)
 #
 
+ml kraken/0.10.5 perl/5.12.3 krona/2.7
+
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
@@ -60,9 +62,9 @@ kraken-mpa-report --db "${kraken_full_db}" "${OUTDATADIR}/kraken/${2}Assembly_fu
 perl "${shareScript}/Methaplan_to_krona.pl" -p "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_weighted.mpa" -k "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_weighted.krona"
 kraken-report --db "${kraken_full_db}" "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_BP.kraken" > "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_BP.list"
 python ${shareScript}/Kraken_Assembly_Summary_Exe.py -k "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_BP.kraken" -l "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_BP.labels" -t "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_BP.list" -o "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_BP_data.list"
-. "${shareScript}/module_changers/perl_5221_to_5123.sh"
+#. "${shareScript}/module_changers/perl_5221_to_5123.sh"
 ktImportText "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_weighted.krona" -o "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full_weighted_BP_krona.html"
-. "${shareScript}/module_changers/perl_5123_to_5221.sh"
+#. "${shareScript}/module_changers/perl_5123_to_5221.sh"
 "${shareScript}/best_hit_from_kraken.sh" "${1}" "${2}" "full_BP_data" "${4}"
 
 # Run the metaphlan generator on the kraken output
@@ -74,9 +76,9 @@ echo "[:] Generating krona output for ${1}."
 perl "${shareScript}/Methaplan_to_krona.pl" -p "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full.mpa" -k "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full.krona"
 
 # Run the krona graph generator from krona output
-. "${shareScript}/module_changers/perl_5221_to_5123.sh"
+#. "${shareScript}/module_changers/perl_5221_to_5123.sh"
 ktImportText "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full.krona" -o "${OUTDATADIR}/kraken/${2}Assembly_full/${1}_full.html"
-. "${shareScript}/module_changers/perl_5123_to_5221.sh"
+#. "${shareScript}/module_changers/perl_5123_to_5221.sh"
 
 # Creates the parsible report from the kraken output
 echo "[:] Creating alternate report for taxonomic extraction"
@@ -87,6 +89,8 @@ echo "[:] Extracting best taxonomic matches"
 
 # Runs the extractor for pulling best hit from a kraken run
 "${shareScript}/best_hit_from_kraken.sh" "${1}" "${2}" "full" "${4}" "${5}"
+
+ml -kraken/0.10.5 -perl/5.12.3 -krona/2.7
 
 #Script exited gracefully (unless something else inside failed)
 exit 0

@@ -22,6 +22,8 @@ fi
 # !Version 1
 #
 
+ml perl/5.12.3  gottcha
+
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
@@ -67,6 +69,7 @@ ktImportText "${OUTDATADIR}/gottcha/gottcha_S/${1}_temp/${1}.lineage.tsv" -o "${
 #Create a best hit from gottcha1 file
 "${shareScript}/best_hit_from_gottcha1.sh" "${1}" "${2}"
 
+ml -perl/5.12.3 -gottcha
 
 #Script exited gracefully (unless something else inside failed)
 exit 0
