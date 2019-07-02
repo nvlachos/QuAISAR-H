@@ -91,7 +91,6 @@ while IFS='	' read -r -a line  || [ -n "$line" ]; do
 	description="${line[1]}"
 	# Pulls the reads/hits matching the current taxa from the 8th column
 	reads="${line[7]}"
-	echo "${line}"
 	# Acts to properly categorize each lines info based on the classifcation
 	# Does not exist in GOTTCHA but kept for later if ever introduced, Place-holder for all unclassified reads
 	if [ "${classification}" = "u" ]; then
@@ -141,7 +140,6 @@ while IFS='	' read -r -a line  || [ -n "$line" ]; do
 		fi
 	# If current line is classified as species level and there are more reads than the currently saved value, the stored values are replaced with the current lines info
 	elif [ "${classification}" = "s" ]; then
-		echo "1-${species}, 2-${reads}, 3-${species_reads}"
 		if [ "${species}" = "N/A" ] || [ "${reads}" -gt "${species_reads}" ]; then
 			gs="($description)"			species=${gs[@]:1:-1}
 			species_percent="${percent}"
