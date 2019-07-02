@@ -58,17 +58,17 @@ cd "${OUTDATADIR}/Assembly_Stats"
 python2 "/apps/x86_64/quast/quast-4.3/quast.py" -o "${OUTDATADIR}/Assembly_Stats" "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
 mv "${OUTDATADIR}/Assembly_Stats/report.txt" "${OUTDATADIR}/Assembly_Stats/${1}_report.txt"
 mv "${OUTDATADIR}/Assembly_Stats/report.tsv" "${OUTDATADIR}/Assembly_Stats/${1}_report.tsv"
-# if [[ -s "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta" ]]; then
-# 	if [ ! -d "$OUTDATADIR/Assembly_Stats_plasmid" ]; then
-# 		echo "Creating $OUTDATADIR/Assembly_Stats_plasmid"
-# 		mkdir -p "$OUTDATADIR/Assembly_Stats_plasmid"
-# 	fi
-# 	#python "${shareScript}/quast/quast.py" -o "${OUTDATADIR}/Assembly_Stats_plasmid" "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta"
-# 	#python "./quast/quast.py" -o "${OUTDATADIR}/Assembly_Stats_plasmid" "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta"
-# 	python2 "/apps/x86_64/quast/quast-4.3/quast.py" -o "${OUTDATADIR}/Assembly_Stats_plasmid" "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta"
-# 	mv "${OUTDATADIR}/Assembly_Stats_plasmid/report.txt" "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.txt"
-# 	mv "${OUTDATADIR}/Assembly_Stats_plasmid/report.tsv" "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.tsv"
-# fi
+ if [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta" ]]; then
+ 	if [ ! -d "$OUTDATADIR/Assembly_Stats_plasmid" ]; then
+ 		echo "Creating $OUTDATADIR/Assembly_Stats_plasmid"
+ 		mkdir -p "$OUTDATADIR/Assembly_Stats_plasmid"
+ 	fi
+ 	#python "${shareScript}/quast/quast.py" -o "${OUTDATADIR}/Assembly_Stats_plasmid" "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta"
+ 	#python "./quast/quast.py" -o "${OUTDATADIR}/Assembly_Stats_plasmid" "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta"
+ 	python2 "/apps/x86_64/quast/quast-4.3/quast.py" -o "${OUTDATADIR}/Assembly_Stats_plasmid" "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta"
+ 	mv "${OUTDATADIR}/Assembly_Stats_plasmid/report.txt" "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.txt"
+ 	mv "${OUTDATADIR}/Assembly_Stats_plasmid/report.tsv" "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.tsv"
+ fi
 
 # Return to original directory
 cd "${owd}"
