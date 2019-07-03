@@ -60,6 +60,29 @@ fi
 ### Gottcha Taxonomy Classifier ### in species mode
 ml perl/5.22.1 -perl/5.12.3
 
+if [[ ! -f "${OUTDATADIR}/trimmed/${1}.paired.fq" ]]; then
+	if [[ ! -f "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" ]]; then
+		if [[ -f "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq.gz" ]]; then
+			zipped1="true"
+			gunzip < "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq.gz" > "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq"
+		else
+			echo "No R1 to use to make ${1}.paired.fq"
+			exit
+		fi
+	fi
+	if [[ ! -f "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq" ]]; then
+		if [[ -f "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq.gz" ]]; then
+			zipped2="true"
+			gunzip < "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq.gz" > "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
+		else
+			echo "No R1 to use to make ${1}.paired.fq"
+			exit
+		fi
+	fi
+fi
+
+cat "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq" > "${OUTDATADIR}/trimmed/${1}.paired.fq"
+
 gottcha.pl --mode all --outdir "${OUTDATADIR}/gottcha/gottcha_S" --input "${OUTDATADIR}/trimmed/${1}.paired.fq" --database "${gottcha_db}"
 
 ml -perl/5.22.1 perl/5.12.3
@@ -73,6 +96,17 @@ ktImportText "${OUTDATADIR}/gottcha/gottcha_S/${1}_temp/${1}.lineage.tsv" -o "${
 "${shareScript}/best_hit_from_gottcha1.sh" "${1}" "${2}"
 
 ml -perl/5.12.3 -gottcha -krona/2.7
+
+if [[ -f "${OUTDATADIR}/trimmed/${1}.paired.fq" ]]; then
+	rm "${OUTDATADIR}/trimmed/${1}.paired.fq"
+fi
+if [[ "${zipped1}"="true" ]]; then
+	rm "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq"
+fi
+if [[ "${zipped2}"="true" ]]; then
+	rm "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
+fi
+
 
 #Script exited gracefully (unless something else inside failed)
 exit 0
