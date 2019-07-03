@@ -22,7 +22,7 @@ fi
 # !Version 1
 #
 
-ml perl/5.12.3  gottcha krona/2.7
+ml gottcha krona/2.7
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -58,8 +58,11 @@ fi
 #. "${shareScript}/module_changers/perl_5221_to_5123.sh"
 
 ### Gottcha Taxonomy Classifier ### in species mode
+ml perl/5.22.1 -perl/5.12.3
+
 gottcha.pl --mode all --outdir "${OUTDATADIR}/gottcha/gottcha_S" --input "${OUTDATADIR}/trimmed/${1}.paired.fq" --database "${gottcha_db}"
 
+ml -perl/5.22.1 perl/5.12.3
 # Return perl to 5.22.1
 #. "${shareScript}/module_changers/perl_5123_to_5221.sh"
 
