@@ -22,7 +22,9 @@ fi
 # requires modules busco/3.0.1, Python/3.6.1
 #
 
-ml Python/3.6.1 busco/3.0.1
+ml -Python/3.6.1 busco/3.0.1
+
+Python3 -V
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
