@@ -22,7 +22,7 @@ fi
 # !Version 1
 #
 
-ml perl/5.12.3  gottcha
+ml perl/5.12.3  gottcha krona/2.7
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -55,13 +55,13 @@ if [ ! -d "$OUTDATADIR/gottcha/gottcha_S" ]; then  #create outdir if absent
 fi
 
 # Needs perl v5.12.3 to function properly
-. "${shareScript}/module_changers/perl_5221_to_5123.sh"
+#. "${shareScript}/module_changers/perl_5221_to_5123.sh"
 
 ### Gottcha Taxonomy Classifier ### in species mode
 gottcha.pl --mode all --outdir "${OUTDATADIR}/gottcha/gottcha_S" --input "${OUTDATADIR}/trimmed/${1}.paired.fq" --database "${gottcha_db}"
 
 # Return perl to 5.22.1
-. "${shareScript}/module_changers/perl_5123_to_5221.sh"
+#. "${shareScript}/module_changers/perl_5123_to_5221.sh"
 
 # Create the krona graphs from each of the analyses
 ktImportText "${OUTDATADIR}/gottcha/gottcha_S/${1}_temp/${1}.lineage.tsv" -o "${OUTDATADIR}/gottcha/${1}_species.krona.html"
@@ -69,7 +69,7 @@ ktImportText "${OUTDATADIR}/gottcha/gottcha_S/${1}_temp/${1}.lineage.tsv" -o "${
 #Create a best hit from gottcha1 file
 "${shareScript}/best_hit_from_gottcha1.sh" "${1}" "${2}"
 
-ml -perl/5.12.3 -gottcha
+ml -perl/5.12.3 -gottcha -krona/2.7
 
 #Script exited gracefully (unless something else inside failed)
 exit 0
