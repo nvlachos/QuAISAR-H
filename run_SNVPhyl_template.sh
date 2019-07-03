@@ -13,7 +13,6 @@ fi
 . ./config.sh
 
 #Import list of mods used during pipeline analysis (or downstream)
-module purge
 #. "${mod_changers}/load_SNVPhyl.sh"
 
 . ${mod_changers}/list_modules.sh
