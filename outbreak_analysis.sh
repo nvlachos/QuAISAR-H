@@ -16,7 +16,7 @@ fi
 #Import the module file that loads all necessary mods
 . "${mod_changers}/pipeline_mods"
 . "${mod_changers}/list_modules.sh"
-
+ml python3/3.5.2
 
 #
 # Usage ./outbreak_analysis.sh path_to_list gapped/ungapped (analysis ran) identity (80/95/98/99/100) analysis_identifier(e.g. outbreak identifier) output_directory(will create a folder at this location with name of analysis_identifier) clobberness[keep|clobber]
