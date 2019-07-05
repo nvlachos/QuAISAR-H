@@ -12,8 +12,4 @@ export BLASTN="blastn"
 export MAKEBLASTDB="makeblastdb"
 export PERL5LIB=~/lib/perl5
 
-module load BBMap/38.26
-module load trimmomatic/0.35
-module load ncbi-blast+/LATEST
-module load Python/3.5.2
-module load perl/5.22.1
+ml ncbi-blast+/LATEST Python/3.5.2 perl/5.22.1
