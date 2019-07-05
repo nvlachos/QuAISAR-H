@@ -60,6 +60,9 @@ fi
 ### Gottcha Taxonomy Classifier ### in species mode
 ml perl/5.22.1 -perl/5.12.3
 
+zipped1="false"
+zipped2="false"
+
 if [[ ! -f "${OUTDATADIR}/trimmed/${1}.paired.fq" ]]; then
 	if [[ ! -f "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" ]]; then
 		if [[ -f "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq.gz" ]]; then
@@ -100,10 +103,10 @@ ml -perl/5.12.3 -gottcha -krona/2.7
 if [[ -f "${OUTDATADIR}/trimmed/${1}.paired.fq" ]]; then
 	rm "${OUTDATADIR}/trimmed/${1}.paired.fq"
 fi
-if [[ "${zipped1}"="true" ]]; then
+if [[ "${zipped1}" == "true" ]]; then
 	rm "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq"
 fi
-if [[ "${zipped2}"="true" ]]; then
+if [[ "${zipped2}" == "true" ]]; then
 	rm "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
 fi
 
