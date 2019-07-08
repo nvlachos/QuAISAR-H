@@ -22,7 +22,7 @@ fi
 # requires modules busco/3.0.1, Python/3.6.1
 #
 
-ml busco/3.0.1 Python/3.6.1 
+ml busco/3.0.1 Python3/3.6.1
 
 python3 -V
 
