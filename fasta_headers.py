@@ -48,7 +48,7 @@ else:
 	    name=os.path.basename(args.input).split("_")[::-1]
 	    name=name[3:]
 	    name='_'.join(name[::-1])
-	    #print(name)
+	    print(name)
 	    record.id = record.id.replace(name,"NODE")
 	    #print(record.id)
 	    record.description = ""
