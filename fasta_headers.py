@@ -28,12 +28,13 @@ args=parseArgs()
 sequences = []
 
 if not args.reverse:
+	print("FORWARD")
 	for record in SeqIO.parse(args.input,"fasta"):
-	    #print(record.id)
+	    print(record.id)
 	    name=os.path.basename(args.input).split("_")[::-1]
 	    name=name[3:]
 	    name='_'.join(name[::-1])
-	    #print(name)
+	    print(name)
 	    record.id = record.id.split("_cov")[0].replace("NODE",name)
 	    #print(record.id)
 	    record.description = ""
@@ -43,8 +44,9 @@ if not args.reverse:
 
 	SeqIO.write(sequences, args.output, "fasta")
 else:
+	print("REVERSE")
 	for record in SeqIO.parse(args.input,"fasta"):
-	    #print(record.id)
+	    print(record.id)
 	    name=os.path.basename(args.input).split("_")[::-1]
 	    name=name[3:]
 	    name='_'.join(name[::-1])
