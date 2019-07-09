@@ -59,7 +59,7 @@ fi
 
 # Checks that the gapping is set to one of the csstar presets
 if [[ "${2}" != "gapped" ]] && [[ "${2}" != "ungapped" ]]; then
-	echo "gapping does not equal; gapped or ungapped...exiting"
+	echo "gapping does not equal gapped or ungapped...exiting"
 	exit 1
 fi
 
@@ -70,6 +70,18 @@ if [[ "${3}" != 80 ]] && [[ "${3}" != 95 ]] && [[ "${3}" != 98 ]] && [[ "${3}" !
 else
 	sim=${3}
 fi
+
+if [[ -f "${shareScript}/outbreak_analysis.out" ]]; then
+	rm "${shareScript}/outbreak_analysis.out"
+	>"${shareScript}/outbreak_analysis.out"
+fi
+
+if [[ -f "${shareScript}/outbreak_analysis.err" ]]; then
+	rm "${shareScript}/outbreak_analysis.err"
+	>"${shareScript}/outbreak_analysis.err"
+fi
+
+
 
 # Creates the output directory if it does not exist
 output_directory=${5}/${4}
