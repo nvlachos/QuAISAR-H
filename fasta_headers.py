@@ -39,7 +39,7 @@ if not args.reverse:
 	    print(record.id)
 	    print(name)
 	    record.id = record.id.split("_cov")[0].replace("NODE",name)
-	    #print(record.id)
+	    print(record.id)
 	    record.description = ""
 	#    print(record.description)
 	#    print(record)
@@ -58,7 +58,7 @@ else:
 	    print(record.id)
 	    print(name)
 	    record.id = record.id.replace(name,"NODE")
-	    #print(record.id)
+	    print(record.id)
 	    record.description = ""
 	#    print(record.description)
 	#    print(record)
