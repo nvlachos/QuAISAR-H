@@ -72,13 +72,11 @@ else
 fi
 
 if [[ -f "${shareScript}/outbreak_analysis.out" ]]; then
-	rm "${shareScript}/outbreak_analysis.out"
-	>"${shareScript}/outbreak_analysis.out"
+	truncate -s 0 "${shareScript}/outbreak_analysis.out"
 fi
 
 if [[ -f "${shareScript}/outbreak_analysis.err" ]]; then
-	rm "${shareScript}/outbreak_analysis.err"
-	>"${shareScript}/outbreak_analysis.err"
+	truncate -s 0 "${shareScript}/outbreak_analysis.err"
 fi
 
 
