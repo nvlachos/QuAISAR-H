@@ -47,7 +47,7 @@ else:
 	print("REVERSE")
 	name=os.path.basename(args.input).split("_")[::-1]
 	print(name)
-	name=name[3:]
+	name=name[2:]
 	print(name)
 	name='_'.join(name[::-1])
 	print(name)
