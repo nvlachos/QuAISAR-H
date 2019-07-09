@@ -57,7 +57,7 @@ else:
 	for record in SeqIO.parse(args.input,"fasta"):
 	    print(record.id)
 	    print(name)
-	    record.id = record.id.replace(name,"NODE")
+	    record.id = record.id.replace(name,"NODE")+"_cov_X"
 	    print(record.id)
 	    record.description = ""
 	#    print(record.description)
