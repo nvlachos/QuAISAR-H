@@ -79,8 +79,6 @@ if [[ -f "${shareScript}/outbreak_analysis.err" ]]; then
 	truncate -s 0 "${shareScript}/outbreak_analysis.err"
 fi
 
-
-
 # Creates the output directory if it does not exist
 output_directory=${5}/${4}
 if [[ ! -d ${output_directory} ]]; then
