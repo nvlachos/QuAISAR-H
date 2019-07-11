@@ -13,8 +13,10 @@ fi
 . ./config.sh
 
 # Load necessary modules to run mashtree
-module unload perl/5.22.1
-module load perl/5.16.1-MT
+#module unload perl/5.22.1
+#module load perl/5.16.1-MT
+#Switiching to ml syntax
+ml -perl/5.22.1 perl/5.16.1-MT mashtree/0.29
 
 #
 # Script to create mashtree of specified isolates that were processed by Quaisar pipeline

@@ -110,7 +110,7 @@ echo "[:] Generating krona output for ${1}."
 # Convert mpa to krona file
 perl "${shareScript}/Methaplan_to_krona.pl" -p "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}.mpa" -k "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}.krona"
 # Change perl version to allow ktimporttext to work ( cant use anything but 5.12.3
-. "${shareScript}/module_changers/perl_5221_to_5123.sh"
+#. "${shareScript}/module_changers/perl_5221_to_5123.sh"
 # Run the krona graph generator from krona output
 ktImportText "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}.krona" -o "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}.html"
 # Return perl version back to 5.22.1

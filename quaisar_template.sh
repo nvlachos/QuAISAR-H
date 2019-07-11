@@ -33,6 +33,7 @@ if [[ ! -f "${3}" ]]; then
 	exit 223
 else
 	echo "${2}/${1} is loading config file ${3}"
+	ml purge
 	. "${3}"
 	. ${mod_changers}/pipeline_mods
 fi
@@ -142,12 +143,14 @@ else
 fi
 
 # Run bbduk
+ml BBMap/38.26
 bbduk.sh -"${bbduk_mem}" threads="${procs}" in="${OUTDATADIR}/${filename}/FASTQs/${filename}_R1_001.fastq" in2="${OUTDATADIR}/${filename}/FASTQs/${filename}_R2_001.fastq" out="${OUTDATADIR}/${filename}/removedAdapters/${filename}-noPhiX-R1.fsq" out2="${OUTDATADIR}/${filename}/removedAdapters/${filename}-noPhiX-R2.fsq" ref="${phiX_location}" k="${bbduk_k}" hdist="${bbduk_hdist}"
 # Get end time of bbduk and calculate run time and append to time summary (and sum to total time used)
 end=$SECONDS
 timeAdapt=$((end - start))
 echo "Removing Adapters - ${timeAdapt} seconds" >> "${time_summary}"
 totaltime=$((totaltime + timeAdapt))
+ml -BBMAP/38.26
 
 ### Quality and Adapter Trimming using trimmomatic ###
 echo "----- Running Trimmomatic on reads -----"
@@ -157,6 +160,8 @@ start=$SECONDS
 if [ ! -d "$OUTDATADIR/$filename/trimmed" ]; then
 	mkdir -p "$OUTDATADIR/$filename/trimmed"
 fi
+
+ml trimmomatic/0.35
 # Run trimmomatic
 trimmomatic "${trim_endtype}" -"${trim_phred}" -threads "${procs}" "${OUTDATADIR}/${filename}/removedAdapters/${filename}-noPhiX-R1.fsq" "${OUTDATADIR}/${filename}/removedAdapters/${filename}-noPhiX-R2.fsq" "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.paired.fq" "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.unpaired.fq" "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.paired.fq" "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.unpaired.fq" ILLUMINACLIP:"${trim_adapter_location}:${trim_seed_mismatch}:${trim_palindrome_clip_threshold}:${trim_simple_clip_threshold}:${trim_min_adapt_length}:${trim_complete_palindrome}" SLIDINGWINDOW:"${trim_window_size}:${trim_window_qual}" LEADING:"${trim_leading}" TRAILING:"${trim_trailing}" MINLEN:"${trim_min_length}"
 # Get end time of trimmomatic and calculate run time and append to time summary (and sum to total time used)
@@ -164,7 +169,7 @@ end=$SECONDS
 timeTrim=$((end - start))
 echo "Trimming - ${timeTrim} seconds" >> "${time_summary}"
 totaltime=$((totaltime + timeTrim))
-
+ml -trimmomatic/0.35
 
 # Check differences after QC and trimming (also for gottcha proper read count for assessing unclassified reads)
 # Get start time for qc check on trimmed reads
@@ -180,7 +185,7 @@ fi
 python2 "${shareScript}/Fastq_Quality_Printer.py" -1 "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.paired.fq" -2 "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.paired.fq" > "${OUTDATADIR}/${filename}/preQCcounts/${filename}_trimmed_counts.txt"
 
 # Merge both unpaired fq files into one for GOTTCHA
-cat "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.paired.fq" "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.paired.fq" > "${OUTDATADIR}/${filename}/trimmed/${filename}.paired.fq"
+#cat "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.paired.fq" "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.paired.fq" > "${OUTDATADIR}/${filename}/trimmed/${filename}.paired.fq"
 cat "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.unpaired.fq" "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.unpaired.fq" > "${OUTDATADIR}/${filename}/trimmed/${filename}.single.fq"
 
 

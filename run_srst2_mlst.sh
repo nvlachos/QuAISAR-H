@@ -9,7 +9,7 @@
 #Import the config file with shortcuts and settings
 . ./config.sh
 #Import the module file that loads all necessary mods
-. "${mod_changers}/pipeline_mods"
+#. "${mod_changers}/pipeline_mods"
 #module clear
 #. "${mod_changers}/prep_srst2.sh"
 #. "${mod_changers}/list_modules.sh"

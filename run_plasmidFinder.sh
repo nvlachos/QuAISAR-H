@@ -19,7 +19,7 @@ ml PlasmidFinder/1.3
 #
 # Will attempt to find any plasmids in sample
 #
-# Usage ./get_run_plasmidFinder.sh sample_name run_id force
+# Usage ./run_plasmidFinder.sh sample_name run_id force
 #
 
 # Checks for proper argumentation

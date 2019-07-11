@@ -19,10 +19,7 @@ fi
 # requires kraken/2.0.0 perl/5.12.3 (NOT!!! 5.16.1-MT or 5.22.1)
 #
 
-module load kraken/2.0.0
-module load krona/2.7
-
-
+ml kraken/2.0.0 krona/2.7 perl/5.12.3
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -94,7 +91,7 @@ elif [ "${3}" = "assembled" ]; then
 
 	# Convert mpa to krona file# Convert mpa to krona file
 	echo "4"
-	. "${shareScript}/module_changers/perl_5221_to_5123.sh"
+#	. "${shareScript}/module_changers/perl_5221_to_5123.sh"
 	perl "${shareScript}/Methaplan_to_krona.pl" -p "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.mpa" -k "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.krona"
 	# Create taxonomy list file from kraken2 file
 	echo "5"
@@ -110,7 +107,7 @@ elif [ "${3}" = "assembled" ]; then
 	echo "7"
 	ktImportText "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.krona" -o "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted_BP_krona.html"
 	# Return perl version back to 5.22.1
-	 "${shareScript}/module_changers/perl_5123_to_5221.sh"
+#	 "${shareScript}/module_changers/perl_5123_to_5221.sh"
 	# Runs the extractor for pulling best taxonomic hit from a kraken2 run
 	echo "8"
 	"${shareScript}/best_hit_from_kraken.sh" "${1}" "${2}" "${3}_BP_data" "${4}"
@@ -121,7 +118,7 @@ fi
 
 # Run the metaphlan generator on the kraken2 output
 module load kraken/0.10.5
-. "${shareScript}/module_changers/perl_5221_to_5123.sh"
+#. "${shareScript}/module_changers/perl_5221_to_5123.sh"
 echo "[:] Generating metaphlan compatible report."
 kraken-mpa-report --db "${kraken_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.mpa"
 # Run the krona generator on the metaphlan output
@@ -133,7 +130,7 @@ perl "${shareScript}/Methaplan_to_krona.pl" -p "${OUTDATADIR}/kraken2/${2}Assemb
 # Run the krona graph generator from krona output
 ktImportText "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.krona" -o "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.html"
 # Return perl version back to 5.22.1
-. "${shareScript}/module_changers/perl_5123_to_5221.sh"
+#. "${shareScript}/module_changers/perl_5123_to_5221.sh"
 module unload kraken/0.10.5
 # Creates the taxonomy list file from the kraken2 output
 echo "[:] Creating alternate report for taxonomic extraction"
@@ -142,6 +139,8 @@ echo "[:] Creating alternate report for taxonomic extraction"
 echo "[:] Extracting best taxonomic matches"
 # Runs the extractor for pulling best taxonomic hit from a kraken2 run
 "${shareScript}/best_hit_from_kraken.sh" "${1}" "${2}" "${3}" "${4}"
+
+ml -kraken/2.0.0 -krona/2.7 -perl/5.12.3
 
 #Script exited gracefully (unless something else inside failed)
 exit 0

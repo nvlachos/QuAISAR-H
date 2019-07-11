@@ -900,7 +900,10 @@ if [[ "${ani_found}" = true ]]; then
 		fi
 	fi
 else
-	if [[ ! -d "${OUTDATADIR}/ANI/" ]]; then
+	if [[ "${dec_genus}" == "" ]]; then
+		printf "%-20s: %-8s : %s\\n" "ANI" "FAILED" "Determine_TAXID did not discover a genus. Cant ANI on all samples, yet"
+		status="FAILED"
+	elif [[ ! -d "${OUTDATADIR}/ANI/" ]]; then
 		printf "%-20s: %-8s : %s\\n" "ANI" "FAILED" "/ANI/ does not exist"
 		status="FAILED"
 	else

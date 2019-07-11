@@ -12,7 +12,7 @@ if [[ ! -f "./config.sh" ]]; then
 fi
 . ./config.sh
 
-. "${mod_changers}/load_python_3.6.1.sh"
+# . "${mod_changers}/load_python_3.6.1.sh"
 
 #
 # A script that takes a sample and compares it to a busco database to discover number of similar genes (% conserved proteins) from prokka output
@@ -21,6 +21,10 @@ fi
 #
 # requires modules busco/3.0.1, Python/3.6.1
 #
+
+ml busco/3.0.1 Python3/3.6.1
+
+python3 -V
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -88,7 +92,9 @@ rm -r "${OUTDATADIR}/tmp"
 cd "${owd}"
 
 # Unloads python 3.6.1 (and loads python 3.5.2 back in)
-. "${mod_changers}/unload_python_3.6.1.sh"
+#. "${mod_changers}/unload_python_3.6.1.sh"
+
+ml -Python/3.6.1 -busco/3.0.1
 
 #Script exited gracefully (unless something else inside failed)
 exit 0

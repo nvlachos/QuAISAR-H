@@ -21,6 +21,8 @@ fi
 # mlst/2.9
 #
 
+ml mlst/2.16
+
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
@@ -57,4 +59,7 @@ else
 fi
 . "${shareScript}/module_changers/perl_5161mt_to_5221.sh"
 #Script exited gracefully (unless something else inside failed)
+
+ml -mlst/2.16
+
 exit 0

@@ -11,7 +11,9 @@ if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
 . ./config.sh
-. "${mod_changers}/perl_5221_to_5123.sh"
+#. "${mod_changers}/perl_5221_to_5123.sh"
+
+ml prokka/1.12 perl/5.12.3
 
 #
 # Runs prokka gene identifier on sample to discover all identifiable genes. Also necessary for downstream busco processing
@@ -69,5 +71,8 @@ done
 
 #Script exited gracefully (unless something else inside failed)
 # reload perl to 5.22.1 before exiting
-. "${mod_changers}/perl_5123_to_5221.sh"
+#. "${mod_changers}/perl_5123_to_5221.sh"
+
+ml -prokka/1.12 -perl/5.12.3
+
 exit 0

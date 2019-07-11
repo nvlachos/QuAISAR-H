@@ -12,7 +12,7 @@ if [[ ! -f "./config.sh" ]]; then
 fi
 . ./config.sh
 #Import the module file that loads all necessary mods
-. "${mod_changers}/pipeline_mods"
+#. "${mod_changers}/pipeline_mods"
 
 #
 # The wrapper script that runs the lowest possible run_SNVPhyl.sh script on the cluster
