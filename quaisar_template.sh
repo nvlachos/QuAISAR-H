@@ -267,12 +267,12 @@ totaltime=$((totaltime + timeSPAdes))
 
 ### Removing Short Contigs  ###
 echo "----- Removing Short Contigs -----"
-python "${shareScript}/removeShortContigs.py" -i "${OUTDATADIR}/${filename}/Assembly/scaffolds.fasta" -t 500 -s "normal_SPAdes"
+python3 "${shareScript}/removeShortContigs.py" -i "${OUTDATADIR}/${filename}/Assembly/scaffolds.fasta" -t 500 -s "normal_SPAdes"
 mv "${OUTDATADIR}/${filename}/Assembly/scaffolds.fasta.TRIMMED.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_scaffolds_trimmed.fasta"
 
 ### Removing Short Contigs  ###
 echo "----- Removing Short Contigs -----"
-python "${shareScript}/removeShortContigs.py" -i "${OUTDATADIR}/${filename}/Assembly/contigs.fasta" -t 500 -s "normal_SPAdes"
+python3"${shareScript}/removeShortContigs.py" -i "${OUTDATADIR}/${filename}/Assembly/contigs.fasta" -t 500 -s "normal_SPAdes"
 mv "${OUTDATADIR}/${filename}/Assembly/contigs.fasta.TRIMMED.fasta" "${OUTDATADIR}/${filename}/Assembly/${filename}_contigs_trimmed.fasta"
 
 
