@@ -16,7 +16,8 @@ fi
 #Import the module file that loads all necessary mods
 . "${mod_changers}/pipeline_mods"
 . "${mod_changers}/list_modules.sh"
-ml Python3/3.5.2
+
+ml Python3/3.5.2 mashtree/0.29
 
 #
 # Usage ./outbreak_analysis.sh path_to_list gapped/ungapped (analysis ran) identity (80/95/98/99/100) analysis_identifier(e.g. outbreak identifier) output_directory(will create a folder at this location with name of analysis_identifier) clobberness[keep|clobber]
@@ -58,7 +59,7 @@ fi
 
 # Checks that the gapping is set to one of the csstar presets
 if [[ "${2}" != "gapped" ]] && [[ "${2}" != "ungapped" ]]; then
-	echo "gapping does not equal; gapped or ungapped...exiting"
+	echo "gapping does not equal gapped or ungapped...exiting"
 	exit 1
 fi
 
@@ -68,6 +69,14 @@ if [[ "${3}" != 80 ]] && [[ "${3}" != 95 ]] && [[ "${3}" != 98 ]] && [[ "${3}" !
 	exit 1
 else
 	sim=${3}
+fi
+
+if [[ -f "${shareScript}/outbreak_analysis.out" ]]; then
+	truncate -s 0 "${shareScript}/outbreak_analysis.out"
+fi
+
+if [[ -f "${shareScript}/outbreak_analysis.err" ]]; then
+	truncate -s 0 "${shareScript}/outbreak_analysis.err"
 fi
 
 # Creates the output directory if it does not exist
