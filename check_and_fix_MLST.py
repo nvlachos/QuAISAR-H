@@ -234,9 +234,15 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file):
 		if types[i] == -1:
 			passed="true"
 			for locus in list_of_profiles[i]:
-				if '?' in locus or '*' in locus or '~' in locus:
+				if '?' in locus:
 					passed="false"
-					types[i]="AMM"
+					types[i]="PAM"
+				elif '~' in locus:
+					passed="false"
+					types[i]="NAM"
+				elif '*' in locus:
+					passed="false"
+					types[i]="UAP"
 			if passed == "true":
 				types[i] = "NID"
 		else:
