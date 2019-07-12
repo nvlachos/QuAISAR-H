@@ -231,7 +231,13 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file):
 	types.sort()
 	for i in range(0, len(types)):
 		if types[i] == -1:
-			types[i] = "-"
+			passed="true"
+			for locus in list_of_profiles[i]:
+				if '?' in locus or '*' in locus or '~' in locus:
+					passed="false"
+					types[i]="AMM"
+			if passed == "true":
+				types[i] = "NID"
 		else:
 			types[i] = str(types[i])
 	return types
