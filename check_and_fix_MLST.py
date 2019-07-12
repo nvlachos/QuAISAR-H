@@ -244,7 +244,7 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file):
 					passed="false"
 					if types[i] == "PAM":
 						types[i]="PAM&NAM"
-					elif types[i] == "PAM&UAP"
+					elif types[i] == "PAM&UAP":
 						types[i]="PAM&NAM&UAP"
 					else:
 						if types[i] == "NAM" or types[i] == "NAM&UAP" or types[i] == "PAM":
