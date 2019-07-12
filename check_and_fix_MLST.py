@@ -234,7 +234,7 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file):
 		if types[i] == -1:
 			passed="true"
 			for locus in list_of_profiles[i]:
-				print(types[i])
+				print(locus)
 				if '?' in locus:
 					passed="false"
 					if types[i] == "NAM" or types[i] == "NAM&UAP" or types[i] == "UAP":
