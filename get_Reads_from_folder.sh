@@ -28,7 +28,7 @@ elif [[ -z "${1}" ]]; then
 	echo "Empty project name supplied to $0, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./get_Reads_from_folder.sh  run_id location_of_fastqs postfix_for_reads(1:_L001_SX_RX_00X.fastq.gz 2: _(R)X.fastq.gz 3: _RX_00X.fastq.gz 4: _SX_RX_00X.fastq.gz)"
+	echo "Usage is ./get_Reads_from_folder.sh  run_id location_of_fastqs postfix_for_reads( 1: _L001_SX_RX_00X.fastq.gz 2: _(R)X.fastq.gz 3: _RX_00X.fastq.gz 4: _SX_RX_00X.fastq.gz)"
 	echo "Output by default is downloaded to ${processed}/run_id and extracted to ${processed}/run_id/sample_name/FASTQs"
 	exit 0
 elif [[ -z "${2}" ]]; then
@@ -117,7 +117,7 @@ do
 			# Announces name of file being unzipped and then unzips it to the FASTQs folder for the matching sample name. Files are shortened to just name_R1_001.fastq or name_R2_001.fastq
 			echo "Retrieving ${source_path}/${full_sample_name} and ${full_sample_name_pair}"
 			#if [[ "${match}" -eq 1 ]] || [[ "${match}" -eq 4 ]]; then
-				if [[ "${postfix}" = *"R1_001.fast"* ]] || [[ "${postfix}" = *"R1.fast"* ]] || [[ "${postfix}" = *"_1.fast"* ]]; then
+				if [[ "${postfix}" = *"R1_001.fast"* ]] || [[ "${postfix}" = *"R1.fast"* ]] || [[ "${postfix}" = *"1.fast"* ]]; then
 					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						if [[ -f "${source_path}/${full_sample_name_pair}" ]]; then
 							if [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" ]] && [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" ]]; then
@@ -155,7 +155,7 @@ do
 						fi
 					fi
 				fi
-				if [[ "${postfix}" = *"R2_001.fast"* ]] || [[ "${postfix}" = *"R2.fast"* ]] || [[ "${postfix}" = *"_2.fast"* ]]; then
+				if [[ "${postfix}" = *"R2_001.fast"* ]] || [[ "${postfix}" = *"R2.fast"* ]] || [[ "${postfix}" = *"2.fast"* ]]; then
 					if [[ "${full_sample_name}" = *".fastq.gz" ]]; then
 						if [[ -f "${source_path}/${full_sample_name_pair}" ]]; then
 							if [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R2_001.fastq.gz" ]] && [[ -f "${OUTDATADIR}/${short_name}/FASTQs/${short_name}_R1_001.fastq.gz" ]]; then

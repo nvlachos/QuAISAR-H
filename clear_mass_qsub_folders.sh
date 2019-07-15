@@ -10,7 +10,7 @@
 . ./config.sh
 
 #
-# Usage ./clear_mass_qsub_folders [1,2,3] (1-qsub folders, 2-qsub outs/errs, 3-Both) folder_containinng_script_files_to_be_deleted
+# Usage ./clear_mass_qsub_folders [1,2,3] (1-qsub folders, 2-sharescript outs/errs, 3-Both) folder_containing_script_files_to_be_deleted
 #
 
 # Clears out script folder of all .sh, .err, and .out files and the complete folders within each qsub type folder
