@@ -72,6 +72,10 @@ do
 			full_sample_name_pair=${full_sample_name/_R1_/_R2_}
 		elif [[ "${full_sample_name}" = *"_R2_"* ]]; then
 			full_sample_name_pair="${full_sample_name/_R2_/_R1_}"
+		if [[ "${full_sample_name}" = *"_1.fast"* ]]; then
+			full_sample_name_pair=${full_sample_name/_1.fast/_2.fast}
+		elif [[ "${full_sample_name}" = *"_2.fast"* ]]; then
+			full_sample_name_pair="${full_sample_name/_2.fast/_1.fast}"
 		fi
 		# gets path from file
 		source_path=$(dirname "${file}")
