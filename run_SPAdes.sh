@@ -20,6 +20,8 @@ fi
 # Modules required SPAdes/3.10.1
 #
 
+ml SPAdes/3.13.0
+
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
@@ -50,6 +52,8 @@ if [ "${2}" = "normal" ]; then
 else
 	echo "Unknown type requested...not running SPAdes"
 fi
+
+ml -SPAdes/3.13.0
 
 #Script exited gracefully (unless something else inside failed)
 exit 0

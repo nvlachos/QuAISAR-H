@@ -13,7 +13,7 @@ fi
 
 . ./config.sh
 
-module load ncbi-blast+/2.6.0
+ml ncbi-blast+/LATEST
 
 #
 # Finds anti-microbial resistance genes in the resFinder and ARG-ANNOT databases and exports a file containing list of all genes found
@@ -195,6 +195,8 @@ fi
 
 #Returns to original directory
 cd "${owd}"
+
+ml -ncbi-blast+/LATEST
 
 #Script exited gracefully (unless something else inside failed)
 exit 0

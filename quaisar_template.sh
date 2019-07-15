@@ -185,7 +185,7 @@ fi
 python2 "${shareScript}/Fastq_Quality_Printer.py" -1 "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.paired.fq" -2 "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.paired.fq" > "${OUTDATADIR}/${filename}/preQCcounts/${filename}_trimmed_counts.txt"
 
 # Merge both unpaired fq files into one for GOTTCHA
-cat "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.paired.fq" "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.paired.fq" > "${OUTDATADIR}/${filename}/trimmed/${filename}.paired.fq"
+#cat "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.paired.fq" "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.paired.fq" > "${OUTDATADIR}/${filename}/trimmed/${filename}.paired.fq"
 cat "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.unpaired.fq" "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.unpaired.fq" > "${OUTDATADIR}/${filename}/trimmed/${filename}.single.fq"
 
 
