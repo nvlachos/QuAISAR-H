@@ -12,8 +12,8 @@ echo "${shareScript}"
 config_counter=0
 while true
 do
-	if [[ "${config_counter}" -gt 9 ]]; then
-		echo "Already 10 parallel quaisar sets running, please wait until one finishes...exiting"
+	if [[ "${config_counter}" -gt ${max_quaisars} ]]; then
+		echo "Already ${max_quaisars} parallel quaisar sets running, please wait until one finishes (or check script directory for any straggling config_X.sh files that may not be being used anymore)...exiting"
 		exit 324
 	fi
 	if [[ ! -f "${shareScript}/config_${config_counter}.sh" ]]; then

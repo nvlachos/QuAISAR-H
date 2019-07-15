@@ -44,7 +44,7 @@ local_DBs="/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases"
 # Scicomp databases that are necessary for pipeline...eventually refseq, kraken, gottcha,
 scicomp_DBs="/scicomp/reference"
 # Maximum number of quaisar pipelines to be running concurrently
-max_quaisars=25
+max_quaisars=99
 
 #Instruments and locations of files stored by those instruments
 miseq1="/scicomp/instruments/17-4-4248_Illumina-MiSeq-M04765"
