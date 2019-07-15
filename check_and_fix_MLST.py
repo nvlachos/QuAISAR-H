@@ -69,7 +69,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 		mlstype_str = [MLST_temp_type]
 		mlstype=[MLST_temp_type]
 		for i in range(0, len(mlstype)):
-			if mlstype[i] != '-':
+			if mlstype[i] != '-' and mlstype[i] != 'PAM' and mlstype[i] != 'NAM':
 				mlstype[i] = int(mlstype[i])
 		mlstype.sort()
 	else:
