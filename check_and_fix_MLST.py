@@ -233,31 +233,31 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file):
 		print("type_check#", len(types), ":", types[i])
 		if types[i] == -1:
 			passed="true"
+			# NAM - Novel Allele Match, perfect match to new closest alleles
+			# PAM - Partial Allele match to closest allele (>= mincov, >= minID )
 			for locus in list_of_profiles[i]:
 				print(locus)
 				if '?' in locus:
 					passed="false"
-					if types[i] == "NAM" or types[i] == "NAM&UAP" or types[i] == "UAP":
-						types[i]="PAM&"+types[i]
+					if types[i] == "NAM":
+						types[i]="PAM&NAM"
 					else:
 						types[i]="PAM"
 				elif '~' in locus:
 					passed="false"
 					if types[i] == "PAM":
 						types[i]="PAM&NAM"
-					elif types[i] == "PAM&UAP":
-						types[i]="PAM&NAM&UAP"
 					else:
-						if types[i] == "NAM" or types[i] == "NAM&UAP" or types[i] == "PAM":
+						if types[i] == "NAM" or types[i] == "PAM":
 							types[i]="PAM&"+types[i]
 						else:
 							types[i]="PAM"
-				elif '*' in locus:
-					passed="false"
-					if types[i] == "NAM" or types[i] == "PAM" or types[i] == "NAM&PAM":
-						types[i]=types[i]+"&UAP"
-					else:
-						types[i]="UAP"
+				#elif '*' in locus:
+				#	passed="false"
+				#	if types[i] == "NAM" or types[i] == "PAM" or types[i] == "NAM&PAM":
+				#		types[i]=types[i]+"&UAP"
+				#	else:
+				#		types[i]="UAP"
 			if passed == "true":
 				types[i] = "NID"
 		else:
