@@ -8,6 +8,9 @@
 
 # Copy config file into working directory to allow changes to made to output directory if necessary
 shareScript=$(pwd)
+#Import the config file with shortcuts and settings
+. ${shareScript}/config.sh
+
 echo "${shareScript}"
 config_counter=0
 while true
@@ -30,8 +33,7 @@ do
 	fi
 done
 
-#Import the config file with shortcuts and settings
-. ${shareScript}/config.sh
+
 
 
 #
