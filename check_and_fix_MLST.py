@@ -252,6 +252,7 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file):
 							types[i]="PAM&"+types[i]
 						else:
 							types[i]="PAM"
+				print(types[i])
 				#elif '*' in locus:
 				#	passed="false"
 				#	if types[i] == "NAM" or types[i] == "PAM" or types[i] == "NAM&PAM":
