@@ -230,13 +230,13 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file):
 						break
 	types.sort()
 	for i in range(0, len(types)):
-		print("type_check#", len(types), ":", types[i])
+		#print("type_check#", len(types), ":", types[i])
 		if types[i] == -1:
 			passed="true"
 			# NAM - Novel Allele Match, perfect match to new closest alleles
 			# PAM - Partial Allele match to closest allele (>= mincov, >= minID )
 			for locus in list_of_profiles[i]:
-				print(locus)
+				#print(locus)
 				if '?' in locus:
 					passed="false"
 					if types[i] == "NAM":
@@ -249,7 +249,7 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file):
 						types[i]="PAM&NAM"
 					else:
 						types[i]="NAM"
-				print(types[i])
+				#print(types[i])
 				#elif '*' in locus:
 				#	passed="false"
 				#	if types[i] == "NAM" or types[i] == "PAM" or types[i] == "NAM&PAM":
