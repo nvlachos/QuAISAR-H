@@ -151,6 +151,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 	print("Old types:", mlstype)
 
 	if checking:
+		new_types=sorted(new_types, key=lambda x: str(x))
 		print("New types:", new_types)
 		if mlstype != new_types:
 			for i in range(0, len(new_types)):
