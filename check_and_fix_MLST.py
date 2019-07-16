@@ -272,19 +272,19 @@ def find_DB_taxonomy(genus, species):
 	if genus == "Acinetobacter":
 		if species == "baumannii#1-Oxford":
 			#print("Waiting for confirmation of success for abaumannii#1")
-			species="abaumannii"
+			species="baumannii"
 		elif species == "baumannii#2-Pasteur":
 			#print("Waiting for confirmation of success for abaumannii#2")
-			species="abaumannii_2"
+			species="baumannii_2"
 		else:
 			print("Extra baumannii. Not a known DB variant #1/#2")
 	elif genus == "Escherichia":
 		if species == "coli#1-Achtman":
 			#print("Waiting for confirmation of success for abaumannii#1")
-			species="ecoli"
+			species="coli"
 		elif species == "coli#2-Pasteur":
 			#print("Waiting for confirmation of success for abaumannii#2")
-			species="ecoli_2"
+			species="coli_2"
 		else:
 			print("Extra coli. Not a known DB variant #1/#2")
 	elif genus == "Burkholderia" and species == "cepacia":
