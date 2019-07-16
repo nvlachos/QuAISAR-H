@@ -281,7 +281,7 @@ def find_DB_taxonomy(genus, species):
 			#print("Waiting for confirmation of success for abaumannii#2")
 			species="abaumannii_2"
 		else:
-			#print("Waiting for confirmation of filenames for abuamanniis")
+			print("Extra baumannii. Not a known DB variant #1/#2")
 	elif genus == "Escherichia":
 		if species == "coli#1":
 			#print("Waiting for confirmation of success for abaumannii#1")
@@ -290,7 +290,7 @@ def find_DB_taxonomy(genus, species):
 			#print("Waiting for confirmation of success for abaumannii#2")
 			species=ecoli_2
 		else:
-			print("Waiting for confirmation of filenames for ecolis")
+			print("Extra coli. Not a known DB variant #1/#2")
 	elif genus == "Burkholderia" and species == "cepacia":
 		return "bcc"
 
