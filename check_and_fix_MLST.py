@@ -15,7 +15,18 @@ def parseArgs(args=None):
 # main function that looks if all MLST types are defined for an outptu mlst file
 def do_MLST_check(input_MLST_file, MLST_filetype):
 	# Must check if input_MLST_file has more than 1 line, different versions of MLST make different outputs
+	MLST_changed_file="/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/updated_MLSTs.txt"
+	blanks_file="/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/blank_MLSTs.txt"
+	filepath=input_MLST_file[::-1].split("/")[2:4]
+	#print(filepath)
+	for i in range(0, len(filepath)):
+		#print(filepath[i])
+		filepath[i]=filepath[i][::-1]
+	filepath=filepath[::-1]
+	filepath="/".join(filepath)
+	
 	bad_types=['-', 'AU', 'SUB']
+	# Outdated now because all old versions should be fixed, but keeping for a little while longer
 	change_to_SUB=["NAM","PAM","NID","NAM&PAM", "PAM&NAM"]
 	change_to_AU=["AMI", "NAM&AMI", "PAM&AMI", "NAM&PAM&AMI", "PAM&NAM&AMI"]
 	types=""
@@ -86,10 +97,10 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 			mlstype=MLST_temp_type.split(",")
 		else:
 			mlstype=MLST_temp_type.split("|")
-	print("Current MLST type:", mlstype, "\n")
+	print("Current MLST type:", mlstype)
 	list_size=len(allele_list)
 	print("Allele_names:", allele_names)
-	print("Alleles_found:", allele_list, "\n")
+	print("Alleles_found:", allele_list)
 	#for allele_index in range(0,len(allele_list)):
 	#	allele_list[allele_index]=allele_list[allele_index].sort()
 	if list_size == 7:
@@ -112,7 +123,11 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 		schemes[profile_index]=temp_scheme
 		#print(profile_index, schemes[profile_index])
 	if len(schemes) == 0:
-		print("No schemes found???")
+		print("No schemes found???, probably needs to be deleted, just adding to blanks list currently")
+		#os.remove(args.input)
+		blanks=open(blanks_file,'a+')
+		blanks.write(filepath+"	has no scheme database determined...checked against wrong or unknown DB\n")
+		blanks.close()
 	elif len(schemes) == 1:
 		if mlstype[0] not in bad_types:
 	 		print("This sample is singular and defined\n")
@@ -136,16 +151,10 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 			print("This sample is a multiple and something is UNdefined")
 			new_types=get_type(schemes, allele_names, db_name)
 			checking=True
-	print("Old types:", mlstype, "\n")
-	filepath=input_MLST_file[::-1].split("/")[2:4]
-	#print(filepath)
-	for i in range(0, len(filepath)):
-		#print(filepath[i])
-		filepath[i]=filepath[i][::-1]
-	filepath=filepath[::-1]
-	filepath="/".join(filepath)
+	print("Old types:", mlstype)
+
 	if checking:
-		print("New types:", new_types, "\n")
+		print("New types:", new_types)
 		if mlstype != new_types:
 			for i in range(0, len(new_types)):
 				#print(new_types[i])
@@ -178,7 +187,6 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 						print("Investigate/Submit allele or maybe try srst2 to fix allele issue on:", filepath)
 					else:
 						print("Investigate/Submit allele to fix allele issue on:", filepath)
-				blanks_file="/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/blank_MLSTs.txt"
 				blanks=open(blanks_file,'a+')
 				blanks.write(filepath+"	"+",".join(problem)+"	"+"	".join(MLST_items[1:])+"\n")
 				blanks.close()
@@ -194,14 +202,13 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 				MLST_file.write('	'.join(MLST_items))
 				MLST_file.write('	'.join(MLST_items_second))
 				MLST_file.close()
-			MLST_changed_file="/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/updated_MLSTs.txt"
 			MLST_changed_file_handler=open(MLST_changed_file,'a+')
 			MLST_changed_file_handler.write(filepath+"	"+db_name+"	"+",".join(mlstype_str)+" to "+new_types+"\n")
 			MLST_changed_file_handler.close()
 		else:
 			print(input_MLST_file, "is as good as it gets with type", mlstype)
 	else:
-		print("Sticking with already found mlstype", mlstype)
+		print("Sticking with already found mlstype", mlstype,"\n")
 
 # Uses the local copy of DB file to look up actual ST type
 def get_type(list_of_profiles, list_of_allele_names, DB_file):
@@ -220,14 +227,14 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file):
 						profile_size+=1
 					else:
 						break
-				print(db_items[1:profile_size])
-				print(list_of_allele_names)
-				if db_items[1:profile_size] == list_of_allele_names:
-					print("Allele names match, yay!")
-				else:
-					print("We'll have to fix this if it ever comes up")
+				#print(db_items[1:profile_size])
+				#print(list_of_allele_names)
+				if db_items[1:profile_size] != list_of_allele_names:
+					print("Allele names DO NOT match...We'll have to fix this if it ever comes up")
 					print("db: "+db_items)
 					print("list:"+allele_names)
+				#else:
+				#	print("Allele names match, yay!")
 			else:
 				for index in range(0,len(types)):
 					current_profile=db_items[1:profile_size]
@@ -250,7 +257,7 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file):
 				types[i]="AU"
 				continue
 			for locus in list_of_profiles[i]:
-				print("Test:",locus)
+				#print("Test:",locus)
 				if '?' in locus or '~' in locus:
 					passed="false"
 					if types[i] != "AU":
@@ -284,7 +291,7 @@ def find_DB_taxonomy(genus, species):
 		return "bcc"
 	else:
 		db_test_species=str(genus[0:1]).lower()+species
-		print("Test_species_DB=", db_test_species)
+		#print("Test_species_DB=", db_test_species)
 		species_exists = os.path.exists('/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/pubmlsts/'+db_test_species)
 		genus_exists = os.path.exists('/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/pubmlsts/'+genus.lower())
 		species_path = Path('/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/pubmlsts/'+db_test_species)
@@ -300,6 +307,10 @@ def find_DB_taxonomy(genus, species):
 			exit()
 
 
-print("Parsing MLST file ...\n")
+print("Parsing MLST file ...")
 args = parseArgs()
-do_MLST_check(args.input, args.filetype) #, "/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/mlst/abaumannii_Pasteur.txt") #sys.argv[3])
+if os.stat(args.input).st_size > 0:
+	do_MLST_check(args.input, args.filetype) #, "/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/mlst/abaumannii_Pasteur.txt") #sys.argv[3])
+else:
+	print(args.input,"has an empty mlst file, so it will be deleted")
+	os.remove(args.input)
