@@ -105,11 +105,11 @@ if [[ "${genus}" == "Acinetobacter" ]]; then
 elif [[ "${genus}" == "Escherichia" ]]; then
 	echo "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
 	if [[ "${species}" == "coli#1" ]]; then
-		sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
+	#	sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
 	#	sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/ecoli(Achtman).txt"
 		db_name="Achtman"
 	elif [[ "${species}" == "coli#2" ]]; then
-		sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
+	#	sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
 	#	sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/ecoli_2(Pasteur).txt"
 		db_name="Pasteur"
 	else
