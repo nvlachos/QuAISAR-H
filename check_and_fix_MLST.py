@@ -78,25 +78,21 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 	else:
 		print("Unknown MLST filetype, can not continue")
 		exit()
-	MLST_temp_type=MLST_temp_type.replace("/", ",")
+	MLST_temp_type=MLST_temp_type.replace("/", ",").replace("|",",")
 	if "," not in MLST_temp_type:
-		mlstype_str = [MLST_temp_type]
 		mlstype=[MLST_temp_type]
-		au_list=[]
-		sub_list=[]
-		for i in range(0, len(mlstype)):
-			if mlstype[i] in change_to_AU:
-				mlstype[i]="AU"
-			if mlstype[i] in change_to_SUB:
-				mlstype[i]="SUB"
-			if mlstype[i] not in bad_types:
-				mlstype[i] = int(mlstype[i])
-		mlstype.sort()
 	else:
-		if "," in MLST_temp_type:
-			mlstype=MLST_temp_type.split(",")
-		else:
-			mlstype=MLST_temp_type.split("|")
+		mlstype=[MLST_temp_type.split(",")
+	mlstype_str = str(MLST_temp_type)
+	for i in range(0, len(mlstype)):
+		if mlstype[i] in change_to_AU:
+			mlstype[i]="AU"
+		if mlstype[i] in change_to_SUB:
+			mlstype[i]="SUB"
+		if mlstype[i] not in bad_types:
+			mlstype[i] = int(mlstype[i])
+	mlstype.sort()
+
 	print("Current MLST type:", mlstype)
 	list_size=len(allele_list)
 	print("Allele_names:", allele_names)
@@ -164,11 +160,11 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 				new_types[i] = str(new_types[i])
 			#new_types.sort()
 			new_types='/'.join(new_types)
-			print("Updating MLST types in", input_MLST_file, "from", ",".join(mlstype_str), "to", new_types)
+			print("Updating MLST types in", input_MLST_file, "from", "/".join(mlstype_str), "to", new_types)
 			MLST_temp_types=new_types
 			# Log any incomplete/strange types found
 			if '-' in MLST_temp_types or 'SUB' in MLST_temp_types:
-				if MLST_temp_types.count("-", 0, len(MLST_temp_types)) + MLST_temp_types.count("ND", 0, len(MLST_temp_types)) == 1:
+				if MLST_temp_types.count("-", 0, len(MLST_temp_types)) + MLST_temp_types.count("SUB", 0, len(MLST_temp_types)) + MLST_temp_types.count("AU", 0, len(MLST_temp_types)) == 1:
 					problem=["Profile_undefined"]
 				else:
 					problem=["Profiles_undefined"]
@@ -203,7 +199,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 				MLST_file.write('	'.join(MLST_items_second))
 				MLST_file.close()
 			MLST_changed_file_handler=open(MLST_changed_file,'a+')
-			MLST_changed_file_handler.write(filepath+"	"+db_name+"	"+",".join(mlstype_str)+" to "+new_types+"\n")
+			MLST_changed_file_handler.write(filepath+"	"+db_name+"	"+"/".join(mlstype_str)+" to "+new_types+"\n")
 			MLST_changed_file_handler.close()
 		else:
 			print(input_MLST_file, "is as good as it gets with type", mlstype)
@@ -293,22 +289,22 @@ def find_DB_taxonomy(genus, species):
 			print("Extra coli. Not a known DB variant #1/#2")
 	elif genus == "Burkholderia" and species == "cepacia":
 		return "bcc"
+	db_test_species=str(genus[0:1]).lower()+species
+	#print("Test_species_DB=", db_test_species)
+	species_exists = os.path.exists('/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/pubmlsts/'+db_test_species)
+	genus_exists = os.path.exists('/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/pubmlsts/'+genus.lower())
+	species_path = Path('/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/pubmlsts/'+db_test_species)
+	genus_path = Path('/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/pubmlsts/'+db_test_species)
+	if species_path.exists():
+		print("Found species DB:", db_test_species)
+		return db_test_species
+	elif genus_path.exists():
+		print("Found genus DB:", genus.lower())
+		return genus
+	else:
+		print("No database found for", genus, species)
+		exit()
 
-		db_test_species=str(genus[0:1]).lower()+species
-		#print("Test_species_DB=", db_test_species)
-		species_exists = os.path.exists('/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/pubmlsts/'+db_test_species)
-		genus_exists = os.path.exists('/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/pubmlsts/'+genus.lower())
-		species_path = Path('/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/pubmlsts/'+db_test_species)
-		genus_path = Path('/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/pubmlsts/'+db_test_species)
-		if species_path.exists():
-			print("Found species DB:", db_test_species)
-			return db_test_species
-		elif genus_path.exists():
-			print("Found genus DB:", genus.lower())
-			return genus
-		else:
-			print("No database found for", genus, species)
-			exit()
 
 
 print("Parsing MLST file ...")
