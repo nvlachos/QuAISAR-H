@@ -25,7 +25,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 	filepath=filepath[::-1]
 	filepath="/".join(filepath)
 
-	bad_types=['-', 'AU', 'SUB']
+	bad_types=['-', 'AU', 'SUB', 'NAF']
 	# Outdated now because all old versions should be fixed, but keeping for a little while longer
 	change_to_SUB=["NAM","PAM","NID","NAM&PAM", "PAM&NAM"]
 	change_to_AU=["AMI", "NAM&AMI", "PAM&AMI", "NAM&PAM&AMI", "PAM&NAM&AMI"]
@@ -133,7 +133,11 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 			new_types=get_type(schemes, allele_names, db_name)
 			checking=True
 	elif len(schemes) > 1:
-		if "-" not in mlstype and "AU" not in mlstype and "SUB" not in mlstype:
+		if "NAF" in mlstype:
+			print("This sample had no alleles found last time, must be very poor quality or compared to the wrong database\n")
+			new_types=get_type(schemes, allele_names, db_name)
+			checking=True
+		elif "-" not in mlstype and "AU" not in mlstype and "SUB" not in mlstype:
 			if len(schemes) == len(mlstype):
 				print("This sample is a multiple and defined\n")
 			elif len(schemes) > len(mlstype):
@@ -168,6 +172,8 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 			if '-' in MLST_temp_types or 'SUB' in MLST_temp_types:
 				if MLST_temp_types.count("-", 0, len(MLST_temp_types)) + MLST_temp_types.count("SUB", 0, len(MLST_temp_types)) + MLST_temp_types.count("AU", 0, len(MLST_temp_types)) == 1:
 					problem=["Profile_undefined"]
+				elif "NAF" in MLST_temp_type:
+					problem="NO_Alleles_for_profile"
 				else:
 					problem=["Profiles_undefined"]
 				for i in range(0, len(schemes)):
@@ -180,6 +186,8 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 									problem.append(allele_names[j])
 				if problem[0] == "Profile_undefined" or problem[0] == "Profiles_undefined":
 					print("Must submit profile(s) for :", filepath)
+				elif problem[0] == "NO_Alleles_for_profile":
+					print("No alleles found for sample, maybe try checking that samples was run against proper DB?")
 				else:
 					if MLST_filetype == "standard":
 						print("Investigate/Submit allele or maybe try srst2 to fix allele issue on:", filepath)
@@ -252,7 +260,7 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file):
 			# AU - Allele(s) missing and not close to anything in current database, therefore can not do anything further
 			# SUB - One or more alleles and/or profiles ned to be submitted for classification to proper DB scheme
 			if len(set(list_of_profiles[i])) == 1 and list_of_profiles[i] == '-':
-				types[i]="AU"
+				types[i]="NAF"
 				continue
 			for locus in list_of_profiles[i]:
 				#print("Test:",locus)
