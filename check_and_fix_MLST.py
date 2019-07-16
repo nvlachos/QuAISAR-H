@@ -16,6 +16,8 @@ def parseArgs(args=None):
 def do_MLST_check(input_MLST_file, MLST_filetype):
 	# Must check if input_MLST_file has more than 1 line, different versions of MLST make different outputs
 	bad_types=['-', 'AU', 'SUB']
+	change_to_SUB=["NAM","PAM","NID","NAM&PAM", "PAM&NAM"]
+	change_to_AU=["AMI", "NAM&AMI", "PAM&AMI", "NAM&PAM&AMI", "PAM&NAM&AMI"]
 	types=""
 	schemes=[]
 	MLST_file=open(input_MLST_file,'r')
@@ -69,7 +71,13 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 	if "," not in MLST_temp_type:
 		mlstype_str = [MLST_temp_type]
 		mlstype=[MLST_temp_type]
+		au_list=[]
+		sub_list=[]
 		for i in range(0, len(mlstype)):
+			if mlstype[i] in change_to_AU:
+				mlstype[i]="AU"
+			if mlstype[i] in change_to_SUB:
+				mlstype[i]="SUB"
 			if mlstype[i] not in bad_types:
 				mlstype[i] = int(mlstype[i])
 		mlstype.sort()
@@ -199,11 +207,11 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 def get_type(list_of_profiles, list_of_allele_names, DB_file):
 	types=["Not_initialized"]
 	full_db_path="/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/pubmlsts/"+DB_file+"/"+DB_file+".txt"
-	with open(full_db_path,'r') as f:
+	with open(full_db_path,'r') as scheme:
 		profile_size=0
 		types = [-1] * len(list_of_profiles)
 		#print("Size:", len(types), " &  contents:", types)
-		for line in f:
+		for line in scheme:
 			db_line=line.strip()
 			db_items=db_line.split("	")
 			if db_items[0] == "ST":
