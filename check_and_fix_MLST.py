@@ -270,21 +270,21 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file):
 
 def find_DB_taxonomy(genus, species):
 	if genus == "Acinetobacter":
-		if species == "baumannii#1":
+		if species == "baumannii#1-Oxford":
 			#print("Waiting for confirmation of success for abaumannii#1")
 			species="abaumannii"
-		elif species == "baumannii#2":
+		elif species == "baumannii#2-Pasteur":
 			#print("Waiting for confirmation of success for abaumannii#2")
 			species="abaumannii_2"
 		else:
 			print("Extra baumannii. Not a known DB variant #1/#2")
 	elif genus == "Escherichia":
-		if species == "coli#1":
+		if species == "coli#1-Achtman":
 			#print("Waiting for confirmation of success for abaumannii#1")
 			species="ecoli"
-		elif species == "coli#2":
+		elif species == "coli#2-Pasteur":
 			#print("Waiting for confirmation of success for abaumannii#2")
-			species=ecoli_2
+			species="ecoli_2"
 		else:
 			print("Extra coli. Not a known DB variant #1/#2")
 	elif genus == "Burkholderia" and species == "cepacia":
