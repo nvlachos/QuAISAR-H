@@ -92,12 +92,12 @@ db_name="Standard"
 if [[ "${genus}" == "Acinetobacter" ]]; then
 	echo "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
 	if [[ "${species}" == "baumannii#1" ]]; then
-		#sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
-		#sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/abaumannii(Oxford).txt"
+		sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
+		sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/abaumannii(Oxford).txt"
 		db_name="Oxford"
 	elif [[ "${species}" == "baumannii#2" ]]; then
-		#sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
-	#	sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/abaumannii_2(Pasteur).txt"
+		sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
+		sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/abaumannii_2(Pasteur).txt"
 		db_name="Pasteur"
 	else
 		echo "Unknown species in Acinetobacter MLST lookup"
@@ -105,12 +105,8 @@ if [[ "${genus}" == "Acinetobacter" ]]; then
 elif [[ "${genus}" == "Escherichia" ]]; then
 	echo "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
 	if [[ "${species}" == "coli#1" ]]; then
-	#	sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
-	#	sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/ecoli(Achtman).txt"
 		db_name="Achtman"
 	elif [[ "${species}" == "coli#2" ]]; then
-	#	sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
-	#	sed -i -e 's/Pas_//g' "${processed}/${2}/${1}/MLST/srst2/ecoli_2(Pasteur).txt"
 		db_name="Pasteur"
 	else
 		echo "Unknown species in Escherichia MLST lookup"
@@ -145,7 +141,7 @@ today=$(date "+%Y-%m-%d")
 # Cleans up extra files and renames output file
 mv "${processed}/${2}/${1}/MLST/srst2/${1}__mlst__${genus}_${species}__results.txt" "${processed}/${2}/${1}/MLST/${1}_srst2_${genus}_${species}-${db_name}.mlst"
 mv "${processed}/${2}/${1}/MLST/srst2/mlst_data_download_${genus}_${species}_${today}.log" "${processed}/${2}/${1}/MLST/"
-rm -r "${processed}/${2}/${1}/MLST/srst2"
+#rm -r "${processed}/${2}/${1}/MLST/srst2"
 
 if [[ -f "${processed}/${2}/${1}/MLST/srst2/${1}__${1}.${genus}_${species}.pileup" ]]; then
 	rm -r "${processed}/${2}/${1}/MLST/srst2/${1}__${1}.${genus}_${species}.pileup"
