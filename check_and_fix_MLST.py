@@ -15,6 +15,7 @@ def parseArgs(args=None):
 # main function that looks if all MLST types are defined for an outptu mlst file
 def do_MLST_check(input_MLST_file, MLST_filetype):
 	# Must check if input_MLST_file has more than 1 line, different versions of MLST make different outputs
+	bad_types=['-', 'AU', 'SUB']
 	types=""
 	schemes=[]
 	MLST_file=open(input_MLST_file,'r')
@@ -69,7 +70,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 		mlstype_str = [MLST_temp_type]
 		mlstype=[MLST_temp_type]
 		for i in range(0, len(mlstype)):
-			if mlstype[i] != '-' and mlstype[i] != 'PAM' and mlstype[i] != 'NAM':
+			if mlstype[i] not in bad_types:
 				mlstype[i] = int(mlstype[i])
 		mlstype.sort()
 	else:
@@ -105,22 +106,22 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 	if len(schemes) == 0:
 		print("No schemes found???")
 	elif len(schemes) == 1:
-		if mlstype[0] != "-":
+		if mlstype[0] not in bad_types:
 	 		print("This sample is singular and defined\n")
 		else:
 			print("This sample is singular and UNdefined\n")
 			new_types=get_type(schemes, allele_names, db_name)
 			checking=True
 	elif len(schemes) > 1:
-		if "-" not in mlstype:
+		if "-" not in mlstype and "AU" not in mlstype and "SUB" not in mlstype:
 			if len(schemes) == len(mlstype):
 				print("This sample is a multiple and defined\n")
 			elif len(schemes) > len(mlstype):
-				print("Not enough types to match schemes")
+				print("Not enough types to match schemes, checking")
 				new_types=get_type(schemes, allele_names, db_name)
 				checking=True
 			elif len(schemes) < len(mlstype):
-				print("Not enough schemes to match types")
+				print("Not enough schemes to match types, checking")
 				new_types=get_type(schemes, allele_names, db_name)
 				checking=True
 		else:
@@ -149,14 +150,14 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 			print("Updating MLST types in", input_MLST_file, "from", ",".join(mlstype_str), "to", new_types)
 			MLST_temp_types=new_types
 			# Log any incomplete/strange types found
-			if '-' in MLST_temp_types or 'ND' in MLST_temp_types or 'NF' in MLST_temp_types:
-				if MLST_temp_types.count("-", 0, len(MLST_temp_types)) + MLST_temp_types.count("ND", 0, len(MLST_temp_types)) + MLST_temp_types.count("NF", 0, len(MLST_temp_types)) == 1:
+			if '-' in MLST_temp_types or 'SUB' in MLST_temp_types:
+				if MLST_temp_types.count("-", 0, len(MLST_temp_types)) + MLST_temp_types.count("ND", 0, len(MLST_temp_types)) == 1:
 					problem=["Profile_undefined"]
 				else:
 					problem=["Profiles_undefined"]
 				for i in range(0, len(schemes)):
 					for j in range(0, len(schemes[i])):
-						if "-" in schemes[i][j] or "~" in schemes[i][j] or "?" in schemes[i][j] or "*" in schemes[i][j]:
+						if "-" in schemes[i][j] or "AU" in schemes[i][j] or "SUB" in schemes[i][j] or  "~" in schemes[i][j] or "?" in schemes[i][j] or "*" in schemes[i][j]:
 							if problem[0] == "Profile_undefined" or problem[0] == "Profiles_undefined":
 								problem[0]="Allele(s)-"+str(allele_names[j])
 							else:
@@ -191,6 +192,8 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 			MLST_changed_file_handler.close()
 		else:
 			print(input_MLST_file, "is as good as it gets with type", mlstype)
+	else:
+		print("Sticking with already found mlstype", mlstype)
 
 # Uses the local copy of DB file to look up actual ST type
 def get_type(list_of_profiles, list_of_allele_names, DB_file):
@@ -233,31 +236,23 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file):
 		#print("type_check#", len(types), ":", types[i])
 		if types[i] == -1:
 			passed="true"
-			# NAM - Novel Allele Match, perfect match to new closest alleles
-			# PAM - Partial Allele match to closest allele (>= mincov, >= minID )
+			# AU - Allele(s) missing and not close to anything in current database, therefore can not do anything further
+			# SUB - One or more alleles and/or profiles ned to be submitted for classification to proper DB scheme
+			if len(set(list_of_profiles[i])) == 1 and list_of_profiles[i] == '-':
+				types[i]="AU"
+				continue
 			for locus in list_of_profiles[i]:
-				#print(locus)
-				if '?' in locus:
+				print("Test:",locus)
+				if '?' in locus or '~' in locus:
 					passed="false"
-					if types[i] == "NAM":
-						types[i]="PAM&NAM"
-					else:
-						types[i]="PAM"
-				elif '~' in locus:
-					passed="false"
-					if types[i] == "PAM":
-						types[i]="PAM&NAM"
-					else:
-						types[i]="NAM"
+					if types[i] != "AU":
+						types[i]="SUB"
 				#print(types[i])
-				#elif '*' in locus:
-				#	passed="false"
-				#	if types[i] == "NAM" or types[i] == "PAM" or types[i] == "NAM&PAM":
-				#		types[i]=types[i]+"&UAP"
-				#	else:
-				#		types[i]="UAP"
+				elif '-' in locus:
+					passed="false"
+					types[i]="AU"
 			if passed == "true":
-				types[i] = "NID"
+				types[i] = "SUB"
 		else:
 			types[i] = str(types[i])
 	return types
