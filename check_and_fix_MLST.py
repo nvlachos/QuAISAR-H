@@ -82,7 +82,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 	if "," not in MLST_temp_type:
 		mlstype=[MLST_temp_type]
 	else:
-		mlstype=[MLST_temp_type.split(",")
+		mlstype=MLST_temp_type.split(",")
 	mlstype_str = str(MLST_temp_type)
 	for i in range(0, len(mlstype)):
 		if mlstype[i] in change_to_AU:
