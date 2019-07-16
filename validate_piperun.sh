@@ -1075,6 +1075,9 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 			if [[ "${mlstdb}" = "abaumannii_2" ]]; then
 				mlstdb="${mlstdb}(Pasteur)"
 			fi
+			if [[ "${mlstdb}" = "ecoli" ]]; then
+				mlstdb="${mlstdb}(Achtman)"
+			fi
 			printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
 		fi
 	else
@@ -1099,7 +1102,29 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}(Oxford)"
 				fi
 			else
-				eco "Not reporting as name and analyis expected do not match"
+				echo "Not reporting as name and analyis expected do not match"
+			fi
+		fi
+	fi
+	if [[ "${dec_genus}" = "Escherichia" ]]; then
+		if [[ -s "${OUTDATADIR}/MLST/${1}_ecoli_2.mlst" ]]; then
+			info=$(tail -n 1 "${OUTDATADIR}/MLST/${1}_ecoli_2.mlst")
+			mlstype=$(echo "${info}" | cut -d'	' -f3)
+			mlstdb=$(echo "${info}" | cut -d'	' -f2)
+			#echo "'${mlstdb}:${mlstype}'"
+			if [ "${mlstdb}" = "ecoli_2" ]; then
+				if [ "${mlstype}" = "-" ]; then
+					printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
+					report_info=$(echo "${info}" | cut -d' ' -f2-)
+					echo "${2}/${1}: Possible new MLST type - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
+					if [[ "${status}" = "SUCCESS" ]] || [[ "${status}" = "ALERT" ]]; then
+						status="WARNING"
+					fi
+				else
+					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}(Pasteur)"
+				fi
+			else
+				echo "Not reporting as name and analyis expected do not match"
 			fi
 		fi
 	fi
