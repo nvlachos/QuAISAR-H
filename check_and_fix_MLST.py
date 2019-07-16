@@ -193,7 +193,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 				MLST_file.write('	'.join(MLST_items))
 				MLST_file.close()
 			elif MLST_filetype == "srst2":
-				MLST_items[1]=MLST_temp_types
+				MLST_items_second[1]=MLST_temp_types
 				MLST_file=open(input_MLST_file,'w')
 				MLST_file.write('	'.join(MLST_items))
 				MLST_file.write('	'.join(MLST_items_second))
