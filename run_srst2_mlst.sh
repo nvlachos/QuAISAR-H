@@ -155,4 +155,4 @@ if [[ -f "${processed}/${2}/${1}/MLST/${1}__${1}.${genus}_${species}.sorted.bam"
 fi
 
 
-. "${mod_changers}/close_srst2.sh"
+# . "${mod_changers}/close_srst2.sh"
