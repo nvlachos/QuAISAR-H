@@ -266,8 +266,8 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file):
 					types[i]="AU"
 			if passed == "true":
 				types[i] = "SUB"
-		else:
-			types[i] = str(types[i])
+		#else:
+		#	types[i] = (types[i])
 	return types
 
 def find_DB_taxonomy(genus, species):
