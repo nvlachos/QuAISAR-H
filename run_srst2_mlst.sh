@@ -141,7 +141,7 @@ today=$(date "+%Y-%m-%d")
 # Cleans up extra files and renames output file
 mv "${processed}/${2}/${1}/MLST/srst2/${1}__mlst__${genus}_${species}__results.txt" "${processed}/${2}/${1}/MLST/${1}_srst2_${genus}_${species}-${db_name}.mlst"
 mv "${processed}/${2}/${1}/MLST/srst2/mlst_data_download_${genus}_${species}_${today}.log" "${processed}/${2}/${1}/MLST/"
-#rm -r "${processed}/${2}/${1}/MLST/srst2"
+rm -r "${processed}/${2}/${1}/MLST/srst2"
 
 if [[ -f "${processed}/${2}/${1}/MLST/srst2/${1}__${1}.${genus}_${species}.pileup" ]]; then
 	rm -r "${processed}/${2}/${1}/MLST/srst2/${1}__${1}.${genus}_${species}.pileup"
