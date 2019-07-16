@@ -91,7 +91,8 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 			mlstype[i]="SUB"
 		if mlstype[i] not in bad_types:
 			mlstype[i] = int(mlstype[i])
-	mlstype.sort()
+	#mlstype.sort()
+	mlstype=sorted(mlstype, key=lambda x: str(x[0]))
 
 	print("Current MLST type:", mlstype)
 	list_size=len(allele_list)
@@ -109,7 +110,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 	print("All possible schemes:")
 	print(schemes)
 	#print(*schemes, sep = "\n")
-	print()
+	#print()
 	checking=False
 	for profile_index in range(0, len(schemes)):
 		#print(profile_index, schemes[profile_index])
