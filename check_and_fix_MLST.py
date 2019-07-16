@@ -24,7 +24,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 		filepath[i]=filepath[i][::-1]
 	filepath=filepath[::-1]
 	filepath="/".join(filepath)
-	
+
 	bad_types=['-', 'AU', 'SUB']
 	# Outdated now because all old versions should be fixed, but keeping for a little while longer
 	change_to_SUB=["NAM","PAM","NID","NAM&PAM", "PAM&NAM"]
@@ -67,7 +67,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 		MLST_items_second=MLST_line_two.split("	")
 		MLST_temp_type=MLST_items_second[1]
 		sample=MLST_items_second[0]
-		for i in range(2, 2+len(allele_names)):
+		for i in range(0, len(allele_names)):
 			if '*' in MLST_items_second[i] or '?' in MLST_items_second[i] or '-' in MLST_items_second[i]:
 				allele_list.append(MLST_items_second[i].split(","))
 				print ("Appending non-int:", MLST_items_second[i].split(","))
@@ -258,7 +258,7 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file):
 				continue
 			for locus in list_of_profiles[i]:
 				#print("Test:",locus)
-				if '?' in locus or '~' in locus:
+				if '?' in locus or '~' in locus or '*' in locus:
 					passed="false"
 					if types[i] != "AU":
 						types[i]="SUB"
@@ -275,21 +275,25 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file):
 def find_DB_taxonomy(genus, species):
 	if genus == "Acinetobacter":
 		if species == "baumannii#1":
-			print("Waiting for confirmation of success for abaumannii#1")
+			#print("Waiting for confirmation of success for abaumannii#1")
+			species="abaumannii"
 		elif species == "baumannii#2":
-			print("Waiting for confirmation of success for abaumannii#2")
+			#print("Waiting for confirmation of success for abaumannii#2")
+			species="abaumannii_2"
 		else:
-			print("Waiting for confirmation of filenames for abuamanniis")
+			#print("Waiting for confirmation of filenames for abuamanniis")
 	elif genus == "Escherichia":
 		if species == "coli#1":
-			print("Waiting for confirmation of success for abaumannii#1")
+			#print("Waiting for confirmation of success for abaumannii#1")
+			species="ecoli"
 		elif species == "coli#2":
-			print("Waiting for confirmation of success for abaumannii#2")
+			#print("Waiting for confirmation of success for abaumannii#2")
+			species=ecoli_2
 		else:
 			print("Waiting for confirmation of filenames for ecolis")
 	elif genus == "Burkholderia" and species == "cepacia":
 		return "bcc"
-	else:
+
 		db_test_species=str(genus[0:1]).lower()+species
 		#print("Test_species_DB=", db_test_species)
 		species_exists = os.path.exists('/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/pubmlsts/'+db_test_species)
