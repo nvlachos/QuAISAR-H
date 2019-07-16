@@ -92,7 +92,7 @@ db_name="Standard"
 if [[ "${genus}" == "Acinetobacter" ]]; then
 	echo "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
 	if [[ "${species}" == "baumannii#1" ]]; then
-		#sed -i -e 's/>/>Oxf_/g' "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
+		sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
 		#sed -i -e 's/Oxf_//g' "${processed}/${2}/${1}/MLST/srst2/abaumannii(Oxford).txt"
 		db_name="Oxford"
 	elif [[ "${species}" == "baumannii#2" ]]; then
