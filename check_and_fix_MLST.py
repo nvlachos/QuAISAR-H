@@ -92,7 +92,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 		if mlstype[i] not in bad_types:
 			mlstype[i] = int(mlstype[i])
 	#mlstype.sort()
-	mlstype=sorted(mlstype, key=lambda x: str(x[0]))
+	mlstype=sorted(mlstype, key=lambda x: str(x))
 
 	print("Current MLST type:", mlstype)
 	list_size=len(allele_list)
