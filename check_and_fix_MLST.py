@@ -67,7 +67,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 		MLST_items_second=MLST_line_two.split("	")
 		MLST_temp_type=MLST_items_second[1]
 		sample=MLST_items_second[0]
-		for i in range(0, len(allele_names)):
+		for i in range(2, 2+len(allele_names)):
 			if '*' in MLST_items_second[i] or '?' in MLST_items_second[i] or '-' in MLST_items_second[i]:
 				allele_list.append(MLST_items_second[i].split(","))
 				print ("Appending non-int:", MLST_items_second[i].split(","))
