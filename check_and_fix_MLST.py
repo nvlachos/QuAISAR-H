@@ -228,7 +228,7 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file, source_filetype):
 			for allele in list_of_allele_names:
 				allele = "Pas_"+allele
 		else:
-			print "No adjustments needed to names in list_of_allele_names"
+			print("No adjustments needed to names in list_of_allele_names")
 	full_db_path="/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/pubmlsts/"+DB_file+"/"+DB_file+".txt"
 	with open(full_db_path,'r') as scheme:
 		profile_size=0
