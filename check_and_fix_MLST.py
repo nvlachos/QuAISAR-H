@@ -271,7 +271,7 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file, uncertainty_type):
 					if types[i] != "AU":
 						types[i]="SUB"
 				#print(types[i])
-			elif '-' in locus:
+				elif '-' in locus:
 					passed="false"
 					types[i]="AU"
 			if passed == "true":
