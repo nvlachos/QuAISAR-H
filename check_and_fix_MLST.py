@@ -219,8 +219,9 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 		print("Sticking with already found mlstype", mlstype,"\n")
 
 # Uses the local copy of DB file to look up actual ST type
-def get_type(list_of_profiles, list_of_allele_names, DB_file, uncertainty_type):
+def get_type(list_of_profiles, list_of_allele_names, DB_file, source_filetype):
 	types=["Not_initialized"]
+	print("/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/pubmlsts/"+DB_file+"/"+DB_file+".txt")
 	full_db_path="/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/pubmlsts/"+DB_file+"/"+DB_file+".txt"
 	with open(full_db_path,'r') as scheme:
 		profile_size=0
