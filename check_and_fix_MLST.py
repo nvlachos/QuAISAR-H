@@ -27,7 +27,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 
 	bad_types=['-', 'AU', 'SUB', 'NAF']
 	# Outdated now because all old versions should be fixed, but keeping for a little while longer
-	change_to_SUB=["NAM","PAM","NID","NAM&PAM", "PAM&NAM"]
+	change_to_SUB=["NAM","PAM","NID","NAM&PAM", "PAM&NAM", "NF"]
 	change_to_AU=["AMI", "NAM&AMI", "PAM&AMI", "NAM&PAM&AMI", "PAM&NAM&AMI"]
 	types=""
 	schemes=[]
@@ -42,6 +42,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 		allele_list=[]
 		allele_names=[]
 		allele_count=len(MLST_items)
+		uncertainty=""
 		# Default list size in case it is Empty
 		list_size=0
 		for allele in range(3, allele_count):
@@ -63,6 +64,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 				break
 			else:
 				allele_names.append(MLST_items[i])
+		uncertainty=MLST_items[10]
 		MLST_line_two=MLST_file.readline().strip()
 		MLST_items_second=MLST_line_two.split("	")
 		MLST_temp_type=MLST_items_second[1]
@@ -87,7 +89,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 	for i in range(0, len(mlstype)):
 		if mlstype[i] in change_to_AU:
 			mlstype[i]="AU"
-		if mlstype[i] in change_to_SUB:
+		if mlstype[i] in change_to_SUB or "*" in mlstype[i] or "?" in mlstype[i]:
 			mlstype[i]="SUB"
 		if mlstype[i] not in bad_types:
 			mlstype[i] = int(mlstype[i])
@@ -130,27 +132,27 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 	 		print("This sample is singular and defined\n")
 		else:
 			print("This sample is singular and UNdefined\n")
-			new_types=get_type(schemes, allele_names, db_name)
+			new_types=get_type(schemes, allele_names, db_name, uncertainty)
 			checking=True
 	elif len(schemes) > 1:
 		if "NAF" in mlstype:
 			print("This sample had no alleles found last time, must be very poor quality or compared to the wrong database\n")
-			new_types=get_type(schemes, allele_names, db_name)
+			new_types=get_type(schemes, allele_names, db_name, uncertainty)
 			checking=True
 		elif "-" not in mlstype and "AU" not in mlstype and "SUB" not in mlstype:
 			if len(schemes) == len(mlstype):
 				print("This sample is a multiple and defined\n")
 			elif len(schemes) > len(mlstype):
 				print("Not enough types to match schemes, checking")
-				new_types=get_type(schemes, allele_names, db_name)
+				new_types=get_type(schemes, allele_names, db_name, uncertainty)
 				checking=True
 			elif len(schemes) < len(mlstype):
 				print("Not enough schemes to match types, checking")
-				new_types=get_type(schemes, allele_names, db_name)
+				new_types=get_type(schemes, allele_names, db_name, uncertainty)
 				checking=True
 		else:
 			print("This sample is a multiple and something is UNdefined")
-			new_types=get_type(schemes, allele_names, db_name)
+			new_types=get_type(schemes, allele_names, db_name, uncertainty)
 			checking=True
 	print("Old types:", mlstype)
 
@@ -217,7 +219,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 		print("Sticking with already found mlstype", mlstype,"\n")
 
 # Uses the local copy of DB file to look up actual ST type
-def get_type(list_of_profiles, list_of_allele_names, DB_file):
+def get_type(list_of_profiles, list_of_allele_names, DB_file, uncertainty_type):
 	types=["Not_initialized"]
 	full_db_path="/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/pubmlsts/"+DB_file+"/"+DB_file+".txt"
 	with open(full_db_path,'r') as scheme:
@@ -269,7 +271,7 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file):
 					if types[i] != "AU":
 						types[i]="SUB"
 				#print(types[i])
-				elif '-' in locus:
+			elif '-' in locus:
 					passed="false"
 					types[i]="AU"
 			if passed == "true":
