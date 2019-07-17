@@ -197,9 +197,9 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 						print("Investigate/Submit allele to fix allele issue on:", filepath)
 				blanks=open(blanks_file,'a+')
 				if MLST_filetype == "standard":
-					blanks.write(filepath+"	"+",".join(problem)+"	"+"	".join(MLST_items[1:])+"\n")
+					blanks.write(filepath+"	standard:"+",".join(problem)+"	"+"	".join(MLST_items[1:])+"\n")
 				elif MLST_filetype == "srst2":
-					blanks.write(filepath+"	"+",".join(problem)+"	"+"	".join(MLST_items_second[1:])+"\n")
+					blanks.write(filepath+"	srst2:"+",".join(problem)+"	"+"	".join(MLST_items_second[1:])+"\n")
 				blanks.close()
 			# Change original type to new type(s) depending on source filetype
 			if MLST_filetype == "standard":
