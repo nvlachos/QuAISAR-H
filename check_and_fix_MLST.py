@@ -223,10 +223,10 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file, source_filetype):
 	if source_filetype == "srst2":
 		if DB_file == "abaumannii":
 			for i in range(0,len(list_of_allele_names)):
-				list_of_allele_names[i] = "Oxf_"+allele
+				list_of_allele_names[i] = "Oxf_"+list_of_allele_names[i]
 		elif DB_file == "abaumannii_2":
 			for i in range(0,len(list_of_allele_names)):
-				list_of_allele_names[i] = "Pas_"+allele
+				list_of_allele_names[i] = "Pas_"+list_of_allele_names[i]
 		else:
 			print("No adjustments needed to names in list_of_allele_names")
 	full_db_path="/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/pubmlsts/"+DB_file+"/"+DB_file+".txt"
