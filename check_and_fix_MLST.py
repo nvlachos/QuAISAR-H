@@ -222,11 +222,11 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file, source_filetype):
 	#print(list_of_profiles,":", list_of_allele_names)
 	if source_filetype == "srst2":
 		if DB_file == "abaumannii":
-			for allele in list_of_allele_names:
-				allele = "Oxf_"+allele
+			for i in range(0,len(list_of_allele_names):
+				list_of_allele_names[i] = "Oxf_"+allele
 		elif DB_file == "abaumannii_2":
-			for allele in list_of_allele_names:
-				allele = "Pas_"+allele
+			for i in range(0,len(list_of_allele_names):
+				list_of_allele_names[i] = "Pas_"+allele
 		else:
 			print("No adjustments needed to names in list_of_allele_names")
 	full_db_path="/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/pubmlsts/"+DB_file+"/"+DB_file+".txt"
