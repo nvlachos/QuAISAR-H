@@ -168,7 +168,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 				new_types[i] = str(new_types[i])
 			#new_types.sort()
 			new_types='/'.join(new_types)
-			print("Updating MLST types in", input_MLST_file, "from", "/".join(mlstype_str), "to", new_types)
+			print("Updating MLST types in", input_MLST_file, "from", mlstype_str, "to", new_types)
 			MLST_temp_types=new_types
 			# Log any incomplete/strange types found
 			if '-' in MLST_temp_types or 'SUB' in MLST_temp_types:
@@ -211,7 +211,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 				MLST_file.write('	'.join(MLST_items_second))
 				MLST_file.close()
 			MLST_changed_file_handler=open(MLST_changed_file,'a+')
-			MLST_changed_file_handler.write(filepath+"	"+db_name+"	"+"/".join(mlstype_str)+" to "+new_types+"\n")
+			MLST_changed_file_handler.write(filepath+"	"+db_name+"	"+mlstype_str+" to "+new_types+"\n")
 			MLST_changed_file_handler.close()
 		else:
 			print(input_MLST_file, "is as good as it gets with type", mlstype)
