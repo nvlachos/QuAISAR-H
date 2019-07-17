@@ -221,7 +221,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 # Uses the local copy of DB file to look up actual ST type
 def get_type(list_of_profiles, list_of_allele_names, DB_file, source_filetype):
 	types=["Not_initialized"]
-	print(list_of_allele_names,":", list_of_allele_names)
+	print(list_of_profiles,":", list_of_allele_names)
 	full_db_path="/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases/pubmlsts/"+DB_file+"/"+DB_file+".txt"
 	with open(full_db_path,'r') as scheme:
 		profile_size=0
@@ -240,7 +240,7 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file, source_filetype):
 				#print(list_of_allele_names)
 				if db_items[1:profile_size] != list_of_allele_names:
 					print("Allele names DO NOT match...We'll have to fix this if it ever comes up")
-					print("db: "+db_items)
+					print("db: "+ "	".join(db_items))
 					print("list:"+allele_names)
 				#else:
 				#	print("Allele names match, yay!")
