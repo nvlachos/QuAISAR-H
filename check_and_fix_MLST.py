@@ -220,7 +220,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 def get_type(list_of_profiles, list_of_allele_names, DB_file, source_filetype):
 	types=["Not_initialized"]
 	#print(list_of_profiles,":", list_of_allele_names)
-	if source_filetype == "srst2"
+	if source_filetype == "srst2":
 		if DB_file == "abaumannii":
 			for allele in list_of_allele_names:
 				allele = "Oxf_"+allele
