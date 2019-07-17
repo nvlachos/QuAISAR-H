@@ -248,7 +248,7 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file, source_filetype):
 				if db_items[1:profile_size] != list_of_allele_names:
 					print("Allele names DO NOT match...We'll have to fix this if it ever comes up")
 					print("db:"+"	".join(db_items))
-					print("list:"+"	".join(list_of_allele_names)
+					print("list:"+"	".join(list_of_allele_names))
 				#else:
 				#	print("Allele names match, yay!")
 			else:
