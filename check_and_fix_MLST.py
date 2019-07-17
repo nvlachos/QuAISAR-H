@@ -226,7 +226,7 @@ def get_type(list_of_profiles, list_of_allele_names, DB_file, source_filetype):
 	with open(full_db_path,'r') as scheme:
 		profile_size=0
 		types = [-1] * len(list_of_profiles)
-		#print("Size:", len(types), " &  contents:", types)
+		print("Size:", len(types), " &  contents:", types)
 		for line in scheme:
 			db_line=line.strip()
 			db_items=db_line.split("	")
