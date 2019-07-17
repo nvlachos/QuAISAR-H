@@ -158,7 +158,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 	if checking:
 		new_types=sorted(new_types, key=lambda x: str(x))
 		print("New types:", new_types)
-		if mlstype != new_types or mlstype in bad_types:
+		if mlstype != new_types or "-" in mlstype or "AU" in mlstype or "SUB" in mlstype or "NAF" in mlstype:
 			for i in range(0, len(new_types)):
 				#print(new_types[i])
 				#if new_types[i] == -1:
