@@ -78,6 +78,7 @@ def do_MLST_check(input_MLST_file, MLST_filetype):
 	else:
 		print("Unknown MLST filetype, can not continue")
 		exit()
+	print("RAW OLD types:", sorted(mlstype, key=lambda x: str(x)))
 	MLST_temp_type=MLST_temp_type.replace("/", ",").replace("|",",")
 	if "," not in MLST_temp_type:
 		mlstype=[MLST_temp_type]
