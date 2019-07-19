@@ -457,7 +457,7 @@ if [[ "${plasmidsFoundviaplasFlow}" -eq 1 ]]; then
 						components="${this_component_number}"
 					fi
 				fi
-			done < ${OUTDATADIR}/plasmidAssembly/${1}_plasmid_assembly_trimmed.fasta
+			done < ${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta
 			printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "SUCCESS" "${components} components in ${plas_longies} scaffolds remain. ${plas_shorties} were removed due to shortness"
 		else
 			printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "SUCCESS" "No plasmid scaffold found"
@@ -465,7 +465,7 @@ if [[ "${plasmidsFoundviaplasFlow}" -eq 1 ]]; then
 	elif [[ -f "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta" ]]; then
 		printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "SUCCESS" "No plasmid scaffolds found"
 	else
-		printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "FAILED" "/plasFlow/Unicycler_assemblies/${1}_plasmid_assembly_trimmed.fasta not found"
+		printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "FAILED" "plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta not found"
 		status="FAILED"
 	fi
 fi
