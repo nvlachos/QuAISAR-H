@@ -379,10 +379,10 @@ fi
 # #Check plasFlow plasmid assembly
 plasmidsFoundviaplasFlow=0
 if [[ -d "${OUTDATADIR}/plasFlow" ]]; then
-	if [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_plasmid_assembly_original.fasta" ]]; then
+	if [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_original.fasta" ]]; then
 		# Count the number of '>' in the assembly file before trimming
 		plas_scaffolds=">"
-		plas_scaffolds=$(grep -c ${plas_scaffolds} "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_plasmid_assembly_original.fasta")
+		plas_scaffolds=$(grep -c ${plas_scaffolds} "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_original.fasta")
 		if [ -z ${plas_scaffolds} ]; then
 			plas_scaffolds=0
 			components=-1
@@ -395,7 +395,7 @@ if [[ -d "${OUTDATADIR}/plasFlow" ]]; then
 						components="${this_component_number}"
 					fi
 				fi
-			done < ${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_plasmid_assembly_trimmed.fasta
+			done < ${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta
 			printf "%-20s: %-8s : %s\\n" "plasmid Assembly" "SUCCESS" "${components} plasmids in ${plas_scaffolds} scaffolds found via plasFlow"
 			plasmidsFoundviaplasFlow=1
 		else
@@ -439,10 +439,10 @@ fi
 #Check short scaffolds reduction script for plasmid assembly
 #echo "${plasmidsFoundviaplasFlow}-Found?"
 if [[ "${plasmidsFoundviaplasFlow}" -eq 1 ]]; then
-	if [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_plasmid_assembly_trimmed.fasta" ]]; then
+	if [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta" ]]; then
 		# Count the number of '>' still remaining after trimming the contig file
 		plas_longies=">"
-		plas_longies=$(grep -c ${plas_longies} "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_plasmid_assembly_trimmed.fasta")
+		plas_longies=$(grep -c ${plas_longies} "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta")
 		# Calculate the number of lost (short) scaffolds
 		plas_shorties=$(( plas_scaffolds - plas_longies ))
 		if [ -z ${plas_shorties} ]; then
@@ -462,7 +462,7 @@ if [[ "${plasmidsFoundviaplasFlow}" -eq 1 ]]; then
 		else
 			printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "SUCCESS" "No plasmid scaffold found"
 		fi
-	elif [[ -f "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_plasmid_assembly_trimmed.fasta" ]]; then
+	elif [[ -f "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta" ]]; then
 		printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "SUCCESS" "No plasmid scaffolds found"
 	else
 		printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "FAILED" "/plasFlow/Unicycler_assemblies/${1}_plasmid_assembly_trimmed.fasta not found"
