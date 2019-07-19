@@ -61,7 +61,7 @@ Check_source() {
 		for f in ${processed}/${project}/${sample}/ANI/*; do
 			if [[ "${f}" = *"best_ANI_hits_ordered"* ]]; then
 				header=$(head -n1 ${f})
-				if [[ ${header} != "No matching ANI database found for"* ]] && [[ ${header} != "0.00%-(.fna)" ]] ; then
+				if [[ ${header} != "No matching ANI database found for"* ]] && [[ ${header} != "0.00%"* ]] ; then
 		    	do_ANI
 		    	return
 				fi
