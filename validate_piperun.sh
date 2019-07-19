@@ -377,7 +377,7 @@ else
 fi
 
 # #Check plasFlow plasmid assembly
- plasmidsFoundviaplasFlow=0
+plasmidsFoundviaplasFlow=0
 if [[ -d "${OUTDATADIR}/plasFlow" ]]; then
 	if [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_plasmid_assembly_original.fasta" ]]; then
 		# Count the number of '>' in the assembly file before trimming
@@ -407,7 +407,7 @@ if [[ -d "${OUTDATADIR}/plasFlow" ]]; then
 	else
 		printf "%-20s: %-8s : %s\\n" "plasmid Assembly" "SUCCESS" "No plasmid scaffold found using plasmidSpades"
 	fi
-else
+elif [[ "${dec_family}" == "Enterobacteriaceae" ]]; then
 	printf "%-20s: %-8s : %s\\n" "plasmid Assembly" "FAILED" "/plasFlow not found"
 	status="FAILED"
 fi
@@ -696,6 +696,9 @@ while IFS= read -r line; do
 	elif [ "${first}" = "G" ]
 	then
 		dec_genus=$(echo "${line}" | awk -F ' ' '{print $2}')
+	elif [ "${first}" = "F" ]
+	then
+		dec_family=$(echo "${line}" | awk -F ' ' '{print $2}')
 	fi
 done < "${OUTDATADIR}/${1}.tax"
 
@@ -1248,9 +1251,6 @@ else
 	printf "%-20s: %-8s : %s\\n" "plasmid" "FAILED" "/plasmid/ does not exist"
 	status="FAILED"
 fi
-
-if [[ "${dec_genus}" = "Escherichia" ]]; then
-	if [[ ]]
 
 # # check plasmids (on plasmidAssembly)
 if [[ "plasmidsFoundviaplasFlow" -eq 1 ]]; then
