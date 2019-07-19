@@ -74,6 +74,7 @@ if [[ -f "${processed}/${1}/seqlog_output.txt" ]]; then
 	rm -r "${processed}/${1}/seqlog_output.txt"
 fi
 
+> "${processed}/${1}/Seqlog_output.txt"
 
 # Goes through each item on the list and pulls all relevant info
 while IFS= read -r var || [ -n "$var" ]; do
