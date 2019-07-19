@@ -457,7 +457,7 @@ if [[ "${plasmidsFoundviaplasFlow}" -eq 1 ]]; then
 						components="${this_component_number}"
 					fi
 				fi
-			done < ${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta
+			done < ${OUTDATADIR}/plasmidAssembly/${1}_plasmid_assembly_trimmed.fasta
 			printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "SUCCESS" "${components} components in ${plas_longies} scaffolds remain. ${plas_shorties} were removed due to shortness"
 		else
 			printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "SUCCESS" "No plasmid scaffold found"
