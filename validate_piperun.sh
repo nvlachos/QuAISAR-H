@@ -385,18 +385,9 @@ if [[ -d "${OUTDATADIR}/plasFlow" ]]; then
 		plas_scaffolds=$(grep -c ${plas_scaffolds} "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_original.fasta")
 		if [ -z ${plas_scaffolds} ]; then
 			plas_scaffolds=0
-			components=-1
 		fi
 		if [[ "${plas_scaffolds}" -gt 0 ]]; then
-			while IFS= read -r line; do
-				if [[ "${line:0:1}" == ">" ]]; then
-					this_component_number=$(echo ${line} | cut -d'_' -f3)
-					if [[ "${this_component_number}" -gt "${components}" ]]; then
-						components="${this_component_number}"
-					fi
-				fi
-			done < ${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta
-			printf "%-20s: %-8s : %s\\n" "plasmid Assembly" "SUCCESS" "${components} plasmids in ${plas_scaffolds} scaffolds found via plasFlow"
+			printf "%-20s: %-8s : %s\\n" "plasmid Assembly" "SUCCESS" "${plas_scaffolds} scaffolds found via plasFlow"
 			plasmidsFoundviaplasFlow=1
 		else
 			printf "%-20s: %-8s : %s\\n" "plasmid Assembly" "ALERT" "No plasmid scaffold found?"
@@ -449,16 +440,7 @@ if [[ "${plasmidsFoundviaplasFlow}" -eq 1 ]]; then
 			plas_shorties=0
 		fi
 		if [[ "${plas_longies}" -gt 0 ]]; then
-			components=-1
-			while IFS= read -r line; do
-				if [[ "${line:0:1}" == ">" ]]; then
-					this_component_number=$(echo ${line} | cut -d'_' -f8)
-					if [[ "${this_component_number}" -gt "${components}" ]]; then
-						components="${this_component_number}"
-					fi
-				fi
-			done < ${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta
-			printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "SUCCESS" "${components} components in ${plas_longies} scaffolds remain. ${plas_shorties} were removed due to shortness"
+			printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "SUCCESS" "${plas_longies} scaffolds remain. ${plas_shorties} were removed due to shortness"
 		else
 			printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "SUCCESS" "No plasmid scaffold found"
 		fi
