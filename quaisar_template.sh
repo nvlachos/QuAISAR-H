@@ -448,9 +448,6 @@ start=$SECONDS
 # Run csstar in default mode from config.sh
 "${shareScript}/run_c-sstar_on_single.sh" "${filename}" "${csstar_gapping}" "${csstar_identity}" "${project}"
 "${shareScript}/run_c-sstar_on_single_alternate_DB.sh" "${filename}" "${csstar_gapping}" "${csstar_identity}" "${project}" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
-# Should the parameters be different when checking on plasmids specifically
-"${shareScript}/run_c-sstar_on_single.sh" "${filename}" "${csstar_gapping}" "${csstar_plasmid_identity}" "${project}" "--plasmid"
-"${shareScript}/run_c-sstar_on_single_alternate_DB.sh" "${filename}" "${csstar_gapping}" "${csstar_plasmid_identity}" "${project}" "--plasmid" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
 
 # Get end time of csstar and calculate run time and append to time summary (and sum to total time used
 end=$SECONDS

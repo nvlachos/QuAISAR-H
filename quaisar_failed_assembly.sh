@@ -111,6 +111,40 @@ else
 	return 1
 fi
 
+# Cleans up bad folders from previous failed run (especially ANI, as it can mess with determine_taxID)
+if [[ -d ${OUTDATADIR}/${sample_name}/ANI ]]; then
+	rm -r ${OUTDATADIR}/${sample_name}/ANI
+fi
+if [[ -d ${OUTDATADIR}/${sample_name}/16s ]]; then
+	rm -r ${OUTDATADIR}/${sample_name}/16s
+fi
+if [[ -d ${OUTDATADIR}/${sample_name}/busco ]]; then
+	rm -r ${OUTDATADIR}/${sample_name}/busco
+fi
+if [[ -d ${OUTDATADIR}/${sample_name}/c-sstar ]]; then
+	rm -r ${OUTDATADIR}/${sample_name}/c-sstar
+fi
+if [[ -d ${OUTDATADIR}/${sample_name}/c-sstar_plasFlow ]]; then
+	rm -r ${OUTDATADIR}/${sample_name}/c-sstar_plasFlow
+fi
+if [[ -d ${OUTDATADIR}/${sample_name}/MLST ]]; then
+	rm -r ${OUTDATADIR}/${sample_name}/MLST
+fi
+if [[ -d ${OUTDATADIR}/${sample_name}/plasFlow ]]; then
+	rm -r ${OUTDATADIR}/${sample_name}/plasFlow
+fi
+if [[ -d ${OUTDATADIR}/${sample_name}/plasmidFinder ]]; then
+	rm -r ${OUTDATADIR}/${sample_name}/plasmidFinder
+fi
+if [[ -d ${OUTDATADIR}/${sample_name}/plasmid_on_plasFlow ]]; then
+	rm -r ${OUTDATADIR}/${sample_name}/plasmid_on_plasFlow
+fi
+if [[ -d ${OUTDATADIR}/${sample_name}/prokka ]]; then
+	rm -r ${OUTDATADIR}/${sample_name}/prokka
+fi
+
+
+
 # Get end time of SPAdes and calculate run time and append to time summary (and sum to total time used)
 end=$SECONDS
 timeSPAdes=$((end - start))
@@ -241,6 +275,11 @@ start=$SECONDS
 if [[ "${genus}" = "Peptoclostridium" ]] || [[ "${genus}" = "Clostridioides" ]]; then
 	genus="Clostridium"
 fi
+
+if [[ -d "${OUTDATADIR}/${sample_name}/ANI" ]]; then
+	rm -r "${OUTDATADIR}/${sample_name}/ANI"
+fi
+
 "${shareScript}/run_ANI.sh" "${sample_name}" "${genus}" "${species}" "${project}"
 #"${shareScript}/run_ANI.sh" "${sample_name}" "All" "All" "${project}"
 # Get end time of ANI and calculate run time and append to time summary (and sum to total time used
@@ -300,9 +339,6 @@ start=$SECONDS
 # Run csstar in default mode from config.sh
 "${shareScript}/run_c-sstar_on_single.sh" "${sample_name}" "${csstar_gapping}" "${csstar_identity}" "${project}"
 "${shareScript}/run_c-sstar_on_single_alternate_DB.sh" "${sample_name}" "${csstar_gapping}" "${csstar_identity}" "${project}" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
-# Should the parameters be different when checking on plasmids specifically
-"${shareScript}/run_c-sstar_on_single.sh" "${sample_name}" "${csstar_gapping}" "${csstar_plasmid_identity}" "${project}" "--plasmid"
-"${shareScript}/run_c-sstar_on_single_alternate_DB.sh" "${sample_name}" "${csstar_gapping}" "${csstar_plasmid_identity}" "${project}" "--plasmid" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
 
 # Get end time of csstar and calculate run time and append to time summary (and sum to total time used
 end=$SECONDS
