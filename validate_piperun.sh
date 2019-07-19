@@ -250,7 +250,7 @@ fi
 # Quick separate check for contamination by finding # of species above ${contamination_threshold} in list file from kraken
 if [[ -s "${OUTDATADIR}/kraken/preAssembly/${1}_paired.list" ]]; then
 	number_of_species=0
-	while IFS= read -r line  || [ -n "$line" ]; do
+	while IFS= read -r line; do
 		arrLine=(${line})
 		# First element in array is the percent of reads identified as the current taxa
 		percent=${arrLine[0]}
@@ -329,7 +329,7 @@ fi
 # Quick separate check for contamination by finding # of species above ${contamination_threshold} in list file from kraken
 if [[ -s "${OUTDATADIR}/gottcha/gottcha_S/${1}.gottcha.tsv" ]]; then
 	number_of_species=0
-	while IFS= read -r line  || [ -n "$line" ]; do
+	while IFS= read -r line; do
 		# Convert the perfect match to proper format from 1.00 to 100
 		if [[ "${line[2]}" = "1.0000" ]] || [[ "${line[2]}" -eq 1 ]]; then
 			percent_integer=100
@@ -388,7 +388,7 @@ if [[ -d "${OUTDATADIR}/plasFlow" ]]; then
 			components=-1
 		fi
 		if [[ "${plas_scaffolds}" -gt 0 ]]; then
-			while IFS= read -r line  || [ -n "$line" ]; do
+			while IFS= read -r line; do
 				if [[ "${line:0:1}" == ">" ]]; then
 					this_component_number=$(echo ${line} | cut -d'_' -f3)
 					if [[ "${this_component_number}" -gt "${components}" ]]; then
@@ -450,7 +450,7 @@ if [[ "${plasmidsFoundviaplasFlow}" -eq 1 ]]; then
 		fi
 		if [[ "${plas_longies}" -gt 0 ]]; then
 			components=-1
-			while IFS= read -r line  || [ -n "$line" ]; do
+			while IFS= read -r line; do
 				if [[ "${line:0:1}" == ">" ]]; then
 					this_component_number=$(echo ${line} | cut -d'_' -f8)
 					if [[ "${this_component_number}" -gt "${components}" ]]; then
@@ -539,7 +539,7 @@ fi
 # Quick separate check for contamination by finding # of species above ${contamination_threshold} in list file from kraken
 if [[ -s "${OUTDATADIR}/kraken/postAssembly/${1}_assembled.list" ]]; then
 	number_of_species=0
-	while IFS= read -r line  || [ -n "$line" ]; do
+	while IFS= read -r line; do
 		arrLine=(${line})
 		# First element in array is the percent of reads identified as the current taxa
 		percent=${arrLine[0]}
@@ -627,7 +627,7 @@ fi
 # Quick separate check for contamination by finding # of species above ${contamination_threshold} in list file from kraken
 if [[ -s "${OUTDATADIR}/kraken/postAssembly/${1}_assembled_BP_data.list" ]]; then
 	number_of_species=0
-	while IFS= read -r line  || [ -n "$line" ]; do
+	while IFS= read -r line; do
 		arrLine=(${line})
 		# First element in array is the percent of reads identified as the current taxa
 		percent=${arrLine[0]}
@@ -686,7 +686,7 @@ if [[ ! -s "${OUTDATADIR}/${1}.tax" ]]; then
 fi
 
 source_call=$(head -n1 "${OUTDATADIR}/${1}.tax")
-while IFS= read -r line  || [ -n "$line" ]; do
+while IFS= read -r line; do
 	# Grab first letter of line (indicating taxonomic level)
 	first=${line:0:1}
 	# Assign taxonomic level value from 4th value in line (1st-classification level,2nd-% by kraken, 3rd-true % of total reads, 4th-identifier)
@@ -817,7 +817,7 @@ fi
 #Check BUSCO
 if [[ -s "${OUTDATADIR}/BUSCO/short_summary_${1}.txt" ]]; then
 	# Reads each line of the busco output file to extract the 3 that contain summary data to report
-	while IFS= read -r line  || [ -n "$line" ]; do
+	while IFS= read -r line; do
 		# If the line contains info for found buscos, total buscos, or database info grab it
 		if [[ "${line}" == *"Complete BUSCOs (C)"* ]]
 		then
