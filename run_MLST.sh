@@ -32,7 +32,7 @@ elif [[ -z "${1}" ]]; then
 	exit 1
 # Gives the user a brief usage and help section if requested with the -h option argument
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_MLST.sh   sample_name   run_id"
+	echo "Usage is ./run_MLST.sh   sample_name   run_id [-f] [DB_to_force_to]"
 	echo "Output is saved to ${processed}/run-id/sample_name/mlst"
 	exit 0
 elif [ -z "$2" ]; then
