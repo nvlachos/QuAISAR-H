@@ -85,7 +85,9 @@ fi
 
 cd "${processed}/${2}/${1}/MLST/srst2"
 
-getmlst.py --species "${genus} ${species}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
+
+python2 ${shareScript}/srst2-master/scripts/getmlst.py --species "${genus} ${species}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
+#getmlst.py --species "${genus} ${species}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
 
 db_name="Standard"
 # Checks for either of the 2 databases that have multiple scheme types and runs both
