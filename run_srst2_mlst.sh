@@ -16,6 +16,7 @@
 
 ml srst2 bowtie2/2.2.4
 
+ml
 #
 # Usage ./run_srst2_mlst.sh   sample_name   MiSeq_Run_ID	Genus	species
 #
