@@ -14,7 +14,7 @@
 #. "${mod_changers}/prep_srst2.sh"
 #. "${mod_changers}/list_modules.sh"
 
-ml Python2/2.7.12 samtools/0.1.18 perl/5.16.1-MT srst2 bowtie2/2.2.4
+ml srst2 bowtie2/2.2.4
 
 #
 # Usage ./run_srst2_mlst.sh   sample_name   MiSeq_Run_ID	Genus	species
@@ -86,8 +86,8 @@ fi
 cd "${processed}/${2}/${1}/MLST/srst2"
 
 
-python2 ${shareScript}/srst2-master/scripts/getmlst.py --species "${genus} ${species}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
-#getmlst.py --species "${genus} ${species}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
+#python2 ${shareScript}/srst2-master/scripts/getmlst.py --species "${genus} ${species}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
+getmlst.py --species "${genus} ${species}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
 
 db_name="Standard"
 # Checks for either of the 2 databases that have multiple scheme types and runs both
