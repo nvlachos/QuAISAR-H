@@ -20,17 +20,18 @@ fi
 # Usage ./qSNVPhyl path_to_list_file output_directory project_identifier
 #
 
+
+# Shows a brief uasge/help section if -h option used as first argument
+if [[ "$1" = "-h" ]]; then
+	echo -e "\\n\\n\\n"
+	echo "Usage: ./qSNVPhylsh path_to_list output_directory project_identifier"
+	echo "Must only be run on the cluster (ASPEN)"
+	echo -e "\\n\\n\\n"
+	exit 0
 # Checks for proper argumentation
-if [[ $# -lt 3 ]]; then
+elif [[ $# -lt 3 ]]; then
 	echo "Improper argument quantity supplied to $0, exiting"
 	exit 1
-# Shows a brief uasge/help section if -h option used as first argument
-elif [[ "$1" = "-h" ]]; then
-	echo -e "\\n\\n\\n"
-			echo "Usage: ./qSNVPhylsh path_to_list output_directory project_identifier"
-			echo "Must only be run on the cluster (ASPEN)"
-			echo -e "\\n\\n\\n"
-			exit 0
 fi
 
 # Not being run on cluster=no run
