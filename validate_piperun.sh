@@ -647,20 +647,20 @@ else
 	status="FAILED"
 fi
 
-# #Check QUAST on plasmid Assembly
-# if [[ "${plasmidsFoundviaplasFlow}" -eq 1 ]]; then
-# 	if [[ -s "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.tsv" ]]; then
-# 		# Extract the useful bits and report (to compare to Toms)
-# 		contig_num_plas=$(sed -n '14p' "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.tsv"| sed -r 's/[\t]+/ /g' | cut -d' ' -f3 )
-# 		ass_length_plas=$(sed -n '16p' "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.tsv" | sed -r 's/[\t]+/ /g' | cut -d' ' -f3)
-# 		N50_plas=$(sed -n '18p' "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.tsv"  | sed -r 's/[\t]+/ /g'| cut -d' ' -f2)
-# 		GC_con_plas=$(sed -n '17p' "${OUTDATADIR}/Assembly_Stats_plasmid/${1}_report.tsv" | sed -r 's/[\t]+/ /g' | cut -d' ' -f3)
-# 		printf "%-20s: %-8s : %s\\n" "QUAST_plasmid" "SUCCESS" "#-${contig_num_plas} length-${ass_length_plas} n50-${N50_plas} %GC-${GC_con_plas}"
-# 	else
-# 		printf "%-20s: %-8s : %s\\n" "QUAST_plasmid" "FAILED" "/Assembly_Stats_plasmid/report.tsv does not exist"
-# 		status="FAILED"
-# 	fi
-# fi
+#Check QUAST on plasmid Assembly
+if [[ "${plasmidsFoundviaplasFlow}" -eq 1 ]]; then
+	if [[ -s "${OUTDATADIR}/Assembly_Stats_plasFlow/${1}_report.tsv" ]]; then
+		# Extract the useful bits and report (to compare to Toms)
+		contig_num_plas=$(sed -n '14p' "${OUTDATADIR}/Assembly_Stats_plasFlow/${1}_report.tsv"| sed -r 's/[\t]+/ /g' | cut -d' ' -f3 )
+		ass_length_plas=$(sed -n '16p' "${OUTDATADIR}/Assembly_Stats_plasFlow/${1}_report.tsv" | sed -r 's/[\t]+/ /g' | cut -d' ' -f3)
+		N50_plas=$(sed -n '18p' "${OUTDATADIR}/Assembly_Stats_plasFlow/${1}_report.tsv"  | sed -r 's/[\t]+/ /g'| cut -d' ' -f2)
+		GC_con_plas=$(sed -n '17p' "${OUTDATADIR}/Assembly_Stats_plasFlow/${1}_report.tsv" | sed -r 's/[\t]+/ /g' | cut -d' ' -f3)
+		printf "%-20s: %-8s : %s\\n" "QUAST_plasFlow" "SUCCESS" "#-${contig_num_plas} length-${ass_length_plas} n50-${N50_plas} %GC-${GC_con_plas}"
+	else
+		printf "%-20s: %-8s : %s\\n" "QUAST_plasFlow" "FAILED" "/Assembly_Stats_plasFlow/report.tsv does not exist"
+		status="FAILED"
+	fi
+fi
 
 # Get determinde taxonomy
 if [[ ! -s "${OUTDATADIR}/${1}.tax" ]]; then
@@ -1039,13 +1039,16 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 			else
 				printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "no scheme found, check upstream as no genus has been assigned"
 			fi
-		elif [ "${mlstype}" = "-" ]; then
+		elif [ "${mlstype}" = "-" ] || [ "${mlstype}" = "SUB" ]; then
 			printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
 			report_info=$(echo "${info}" | cut -d' ' -f2-)
 			echo "${2}/${1}: Possible new MLST type - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
 			if [[ "${status}" = "SUCCESS" ]] || [[ "${status}" = "ALERT" ]]; then
 				status="WARNING"
 			fi
+		elif [ "${mlstype}" = "AU" ]; then
+			printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type"
+			status="FAILED"
 		else
 			if [[ "${mlstdb}" = "abaumannii_2" ]]; then
 				mlstdb="${mlstdb}(Pasteur)"
@@ -1066,13 +1069,16 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 			mlstdb=$(echo "${info}" | cut -d'	' -f2)
 			#echo "'${mlstdb}:${mlstype}'"
 			if [ "${mlstdb}" = "abaumannii" ]; then
-				if [ "${mlstype}" = "-" ]; then
+				if [ "${mlstype}" = "SUB" ] || [ "${mlstype}" = "-" ]; then
 					printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
 					report_info=$(echo "${info}" | cut -d' ' -f2-)
 					echo "${2}/${1}: Possible new MLST type - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
 					if [[ "${status}" = "SUCCESS" ]] || [[ "${status}" = "ALERT" ]]; then
 						status="WARNING"
 					fi
+				elif [ "${mlstype}" = "AU" ]; then
+					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type"
+					status="FAILED"
 				else
 					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}(Oxford)"
 				fi
@@ -1088,19 +1094,126 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 			mlstdb=$(echo "${info}" | cut -d'	' -f2)
 			#echo "'${mlstdb}:${mlstype}'"
 			if [ "${mlstdb}" = "ecoli_2" ]; then
-				if [ "${mlstype}" = "-" ]; then
+				if [ "${mlstype}" = "SUB" ] || [ "${mlstype}" = "-" ]; then
 					printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
 					report_info=$(echo "${info}" | cut -d' ' -f2-)
 					echo "${2}/${1}: Possible new MLST type - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
 					if [[ "${status}" = "SUCCESS" ]] || [[ "${status}" = "ALERT" ]]; then
 						status="WARNING"
 					fi
+				elif [ "${mlstype}" = "AU" ]; then
+					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type"
+					status="FAILED"
 				else
 					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}(Pasteur)"
 				fi
 			else
 				echo "Not reporting as name and analyis expected do not match"
 			fi
+		fi
+	fi
+	num_srst2_mlsts=$(find . -type f -name "*_srst2_*.mlst")
+	if [[ "${num_srst2_mlsts}" -eq 1 ]]; then
+		srst_mlst=$(find . -type f -name "*_srst2_*.mlst")
+		mlstype=$(tail -n1 ${srst_mlst} | cut -d'	' -f2)
+		mlstdb=$(echo "${srst_mlst}" | rev | cut -d'-' -f1 | cut -d'.' -f2 | rev )
+		if [ "${mlstype}" = "SUB" ] || [ "${mlstype}" = "-" ]; then
+			printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
+			report_info=$(echo "${info}" | cut -d' ' -f2-)
+			echo "${2}/${1}: Possible new MLST type - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
+			if [[ "${status}" = "SUCCESS" ]] || [[ "${status}" = "ALERT" ]]; then
+				status="WARNING"
+			fi
+		elif [ "${mlstype}" = "AU" ]; then
+			printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type"
+			status="FAILED"
+		else
+			printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
+		fi
+	elif [[ "${num_srst2_mlsts}" -eq 2 ]]; then
+		if [[ "${dec_genus}" = "Acinetobacter" ]]; then
+			if [[ -f "${OUTDATADIR}/MLST/${1}_srst2_Acinetobacter_baumanni#1-Oxford.mlst" ]]; then
+				srst_mlst="${OUTDATADIR}/MLST/${1}_srst2_Acinetobacter_baumanni#1-Oxford.mlst"
+				mlstype=$(tail -n1 ${srst_mlst} | cut -d'	' -f2)
+				mlstdb="abaumannii(Oxford)"
+				if [ "${mlstype}" = "SUB" ] || [ "${mlstype}" = "-" ]; then
+					printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
+					report_info=$(echo "${info}" | cut -d' ' -f2-)
+					echo "${2}/${1}: Possible new MLST type - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
+					if [[ "${status}" = "SUCCESS" ]] || [[ "${status}" = "ALERT" ]]; then
+						status="WARNING"
+					fi
+				elif [ "${mlstype}" = "AU" ]; then
+					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type"
+					status="FAILED"
+				else
+					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
+				fi
+			fi
+			if [[ -f "${OUTDATADIR}/MLST/${1}_srst2_Acinetobacter_baumanni#2-Pasteur.mlst" ]]; then
+				srst_mlst="${OUTDATADIR}/MLST/${1}_srst2_Acinetobacter_baumanni#2-Pasteur.mlst"
+				mlstype=$(tail -n1 ${srst_mlst} | cut -d'	' -f2)
+				mlstdb="abaumannii_2(Pasteur)"
+				if [ "${mlstype}" = "SUB" ] || [ "${mlstype}" = "-" ]; then
+					printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
+					report_info=$(echo "${info}" | cut -d' ' -f2-)
+					echo "${2}/${1}: Possible new MLST type - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
+					if [[ "${status}" = "SUCCESS" ]] || [[ "${status}" = "ALERT" ]]; then
+						status="WARNING"
+					fi
+				elif [ "${mlstype}" = "AU" ]; then
+					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type"
+					status="FAILED"
+				else
+					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
+				fi
+			fi
+		elif [[ "${dec_genus}" = "Escherichia" ]]; then
+			if [[ -f "${OUTDATADIR}/MLST/${1}_srst2_Escherichia_coli#1-Achtman.mlst" ]]; then
+				srst_mlst="${OUTDATADIR}/MLST/${1}_srst2_Escherichia_coli#1-Achctman.mlst"
+				mlstype=$(tail -n1 ${srst_mlst} | cut -d'	' -f2)
+				mlstdb="ecoli(Achtman)"
+				if [ "${mlstype}" = "SUB" ] || [ "${mlstype}" = "-" ]; then
+					printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
+					report_info=$(echo "${info}" | cut -d' ' -f2-)
+					echo "${2}/${1}: Possible new MLST type - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
+					if [[ "${status}" = "SUCCESS" ]] || [[ "${status}" = "ALERT" ]]; then
+						status="WARNING"
+					fi
+				elif [ "${mlstype}" = "AU" ]; then
+					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type"
+					status="FAILED"
+				else
+					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
+				fi
+			fi
+			if [[ -f "${OUTDATADIR}/MLST/${1}_srst2_Escherichia_coli#2-Pasteur.mlst" ]]; then
+				srst_mlst="${OUTDATADIR}/MLST/${1}_srst2_Escherichia_coli#2-Pasteur.mlst"
+				mlstype=$(tail -n1 ${srst_mlst} | cut -d'	' -f2)
+				mlstdb="ecoli_2(Pasteur)"
+				if [ "${mlstype}" = "SUB" ] || [ "${mlstype}" = "-" ]; then
+					printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
+					report_info=$(echo "${info}" | cut -d' ' -f2-)
+					echo "${2}/${1}: Possible new MLST type - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
+					if [[ "${status}" = "SUCCESS" ]] || [[ "${status}" = "ALERT" ]]; then
+						status="WARNING"
+					fi
+				elif [ "${mlstype}" = "AU" ]; then
+					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type"
+					status="FAILED"
+				else
+					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
+				fi
+			fi
+		else
+			printf "%-20s: %-8s : %s\\n" "MLST" "ALERT" "More than 1 srst file found for non AB or ecoli sample, look into it?"
+			if [[ "${status}" == "SUCCESS" ]]; then
+				status="ALERT"
+			fi
+	else
+		printf "%-20s: %-8s : %s\\n" "MLST" "ALERT" "More than 2 srst files found, look into it?"
+		if [[ "${status}" == "SUCCESS" ]]; then
+			status="ALERT"
 		fi
 	fi
 	# No MLST folder exists (pipeline must have failed as it would create a default one otherwise)
