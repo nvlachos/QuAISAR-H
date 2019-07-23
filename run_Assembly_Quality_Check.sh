@@ -64,7 +64,7 @@ if [[ "${do_plasFlow_only}" != "true" ]]; then
 	mv "${OUTDATADIR}/Assembly_Stats/report.tsv" "${OUTDATADIR}/Assembly_Stats/${1}_report.tsv"
 fi
 if [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta" ]]; then
-	if [ ! -d "$OUTDATADIR/Assembly_Stats_plasmid" ]; then
+	if [ ! -d "$OUTDATADIR/Assembly_Stats_plasFlow" ]; then
 		echo "Creating $OUTDATADIR/Assembly_Stats_plasFlow"
  		mkdir -p "$OUTDATADIR/Assembly_Stats_plasFlow"
  	fi
