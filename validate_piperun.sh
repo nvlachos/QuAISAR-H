@@ -1133,8 +1133,8 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 		fi
 	elif [[ "${num_srst2_mlsts}" -eq 2 ]]; then
 		if [[ "${dec_genus}" = "Acinetobacter" ]]; then
-			if [[ -f "${OUTDATADIR}/MLST/${1}_srst2_Acinetobacter_baumanni#1-Oxford.mlst" ]]; then
-				srst_mlst="${OUTDATADIR}/MLST/${1}_srst2_Acinetobacter_baumanni#1-Oxford.mlst"
+			if [[ -f "${OUTDATADIR}/MLST/${1}_srst2_Acinetobacter_baumannii#1-Oxford.mlst" ]]; then
+				srst_mlst="${OUTDATADIR}/MLST/${1}_srst2_Acinetobacter_baumannii#1-Oxford.mlst"
 				mlstype=$(tail -n1 ${srst_mlst} | cut -d'	' -f2)
 				mlstdb="abaumannii(Oxford)"
 				if [ "${mlstype}" = "SUB" ] || [ "${mlstype}" = "-" ]; then
@@ -1151,8 +1151,8 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
 				fi
 			fi
-			if [[ -f "${OUTDATADIR}/MLST/${1}_srst2_Acinetobacter_baumanni#2-Pasteur.mlst" ]]; then
-				srst_mlst="${OUTDATADIR}/MLST/${1}_srst2_Acinetobacter_baumanni#2-Pasteur.mlst"
+			if [[ -f "${OUTDATADIR}/MLST/${1}_srst2_Acinetobacter_baumannii#2-Pasteur.mlst" ]]; then
+				srst_mlst="${OUTDATADIR}/MLST/${1}_srst2_Acinetobacter_baumannii#2-Pasteur.mlst"
 				mlstype=$(tail -n1 ${srst_mlst} | cut -d'	' -f2)
 				mlstdb="abaumannii_2(Pasteur)"
 				if [ "${mlstype}" = "SUB" ] || [ "${mlstype}" = "-" ]; then
@@ -1171,7 +1171,7 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 			fi
 		elif [[ "${dec_genus}" = "Escherichia" ]]; then
 			if [[ -f "${OUTDATADIR}/MLST/${1}_srst2_Escherichia_coli#1-Achtman.mlst" ]]; then
-				srst_mlst="${OUTDATADIR}/MLST/${1}_srst2_Escherichia_coli#1-Achctman.mlst"
+				srst_mlst="${OUTDATADIR}/MLST/${1}_srst2_Escherichia_coli#1-Achtman.mlst"
 				mlstype=$(tail -n1 ${srst_mlst} | cut -d'	' -f2)
 				mlstdb="ecoli(Achtman)"
 				if [ "${mlstype}" = "SUB" ] || [ "${mlstype}" = "-" ]; then
