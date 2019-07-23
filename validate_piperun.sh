@@ -1030,6 +1030,12 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 		mlstype=$(echo "${info}" | cut -d'	' -f3)
 		mlstdb=$(echo "${info}" | cut -d'	' -f2)
 		#echo "'${mlstdb}:${mlstype}'"
+		if [[ "${mlstdb}" = "abaumannii_2" ]]; then
+			mlstdb="${mlstdb}(Pasteur)"
+		fi
+		if [[ "${mlstdb}" = "ecoli" ]]; then
+			mlstdb="${mlstdb}(Achtman)"
+		fi
 		if [ "${mlstdb}" = "-" ]; then
 			if [ "${dec_genus}" ] && [ "${dec_species}" ]; then
 				printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no scheme found, check pubmlst for ${dec_genus} ${dec_species}"
@@ -1047,15 +1053,9 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 				status="WARNING"
 			fi
 		elif [ "${mlstype}" = "AU" ]; then
-			printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type"
+			printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type in ${mlstdb}"
 			status="FAILED"
 		else
-			if [[ "${mlstdb}" = "abaumannii_2" ]]; then
-				mlstdb="${mlstdb}(Pasteur)"
-			fi
-			if [[ "${mlstdb}" = "ecoli" ]]; then
-				mlstdb="${mlstdb}(Achtman)"
-			fi
 			printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
 		fi
 	else
@@ -1077,7 +1077,7 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 						status="WARNING"
 					fi
 				elif [ "${mlstype}" = "AU" ]; then
-					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type"
+					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type in ${mlstdb}(Oxford)"
 					status="FAILED"
 				else
 					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}(Oxford)"
@@ -1102,7 +1102,7 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 						status="WARNING"
 					fi
 				elif [ "${mlstype}" = "AU" ]; then
-					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type"
+					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type in ${mlstdb}(Pasteur)"
 					status="FAILED"
 				else
 					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}(Pasteur)"
@@ -1112,7 +1112,7 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 			fi
 		fi
 	fi
-	num_srst2_mlsts=$(find . -type f -name "*_srst2_*.mlst")
+	num_srst2_mlsts=$(find . -type f -name "*_srst2_*.mlst" | wc -l)
 	if [[ "${num_srst2_mlsts}" -eq 1 ]]; then
 		srst_mlst=$(find . -type f -name "*_srst2_*.mlst")
 		mlstype=$(tail -n1 ${srst_mlst} | cut -d'	' -f2)
@@ -1125,7 +1125,7 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 				status="WARNING"
 			fi
 		elif [ "${mlstype}" = "AU" ]; then
-			printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type"
+			printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type in ${mlstdb}"
 			status="FAILED"
 		else
 			printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
@@ -1144,7 +1144,7 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 						status="WARNING"
 					fi
 				elif [ "${mlstype}" = "AU" ]; then
-					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type"
+					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type in ${mlstdb}"
 					status="FAILED"
 				else
 					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
@@ -1162,7 +1162,7 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 						status="WARNING"
 					fi
 				elif [ "${mlstype}" = "AU" ]; then
-					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type"
+					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type in ${mlstdb}"
 					status="FAILED"
 				else
 					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
@@ -1181,7 +1181,7 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 						status="WARNING"
 					fi
 				elif [ "${mlstype}" = "AU" ]; then
-					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type"
+					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type in ${mlstdb}"
 					status="FAILED"
 				else
 					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
@@ -1199,7 +1199,7 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 						status="WARNING"
 					fi
 				elif [ "${mlstype}" = "AU" ]; then
-					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type"
+					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type in ${mlstdb}"
 					status="FAILED"
 				else
 					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
