@@ -1112,7 +1112,7 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 			fi
 		fi
 	fi
-	num_srst2_mlsts=$(find . -type f -name "*_srst2_*.mlst" | wc -l)
+	num_srst2_mlsts=$(find ${OUTDATADIR}/MLST -type f -name "*_srst2_*.mlst" | wc -l)
 	echo "${num_srst2_mlsts}"
 	if [[ "${num_srst2_mlsts}" -eq 1 ]]; then
 		srst_mlst=$(find . -type f -name "*_srst2_*.mlst")
