@@ -1210,6 +1210,7 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 			if [[ "${status}" == "SUCCESS" ]]; then
 				status="ALERT"
 			fi
+		fi
 	else
 		printf "%-20s: %-8s : %s\\n" "MLST" "ALERT" "More than 2 srst files found, look into it?"
 		if [[ "${status}" == "SUCCESS" ]]; then
