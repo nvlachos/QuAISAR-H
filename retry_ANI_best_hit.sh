@@ -114,8 +114,8 @@ if [[ ! -d "${OUTDATADIR}/ANI/localANIDB" ]]; then
 	mkdir "${OUTDATADIR}/ANI/localANIDB"
 	for (( i=0; i<n; i++ ));
 	do
-		temp_ref=$(find ${local_DBs}/aniDB/${genus_in,,} -type f -name "*_${samples[i]}.fna.gz")
-		echo "Trying to copy ${temp_ref}"
+		temp_ref=$(find ${local_DBs}/aniDB/${genus_in,,} -maxdepth 1 -type f -name "*_${samples[i]}.fna.gz")
+		echo "Trying to copy ${temp_ref} --- ${samples[i]}.fna.gz"
 		cp "${temp_ref}" "${OUTDATADIR}/ANI/localANIDB"
 	done
 	gunzip "${OUTDATADIR}/ANI/localANIDB/"*
