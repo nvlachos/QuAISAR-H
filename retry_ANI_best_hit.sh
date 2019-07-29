@@ -114,7 +114,7 @@ if [[ ! -d "${OUTDATADIR}/ANI/localANIDB" ]]; then
 	mkdir "${OUTDATADIR}/ANI/localANIDB"
 	for (( i=0; i<n; i++ ));
 	do
-		cp ${local_DBs}/aniDB/${genus}/*_${samples[i]}.gz "${OUTDATADIR}/ANI/localANIDB"
+		cp ${local_DBs}/aniDB/${genus_in}/*_${samples[i]}.gz "${OUTDATADIR}/ANI/localANIDB"
 	done
 	gunzip "${OUTDATADIR}/ANI/localANIDB/"*
 else
