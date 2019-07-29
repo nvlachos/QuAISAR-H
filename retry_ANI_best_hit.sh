@@ -128,15 +128,15 @@ temp_ref=""
 for (( i=0; i<n; i++ ));
 do
 #	echo ${i}-${samples[i]}
-	if [[ ${samples[i]:0:7} = "sample_" ]];
-	then
+	if [[ ${samples[i]:0:7} = "sample_" ]]; then
 #		echo "Skipping ${i}"
 		continue
+	else
+		temp_ref=$(find "${OUTDATADIR}/ANI/localANIDB" -type f -name "*_${samples[i]}.fna")
+		definition=$(head -1 "${temp_ref}")
+		# Prints all matching samples to file (Except the self comparison) by line as percent_match  sample_name  fasta_header
+		echo "${percents[i+1]} ${samples[i]} ${definition}" >> "${OUTDATADIR}/ANI/best_hits.txt"
 	fi
-	temp_ref=$(find "${OUTDATADIR}/ANI/localANIDB" -type f -name "*_${samples[i]}.fna")
-	definition=$(head -1 "${temp_ref}")
-	# Prints all matching samples to file (Except the self comparison) by line as percent_match  sample_name  fasta_header
-	echo "${percents[i+1]} ${samples[i]} ${definition}" >> "${OUTDATADIR}/ANI/best_hits.txt"
 done
 
 #Sorts the list in the file based on %id (best to worst)
