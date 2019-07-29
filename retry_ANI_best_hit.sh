@@ -110,13 +110,24 @@ IFS="	" read -r -a percents <<< "${sampleline}"
 n=${#samples[@]}
 
 #Extracts all %id against the query sample (excluding itself) and writes them to file
+if [[ ! -d "${OUTDATADIR}/ANI/localANIDB" ]]; then
+	mkdir "${OUTDATADIR}/ANI/localANIDB"
+	for (( i=0; i<n; i++ ));
+	do
+		cp ${local_DBs}/aniDB/${genus}/*_${samples[i]}.gz "${OUTDATADIR}/ANI/localANIDB"
+	done
+	gunzip "${OUTDATADIR}/ANI/localANIDB/"*
+else
+	echo "Already/still has its localANIDB folder"
+fi
+
 for (( i=0; i<n; i++ ));
 do
 #	echo ${i}-${samples[i]}
 	if [[ ${samples[i]:0:7} = "sample_" ]];
 	then
 #		echo "Skipping ${i}"
-		:
+		continue
 	fi
 	definition=$(head -1 "${OUTDATADIR}/ANI/localANIDB/${samples[i]}.fasta")
 	# Prints all matching samples to file (Except the self comparison) by line as percent_match  sample_name  fasta_header
