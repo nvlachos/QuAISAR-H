@@ -149,6 +149,7 @@ sort -k4 -n "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN" --reverse > "${OU
 if [[ -s "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN" ]]; then
 	me=$(whoami)
 	accessions=$(head -n 1 "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN")
+	hits=$(echo "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN" | wc -l)
 #	echo ${accessions}
 	gb_acc=$(echo "${accessions}" | cut -d' ' -f2 | cut -d'|' -f4)
 	echo ${gb_acc}
@@ -161,6 +162,7 @@ if [[ -s "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN" ]]; then
 		else
 			attempts=$(( attempts + 1 ))
 		fi
+		sleep 1
 	done
 	echo ${blast_id}
 	if [[ -z ${blast_id} ]]; then
@@ -168,33 +170,44 @@ if [[ -s "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN" ]]; then
 	fi
 	#blast_id=$(echo ${blast_id} | tr -d '\n')
 	echo -e "best_hit	${sample_name}	${blast_id}" > "${OUTDATADIR}/16s/${sample_name}_16s_blast_id.txt"
+	if [[ "${hits}" -eq 1 ]]; then
+		echo -e "largest	${sample_name}	${blast_id}" >> "${OUTDATADIR}/16s/${sample_name}_16s_blast_id.txt"
+		skip_largest="true"
+	fi
 else
 	echo "No remote blast file"
 fi
 
-# Gets taxon info from the largest hit from the blast list
-if [[ -s "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN.sorted" ]]; then
-	me=$(whoami)
-	accessions=$(head -n 1 "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN.sorted")
-	gb_acc=$(echo "${accessions}" | cut -d' ' -f2 | cut -d'|' -f4)
-	attempts=0
-	# Will try getting info from entrez up to 5 times, as it has a higher chance of not finishing correctly on the first try
-	while [[ ${attempts} -lt 5 ]]; do
-		blast_id=$(python ${shareScript}/entrez_get_taxon_from_accession.py -a "${gb_acc}" -e "${me}@cdc.gov")
-		if [[ ! -z ${blast_id} ]]; then
-			break
-		else
-			attempts=$(( attempts + 1 ))
+best_blast_id=${blast_id}
+
+if [[ ${skip_largest} != "true" ]]; then
+	# Gets taxon info from the largest hit from the blast list
+	if [[ -s "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN.sorted" ]]; then
+		me=$(whoami)
+		accessions=$(head -n 1 "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN.sorted")
+		gb_acc=$(echo "${accessions}" | cut -d' ' -f2 | cut -d'|' -f4)
+		attempts=0
+		# Will try getting info from entrez up to 5 times, as it has a higher chance of not finishing correctly on the first try
+		while [[ ${attempts} -lt 5 ]]; do
+			blast_id=$(python ${shareScript}/entrez_get_taxon_from_accession.py -a "${gb_acc}" -e "${me}@cdc.gov")
+			if [[ ! -z ${blast_id} ]]; then
+				break
+			else
+				attempts=$(( attempts + 1 ))
+			fi
+		done
+		echo ${blast_id}
+		if [[ -z ${blast_id} ]]; then
+			blast_id="No_16s_matches_found"
 		fi
-	done
-	echo ${blast_id}
-	if [[ -z ${blast_id} ]]; then
-		blast_id="No_16s_matches_found"
+		#	blast_id$(echo ${blast_id} | tr -d '\n')
+		if [[ "${hits}" -eq 1 ]] && [[ "${best_blast_id}" == "No_16s_matches_found" ]]; then
+			echo -e "best_hit	${sample_name}	${blast_id}" > "${OUTDATADIR}/16s/${sample_name}_16s_blast_id.txt"
+		fi
+		echo -e "largest	${sample_name}	${blast_id}" >> "${OUTDATADIR}/16s/${sample_name}_16s_blast_id.txt"
+	else
+		echo "No sorted remote blast file"
 	fi
-#	blast_id$(echo ${blast_id} | tr -d '\n')
-	echo -e "largest	${sample_name}	${blast_id}" >> "${OUTDATADIR}/16s/${sample_name}_16s_blast_id.txt"
-else
-	echo "No sorted remote blast file"
 fi
 
 # Go back to original working directory
