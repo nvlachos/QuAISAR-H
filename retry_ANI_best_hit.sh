@@ -133,7 +133,7 @@ do
 #		echo "Skipping ${i}"
 		continue
 	fi
-	temp_ref=$(find ${local_DBs}/aniDB/${genus_in,,} -type f -name "*_${samples[i]}.fna")
+	temp_ref=$(find "${OUTDATADIR}/ANI/localANIDB" -type f -name "*_${samples[i]}.fna")
 	definition=$(head -1 "${OUTDATADIR}/ANI/localANIDB/${temp_ref}")
 	# Prints all matching samples to file (Except the self comparison) by line as percent_match  sample_name  fasta_header
 	echo "${percents[i+1]} ${samples[i]} ${definition}" >> "${OUTDATADIR}/ANI/best_hits.txt"
