@@ -116,7 +116,11 @@ if [[ ! -d "${OUTDATADIR}/ANI/localANIDB" ]]; then
 	do
 		temp_ref=$(find ${local_DBs}/aniDB/${genus_in,,} -maxdepth 1 -type f -name "*_${samples[i]}.fna.gz")
 		echo "Trying to copy ${temp_ref} --- ${samples[i]}.fna.gz"
-		cp "${temp_ref}" "${OUTDATADIR}/ANI/localANIDB"
+		if [[ -f ${temp_ref} ]]; then
+			cp "${temp_ref}" "${OUTDATADIR}/ANI/localANIDB"
+		else
+			echo "Could not find ${temp_ref}"
+		fi
 	done
 	gunzip "${OUTDATADIR}/ANI/localANIDB/"*
 else
@@ -133,9 +137,14 @@ do
 		continue
 	else
 		temp_ref=$(find "${OUTDATADIR}/ANI/localANIDB" -type f -name "*_${samples[i]}.fna")
-		definition=$(head -1 "${temp_ref}")
-		# Prints all matching samples to file (Except the self comparison) by line as percent_match  sample_name  fasta_header
-		echo "${percents[i+1]} ${samples[i]} ${definition}" >> "${OUTDATADIR}/ANI/best_hits.txt"
+		if [[ -f ${temp_ref} ]]; then
+			definition=$(head -1 "${temp_ref}")
+			# Prints all matching samples to file (Except the self comparison) by line as percent_match  sample_name  fasta_header
+			echo "${percents[i+1]} ${samples[i]} ${definition}" >> "${OUTDATADIR}/ANI/best_hits.txt"
+		else
+			echo "Could not find ${temp_ref}"
+			echo "${percents[i+1]} ${samples[i]} NO_FILE_FOUND-NO_ACCESSION" >> "${OUTDATADIR}/ANI/best_hits.txt"
+		fi
 	fi
 done
 
