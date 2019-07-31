@@ -13,7 +13,7 @@ fi
 . ./config.sh
 #   ${mod_changers}/list_modules.sh
 
-ml Python3/3.5.2 pyani/0.2.7 mashtree/0.29
+ml Python3/3.5.2
 
 #
 # Script to calculate the average nucleotide identity of a sample to numerous other samples from the same genus (genus dependent)
@@ -187,7 +187,7 @@ else
 	else
 		attempts=0
 		while [[ ${attempts} -lt 25 ]]; do
-			best_organism_guess=$(python "${shareScript}/entrez_get_taxon_from_accession.py" -a "${accession}" -e "${me}")
+			best_organism_guess=$(python3 "${shareScript}/entrez_get_taxon_from_accession.py" -a "${accession}" -e "${me}")
 			if [[ ! -z ${best_organism_guess} ]]; then
 				break
 			else

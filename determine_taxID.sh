@@ -204,7 +204,7 @@ Check_source 0
 
 # Check if genus was assigned
 if [[ ! -z ${Genus} ]]; then
-	Genus=$(echo ${Genus} | tr -d [:space:])
+	Genus=$(echo ${Genus} | tr -d [:space:] | tr -d "[]")
 fi
 # Check if species was assigned
 if [[ ! -z ${species} ]]; then
