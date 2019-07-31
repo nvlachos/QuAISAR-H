@@ -206,7 +206,12 @@ fi
 #Creates a line at the top of the file to show the best match in an easily readable format that matches the style on the MMB_Seq log
 echo -e "${best_percent}%-${best_organism_guess}(${best_file}.fna)\\n$(cat "${OUTDATADIR}/ANI/best_hits_ordered.txt")" > "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${genus_in}).txt"
 
-echo -e "${best_percent}%-${best_organism_guess}(${best_file}.fna)"
+"${shareScript}/determine_taxID.sh" ${4} ${1}
+
+genus=$(tail -n2 ${OUTDATADIR}/${1}.tax | head -n1 | cut -d'	' -f2)
+species=$(tail -n1 ${OUTDATADIR}/${1}.tax | cut -d'	' -f2)
+
+echo -e "${genus^}___${species}"
 
 #Removes the transient hit files
 if [ -s "${OUTDATADIR}/ANI/best_hits.txt" ]; then
