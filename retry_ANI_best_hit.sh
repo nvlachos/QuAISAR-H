@@ -211,7 +211,7 @@ echo -e "${best_percent}%-${best_organism_guess}(${best_file}.fna)\\n$(cat "${OU
 genus=$(tail -n3 ${OUTDATADIR}/${1}.tax | head -n1 | cut -d'	' -f2)
 species=$(tail -n2 ${OUTDATADIR}/${1}.tax | head -n1 | cut -d'	' -f2)
 
-echo -e "${genus^}___${species}"
+echo -e "${genus^} ${species}"
 
 #Removes the transient hit files
 if [ -s "${OUTDATADIR}/ANI/best_hits.txt" ]; then
