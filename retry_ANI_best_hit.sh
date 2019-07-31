@@ -136,7 +136,7 @@ do
 #		echo "Skipping ${i}"
 		continue
 	else
-		temp_ref=$(find "${OUTDATADIR}/ANI/localANIDB" -type f -name "*_${samples[i]}.fna")
+		temp_ref=$(find "${OUTDATADIR}/ANI/localANIDB" -type f -name "*${samples[i]}.fna")
 		if [[ -f ${temp_ref} ]]; then
 			definition=$(head -1 "${temp_ref}")
 			# Prints all matching samples to file (Except the self comparison) by line as percent_match  sample_name  fasta_header
