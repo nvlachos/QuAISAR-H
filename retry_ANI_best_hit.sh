@@ -190,7 +190,7 @@ else
 		while [[ ${attempts} -lt 25 ]]; do
 			best_organism_guess=$(python3 "${shareScript}/entrez_get_taxon_from_accession.py" -a "${accession}" -e "${me}")
 			if [[ ! -z ${best_organism_guess} ]]; then
-				best_organism_guess=$(echo "${best_organism_guess}" | cut -d "[]")
+				best_organism_guess=$(echo "${best_organism_guess}" | tr -d "[]")
 				break
 			else
 				attempts=$(( attempts + 1 ))
