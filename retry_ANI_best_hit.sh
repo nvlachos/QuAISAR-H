@@ -208,8 +208,8 @@ echo -e "${best_percent}%-${best_organism_guess}(${best_file}.fna)\\n$(cat "${OU
 
 "${shareScript}/determine_taxID.sh" ${1} ${4}
 
-genus=$(tail -n2 ${OUTDATADIR}/${1}.tax | head -n1 | cut -d'	' -f2)
-species=$(tail -n1 ${OUTDATADIR}/${1}.tax | cut -d'	' -f2)
+genus=$(tail -n3 ${OUTDATADIR}/${1}.tax | head -n1 | cut -d'	' -f2)
+species=$(tail -n2 ${OUTDATADIR}/${1}.tax | head -n1 | cut -d'	' -f2)
 
 echo -e "${genus^}___${species}"
 
