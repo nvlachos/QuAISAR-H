@@ -206,7 +206,7 @@ fi
 #Creates a line at the top of the file to show the best match in an easily readable format that matches the style on the MMB_Seq log
 echo -e "${best_percent}%-${best_organism_guess}(${best_file}.fna)\\n$(cat "${OUTDATADIR}/ANI/best_hits_ordered.txt")" > "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${1}_vs_${genus_in}).txt"
 
-echo -e "${best_percent}%-${best_organism_guess}(${best_file}.fna)
+echo -e "${best_percent}%-${best_organism_guess}(${best_file}.fna)"
 
 #Removes the transient hit files
 if [ -s "${OUTDATADIR}/ANI/best_hits.txt" ]; then
