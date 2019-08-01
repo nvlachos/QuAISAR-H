@@ -129,6 +129,8 @@ fi
 
 temp_ref=""
 
+ls -l "${OUTDATADIR}/ANI/localANIDB"
+
 for (( i=0; i<n; i++ ));
 do
 #	echo ${i}-${samples[i]}
