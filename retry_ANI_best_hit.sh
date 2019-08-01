@@ -119,7 +119,7 @@ if [[ ! -d "${OUTDATADIR}/ANI/localANIDB" ]]; then
 		if [[ -f ${temp_ref} ]]; then
 			cp "${temp_ref}" "${OUTDATADIR}/ANI/localANIDB"
 		else
-			echo "Could not find ${temp_ref}"
+			echo "Could not copy ${temp_ref} (*${samples[i]}.fna.gz)"
 		fi
 	done
 	gunzip "${OUTDATADIR}/ANI/localANIDB/"*
