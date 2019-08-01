@@ -144,7 +144,7 @@ do
 			# Prints all matching samples to file (Except the self comparison) by line as percent_match  sample_name  fasta_header
 			echo "${percents[i+1]} ${samples[i]} ${definition}" >> "${OUTDATADIR}/ANI/best_hits.txt"
 		else
-			echo "Could not find ${temp_ref} (*${samples[i]}.fna)"
+			echo "Could not find ${temp_ref} (*${samples[i]}.f*)"
 			echo "${percents[i+1]} ${samples[i]} NO_FILE_FOUND-NO_ACCESSION" >> "${OUTDATADIR}/ANI/best_hits.txt"
 		fi
 	fi
@@ -156,12 +156,12 @@ sort -nr -t' ' -k1 -o "${OUTDATADIR}/ANI/best_hits_ordered.txt" "${OUTDATADIR}/A
 best=$(head -n 1 "${OUTDATADIR}/ANI/best_hits_ordered.txt")
 #Creates an array from the best hit
 IFS=' ' read -r -a def_array <<< "${best}"
-#echo -${def_array[@]}+
+echo -${def_array[@]}+
 #Captures the assembly file name that the best hit came from
 best_file=${def_array[1]}
 #Formats the %id to standard percentage (xx.xx%)
 best_percent=$(awk -v per="${def_array[0]}" 'BEGIN{printf "%.2f", per * 100}')
-#echo "${best_file}"
+echo "${best_file}"
 # If the best match comes from the additional file, extract the taxonomy from that file
 if [[ "${best_file}" = *"_scaffolds_trimmed" ]]; then
 	best_outbreak_match=$(echo "${best_file}" | rev | cut -d'_' -f3- | rev)
