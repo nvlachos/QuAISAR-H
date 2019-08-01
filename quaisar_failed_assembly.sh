@@ -274,6 +274,8 @@ start=$SECONDS
 # Temp fix for strange genera until we do vs ALL all the time.
 if [[ "${genus}" = "Peptoclostridium" ]] || [[ "${genus}" = "Clostridioides" ]]; then
 	genus="Clostridium"
+elif [[ "${genus}" = "Shigella" ]];
+	genus="Escherichia"
 fi
 
 if [[ -d "${OUTDATADIR}/${sample_name}/ANI" ]]; then

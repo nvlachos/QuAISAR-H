@@ -142,7 +142,7 @@ do
 			# Prints all matching samples to file (Except the self comparison) by line as percent_match  sample_name  fasta_header
 			echo "${percents[i+1]} ${samples[i]} ${definition}" >> "${OUTDATADIR}/ANI/best_hits.txt"
 		else
-			echo "Could not find ${temp_ref}"
+			echo "Could not find ${temp_ref} (*${samples[i]}.fna)"
 			echo "${percents[i+1]} ${samples[i]} NO_FILE_FOUND-NO_ACCESSION" >> "${OUTDATADIR}/ANI/best_hits.txt"
 		fi
 	fi
