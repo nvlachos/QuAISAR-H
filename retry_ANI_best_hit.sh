@@ -189,7 +189,8 @@ else
 	else
 		ml Entrez/latest
 		attempts=0
-		while [[ ${attempts} -lt 25 ]]; do
+		while [[ ${attempts} -lt 5 ]]; do
+			echo "Trying to lookup - ${accession}"
 			best_organism_guess=$(python3 "${shareScript}/entrez_get_taxon_from_accession.py" -a "${accession}" -e "${me}")
 			if [[ ! -z ${best_organism_guess} ]]; then
 				best_organism_guess=$(echo "${best_organism_guess}" | tr -d "[]")
