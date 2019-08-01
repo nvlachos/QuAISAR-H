@@ -129,7 +129,7 @@ fi
 
 temp_ref=""
 
-ls -l "${OUTDATADIR}/ANI/localANIDB"
+#ls -l "${OUTDATADIR}/ANI/localANIDB"
 
 for (( i=0; i<n; i++ ));
 do
@@ -156,12 +156,12 @@ sort -nr -t' ' -k1 -o "${OUTDATADIR}/ANI/best_hits_ordered.txt" "${OUTDATADIR}/A
 best=$(head -n 1 "${OUTDATADIR}/ANI/best_hits_ordered.txt")
 #Creates an array from the best hit
 IFS=' ' read -r -a def_array <<< "${best}"
-echo -${def_array[@]}+
+#echo -${def_array[@]}+
 #Captures the assembly file name that the best hit came from
 best_file=${def_array[1]}
 #Formats the %id to standard percentage (xx.xx%)
 best_percent=$(awk -v per="${def_array[0]}" 'BEGIN{printf "%.2f", per * 100}')
-echo "${best_file}"
+#echo "${best_file}"
 # If the best match comes from the additional file, extract the taxonomy from that file
 if [[ "${best_file}" = *"_scaffolds_trimmed" ]]; then
 	best_outbreak_match=$(echo "${best_file}" | rev | cut -d'_' -f3- | rev)
@@ -190,7 +190,7 @@ else
 		ml Entrez/latest
 		attempts=0
 		while [[ ${attempts} -lt 5 ]]; do
-			echo "Trying to lookup - ${accession}"
+			#echo "Trying to lookup - ${accession}"
 			best_organism_guess=$(python3 "${shareScript}/entrez_get_taxon_from_accession.py" -a "${accession}" -e "${me}")
 			if [[ ! -z ${best_organism_guess} ]]; then
 				best_organism_guess=$(echo "${best_organism_guess}" | tr -d "[]")
