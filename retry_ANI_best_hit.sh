@@ -138,13 +138,13 @@ do
 #		echo "Skipping ${i}"
 		continue
 	else
-		temp_ref=$(find "${OUTDATADIR}/ANI/localANIDB" -type f -name "*${samples[i]}.f*")
+		temp_ref=$(find "${OUTDATADIR}/ANI/localANIDB" -type f -name "*${samples[i]}.fna")
 		if [[ -f ${temp_ref} ]]; then
 			definition=$(head -1 "${temp_ref}")
 			# Prints all matching samples to file (Except the self comparison) by line as percent_match  sample_name  fasta_header
 			echo "${percents[i+1]} ${samples[i]} ${definition}" >> "${OUTDATADIR}/ANI/best_hits.txt"
 		else
-			echo "Could not find ${temp_ref} (*${samples[i]}.f*)"
+			echo "Could not find ${temp_ref} (*${samples[i]}.fna)"
 			echo "${percents[i+1]} ${samples[i]} NO_FILE_FOUND-NO_ACCESSION" >> "${OUTDATADIR}/ANI/best_hits.txt"
 		fi
 	fi
