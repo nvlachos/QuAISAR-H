@@ -1119,17 +1119,17 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 		mlstype=$(tail -n1 ${srst_mlst} | cut -d'	' -f2)
 		mlstdb=$(echo "${srst_mlst}" | rev | cut -d'-' -f1 | cut -d'.' -f2 | rev )
 		if [ "${mlstype}" = "SUB" ] || [ "${mlstype}" = "-" ]; then
-			printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
+			printf "%-20s: %-8s : %s\\n" "MLST-srst2" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
 			report_info=$(echo "${info}" | cut -d' ' -f2-)
 			echo "${2}/${1}: Possible new MLST type - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
 			if [[ "${status}" = "SUCCESS" ]] || [[ "${status}" = "ALERT" ]]; then
 				status="WARNING"
 			fi
 		elif [ "${mlstype}" = "AU" ]; then
-			printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type in ${mlstdb}"
+			printf "%-20s: %-8s : %s\\n" "MLST-srst2" "FAILED" "1+ allele is missing, cant determine ST type in ${mlstdb}"
 			status="FAILED"
 		else
-			printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
+			printf "%-20s: %-8s : %s\\n" "MLST-srst2" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
 		fi
 	elif [[ "${num_srst2_mlsts}" -eq 2 ]]; then
 		if [[ "${dec_genus}" = "Acinetobacter" ]]; then
@@ -1138,17 +1138,17 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 				mlstype=$(tail -n1 ${srst_mlst} | cut -d'	' -f2)
 				mlstdb="abaumannii(Oxford)"
 				if [ "${mlstype}" = "SUB" ] || [ "${mlstype}" = "-" ]; then
-					printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
+					printf "%-20s: %-8s : %s\\n" "MLST-srst2" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
 					report_info=$(echo "${info}" | cut -d' ' -f2-)
 					echo "${2}/${1}: Possible new MLST type - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
 					if [[ "${status}" = "SUCCESS" ]] || [[ "${status}" = "ALERT" ]]; then
 						status="WARNING"
 					fi
 				elif [ "${mlstype}" = "AU" ]; then
-					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type in ${mlstdb}"
+					printf "%-20s: %-8s : %s\\n" "MLST-srst2" "FAILED" "1+ allele is missing, cant determine ST type in ${mlstdb}"
 					status="FAILED"
 				else
-					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
+					printf "%-20s: %-8s : %s\\n" "MLST-srst2" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
 				fi
 			fi
 			if [[ -f "${OUTDATADIR}/MLST/${1}_srst2_Acinetobacter_baumannii#2-Pasteur.mlst" ]]; then
@@ -1156,17 +1156,17 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 				mlstype=$(tail -n1 ${srst_mlst} | cut -d'	' -f2)
 				mlstdb="abaumannii_2(Pasteur)"
 				if [ "${mlstype}" = "SUB" ] || [ "${mlstype}" = "-" ]; then
-					printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
+					printf "%-20s: %-8s : %s\\n" "MLST-srst2" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
 					report_info=$(echo "${info}" | cut -d' ' -f2-)
 					echo "${2}/${1}: Possible new MLST type - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
 					if [[ "${status}" = "SUCCESS" ]] || [[ "${status}" = "ALERT" ]]; then
 						status="WARNING"
 					fi
 				elif [ "${mlstype}" = "AU" ]; then
-					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type in ${mlstdb}"
+					printf "%-20s: %-8s : %s\\n" "MLST-srst2" "FAILED" "1+ allele is missing, cant determine ST type in ${mlstdb}"
 					status="FAILED"
 				else
-					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
+					printf "%-20s: %-8s : %s\\n" "MLST-srst2" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
 				fi
 			fi
 		elif [[ "${dec_genus}" = "Escherichia" ]]; then
@@ -1175,17 +1175,17 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 				mlstype=$(tail -n1 ${srst_mlst} | cut -d'	' -f2)
 				mlstdb="ecoli(Achtman)"
 				if [ "${mlstype}" = "SUB" ] || [ "${mlstype}" = "-" ]; then
-					printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
+					printf "%-20s: %-8s : %s\\n" "MLST-srst2" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
 					report_info=$(echo "${info}" | cut -d' ' -f2-)
 					echo "${2}/${1}: Possible new MLST type - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
 					if [[ "${status}" = "SUCCESS" ]] || [[ "${status}" = "ALERT" ]]; then
 						status="WARNING"
 					fi
 				elif [ "${mlstype}" = "AU" ]; then
-					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type in ${mlstdb}"
+					printf "%-20s: %-8s : %s\\n" "MLST-srst2" "FAILED" "1+ allele is missing, cant determine ST type in ${mlstdb}"
 					status="FAILED"
 				else
-					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
+					printf "%-20s: %-8s : %s\\n" "MLST-srst2" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
 				fi
 			fi
 			if [[ -f "${OUTDATADIR}/MLST/${1}_srst2_Escherichia_coli#2-Pasteur.mlst" ]]; then
@@ -1193,27 +1193,27 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 				mlstype=$(tail -n1 ${srst_mlst} | cut -d'	' -f2)
 				mlstdb="ecoli_2(Pasteur)"
 				if [ "${mlstype}" = "SUB" ] || [ "${mlstype}" = "-" ]; then
-					printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
+					printf "%-20s: %-8s : %s\\n" "MLST-srst2" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
 					report_info=$(echo "${info}" | cut -d' ' -f2-)
 					echo "${2}/${1}: Possible new MLST type - ${report_info}" >> "${shareScript}/maintenance_To_Do.txt"
 					if [[ "${status}" = "SUCCESS" ]] || [[ "${status}" = "ALERT" ]]; then
 						status="WARNING"
 					fi
 				elif [ "${mlstype}" = "AU" ]; then
-					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type in ${mlstdb}"
+					printf "%-20s: %-8s : %s\\n" "MLST-srst2" "FAILED" "1+ allele is missing, cant determine ST type in ${mlstdb}"
 					status="FAILED"
 				else
-					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
+					printf "%-20s: %-8s : %s\\n" "MLST-srst2" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
 				fi
 			fi
 		else
-			printf "%-20s: %-8s : %s\\n" "MLST" "ALERT" "More than 1 srst file found for non AB or ecoli sample, look into it?"
+			printf "%-20s: %-8s : %s\\n" "MLST-srst2" "ALERT" "More than 1 srst file found for non AB or ecoli sample, look into it?"
 			if [[ "${status}" == "SUCCESS" ]]; then
 				status="ALERT"
 			fi
 		fi
 	else
-		printf "%-20s: %-8s : %s\\n" "MLST" "ALERT" "More than 2 srst files found, look into it?"
+		printf "%-20s: %-8s : %s\\n" "MLST-srst2" "ALERT" "More than 2 srst files found, look into it?"
 		if [[ "${status}" == "SUCCESS" ]]; then
 			status="ALERT"
 		fi
