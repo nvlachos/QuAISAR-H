@@ -94,7 +94,7 @@ gottcha.pl --mode all --outdir "${OUTDATADIR}/gottcha/gottcha_S" --input "${OUTD
 gzip "${OUTDATADIR}/trimmed/${1}.paired.fq"
 
 # Return perl to 5.22.1
-. "${shareScript}/module_changers/perl_5123_to_5221.sh"
+#. "${shareScript}/module_changers/perl_5123_to_5221.sh"
 
 # Create the krona graphs from each of the analyses
 ml krona
