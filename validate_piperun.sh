@@ -1115,7 +1115,8 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 	num_srst2_mlsts=$(find ${OUTDATADIR}/MLST -type f -name "*_srst2_*.mlst" | wc -l)
 	#echo "${num_srst2_mlsts}"
 	if [[ "${num_srst2_mlsts}" -eq 0 ]]; then
-		echo "No mlst srst2 was attempted on this isolate (${1})"
+		#echo "No mlst srst2 was attempted on this isolate (${1})"
+		:
 	elif [[ "${num_srst2_mlsts}" -eq 1 ]]; then
 		srst_mlst=$(find . -type f -name "*_srst2_*.mlst")
 		mlstype=$(tail -n1 ${srst_mlst} | cut -d'	' -f2)
