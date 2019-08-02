@@ -97,8 +97,11 @@ gzip "${OUTDATADIR}/trimmed/${1}.paired.fq"
 . "${shareScript}/module_changers/perl_5123_to_5221.sh"
 
 # Create the krona graphs from each of the analyses
+ml krona
+
 ktImportText "${OUTDATADIR}/gottcha/gottcha_S/${1}_temp/${1}.lineage.tsv" -o "${OUTDATADIR}/gottcha/${1}_species.krona.html"
 
+ml -krona
 #Create a best hit from gottcha1 file
 "${shareScript}/best_hit_from_gottcha1.sh" "${1}" "${2}"
 
