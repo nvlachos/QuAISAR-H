@@ -44,7 +44,7 @@ while IFS= read -r var; do
 				genus="Clostridium"
 			fi
 		fi
-	done < "${processed}/${project}/${sample}/${sample}.tax"
+	done < "${processed}/${project}/${sample_name}/${sample_name}.tax"
 
 	if [[ -f "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus,,}.txt" ]]; then
 		if [[ ! -f "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus}.txt" ]]; then
