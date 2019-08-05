@@ -135,14 +135,14 @@ fi
 
 #rename 's/.fna$/.fasta/' ${OUTDATADIR}/ANI/localANIDB/*.fna
 for foo in ${OUTDATADIR}/ANI/localANIDB/*.fna; do
-	echo "Moving $foo to `basename $foo .fna`.fasta"
-	mv $foo `basename $foo .fna`.fasta;
+	#echo "Moving $foo to `basename $foo .fna`.fasta"
+	mv $foo ${OUTDATADIR}/ANI/localANIDB/`basename $foo .fna`.fasta;
 done
 
 mashtree --numcpus ${procs} *.fna --tempdir ${OUTDATADIR}/ANI/temp > ${OUTDATADIR}/ANI/"${genus_in}_and_${1}_mashtree.dnd";
 
 #rename 's/.fasta$/.fna/' ${OUTDATADIR}/ANI/localANIDB/*.fasta
-for foo in ${OUTDATADIR}/ANI/localANIDB/*.fasta; do mv $foo `basename $foo .fasta`.fna; done
+for foo in ${OUTDATADIR}/ANI/localANIDB/*.fasta; do mv $foo ${OUTDATADIR}/ANI/localANIDB/`basename $foo .fasta`.fna; done
 
 rm -r ${OUTDATADIR}/ANI/temp
 
