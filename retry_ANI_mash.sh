@@ -101,7 +101,11 @@ else
 	echo "Already/still has its localANIDB folder"
 fi
 
-mashtree.pl --numcpus ${procs} *.fna --tempdir ${OUTDATADIR}/ANI/temp > ${OUTDATADIR}/ANI/"${genus_in}_and_${1}_mashtree.dnd";
+rename 's/.fna$/.fasta/' ${OUTDATADIR}/ANI/localANIDB/*.fna
+
+mashtree --numcpus ${procs} *.fna --tempdir ${OUTDATADIR}/ANI/temp > ${OUTDATADIR}/ANI/"${genus_in}_and_${1}_mashtree.dnd";
+
+rename 's/.fasta$/.fna/' ${OUTDATADIR}/ANI/localANIDB/*.fna
 
 end_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 echo "ENDed ANI at ${end_time}"
