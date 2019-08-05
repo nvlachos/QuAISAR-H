@@ -81,7 +81,34 @@ me=$(whoami)
 #echo ${me}"___"${1}___${2}___${3}___${4}
 
 # Sets the genus as the database that was passed in (The $2 seemed to be getting changed somewhere, so I just set it as a local variable)
+# Sets the genus as the database that was passed in (The $2 seemed to be getting changed somewhere, so I just set it as a local variable)
 genus_in=${2}
+
+#Extracts the top line from the %id file to get all the sample names used in analysis (they are tab separated along the top row)
+if [[ -s "${OUTDATADIR}/ANI/aniM/ANIm_percentage_identity.tab" ]]; then
+	firstline=$(head -n 1 "${OUTDATADIR}/ANI/aniM/ANIm_percentage_identity.tab")
+else
+	echo "No ${OUTDATADIR}/ANI/aniM/ANIm_percentage_identity.tab file, exiting"
+	exit 1
+fi
+
+#Extracts the query sample info line for percentage identity from the percent identity file
+while IFS='' read -r line; do
+#	echo "!-${line}"
+	if [[ ${line:0:7} = "sample_" ]]; then
+		sampleline=${line}
+#		echo "found it-"$sampleline
+		break
+	fi
+done < "${OUTDATADIR}/ANI/aniM/ANIm_percentage_identity.tab"
+
+
+#Arrays to read sample names and the %ids for the query sample against those other samples
+IFS="	" read -r -a samples <<< "${firstline}"
+IFS="	" read -r -a percents <<< "${sampleline}"
+
+#How many samples were compared
+n=${#samples[@]}
 
 #Extracts all %id against the query sample (excluding itself) and writes them to file
 if [[ ! -d "${OUTDATADIR}/ANI/localANIDB" ]]; then
@@ -89,23 +116,33 @@ if [[ ! -d "${OUTDATADIR}/ANI/localANIDB" ]]; then
 	for (( i=0; i<n; i++ ));
 	do
 		temp_ref=$(find ${local_DBs}/aniDB/${genus_in,,} -maxdepth 1 -type f -name "*${samples[i]}.fna.gz")
-		echo "Trying to copy ${temp_ref} --- ${samples[i]}.fna.gz"
+		echo "Trying to copy ${temp_ref} --- *${samples[i]}.fna.gz"
 		if [[ -f ${temp_ref} ]]; then
 			cp "${temp_ref}" "${OUTDATADIR}/ANI/localANIDB"
 		else
-			echo "Could not copy ${temp_ref} (*${samples[i]}.fna.gz)"
+			echo "Could not find ${temp_ref} (${samples[i]}.fna.gz)"
 		fi
 	done
 	gunzip "${OUTDATADIR}/ANI/localANIDB/"*
+	for f in ${OUTDATADIR}/ANI/localANIDB/*; do
+		if [[ "${f}" == *".fasta" ]]; then
+			mv $f `basename $f .fasta`.fna
+		fi
+	done
 else
 	echo "Already/still has its localANIDB folder"
 fi
 
-rename 's/.fna$/.fasta/' ${OUTDATADIR}/ANI/localANIDB/*.fna
+ls -l "${OUTDATADIR}/ANI/localANIDB"
+
+owd =$(pwd)
+cd ${OUTDATADIR}/ANI/localANIDB/
+rename 's/.fna$/.fasta/' *.fna
 
 mashtree --numcpus ${procs} *.fna --tempdir ${OUTDATADIR}/ANI/temp > ${OUTDATADIR}/ANI/"${genus_in}_and_${1}_mashtree.dnd";
 
-rename 's/.fasta$/.fna/' ${OUTDATADIR}/ANI/localANIDB/*.fna
+rename 's/.fasta$/.fna/' *.fasta
+cd ${owd}
 
 end_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 echo "ENDed ANI at ${end_time}"
