@@ -48,13 +48,13 @@ while IFS= read -r var; do
 
 	echo "${genus},${genus,,},${genus^}"
 
-	if [[ -f "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus,,}.txt" ]]; then
+	if [[ -f "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus,,}).txt" ]]; then
 		echo "Little exists"
-		if [[ ! -f "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus^}.txt" ]]; then
+		if [[ ! -f "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus^}).txt" ]]; then
 			echo "Big does not"
-			mv "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus,,}.txt" "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus^}.txt"
+			mv "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus,,}).txt" "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus^}).txt"
 		fi
-		rm "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus,,}.txt"
+		rm "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus,,}).txt"
 	fi
 done < "${1}"
 
