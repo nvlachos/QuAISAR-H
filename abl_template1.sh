@@ -29,7 +29,29 @@ fi
 while IFS= read -r var; do
 	sample_name=$(echo "${var}" | cut -d'/' -f2 | tr -d '[:space:]')
 	project=$(echo "${var}" | cut -d'/' -f1 | tr -d '[:space:]')
-	${shareScript}/retry_ANI_mash.sh ${sample_name} ${2} ${3} ${project}
+	while IFS= read -r line; do
+		# Grab first letter of line (indicating taxonomic level)
+		first=${line:0:1}
+		# Assign taxonomic level value from 4th value in line (1st-classification level, 2nd-% by kraken, 3rd-true % of total reads, 4th-identifier)
+		if [ "${first}" = "s" ]
+		then
+			species=$(echo "${line}" | awk -F ' ' '{print $2}')
+		elif [ "${first}" = "G" ]
+		then
+			genus=$(echo "${line}" | awk -F ' ' '{print $2}')
+			# Only until ANI gets fixed
+			if [[ ${genus} == "Clostridioides" ]]; then
+				genus="Clostridium"
+			fi
+		fi
+	done < "${processed}/${project}/${sample}/${sample}.tax"
+
+	if [[ -f "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus,,}.txt" ]]; then
+		if [[ ! -f "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus}.txt" ]]; then
+			mv "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus,,}.txt" "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus^}.txt"
+		fi
+		rm "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus,,}.txt"
+	fi
 done < "${1}"
 
 echo "All isolates completed"
