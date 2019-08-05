@@ -134,7 +134,10 @@ else
 fi
 
 #rename 's/.fna$/.fasta/' ${OUTDATADIR}/ANI/localANIDB/*.fna
-for foo in ${OUTDATADIR}/ANI/localANIDB/*.fna; do mv $foo `basename $foo .fna`.fasta; done
+for foo in ${OUTDATADIR}/ANI/localANIDB/*.fna; do
+	echo "Moving $foo to `basename $foo .fna`.fasta"
+	mv $foo `basename $foo .fna`.fasta;
+done
 
 mashtree --numcpus ${procs} *.fna --tempdir ${OUTDATADIR}/ANI/temp > ${OUTDATADIR}/ANI/"${genus_in}_and_${1}_mashtree.dnd";
 
