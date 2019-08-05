@@ -46,7 +46,11 @@ while IFS= read -r var; do
 		fi
 	done < "${processed}/${project}/${sample_name}/${sample_name}.tax"
 
-	echo "${genus},${genus,,},${genus^}"
+	if [[ "${genus}" ==  "Shigella" ]]; then
+		genus="Escherichia"
+	elif [[ "${genus}" == "Clostridioides" ]]; then
+		genus="Clostridium"
+	fi
 
 	if [[ -f "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus,,}).txt" ]]; then
 		echo "Little exists"
