@@ -133,7 +133,11 @@ else
 	echo "Already/still has its localANIDB folder"
 fi
 
+rename 's/.fna$/.fasta/' ${OUTDATADIR}/ANI/localANIDB/*.fna
+
 mashtree --numcpus ${procs} *.fna --tempdir ${OUTDATADIR}/ANI/temp > ${OUTDATADIR}/ANI/"${genus_in}_and_${1}_mashtree.dnd";
+
+rename 's/.fasta$/.fna/' ${OUTDATADIR}/ANI/localANIDB/*.fasta
 
 rm -r ${OUTDATADIR}/ANI/temp
 
