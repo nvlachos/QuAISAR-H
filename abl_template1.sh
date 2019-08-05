@@ -56,6 +56,14 @@ while IFS= read -r var; do
 		fi
 		rm "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus,,}).txt"
 	fi
+	if [[ -f "${processed}/${project}/${sample_name}/ANI/${genus,,}_and_${sample_name}_mashtree.dnd" ]]; then
+		echo "Little exists"
+		if [[ ! -f "${processed}/${project}/${sample_name}/ANI/${genus^}_and_${sample_name}_mashtree.dnd" ]]; then
+			echo "Big does not"
+			mv "${processed}/${project}/${sample_name}/ANI/${genus,,}_and_${sample_name}_mashtree.dnd" "${processed}/${project}/${sample_name}/ANI/${genus^}_and_${sample_name}_mashtree.dnd"
+		fi
+		rm "${processed}/${project}/${sample_name}/ANI/${genus,,}_and_${sample_name}_mashtree.dnd"
+	fi
 done < "${1}"
 
 echo "All isolates completed"
