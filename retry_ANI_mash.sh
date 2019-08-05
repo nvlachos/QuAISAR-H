@@ -133,9 +133,7 @@ else
 	echo "Already/still has its localANIDB folder"
 fi
 
-ls -l "${OUTDATADIR}/ANI/localANIDB"
-
-owd =$(pwd)
+owd=$(pwd)
 cd ${OUTDATADIR}/ANI/localANIDB/
 rename 's/.fna$/.fasta/' *.fna
 
@@ -143,6 +141,8 @@ mashtree --numcpus ${procs} *.fna --tempdir ${OUTDATADIR}/ANI/temp > ${OUTDATADI
 
 rename 's/.fasta$/.fna/' *.fasta
 cd ${owd}
+
+rm -r ${OUTDATADIR}/ANI/temp
 
 end_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 echo "ENDed ANI at ${end_time}"
