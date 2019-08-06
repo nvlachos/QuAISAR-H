@@ -471,31 +471,27 @@ while IFS= read -r line || [ -n "$line" ]; do
 	if [[ "${added}" -eq 0 ]]; then
 		echo -e "${project}\t${sample_name}\tfull_assembly\tNo_Plasmids_Found\t${full_contigs}_contigs-${components}_components" >> ${output_directory}/${4}-plasmid_summary.txt
 	fi
-	# plas_contigs=">"
-	# plas_contigs=$(grep -c ${plas_contigs} "${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta")
-	# components=-1
-	# while IFS= read -r contigs || [ -n "$contigs" ]; do
-	# 	if [[ "${contigs}" = ">"* ]]; then
-	# 		components_temp=$(echo "${contigs}" | cut -d'_' -f8)
-	# 		if [[ ${components_temp} -gt ${components} ]]; then
-	# 			components="${components_temp}"
-	# 		fi
-	# 	fi
-	# done < ${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta
-	# components=$(( components + 1 ))
-	# while IFS= read -r plasmid || [ -n "$plasmid" ]; do
-	# 	line_in=$(echo ${plasmid} | cut -d' ' -f1)
-	# 	if [[ "${line_in}" = "No" ]] || [[ "${line_in}" = "Enterococcus,Streptococcus,Staphylococcus" ]] || [[ "${line_in}" = "Enterobacteriaceae" ]] || [[ "${line_in}" = "Plasmid" ]]; then
-	# 		:
-	# 	else
-	# 		echo -e "${project}\t${sample_name}\tplasmid_assembly\t${plasmid}" >> ${output_directory}/${4}-plasmid_summary.txt
-	# 		added=1
-	# 	fi
-	# done < ${OUTDATADIR}/plasmid_on_plasFlow/${sample_name}_results_table_summary.txt
-	#
-	# if [[ "${added}" -eq 0 ]]; then
-	# 	echo -e "${project}\t${sample_name}\tplasmid_assembly\tNo_Plasmids_Found\t${plas_contigs}_contigs-${components}_components" >> ${output_directory}/${4}-plasmid_summary.txt
-	# fi
+	plas_contigs=">"
+	plas_contigs=$(grep -c ${plas_contigs} "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${sample_name}_uni_assembly/${sample_name}_plasmid_assembly_trimmed.fasta")
+	contig_count=0
+	while IFS= read -r contigs || [ -n "$contigs" ]; do
+		if [[ "${contigs}" = ">"* ]]; then
+			contig_count=$(( contig_count + 1 ))
+		fi
+	done < ${OUTDATADIR}/plasFlow/Unicycler_assemblies/${sample_name}_uni_assembly/${sample_name}_plasmid_assembly_trimmed.fasta
+	while IFS= read -r plasmid || [ -n "$plasmid" ]; do
+		line_in=$(echo ${plasmid} | cut -d' ' -f1)
+		if [[ "${line_in}" = "No" ]] || [[ "${line_in}" = "Enterococcus,Streptococcus,Staphylococcus" ]] || [[ "${line_in}" = "Enterobacteriaceae" ]] || [[ "${line_in}" = "Plasmid" ]]; then
+			:
+		else
+			echo -e "${project}\t${sample_name}\tplasmid_assembly\t${plasmid}" >> ${output_directory}/${4}-plasmid_summary.txt
+			added=1
+		fi
+	done < ${OUTDATADIR}/plasmid_on_plasFlow/${sample_name}_results_table_summary.txt
+
+	if [[ "${added}" -eq 0 ]]; then
+		echo -e "${project}\t${sample_name}\tplasmid_assembly\tNo_Plasmids_Found\t${plas_contigs}_contigs-${components}_components" >> ${output_directory}/${4}-plasmid_summary.txt
+	fi
 
 done < ${1}
 

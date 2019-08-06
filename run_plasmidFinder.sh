@@ -30,7 +30,7 @@ elif [[ -z "${1}" ]]; then
 	echo "Empty sample name supplied to run_plasmidFinder.sh, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_plasmidFinder.sh  sample_name run_id output_folder(either plasmid or (DONT USE-plasmid_on_plasFlow) (-i number_minimum_identity, optional) (-f to force against all databases, optional)"
+	echo "Usage is ./run_plasmidFinder.sh  sample_name run_id output_folder(plasmid|plasmid_on_plasFlow) (-i number_minimum_identity, optional) (-f to force against all databases, optional)"
 	echo "Output by default is ${processed}/miseq_run_id/sample_name/plasmid"
 	exit 0
 elif [[ -z "${2}" ]]; then
