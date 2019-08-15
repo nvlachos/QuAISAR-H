@@ -57,7 +57,7 @@ pacbio="/scicomp/instruments/23-12-651_PacBio-RSII-RS42135"
 all_instruments=($miseq1 $miseq2 $miseq3 $miseq4) # $pacbio)
 
 # Number of processors requested by numerous applications within the pipeline
-procs=9 # Number of processors
+procs=12 # Number of processors
 
 # Phred scoring scale to be used (33 or 64)
 phred=33

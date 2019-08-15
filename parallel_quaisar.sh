@@ -68,7 +68,7 @@ fi
 
 # Checking for proper number of arguments from command line
 if [[ $# -lt 1  || $# -gt 7 ]]; then
-        echo "Usage: ./primary_processing.sh [i] [o] [d/n] [p/l/s] [project_name/list_of_samples.txt/sample_name]"
+        echo "Usage: ./parallel_quaisar.sh [i] [o] [p] [project_name/list_of_samples.txt/sample_name]"
         echo "You have used $# args"
         exit 3
 fi
@@ -87,12 +87,10 @@ for ((i=1 ; i <= nopts ; i++)); do
 		#Help/Usage section
 		-h | --help)
 			echo -e "\\n\\n\\n"
-			echo "Usage: ./parallel_quisar.sh [i] directory number [o] directory name [p] project_name"
+			echo "Usage: ./parallel_quisar.sh [i] directory of FASTQ files [1,2,3,4] name format [o] output directory [p] project_name(folder)"
 			echo "i - input folder location containing all ZIPPED FASTQ files, must also include additional parameter after this indicating what postfix files will be"
 			echo "1,2,3 - options that correlate to postfix files types (1=_SX_RX_00X_fastq.gz. 2=_RX.fastq.gz. 3=X.fastq.gz)"
 			echo "o - output folder where to put project folder"
-			echo "n/d - no_download/download fastqs from instrument. Only applies to project analysis (Samples can not be downloaded yet in list or single mode)"
-			echo "p/l/s - project/list/single. What set of samples will the analysis be used on."
 			echo "Must also give identifier to type of files, whether it is the project name, the text file containing a list of samples, or simply"
 			echo "a single sample_id".
 			echo "For samples in list or single mode - each name must include source project \"e.g. 170818_M02103_0075_000000000-B8VHY/1723664\""
