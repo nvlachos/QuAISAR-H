@@ -194,7 +194,7 @@ fi
 				rm -r "${sample_folder}/trimmed/${sample_name}_R1_001.paired.fq"
 			else
 				echo "Zip file was empty, trying to rezip"
-				gzip -c "${sample_folder}/trimmed/${sample_name}_R1_001.paired.fq"
+				gzip "${sample_folder}/trimmed/${sample_name}_R1_001.paired.fq"
 				if [ -s "${sample_folder}/trimmed/${sample_name}_R1_001.paired.fq.gz" ]; then
 					echo "Zipping seems to have been successful, deleting ${sample_folder}/trimmed/${sample_name}_R1_001.paired.fq"
 					rm -r "${sample_folder}/trimmed/${sample_name}_R1_001.paired.fq"
@@ -209,7 +209,7 @@ fi
 		#echo "Found unzipped FASTQ"
 		if [ ! -f "${sample_folder}/trimmed/${sample_name}_R2_001.paired.fq.gz" ]; then
 			echo "Zipping paired R2"
-			gzip -c "${sample_folder}/trimmed/${sample_name}_R2_001.paired.fq"
+			gzip "${sample_folder}/trimmed/${sample_name}_R2_001.paired.fq"
 			if [ -s "${sample_folder}/trimmed/${sample_name}_R2_001.paired.fq.gz" ]; then
 				echo "Zipping seems to have been successful, deleting ${sample_folder}/trimmed/${sample_name}_R2_001.paired.fq"
 				rm -r "${sample_folder}/trimmed/${sample_name}_R2_001.paired.fq"
@@ -221,7 +221,7 @@ fi
 				rm -r "${sample_folder}/trimmed/${sample_name}_R2_001.paired.fq"
 			else
 				echo "Zip file was empty, trying to rezip"
-				gzip -c "${sample_folder}/trimmed/${sample_name}_R2_001.paired.fq"
+				gzip "${sample_folder}/trimmed/${sample_name}_R2_001.paired.fq"
 				if [ -s "${sample_folder}/trimmed/${sample_name}_R2_001.paired.fq.gz" ]; then
 					echo "Zipping seems to have been successful, deleting ${sample_folder}/trimmed/${sample_name}_R2_001.paired.fq"
 					rm -r "${sample_folder}/trimmed/${sample_name}_R2_001.paired.fq"
