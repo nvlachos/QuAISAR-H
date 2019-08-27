@@ -142,7 +142,7 @@ resGANNCBI_previous_srst2=$(find ${local_DBs}/star/ResGANNCBI_*_srst2.fasta -max
 argannot_srst2_filename=$(echo "${argannot_srst2}" | rev | cut -d'/' -f1 | rev | cut -d'_' -f1,2)
 resFinder_srst2_filename=$(echo "${resFinder_srst2}" | rev | cut -d'/' -f1 | rev | cut -d'_' -f1,2)
 resGANNOT_srst2_filename=$(echo "${resGANNOT_srst2}" | rev | cut -d'/' -f1 | rev | cut -d'_' -f1,2)
-resGANNCBI_srst2_filename=$(echo "${resGANNCNI_srst2}" | rev | cut -d'/' -f1 | rev | cut -d'_' -f1,2)
+resGANNCBI_srst2_filename=$(echo "${resGANNCBI_srst2}" | rev | cut -d'/' -f1 | rev | cut -d'_' -f1,2)
 # gapped (g) versus ungapped(u)
 csstar_gapping="g"
 # Identity % 100(p), 99(u), 98(h), 95(m), 80(low)
