@@ -142,6 +142,7 @@ resGANNCBI_previous_srst2=$(find ${local_DBs}/star/ResGANNCBI_*_srst2.fasta -max
 argannot_srst2_filename=$(echo "${argannot_srst2}" | rev | cut -d'/' -f1 | rev | cut -d'_' -f1,2)
 resFinder_srst2_filename=$(echo "${resFinder_srst2}" | rev | cut -d'/' -f1 | rev | cut -d'_' -f1,2)
 resGANNOT_srst2_filename=$(echo "${resGANNOT_srst2}" | rev | cut -d'/' -f1 | rev | cut -d'_' -f1,2)
+echo "${resGANNCBI_srst2}"
 resGANNCBI_srst2_filename=$(echo "${resGANNCBI_srst2}" | rev | cut -d'/' -f1 | rev | cut -d'_' -f1,2)
 # gapped (g) versus ungapped(u)
 csstar_gapping="g"
