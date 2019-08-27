@@ -105,7 +105,7 @@ if [ "${2}" == "u" ]; then
 	fi
 	owd=$(pwd)
 	cd "${OUTDATADIR}/${alt_database}_${suffix}"
-	echo "Running c-SSTAR on ResGANNOT DB"
+	echo "Running c-SSTAR on ResGANNCBI DB"
 	python "${shareScript}/c-SSTAR_ungapped.py" -g "${source_assembly}" -s "${sim}" -d "${5}" > "${OUTDATADIR}/${alt_database}_${suffix}/${1}.${alt_database}.${suffix}_${sim}.sstar"
 elif [ "${2}" == "g" ]; then
 	suffix="gapped"
@@ -115,7 +115,7 @@ elif [ "${2}" == "g" ]; then
 	fi
 	owd=$(pwd)
 	cd "${OUTDATADIR}/${alt_database}_${suffix}"
-	echo "Running c-SSTAR on ResGANNOT DB"
+	echo "Running c-SSTAR on ResGANNCBI DB"
 	python "${shareScript}/c-SSTAR_gapped.py" -g "${source_assembly}" -s "${sim}" -d "${5}" > "${OUTDATADIR}/${alt_database}_${suffix}/${1}.${alt_database}.${suffix}_${sim}.sstar"
 else
 	echo "Unknown run type set (only use 'g' or 'u' for gapped/ungapped analysis"
@@ -126,7 +126,7 @@ fi
 
 ###################################### FIND WAY TO CATCH FAILURE !!!!!!!!!! ###############################
 
-# Goes through ResGANNOT outfile and adds labels as well as resistance conferred to the beginning of the line
+# Goes through ResGANNCBI outfile and adds labels as well as resistance conferred to the beginning of the line
 # Takes .sstar file in and outputs as .sstar_grouped
 while IFS= read -r line || [ -n "$line" ]; do
 	line=${line,,}

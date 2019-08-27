@@ -110,9 +110,9 @@ while [ ${counter} -lt ${arr_size} ] ; do
 	sample=$(echo "${arr[${counter}]}" | cut -d'/' -f2)
 	project=$(echo "${arr[${counter}]}" | cut -d'/' -f1)
 	if [[ "${clobberness}" = "clobber" ]]; then
-		echo "Removing old c-sstar for ${project}/${sample} and ${resGANNOT_srst2_filename}"
-		rm ${processed}/${project}/${sample}/c-sstar/${sample}.${resGANNOT_srst2_filename}.gapped_${simnum}_sstar_summary.txt
-		rm -r ${processed}/${project}/${sample}/c-sstar/${resGANNOT_srst2_filename}_gapped/
+		echo "Removing old c-sstar for ${project}/${sample} and ${ResGANNCBI_srst2_filename}"
+		rm ${processed}/${project}/${sample}/c-sstar/${sample}.${ResGANNCBI_srst2_filename}.gapped_${simnum}_sstar_summary.txt
+		rm -r ${processed}/${project}/${sample}/c-sstar/${ResGANNCBI_srst2_filename}_gapped/
 	fi
 	#echo ${counter}-${project}-${sample}
 	# Check if sample has a usable assembly file
@@ -121,7 +121,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 		# Check if counter is below max number of concurrent submissions
 		if [[ ${counter} -lt ${max_subs} ]]; then
 			# Check if old data exists, skip if so
-			if [[ ! -f "${processed}/${project}/${sample}/c-sstar/${sample}.${resGANNOT_srst2_filename}.gapped_${simnum}_sstar_summary.txt" ]]; then
+			if [[ ! -f "${processed}/${project}/${sample}/c-sstar/${sample}.${ResGANNCBI_srst2_filename}.gapped_${simnum}_sstar_summary.txt" ]]; then
 				echo  "Index is below max submissions, submitting"
 				echo -e "#!/bin/bash -l\n" > "${main_dir}/csstn_${sample}_${start_time}.sh"
 				echo -e "#$ -o csstn_${sample}.out" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
@@ -147,13 +147,13 @@ while [ ${counter} -lt ${arr_size} ] ; do
 				#fi
 			# Old data exists
 			else
-				echo "${project}/${sample} already has the newest ResGANNOT (${resGANNOT_srst2_filename})"
+				echo "${project}/${sample} already has the newest ResGANNCBI (${ResGANNCBI_srst2_filename})"
 				echo -e "$(date)" > "${main_dir}/complete/${sample}_csstarn_complete.txt"
 			fi
 			# Check if plasmid folder exists
 			# if [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
 			# 	# Check if old data exists, skip if so
-			# 	if [[ ! -f "${processed}/${project}/${sample}/c-sstar_plasmid/${sample}.${resGANNOT_srst2_filename}.gapped_40_sstar_summary.txt" ]]; then
+			# 	if [[ ! -f "${processed}/${project}/${sample}/c-sstar_plasmid/${sample}.${ResGANNCBI_srst2_filename}.gapped_40_sstar_summary.txt" ]]; then
 			# 		echo "Index below max submissions, submitting plasmid"
 			# 		echo -e "#!/bin/bash -l\n" > "${main_dir}/csstp_${sample}_${start_time}.sh"
 			# 		echo -e "#$ -o csstp_${sample}.out" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
@@ -174,7 +174,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 			# 		#fi
 			# 	# Skipping because old data exists
 			# 	else
-			# 		echo "${project}/${sample} plasmid already has the newest ResGANNOT (${resGANNOT_srst2_filename})"
+			# 		echo "${project}/${sample} plasmid already has the newest ResGANNCBI (${ResGANNCBI_srst2_filename})"
 			# 		echo -e "$(date)" > "${main_dir}/complete/${sample}_csstarp_complete.txt"
 			# 	fi
 			# else
@@ -197,7 +197,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 				# Check if usable assembly exists for current sample or that one does not exist for the waiting sample (therefore there would be no need to wait on it)
 				if [[ -f "${main_dir}/complete/${waiting_sample}_csstarn_complete.txt" ]] || [[ ! -s "${processed}/${project}/${waiting_sample}/Assembly/${waiting_sample}_scaffolds_trimmed.fasta" ]]; then
 					# Check if old data exists, skip if so
-					if [[ ! -f "${processed}/${project}/${sample}/c-sstar/${sample}.${resGANNOT_srst2_filename}.gapped_${simnum}_sstar_summary.txt" ]]; then
+					if [[ ! -f "${processed}/${project}/${sample}/c-sstar/${sample}.${ResGANNCBI_srst2_filename}.gapped_${simnum}_sstar_summary.txt" ]]; then
 						echo  "Index is below max submissions, submitting"
 						echo -e "#!/bin/bash -l\n" > "${main_dir}/csstn_${sample}_${start_time}.sh"
 						echo -e "#$ -o csstn_${sample}.out" >> "${main_dir}/csstn_${sample}_${start_time}.sh"
@@ -222,13 +222,13 @@ while [ ${counter} -lt ${arr_size} ] ; do
 						#fi
 					# Skipping because old data exists
 					else
-						echo "${project}/${sample} already has the newest ResGANNOT (${resGANNOT_srst2_filename})"
+						echo "${project}/${sample} already has the newest ResGANNCBI (${ResGANNCBI_srst2_filename})"
 						echo -e "$(date)" > "${main_dir}/complete/${sample}_csstarn_complete.txt"
 					fi
 					# Check if plasmid folder exists
 					# if [[ -d "${processed}/${project}/${sample}/c-sstar_plasmid" ]]; then
 					# 	# Check if old data exists, skip if so
-					# 	if [[ ! -f "${processed}/${project}/${sample}/c-sstar_plasmid/${sample}.${resGANNOT_srst2_filename}.gapped_40_sstar_summary.txt" ]]; then
+					# 	if [[ ! -f "${processed}/${project}/${sample}/c-sstar_plasmid/${sample}.${ResGANNCBI_srst2_filename}.gapped_40_sstar_summary.txt" ]]; then
 					# 		echo -e "#!/bin/bash -l\n" > "${main_dir}/csstp_${sample}_${start_time}.sh"
 					# 		echo -e "#$ -o csstp_${sample}.out" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
 					# 		echo -e "#$ -e csstp_${sample}.err" >> "${main_dir}/csstp_${sample}_${start_time}.sh"
@@ -248,7 +248,7 @@ while [ ${counter} -lt ${arr_size} ] ; do
 					# 		#fi
 					# 	# Skipping because old data exists
 					# 	else
-					# 		echo "${project}/${sample} plasmid already has the newest ResGANNOT (${resGANNOT_srst2_filename})"
+					# 		echo "${project}/${sample} plasmid already has the newest ResGANNCBI (${ResGANNCBI_srst2_filename})"
 					# 		echo -e "$(date)" > "${main_dir}/complete/${sample}_csstarp_complete.txt"
 					# 	fi
 					# else

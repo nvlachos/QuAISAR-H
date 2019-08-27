@@ -157,12 +157,12 @@ while IFS= read -r var || [ -n "$var" ]; do
 			fi
 			if [[ "${tool_details}" = *"NO KNOWN AMR genes"* ]]; then
 				if [[ "${tool_details}" = *"(DB NOT up to date!"* ]]; then
-					notes="${notes}No AMR found AND OLD ResGANNOT DB used in c-sstar"
+					notes="${notes}No AMR found AND OLD ResGANNCBI DB used in c-sstar"
 				else
 					notes="${notes}No AMR found"
 				fi
 			else
-				notes="${notes}OLD ResGANNOT DB used in c-sstar"
+				notes="${notes}OLD ResGANNCBI DB used in c-sstar"
 			fi
 		elif [[ "${tool}" == "c-SSTAR_plasmid" ]] || [[ "${tool}" == "c-sstar_plasmid" ]]; then
 			if [[ "${tool_details}" = *"NO KNOWN AMR genes"* ]]; then
@@ -170,12 +170,12 @@ while IFS= read -r var || [ -n "$var" ]; do
 					notes="${notes},"
 				fi
 				if [[ "${tool_details}" = *"(DB NOT up to date!"* ]]; then
-					notes="${notes}No plasmid AMR found AND OLD ResGANNOT DB used in c-sstar plasmid"
+					notes="${notes}No plasmid AMR found AND OLD ResGANNCBI DB used in c-sstar plasmid"
 				else
 					notes="${notes}No plasmid AMR found"
 				fi
 			else
-				notes="${notes}OLD ResGANNOT DB used in c-sstar plasmid"
+				notes="${notes}OLD ResGANNCBI DB used in c-sstar plasmid"
 			fi
 		elif [[ "${tool}" == "srst2" ]]; then
 			if [[ "${notes}" != "" ]]; then
@@ -183,12 +183,12 @@ while IFS= read -r var || [ -n "$var" ]; do
 			fi
 			if [[ "${tool_details}" = *"NO KNOWN AMR genes"* ]]; then
 				if [[ "${tool_details}" = *"(DB NOT up to date!"* ]]; then
-					notes="${notes}No srst2 AMR found AND OLD ResGANNOT DB used in srst2"
+					notes="${notes}No srst2 AMR found AND OLD ResGANNCBI DB used in srst2"
 				else
 					notes="${notes}No srst2 AMR found"
 				fi
 			else
-				notes="${notes}OLD ResGANNOT DB used in srst2"
+				notes="${notes}OLD ResGANNCBI DB used in srst2"
 			fi
 		elif [[ "${tool}" == "preClassContam." ]]; then
 			if [[ "${notes}" != "" ]]; then
