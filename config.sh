@@ -134,13 +134,11 @@ argannot_srst2=$(find ${local_DBs}/star/argannot_*_srst2.fasta -maxdepth 1 -type
 resFinder_srst2=$(find ${local_DBs}/star/resFinder_*_srst2.fasta -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
 #echo "RES Summary found: ${resFinder_srst2}"
 resGANNOT_srst2=$(find ${local_DBs}/star/ResGANNOT_*_srst2.fasta -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
-resGANNOT_previous_srst2=$(find /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/DBs/star/ResGANNOT_*_srst2.fasta -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 2 | tail -n 1)
+resGANNOT_previous_srst2=$(find ${local_DBs}/star/ResGANNOT_*_srst2.fasta -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 2 | tail -n 1)
 #echo "ResGANNOT Summary found: ${resGANNOT_srst2}"
-echo "1"
 resGANNCBI_srst2=$(find ${local_DBs}/star/ResGANNCBI_*_srst2.fasta -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
-echo "2"
-resGANNCBI_previous_srst2=$(find /scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/DBs/star/ResGANNCBI_*_srst2.fasta -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 2 | tail -n 1)
-echo "ResGANNOT Summary found: ${resGANNCBI_srst2}"
+resGANNCBI_previous_srst2=$(find ${local_DBs}/star/ResGANNCBI_*_srst2.fasta -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 2 | tail -n 1)
+#echo "ResGANNOT Summary found: ${resGANNCBI_srst2}"
 argannot_srst2_filename=$(echo "${argannot_srst2}" | rev | cut -d'/' -f1 | rev | cut -d'_' -f1,2)
 resFinder_srst2_filename=$(echo "${resFinder_srst2}" | rev | cut -d'/' -f1 | rev | cut -d'_' -f1,2)
 resGANNOT_srst2_filename=$(echo "${resGANNOT_srst2}" | rev | cut -d'/' -f1 | rev | cut -d'_' -f1,2)
