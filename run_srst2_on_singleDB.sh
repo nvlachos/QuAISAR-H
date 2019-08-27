@@ -23,7 +23,7 @@ ml
 #
 # Usage ./run_srst2.sh   sample_name   run_ID
 #
-# script uses srst2 to find AR genes from ResGANNOT DBs.
+# script uses srst2 to find AR genes from ResGANNCBI DBs.
 #
 #  Modules needed (loaded via prep_srst2.sh script - Python2/2.7.11, bowtie2/2.2.4, samtools/0.1.18
 #
@@ -80,11 +80,11 @@ if [ ! -f "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" ]; then
 fi
 
 # Prints the command that will be submitted to use srst2 to find AR genes
-echo "--input_pe ${processed}/${2}/${1}/trimmed/${1}_S1_L001_R1_001.fastq.gz ${processed}/${2}/${1}/trimmed/${1}_S1_L001_R2_001.fastq.gz --output ${processed}/${2}/${1}/srst2/${1}_ResGANNOT --gene_db ${resGANNOT_srst2}"
+echo "--input_pe ${processed}/${2}/${1}/trimmed/${1}_S1_L001_R1_001.fastq.gz ${processed}/${2}/${1}/trimmed/${1}_S1_L001_R2_001.fastq.gz --output ${processed}/${2}/${1}/srst2/${1}_ResGANNCBI --gene_db ${ResGANNCBI_srst2}"
 
 # Calls srst2 with the options for AR discovery
-#python2 ${shareScript}/srst2-master/scripts/srst2.py --input_pe "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" --output "${processed}/${2}/${1}/srst2/${1}_ResGANNOT" --gene_db "${resGANNOT_srst2}"
-srst2 --input_pe "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" --output "${processed}/${2}/${1}/srst2/${1}_ResGANNOT" --gene_db "${resGANNOT_srst2}"
+#python2 ${shareScript}/srst2-master/scripts/srst2.py --input_pe "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" --output "${processed}/${2}/${1}/srst2/${1}_ResGANNCBI" --gene_db "${ResGANNCBI_srst2}"
+srst2 --input_pe "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz" --output "${processed}/${2}/${1}/srst2/${1}_ResGANNCBI" --gene_db "${ResGANNCBI_srst2}"
 
 # Cleans up leftover files
 rm -r "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz"
@@ -92,11 +92,11 @@ rm -r "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz"
 rm -r "${processed}/${2}/${1}/srst2/"*".bam"
 rm -r "${processed}/${2}/${1}/srst2/"*".pileup"
 
-# Removes the extra ResGANNOT__ from all files created
-find ${processed}/${2}/${1}/srst2 -type f -name "*ResGANNOT__*" | while read FILE ; do
+# Removes the extra ResGANNCBI__ from all files created
+find ${processed}/${2}/${1}/srst2 -type f -name "*ResGANNCBI__*" | while read FILE ; do
   dirname=$(dirname $FILE)
 	filename=$(basename $FILE)
-	filename="${filename/_ResGANNOT__/__}"
+	filename="${filename/_ResGANNCBI__/__}"
 	#echo "Found-${FILE}"
 	#echo "${filename}"
     mv "${FILE}" "${dirname}/${filename}"

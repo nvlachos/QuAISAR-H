@@ -899,18 +899,18 @@ if [[ -d "${OUTDATADIR}/c-sstar/" ]]; then
 	else
 		sim="98"
 	fi
-	csstar_file=$(find ${OUTDATADIR}/c-sstar/${1}.ResGANNOT_*.${gapping}_${sim}_sstar_summary.txt -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
-	if [[ -z "${resGANNOT_srst2}" ]]; then
+	csstar_file=$(find ${OUTDATADIR}/c-sstar/${1}.ResGANN*.${gapping}_${sim}_sstar_summary.txt -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
+	if [[ -z "${ResGANNCBI_srst2}" ]]; then
 		printf "%-20s: %-8s : %s\\n" "c-SSTAR" "FAILED" "/c-sstar/ does not have an sstar_summary file"
 		status="FAILED"
 	else
 		header=$(head -n1 "${csstar_file}")
-		resGANNOT_DB=$(echo "${csstar_file}" | rev | cut -d'.' -f3 | rev)
+		ResGANNCBI_DB=$(echo "${csstar_file}" | rev | cut -d'.' -f3 | rev)
 		if [[ ${header} = *"No anti-microbial genes were found"* ]]; then
-			if [[ "${resGANNOT_DB}" = "${resGANNOT_srst2_filename}" ]]; then
-				printf "%-20s: %-8s : %s\\n" "c-SSTAR" "ALERT" "Completed, but NO KNOWN AMR genes were found in ${resGANNOT_DB} (DB up to date, as of ${today})"
+			if [[ "${ResGANNCBI_DB}" = "${ResGANNCBI_srst2_filename}" ]]; then
+				printf "%-20s: %-8s : %s\\n" "c-SSTAR" "ALERT" "Completed, but NO KNOWN AMR genes were found in ${ResGANNCBI_DB} (DB up to date, as of ${today})"
 			else
-				printf "%-20s: %-8s : %s\\n" "c-SSTAR" "ALERT" "Completed, but NO KNOWN AMR genes were found in ${resGANNOT_DB} (DB NOT up to date! Most current DB: ${resGANNOT_srst2_filename})"
+				printf "%-20s: %-8s : %s\\n" "c-SSTAR" "ALERT" "Completed, but NO KNOWN AMR genes were found in ${ResGANNCBI_DB} (DB NOT up to date! Most current DB: ${ResGANNCBI_srst2_filename})"
 			fi
 		elif [[ ${header} = "No Assembly found to run c-sstar with" ]]; then
 			printf "%-20s: %-8s : %s\\n" "c-SSTAR" "FAILED" "No Assembly file to run through c-sstar"
@@ -918,10 +918,10 @@ if [[ -d "${OUTDATADIR}/c-sstar/" ]]; then
 		else
 			amr_genes_found=$(wc -l "${csstar_file}" | cut -d' ' -f1)
 			# Prints out the counts of AR gene hits
-			if [[ "${resGANNOT_DB}" = "${resGANNOT_srst2_filename}" ]]; then
-				printf "%-20s: %-8s : %s\\n" "c-SSTAR" "SUCCESS" "${amr_genes_found} genes found in ${resGANNOT_DB} (DB up to date, as of ${today})"
+			if [[ "${ResGANNCBI_DB}" = "${ResGANNCBI_srst2_filename}" ]]; then
+				printf "%-20s: %-8s : %s\\n" "c-SSTAR" "SUCCESS" "${amr_genes_found} genes found in ${ResGANNCBI_DB} (DB up to date, as of ${today})"
 			else
-				printf "%-20s: %-8s : %s\\n" "c-SSTAR" "ALERT" "${amr_genes_found} genes found in ${resGANNOT_DB} (DB NOT up to date, Most current DB: ${resGANNOT_srst2_filename})"
+				printf "%-20s: %-8s : %s\\n" "c-SSTAR" "ALERT" "${amr_genes_found} genes found in ${ResGANNCBI_DB} (DB NOT up to date, Most current DB: ${ResGANNCBI_srst2_filename})"
 			fi
 		fi
 	fi
@@ -944,21 +944,21 @@ if [[ "${plasmidsFoundviaplasFlow}" -eq 1 ]]; then
 		else
 			sim="40"
 		fi
-		csstar_plasFlow_file=$(find ${OUTDATADIR}/c-sstar_plasFlow/${1}.ResGANNOT_*.${gapping}_${sim}_sstar_summary.txt -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
+		csstar_plasFlow_file=$(find ${OUTDATADIR}/c-sstar_plasFlow/${1}.ResGANN*.${gapping}_${sim}_sstar_summary.txt -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
 		if [[ -z "${csstar_plasFlow_file}" ]]; then
 			printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasFlow" "FAILED" "/c-sstar_plasFlow/ does not have an sstar_summary file"
 			status="FAILED"
 		else
 			header=$(head -n1 "${csstar_plasFlow_file}")
-			resGANNOT_DB=$(echo "${csstar_plasFlow_file}" | rev | cut -d'.' -f3 | rev)
+			ResGANNCBI_DB=$(echo "${csstar_plasFlow_file}" | rev | cut -d'.' -f3 | rev)
 			if [[ ${header} = *"No anti-microbial genes were found"* ]]; then
-				if [[ "${resGANNOT_DB}" = "${resGANNOT_srst2_filename}" ]]; then
-					printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasFlow" "ALERT" "Completed, but NO KNOWN AMR genes present from ${resGANNOT_DB} (DB up to date, as of ${today})"
+				if [[ "${ResGANNCBI_DB}" = "${ResGANNCBI_srst2_filename}" ]]; then
+					printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasFlow" "ALERT" "Completed, but NO KNOWN AMR genes present from ${ResGANNCBI_DB} (DB up to date, as of ${today})"
 					if [[ "${status}" == "SUCCESS" ]]; then
 						status="ALERT"
 					fi
 				else
-					printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasFlow" "ALERT" "Completed, but NO KNOWN AMR genes present from ${resGANNOT_DB} (DB NOT up to date! Most current DB: ${resGANNOT_srst2_filename})"
+					printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasFlow" "ALERT" "Completed, but NO KNOWN AMR genes present from ${ResGANNCBI_DB} (DB NOT up to date! Most current DB: ${ResGANNCBI_srst2_filename})"
 					if [[ "${status}" == "SUCCESS" ]]; then
 						status="ALERT"
 					fi
@@ -966,10 +966,10 @@ if [[ "${plasmidsFoundviaplasFlow}" -eq 1 ]]; then
 			else
 				amr_genes_found=$(wc -l "${csstar_plasFlow_file}" | cut -d' ' -f1)
 				# Prints out the counts of AR gene hits
-				if [[ "${resGANNOT_DB}" = "${resGANNOT_srst2_filename}" ]]; then
-					printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasFlow" "SUCCESS" "${amr_genes_found} genes found in ${resGANNOT_DB} (%ID defaults to 40) (DB up to date, as of ${today})"
+				if [[ "${ResGANNCBI_DB}" = "${ResGANNCBI_srst2_filename}" ]]; then
+					printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasFlow" "SUCCESS" "${amr_genes_found} genes found in ${ResGANNCBI_DB} (%ID defaults to 40) (DB up to date, as of ${today})"
 				else
-					printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasFlow" "ALERT" "${amr_genes_found} genes found in ${resGANNOT_DB} (%ID defaults to 40) (DB NOT up to date! Most current DB: ${resGANNOT_srst2_filename})"
+					printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasFlow" "ALERT" "${amr_genes_found} genes found in ${ResGANNCBI_DB} (%ID defaults to 40) (DB NOT up to date! Most current DB: ${ResGANNCBI_srst2_filename})"
 					if [[ "${status}" == "SUCCESS" ]]; then
 						status="ALERT"
 					fi
@@ -985,32 +985,32 @@ fi
 
 # check SRST2 output
 if [[ -d "${OUTDATADIR}/srst2/" ]]; then
-	ResGANNOT_srst2_file=$(find ${OUTDATADIR}/srst2/${1}__genes__ResGANNOT*_srst2__results.txt -maxdepth 1 -type f -printf '%p\n' | sort -k6,6 -rt '_' -n | head -n 1)
-	#echo ${ResGANNOT_srst2_file}
-	if [[ -s "${ResGANNOT_srst2_file}" ]]; then
-		resGANNOT_srst2_DB=$(echo "${ResGANNOT_srst2_file}" | rev | cut -d'_' -f4,5 | rev)
-		info_ResGANNOT_List=$(head -n 1 "${ResGANNOT_srst2_file}")
-		IFS='	' read -r -a ResGANNOT_array <<< "${info_ResGANNOT_List}"
-		ResGANNOT_Num="${#ResGANNOT_array[@]}"
-		ResGANNOT_Num=$(( ResGANNOT_Num - 1 ))
-		#echo "${info_ResGANNOT_List} - ${ResGANNOT_Num}"
-		if [[ "${ResGANNOT_Num}" -eq 0 ]]; then
-			if [[ "${resGANNOT_srst2_DB}" = "${resGANNOT_srst2_filename}" ]]; then
-				printf "%-20s: %-8s : %s\\n" "srst2" "ALERT" "Completed, but NO KNOWN AMR genes present from ${resGANNOT_srst2_DB} (DB up to date, as of ${today})"
+	ResGANNCBI_srst2_file=$(find ${OUTDATADIR}/srst2/${1}__genes__ResGANNCBI*_srst2__results.txt -maxdepth 1 -type f -printf '%p\n' | sort -k6,6 -rt '_' -n | head -n 1)
+	#echo ${ResGANNCBI_srst2_file}
+	if [[ -s "${ResGANNCBI_srst2_file}" ]]; then
+		ResGANNCBI_srst2_DB=$(echo "${ResGANNCBI_srst2_file}" | rev | cut -d'_' -f4,5 | rev)
+		info_ResGANNCBI_List=$(head -n 1 "${ResGANNCBI_srst2_file}")
+		IFS='	' read -r -a ResGANNCBI_array <<< "${info_ResGANNCBI_List}"
+		ResGANNCBI_Num="${#ResGANNCBI_array[@]}"
+		ResGANNCBI_Num=$(( ResGANNCBI_Num - 1 ))
+		#echo "${info_ResGANNCBI_List} - ${ResGANNCBI_Num}"
+		if [[ "${ResGANNCBI_Num}" -eq 0 ]]; then
+			if [[ "${ResGANNCBI_srst2_DB}" = "${ResGANNCBI_srst2_filename}" ]]; then
+				printf "%-20s: %-8s : %s\\n" "srst2" "ALERT" "Completed, but NO KNOWN AMR genes present from ${ResGANNCBI_srst2_DB} (DB up to date, as of ${today})"
 				if [[ "${status}" == "SUCCESS" ]]; then
 					status="ALERT"
 				fi
 			else
-				printf "%-20s: %-8s : %s\\n" "srst2" "ALERT" "Completed, but NO KNOWN AMR genes present from ${resGANNOT_srst2_DB} (DB NOT up to date! Most current DB: ${resGANNOT_srst2_filename})"
+				printf "%-20s: %-8s : %s\\n" "srst2" "ALERT" "Completed, but NO KNOWN AMR genes present from ${ResGANNCBI_srst2_DB} (DB NOT up to date! Most current DB: ${ResGANNCBI_srst2_filename})"
 				if [[ "${status}" == "SUCCESS" ]]; then
 					status="ALERT"
 				fi
 			fi
 		else
-			if [[ "${resGANNOT_srst2_DB}" = "${resGANNOT_srst2_filename}" ]]; then
-				printf "%-20s: %-8s : %s\\n" "srst2" "SUCCESS" "${ResGANNOT_Num} genes found in ${resGANNOT_srst2_DB} (DB up to date, as of ${today})"
+			if [[ "${ResGANNCBI_srst2_DB}" = "${ResGANNCBI_srst2_filename}" ]]; then
+				printf "%-20s: %-8s : %s\\n" "srst2" "SUCCESS" "${ResGANNCBI_Num} genes found in ${ResGANNCBI_srst2_DB} (DB up to date, as of ${today})"
 			else
-				printf "%-20s: %-8s : %s\\n" "srst2" "ALERT" "${ResGANNOT_Num} genes found in ${resGANNOT_srst2_DB} (DB NOT up to date! Most current DB: ${resGANNOT_srst2_filename})"
+				printf "%-20s: %-8s : %s\\n" "srst2" "ALERT" "${ResGANNCBI_Num} genes found in ${ResGANNCBI_srst2_DB} (DB NOT up to date! Most current DB: ${ResGANNCBI_srst2_filename})"
 				if [[ "${status}" == "SUCCESS" ]]; then
 					status="ALERT"
 				fi
