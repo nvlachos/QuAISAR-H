@@ -900,7 +900,7 @@ if [[ -d "${OUTDATADIR}/c-sstar/" ]]; then
 		sim="98"
 	fi
 	csstar_file=$(find ${OUTDATADIR}/c-sstar/${1}.ResGANN*.${gapping}_${sim}_sstar_summary.txt -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
-	if [[ -z "${ResGANNCBI_srst2}" ]]; then
+	if [[ -z "${csstar_file}" ]]; then
 		printf "%-20s: %-8s : %s\\n" "c-SSTAR" "FAILED" "/c-sstar/ does not have an sstar_summary file"
 		status="FAILED"
 	else
