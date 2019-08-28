@@ -71,7 +71,7 @@ if [[ "${3}" == "-c" ]]; then
 	OUTDATADIR="${OUTDATADIR}/GAMA"
 elif [[ "${3}" == "-p" ]]; then
 	assembly_source="${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta"
-	if [ ! -d "$OUTDATADIR/GAMA" ]; then  #create outdir if absent
+	if [ ! -d "$OUTDATADIR/GAMA_plasFlow" ]; then  #create outdir if absent
 		echo "Creating $OUTDATADIR/GAMA_plasFlow"
 		mkdir -p "$OUTDATADIR/GAMA_plasFlow"
 	fi
