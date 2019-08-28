@@ -451,6 +451,9 @@ start=$SECONDS
 "${shareScript}/run_c-sstar_on_single.sh" "${filename}" "${csstar_gapping}" "${csstar_identity}" "${project}"
 "${shareScript}/run_c-sstar_on_single_alternate_DB.sh" "${filename}" "${csstar_gapping}" "${csstar_identity}" "${project}" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
 
+# Run GAMA on assembly
+${shareScript}/run_GAMA.sh "${filename}" "${project}" -c
+
 # Get end time of csstar and calculate run time and append to time summary (and sum to total time used
 end=$SECONDS
 timestar=$((end - start))
@@ -513,8 +516,10 @@ totaltime=$((totaltime + timeplasfin))
 if [[ "${family}" == "Enterobacteriaceae" ]]; then
 	start=$SECONDS
 	${shareScript}/run_plasFlow.sh "${filename}" "${project}"
+	${shareScript}/run_Assembly_Quality_Check.sh "${filename}" "${project}" -p
 	${shareScript}/run_c-sstar_on_single_plasFlow.sh "${filename}" g o "${project}" -p
 	${shareScript}/run_plasmidFinder.sh "${filename}" "${project}" plasmid_on_plasFlow
+	${shareScript}/run_GAMA.sh "${filename}" "${project}" -p
 	end=$SECONDS
 	timeplasflow=$((end - start))
 	echo "plasmidFlow - ${timeplasflow} seconds" >> "${time_summary_redo}"
