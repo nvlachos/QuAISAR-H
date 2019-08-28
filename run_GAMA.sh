@@ -73,7 +73,7 @@ else
 	exit 5564
 fi
 ### GAMA AR Classifier ### in species mode
-python2 GAMA_4.6_ResGANNOT_SciComp_Exe.py "${OUTDATA}/Assembly/${1}_scaffolds_trimmed.fasta" "${ARDB}" "${OUTDATADIR}/${1}_${ResGANNOT_srst2_filename}.GAMA"
+python2 GAMA_4.6_ResGANNOT_SciComp_Exe.py "${OUTDATA}/Assembly/${1}_scaffolds_trimmed.fasta" "${ARDB}" "${OUTDATADIR}/${1}_${ResGANNCBI_srst2_filename}.GAMA"
 
 ml -blat -Python/2.7.3
 
