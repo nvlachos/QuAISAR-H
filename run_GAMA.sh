@@ -64,9 +64,17 @@ OUTDATA="${OUTDATADIR}"
 
 if [[ "${3}" == "-c" ]]; then
 	assembly_source="${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
+	if [ ! -d "$OUTDATADIR/GAMA" ]; then  #create outdir if absent
+		echo "Creating $OUTDATADIR/GAMA"
+		mkdir -p "$OUTDATADIR/GAMA"
+	fi
 	OUTDATADIR="${OUTDATADIR}/GAMA"
 elif [[ "${3}" == "-p" ]]; then
 	assembly_source="${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta"
+	if [ ! -d "$OUTDATADIR/GAMA" ]; then  #create outdir if absent
+		echo "Creating $OUTDATADIR/GAMA_plasFlow"
+		mkdir -p "$OUTDATADIR/GAMA_plasFlow"
+	fi
 	OUTDATADIR="${OUTDATADIR}/GAMA_plasFlow"
 else
 	echo "Unknown Assembly source identifier, exiting"
