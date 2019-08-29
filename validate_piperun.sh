@@ -986,7 +986,7 @@ fi
 
 #Check c-SSTAR
 if [[ -d "${OUTDATADIR}/GAMA/" ]]; then
-	GAMA_file=$(find ${OUTDATADIR}/GAMA -type f -name "${1}.ResGANNCBI*.GAMA" -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
+	GAMA_file=$(find ${OUTDATADIR}/GAMA -maxdepth 1 -type f -name "${1}.ResGANNCBI*.GAMA"   -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
 	if [[ -z "${GAMA_file}" ]]; then
 		printf "%-20s: %-8s : %s\\n" "GAMA" "FAILED" "/GAMA/ does not have a .GAMA file"
 		status="FAILED"
