@@ -1191,8 +1191,10 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 	elif [[ "${num_srst2_mlsts}" -eq 1 ]]; then
 		srst_mlst=$(find . -type f -name "*_srst2_*.mlst")
 		if [[ "${srst_mlst}" == *"-Standard.mlst"* ]];
+			echo "OLd=${srst_mlst}"
 			new_srst_mlst=${srst_mlst/Standard/Pasteur}
-			mv ${srst_mlst} ${new_srst_mlst}
+			echo "New=${new_srst_mlst}"
+			#mv ${srst_mlst} ${new_srst_mlst}
 			srst_mlst=${new_srst_mlst}
 		fi
 		mlstype=$(tail -n1 ${srst_mlst} | cut -d'	' -f2)
