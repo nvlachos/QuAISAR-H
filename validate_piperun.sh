@@ -984,6 +984,111 @@ if [[ "${plasmidsFoundviaplasFlow}" -eq 1 ]]; then
 	fi
 fi
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#Check c-SSTAR
+if [[ -d "${OUTDATADIR}/GAMA/" ]]; then
+	GAMA_file=$(find ${OUTDATADIR}/GAMA/${1}.ResGANNCBI*.GAMA -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
+	if [[ -z "${GAMA_file}" ]]; then
+		printf "%-20s: %-8s : %s\\n" "GAMA" "FAILED" "/GAMA/ does not have a .GAMA file"
+		status="FAILED"
+	else
+		ResGANNCBI_DB=$(echo "${GAMA_file}" | rev | cut -d'.' -f2 | rev)
+		echo "${ResGANNCBI_DB} = ${ResGANNCBI_srst2_filename} ?"
+		amr_genes_found=$(wc -l "${GAMA_file}" | cut -d' ' -f1)
+		if [[ ${amr_genes_found} = 0 ]]; then
+			if [[ "${ResGANNCBI_DB}" = "${ResGANNCBI_srst2_filename}" ]]; then
+				printf "%-20s: %-8s : %s\\n" "GAMA" "ALERT" "Completed, but NO KNOWN AMR genes were found in ${ResGANNCBI_DB} (DB up to date, as of ${today})"
+			else
+				printf "%-20s: %-8s : %s\\n" "GAMA" "ALERT" "Completed, but NO KNOWN AMR genes were found in ${ResGANNCBI_DB} (DB NOT up to date! Most current DB: ${ResGANNCBI_srst2_filename})"
+			fi
+		else
+			# Prints out the counts of AR gene hits
+			if [[ "${ResGANNCBI_DB}" = "${ResGANNCBI_srst2_filename}" ]]; then
+				printf "%-20s: %-8s : %s\\n" "GAMA" "SUCCESS" "${amr_genes_found} genes found in ${ResGANNCBI_DB} (DB up to date, as of ${today})"
+			else
+				printf "%-20s: %-8s : %s\\n" "GAMA" "ALERT" "${amr_genes_found} genes found in ${ResGANNCBI_DB} (DB NOT up to date, Most current DB: ${ResGANNCBI_srst2_filename})"
+			fi
+		fi
+	fi
+else
+	printf "%-20s: %-8s : %s\\n" "GAMA" "FAILED" "/GAMA/ does not exist"
+	status="FAILED"
+fi
+
+# #Check c-SSTAR on plasmid Assembly
+if [[ "${plasmidsFoundviaplasFlow}" -eq 1 ]]; then
+	#Check c-SSTAR
+	GAMA_plasmid_file=$(find ${OUTDATADIR}/GAMA_plasFlow/${1}.ResGANNCBI*.GAMA -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
+	if [[ -z "${GAMA_file}" ]]; then
+		printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "FAILED" "/GAMA_plasFlow/ does not have a .GAMA file"
+		status="FAILED"
+	else
+		ResGANNCBI_DB=$(echo "${GAMA_file}" | rev | cut -d'.' -f2 | rev)
+		echo "${ResGANNCBI_DB} = ${ResGANNCBI_srst2_filename} ?"
+		plasmid_amr_genes_found=$(wc -l "${GAMA_file}" | cut -d' ' -f1)
+		if [[ ${plasmid_amr_genes_found} = 0 ]]; then
+			if [[ "${ResGANNCBI_DB}" = "${ResGANNCBI_srst2_filename}" ]]; then
+				printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "ALERT" "Completed, but NO KNOWN AMR genes were found in ${ResGANNCBI_DB} (DB up to date, as of ${today})"
+			else
+				printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "ALERT" "Completed, but NO KNOWN AMR genes were found in ${ResGANNCBI_DB} (DB NOT up to date! Most current DB: ${ResGANNCBI_srst2_filename})"
+			fi
+		else
+			# Prints out the counts of AR gene hits
+			if [[ "${ResGANNCBI_DB}" = "${ResGANNCBI_srst2_filename}" ]]; then
+				printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "SUCCESS" "${plasmid_amr_genes_found} genes found in ${ResGANNCBI_DB} (DB up to date, as of ${today})"
+			else
+				printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "ALERT" "${plasmid_amr_genes_found} genes found in ${ResGANNCBI_DB} (DB NOT up to date, Most current DB: ${ResGANNCBI_srst2_filename})"
+			fi
+		fi
+	fi
+else
+	printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "FAILED" "/GAMA_plasFlow/ does not exist"
+	status="FAILED"
+fi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # check SRST2 output
 if [[ -d "${OUTDATADIR}/srst2/" ]]; then
 	ResGANNCBI_srst2_file=$(find ${OUTDATADIR}/srst2/${1}__genes__ResGANNCBI*_srst2__results.txt -maxdepth 1 -type f -printf '%p\n' | sort -k6,6 -rt '_' -n | head -n 1)
@@ -1026,16 +1131,20 @@ fi
 
 # check MLST
 if [[ -d "${OUTDATADIR}/MLST/" ]]; then
-	if [[ -s "${OUTDATADIR}/MLST/${1}.mlst" ]]; then
-		info=$(head -n 1 "${OUTDATADIR}/MLST/${1}.mlst")
+	if [[ -s "${OUTDATADIR}/MLST/${1}_Pasteur.mlst" ]] || [[ "${OUTDATADIR}/MLST/${1}.mlst" ]]; then
+		if [[ -f "${OUTDATADIR}/MLST/${1}.mlst" ]]; then
+			mv "${OUTDATADIR}/MLST/${1}.mlst" "${OUTDATADIR}/MLST/${1}_Pasteur.mlst"
+		fi
+		if [[ -f "${OUTDATADIR}/MLST/${1}_ecoli_2.mlst" ]]; then
+			mv "${OUTDATADIR}/MLST/${1}_Pasteur.mlst" "${OUTDATADIR}/MLST/${1}_Achtman.mlst"
+			mv "${OUTDATADIR}/MLST/${1}_ecoli_2.mlst" "${OUTDATADIR}/MLST/${1}_Pasteur.mlst"
+		fi
+		info=$(head -n 1 "${OUTDATADIR}/MLST/${1}_Pasteur.mlst")
 		mlstype=$(echo "${info}" | cut -d'	' -f3)
 		mlstdb=$(echo "${info}" | cut -d'	' -f2)
 		#echo "'${mlstdb}:${mlstype}'"
-		if [[ "${mlstdb}" = "abaumannii_2" ]]; then
+		if [[ "${mlstdb}" = "abaumannii_2" ]] || [[ "${mlstdb}" = "ecoli" ]]; then
 			mlstdb="${mlstdb}(Pasteur)"
-		fi
-		if [[ "${mlstdb}" = "ecoli" ]]; then
-			mlstdb="${mlstdb}(Achtman)"
 		fi
 		if [ "${mlstdb}" = "-" ]; then
 			if [ "${dec_genus}" ] && [ "${dec_species}" ]; then
@@ -1064,8 +1173,11 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 		status="FAILED"
 	fi
 	if [[ "${dec_genus}" = "Acinetobacter" ]]; then
-		if [[ -s "${OUTDATADIR}/MLST/${1}_abaumannii.mlst" ]]; then
-			info=$(tail -n 1 "${OUTDATADIR}/MLST/${1}_abaumannii.mlst")
+		if [[ -s "${OUTDATADIR}/MLST/${1}_abaumannii.mlst" ]] || [[ -s "${OUTDATADIR}/MLST/${1}_Oxford.mlst" ]]; then
+			if [[ -s "${OUTDATADIR}/MLST/${1}_abaumannii.mlst" ]]; then
+				mv "${OUTDATADIR}/MLST/${1}_abaumannii.mlst" "${OUTDATADIR}/MLST/${1}_Oxford.mlst"
+			fi
+			info=$(tail -n 1 "${OUTDATADIR}/MLST/${1}_Oxford.mlst")
 			mlstype=$(echo "${info}" | cut -d'	' -f3)
 			mlstdb=$(echo "${info}" | cut -d'	' -f2)
 			#echo "'${mlstdb}:${mlstype}'"
@@ -1089,8 +1201,8 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 		fi
 	fi
 	if [[ "${dec_genus}" = "Escherichia" ]]; then
-		if [[ -s "${OUTDATADIR}/MLST/${1}_ecoli_2.mlst" ]]; then
-			info=$(tail -n 1 "${OUTDATADIR}/MLST/${1}_ecoli_2.mlst")
+		if [[ -s "${OUTDATADIR}/MLST/${1}_Achtman.mlst" ]]; then
+			info=$(tail -n 1 "${OUTDATADIR}/MLST/${1}_Achtman.mlst")
 			mlstype=$(echo "${info}" | cut -d'	' -f3)
 			mlstdb=$(echo "${info}" | cut -d'	' -f2)
 			#echo "'${mlstdb}:${mlstype}'"
@@ -1113,6 +1225,8 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 			fi
 		fi
 	fi
+
+	# Check srst2 MLSTs
 	num_srst2_mlsts=$(find ${OUTDATADIR}/MLST -type f -name "*_srst2_*.mlst" | wc -l)
 	#echo "${num_srst2_mlsts}"
 	if [[ "${num_srst2_mlsts}" -eq 0 ]]; then
@@ -1120,6 +1234,10 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 		:
 	elif [[ "${num_srst2_mlsts}" -eq 1 ]]; then
 		srst_mlst=$(find . -type f -name "*_srst2_*.mlst")
+		if [[ "${srst_mlst}" == *"-Standard.mlst"* ]];
+			new_srst_mlst=${srst_mlst/Standard/Pasteur}
+			srst_mlst=${new_srst_mlst}
+		fi
 		mlstype=$(tail -n1 ${srst_mlst} | cut -d'	' -f2)
 		mlstdb=$(echo "${srst_mlst}" | rev | cut -d'-' -f1 | cut -d'.' -f2 | rev )
 		if [ "${mlstype}" = "SUB" ] || [ "${mlstype}" = "-" ]; then
