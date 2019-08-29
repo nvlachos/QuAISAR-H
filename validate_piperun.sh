@@ -906,7 +906,7 @@ if [[ -d "${OUTDATADIR}/c-sstar/" ]]; then
 	else
 		header=$(head -n1 "${csstar_file}")
 		ResGANNCBI_DB=$(echo "${csstar_file}" | rev | cut -d'.' -f3 | rev)
-		echo "${ResGANNCBI_DB} = ${ResGANNCBI_srst2_filename} ?"
+		#echo "${ResGANNCBI_DB} = ${ResGANNCBI_srst2_filename} ?"
 		if [[ ${header} = *"No anti-microbial genes were found"* ]]; then
 			if [[ "${ResGANNCBI_DB}" = "${ResGANNCBI_srst2_filename}" ]]; then
 				printf "%-20s: %-8s : %s\\n" "c-SSTAR" "ALERT" "Completed, but NO KNOWN AMR genes were found in ${ResGANNCBI_DB} (DB up to date, as of ${today})"
@@ -986,7 +986,7 @@ fi
 
 #Check c-SSTAR
 if [[ -d "${OUTDATADIR}/GAMA/" ]]; then
-	GAMA_file=$(find ${OUTDATADIR}/GAMA/${1}.ResGANNCBI*.GAMA -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
+	GAMA_file=$(find ${OUTDATADIR}/GAMA -type f -name "${1}.ResGANNCBI*.GAMA" -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
 	if [[ -z "${GAMA_file}" ]]; then
 		printf "%-20s: %-8s : %s\\n" "GAMA" "FAILED" "/GAMA/ does not have a .GAMA file"
 		status="FAILED"
@@ -1184,7 +1184,7 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 
 	# Check srst2 MLSTs
 	num_srst2_mlsts=$(find ${OUTDATADIR}/MLST -type f -name "*_srst2_*.mlst" | wc -l)
-	echo "${num_srst2_mlsts}"
+	#echo "${num_srst2_mlsts}"
 	if [[ "${num_srst2_mlsts}" -eq 0 ]]; then
 		#echo "No mlst srst2 was attempted on this isolate (${1})"
 		:
