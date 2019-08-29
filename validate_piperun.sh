@@ -993,7 +993,8 @@ if [[ -d "${OUTDATADIR}/GAMA/" ]]; then
 	else
 		ResGANNCBI_DB=$(echo "${GAMA_file}" | rev | cut -d'.' -f2 | rev)
 		#echo "${ResGANNCBI_DB} = ${ResGANNCBI_srst2_filename} ?"
-		amr_genes_found=$(wc -l "${GAMA_file}" | cut -d' ' -f1)-1
+		amr_genes_found=$(wc -l "${GAMA_file}" | cut -d' ' -f1)
+		amr_genes_found=$(( amr_genes_found - 1))
 		if [[ ${amr_genes_found} -le 0 ]]; then
 			if [[ "${ResGANNCBI_DB}" = "${ResGANNCBI_srst2_filename}" ]]; then
 				printf "%-20s: %-8s : %s\\n" "GAMA" "ALERT" "Completed, but NO KNOWN AMR genes were found in ${ResGANNCBI_DB} (DB up to date, as of ${today})"
@@ -1025,7 +1026,8 @@ if [[ "${plasmidsFoundviaplasFlow}" -eq 1 ]]; then
 		else
 			ResGANNCBI_DB=$(echo "${GAMA_plasFlow_file}" | rev | cut -d'.' -f2 | rev)
 			#echo "${ResGANNCBI_DB} = ${ResGANNCBI_srst2_filename} ?"
-			plasmid_amr_genes_found=$(wc -l "${GAMA_plasFlow_file}" | cut -d' ' -f1)-1
+			plasmid_amr_genes_found=$(wc -l "${GAMA_plasFlow_file}" | cut -d' ' -f1)
+			plasmid_amr_genes_found=$(( plasmid_amr_genes_found - 1))
 			if [[ ${plasmid_amr_genes_found} -le 0 ]]; then
 				if [[ "${ResGANNCBI_DB}" = "${ResGANNCBI_srst2_filename}" ]]; then
 					printf "%-20s: %-8s : %s\\n" "GAMA_plasFlow" "ALERT" "Completed, but NO KNOWN AMR genes were found in ${ResGANNCBI_DB} (DB up to date, as of ${today})"
