@@ -110,4 +110,6 @@ if [[ ${1} -eq 2 ]] || [[ ${1} -eq 3 ]]; then
 	rm ${shareScript}/core.*
 	rm ${shareScript}/quaisar_*.out
 	rm ${shareScript}/quaisar_*.err
+	rm ${shareScript}/qSNVPhyl_*.out
+	rm ${shareScript}/qSNVPhyl_*.err
 fi
