@@ -261,13 +261,9 @@ while IFS= read -r line || [ -n "$line" ]; do
 		oar_list="No AR genes discovered"
 	fi
 
-	# Extracts the MLST type
-	#mlst=$(head -n1 ${OUTDATADIR}/MLST/${sample_name}.mlst)
-	#mlst=$(echo "${mlst}" | cut -d'	' -f3)
-
 	# Pulls MLST type for sample and adds it to the summary file
-	if [[ -f "${OUTDATADIR}/MLST/${sample_name}.mlst" ]]; then
-		mlst=$(head -n 1 ${OUTDATADIR}/MLST/${sample_name}.mlst)
+	if [[ -f "${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst" ]]; then
+		mlst=$(head -n 1 ${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst)
 		mlst=$(echo "${mlst}" | cut -d'	' -f3)
 		mlst="ST${mlst}"
 	else
@@ -276,10 +272,10 @@ while IFS= read -r line || [ -n "$line" ]; do
 	echo -e "${project}\t${sample_name}\t${mlst}" >> ${output_directory}/${4}-mlst_summary.txt
 
 	# Pulls Alternate MLST type for sample and adds it to the summary file
-	if [[ -f "${OUTDATADIR}/MLST/${sample_name}_abaumannii.mlst" ]]; then
-		alt_mlst_file="${OUTDATADIR}/MLST/${sample_name}_abaumannii.mlst"
-	elif [[ -f "${OUTDATADIR}/MLST/${sample_name}_ecoli_2.mlst" ]]; then
-		alt_mlst_file="${OUTDATADIR}/MLST/${sample_name}_ecoli_2.mlst"
+	if [[ -f "${OUTDATADIR}/MLST/${sample_name}_Oxford.mlst" ]]; then
+		alt_mlst_file="${OUTDATADIR}/MLST/${sample_name}_Oxford.mlst"
+	elif [[ -f "${OUTDATADIR}/MLST/${sample_name}_Achtman.mlst" ]]; then
+		alt_mlst_file="${OUTDATADIR}/MLST/${sample_name}_Achtman.mlst"
 	else
 		alt_mlst_file=""
 	fi
