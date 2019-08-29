@@ -992,7 +992,7 @@ if [[ -d "${OUTDATADIR}/GAMA/" ]]; then
 		status="FAILED"
 	else
 		ResGANNCBI_DB=$(echo "${GAMA_file}" | rev | cut -d'.' -f2 | rev)
-		echo "${ResGANNCBI_DB} = ${ResGANNCBI_srst2_filename} ?"
+		#echo "${ResGANNCBI_DB} = ${ResGANNCBI_srst2_filename} ?"
 		amr_genes_found=$(wc -l "${GAMA_file}" | cut -d' ' -f1)
 		if [[ ${amr_genes_found} = 0 ]]; then
 			if [[ "${ResGANNCBI_DB}" = "${ResGANNCBI_srst2_filename}" ]]; then
@@ -1018,31 +1018,31 @@ fi
 if [[ "${plasmidsFoundviaplasFlow}" -eq 1 ]]; then
 		if [[ ! -d  "${OUTDATADIR}/GAMA_plasFlow" ]]; then
 			#Check c-SSTAR
-			GAMA_plasmid_file=$(find ${OUTDATADIR}/GAMA_plasFlow/${1}.ResGANNCBI*.GAMA -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
-			if [[ -z "${GAMA_plasmid_file}" ]]; then
-				printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "FAILED" "/GAMA_plasFlow/ does not have a .GAMA file"
+			GAMA_plasFlow_file=$(find ${OUTDATADIR}/GAMA_plasFlow -maxdepth 1 -type f -name "${1}.ResGANNCBI*.GAMA"   -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
+			if [[ -z "${GAMA_plasFlow_file}" ]]; then
+				printf "%-20s: %-8s : %s\\n" "GAMA_plasFlow" "FAILED" "/GAMA_plasFlow/ does not have a .GAMA file"
 				status="FAILED"
 			else
-				ResGANNCBI_DB=$(echo "${GAMA_plasmid_file}" | rev | cut -d'.' -f2 | rev)
+				ResGANNCBI_DB=$(echo "${GAMA_plasFlow_file}" | rev | cut -d'.' -f2 | rev)
 				#echo "${ResGANNCBI_DB} = ${ResGANNCBI_srst2_filename} ?"
 				plasmid_amr_genes_found=$(wc -l "${GAMA_file}" | cut -d' ' -f1)
 				if [[ ${plasmid_amr_genes_found} = 0 ]]; then
 					if [[ "${ResGANNCBI_DB}" = "${ResGANNCBI_srst2_filename}" ]]; then
-						printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "ALERT" "Completed, but NO KNOWN AMR genes were found in ${ResGANNCBI_DB} (DB up to date, as of ${today})"
+						printf "%-20s: %-8s : %s\\n" "GAMA_plasFlow" "ALERT" "Completed, but NO KNOWN AMR genes were found in ${ResGANNCBI_DB} (DB up to date, as of ${today})"
 					else
-						printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "ALERT" "Completed, but NO KNOWN AMR genes were found in ${ResGANNCBI_DB} (DB NOT up to date! Most current DB: ${ResGANNCBI_srst2_filename})"
+						printf "%-20s: %-8s : %s\\n" "GAMA_plasFlow" "ALERT" "Completed, but NO KNOWN AMR genes were found in ${ResGANNCBI_DB} (DB NOT up to date! Most current DB: ${ResGANNCBI_srst2_filename})"
 					fi
 				else
 					# Prints out the counts of AR gene hits
 					if [[ "${ResGANNCBI_DB}" = "${ResGANNCBI_srst2_filename}" ]]; then
-						printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "SUCCESS" "${plasmid_amr_genes_found} genes found in ${ResGANNCBI_DB} (DB up to date, as of ${today})"
+						printf "%-20s: %-8s : %s\\n" "GAMA_plasFlow" "SUCCESS" "${plasmid_amr_genes_found} genes found in ${ResGANNCBI_DB} (DB up to date, as of ${today})"
 					else
-						printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "ALERT" "${plasmid_amr_genes_found} genes found in ${ResGANNCBI_DB} (DB NOT up to date, Most current DB: ${ResGANNCBI_srst2_filename})"
+						printf "%-20s: %-8s : %s\\n" "GAMA_plasFlow" "ALERT" "${plasmid_amr_genes_found} genes found in ${ResGANNCBI_DB} (DB NOT up to date, Most current DB: ${ResGANNCBI_srst2_filename})"
 					fi
 				fi
 			fi
 	else
-		printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "FAILED" "/GAMA_plasFlow/ does not exist"
+		printf "%-20s: %-8s : %s\\n" "GAMA_plasFlow" "FAILED" "/GAMA_plasFlow/ does not exist"
 		status="FAILED"
 	fi
 fi
@@ -1164,7 +1164,7 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 			mlstype=$(echo "${info}" | cut -d'	' -f3)
 			mlstdb=$(echo "${info}" | cut -d'	' -f2)
 			#echo "'${mlstdb}:${mlstype}'"
-			if [ "${mlstdb}" = "ecoli_2" ]; then
+			if [ "${mlstdb}" = "ecoli" ]; then
 				if [ "${mlstype}" = "SUB" ] || [ "${mlstype}" = "-" ]; then
 					printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no type found, possibly new type? Adding to maintenance_To_Do list"
 					report_info=$(echo "${info}" | cut -d' ' -f2-)
@@ -1173,10 +1173,10 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 						status="WARNING"
 					fi
 				elif [ "${mlstype}" = "AU" ]; then
-					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type in ${mlstdb}(Pasteur)"
+					printf "%-20s: %-8s : %s\\n" "MLST" "FAILED" "1+ allele is missing, cant determine ST type in ${mlstdb}(Achtman)"
 					status="FAILED"
 				else
-					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}(Pasteur)"
+					printf "%-20s: %-8s : %s\\n" "MLST" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}(Achtman)"
 				fi
 			else
 				echo "Not reporting as name and analyis expected do not match"
