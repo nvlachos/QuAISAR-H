@@ -84,7 +84,7 @@ cd "${processed}/${2}/${1}/MLST/srst2"
 
 getmlst.py --species "${genus} ${species}" > "${processed}/${2}/${1}/MLST/srst2/getmlst.out"
 
-db_name="Standard"
+db_name="Pasteur"
 # Checks for either of the 2 databases that have multiple scheme types and runs both
 if [[ "${genus}" == "Acinetobacter" ]]; then
 	echo "${processed}/${2}/${1}/MLST/srst2/${genus}_${species}.fasta"
