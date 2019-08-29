@@ -1016,33 +1016,35 @@ fi
 
 # #Check c-SSTAR on plasmid Assembly
 if [[ "${plasmidsFoundviaplasFlow}" -eq 1 ]]; then
-	#Check c-SSTAR
-	GAMA_plasmid_file=$(find ${OUTDATADIR}/GAMA_plasFlow/${1}.ResGANNCBI*.GAMA -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
-	if [[ -z "${GAMA_file}" ]]; then
-		printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "FAILED" "/GAMA_plasFlow/ does not have a .GAMA file"
-		status="FAILED"
+		if [[ ! -d  "${OUTDATADIR}/GAMA_plasFlow" ]]; then
+			#Check c-SSTAR
+			GAMA_plasmid_file=$(find ${OUTDATADIR}/GAMA_plasFlow/${1}.ResGANNCBI*.GAMA -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
+			if [[ -z "${GAMA_plasmid_file}" ]]; then
+				printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "FAILED" "/GAMA_plasFlow/ does not have a .GAMA file"
+				status="FAILED"
+			else
+				ResGANNCBI_DB=$(echo "${GAMA_plasmid_file}" | rev | cut -d'.' -f2 | rev)
+				#echo "${ResGANNCBI_DB} = ${ResGANNCBI_srst2_filename} ?"
+				plasmid_amr_genes_found=$(wc -l "${GAMA_file}" | cut -d' ' -f1)
+				if [[ ${plasmid_amr_genes_found} = 0 ]]; then
+					if [[ "${ResGANNCBI_DB}" = "${ResGANNCBI_srst2_filename}" ]]; then
+						printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "ALERT" "Completed, but NO KNOWN AMR genes were found in ${ResGANNCBI_DB} (DB up to date, as of ${today})"
+					else
+						printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "ALERT" "Completed, but NO KNOWN AMR genes were found in ${ResGANNCBI_DB} (DB NOT up to date! Most current DB: ${ResGANNCBI_srst2_filename})"
+					fi
+				else
+					# Prints out the counts of AR gene hits
+					if [[ "${ResGANNCBI_DB}" = "${ResGANNCBI_srst2_filename}" ]]; then
+						printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "SUCCESS" "${plasmid_amr_genes_found} genes found in ${ResGANNCBI_DB} (DB up to date, as of ${today})"
+					else
+						printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "ALERT" "${plasmid_amr_genes_found} genes found in ${ResGANNCBI_DB} (DB NOT up to date, Most current DB: ${ResGANNCBI_srst2_filename})"
+					fi
+				fi
+			fi
 	else
-		ResGANNCBI_DB=$(echo "${GAMA_file}" | rev | cut -d'.' -f2 | rev)
-		echo "${ResGANNCBI_DB} = ${ResGANNCBI_srst2_filename} ?"
-		plasmid_amr_genes_found=$(wc -l "${GAMA_file}" | cut -d' ' -f1)
-		if [[ ${plasmid_amr_genes_found} = 0 ]]; then
-			if [[ "${ResGANNCBI_DB}" = "${ResGANNCBI_srst2_filename}" ]]; then
-				printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "ALERT" "Completed, but NO KNOWN AMR genes were found in ${ResGANNCBI_DB} (DB up to date, as of ${today})"
-			else
-				printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "ALERT" "Completed, but NO KNOWN AMR genes were found in ${ResGANNCBI_DB} (DB NOT up to date! Most current DB: ${ResGANNCBI_srst2_filename})"
-			fi
-		else
-			# Prints out the counts of AR gene hits
-			if [[ "${ResGANNCBI_DB}" = "${ResGANNCBI_srst2_filename}" ]]; then
-				printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "SUCCESS" "${plasmid_amr_genes_found} genes found in ${ResGANNCBI_DB} (DB up to date, as of ${today})"
-			else
-				printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "ALERT" "${plasmid_amr_genes_found} genes found in ${ResGANNCBI_DB} (DB NOT up to date, Most current DB: ${ResGANNCBI_srst2_filename})"
-			fi
-		fi
+		printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "FAILED" "/GAMA_plasFlow/ does not exist"
+		status="FAILED"
 	fi
-else
-	printf "%-20s: %-8s : %s\\n" "GAMA_plasmid" "FAILED" "/GAMA_plasFlow/ does not exist"
-	status="FAILED"
 fi
 
 # check SRST2 output
