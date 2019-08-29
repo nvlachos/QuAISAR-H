@@ -31,7 +31,7 @@ if [[ ${1} -eq 1 ]] || [[ ${1} -eq 3 ]]; then
 		fi
 	done
 elif [[ ${1} = "-h" ]]; then
-	echo "Will clean out script directory and mass qsub folders depending on parameter. 1 for qsub folder, 2, script fodler, or 3 for both"
+	echo "Will clean out script directory and mass qsub folders depending on parameter. 1 for qsub folder, 2, script folder, or 3 for both"
 fi
 
 # Deletes all straggling .err and .out files left in the home shareScript directory
@@ -108,4 +108,8 @@ if [[ ${1} -eq 2 ]] || [[ ${1} -eq 3 ]]; then
 	rm ${shareScript}/node_*.out
 	rm ${shareScript}/node_*.err
 	rm ${shareScript}/core.*
+	rm ${shareScript}/quaisar_*.out
+	rm ${shareScript}/quaisar_*.err
+	rm ${shareScript}/qSNVPhyl_*.out
+	rm ${shareScript}/qSNVPhyl_*.err
 fi
