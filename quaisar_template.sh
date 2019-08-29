@@ -468,6 +468,8 @@ python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${fil
 if [[ "${genus}_${species}" = "Acinetobacter_baumannii" ]]; then
 	"${shareScript}/run_MLST.sh" "${filename}" "${project}" "-f" "abaumannii"
 	python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_abaumannii.mlst" -t standard
+	mv "${processed}/${project}/${filename}/MLST/${filename}_abaumannii.mlst" "${processed}/${project}/${filename}/MLST/${filename}_Oxford.mlst"
+	mv "${processed}/${project}/${filename}/MLST/${filename}.mlst" "${processed}/${project}/${filename}/MLST/${filename}_Pasteur.mlst"
 	#Check for "-", unidentified type
 	type1=$(tail -n1 ${processed}/${project}/${filename}/MLST/${filename}_abaumannii.mlst | cut -d' ' -f3)
 	type2=$(head -n1 ${processed}/${project}/${filename}/MLST/${filename}.mlst | cut -d' ' -f3)
@@ -483,6 +485,8 @@ elif [[ "${genus}_${species}" = "Escherichia_coli" ]]; then
 	# Verify that ecoli_2 is default and change accordingly
 	"${shareScript}/run_MLST.sh" "${filename}" "${project}" "-f" "ecoli_2"
 	python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_ecoli_2.mlst" -t standard
+	mv "${processed}/${project}/${filename}/MLST/${filename}_ecoli_2.mlst" "${processed}/${project}/${filename}/MLST/${filename}_Pasteur.mlst"
+	mv "${processed}/${project}/${filename}/MLST/${filename}.mlst" "${processed}/${project}/${filename}/MLST/${filename}_Achtman.mlst"
 	type2=$(tail -n1 ${processed}/${project}/${filename}/MLST/${filename}_ecoli_2.mlst | cut -d' ' -f3)
 	type1=$(head -n1 ${processed}/${project}/${filename}/MLST/${filename}.mlst | cut -d' ' -f3)
 	if [[ "${type1}" = "-" ]]; then
@@ -493,6 +497,8 @@ elif [[ "${genus}_${species}" = "Escherichia_coli" ]]; then
 		"${shareScript}/run_srst2_mlst.sh" "${filename}" "${project}" "Escherichia" "coli#2"
 		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_srst2_escherichia_coli-coli#2.mlst" -t srst2
 	fi
+else
+	mv "${processed}/${project}/${filename}/MLST/${filename}.mlst" "${processed}/${project}/${filename}/MLST/${filename}_Pasteur.mlst"
 fi
 end=$SECONDS
 timeMLST=$((end - start))
