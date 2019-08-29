@@ -30,6 +30,8 @@ if [[ ${1} -eq 1 ]] || [[ ${1} -eq 3 ]]; then
 			done
 		fi
 	done
+elif [[ ${1} = "-h" ]];
+	echo "Will clean out script directory and mass qsub folders depending on parameter. 1 for qsub folder, 2, script fodler, or 3 for both"
 fi
 
 # Deletes all straggling .err and .out files left in the home shareScript directory
