@@ -16,8 +16,8 @@ use constant PROGRAM_NAME            => 'MyDbFinder_v1.pl';
 use constant PROGRAM_NAME_LONG       => 'Findes antimicrobial resitance genes for a sequence or genome';
 use constant VERSION                 => '1.1';
 
-my $BLASTALL  = "/tools/bin/blastall";
-my $FORMATDB  = "/tools/bin/formatdb";
+my $BLASTALL  = "/apps/x86_64/blast/blast-2.2.22/bin/blastall";
+my $FORMATDB  = "/apps/x86_64/blast/blast-2.2.22/bin/formatdb";
 
 
 my ($Help, $threshold, $min_length, $InFile, $runroot, $outdir);
@@ -103,11 +103,13 @@ my $CurrentAnti = 'UserDatabase';
 # } else {
 #  $Data   = $ABRES_DB.'/'.$element.'.fsa';  
 #}
-my $Seqs_ABres   = read_seqs(-file => $UserData, format => 'fasta');
+my $Seqs_ABres   = read_seqs(-file => $UserData, -format => 'fasta');
 my $Seqs_input  = $InFile ne "" ? read_seqs(-file => $InFile, -format => $IFormat) : 
                                 read_seqs(-fh => \*STDIN,   -format => $IFormat);
 
 my @Blast_lines = get_blast_run(-d => $Seqs_input, -i => $Seqs_ABres, %ARGV);
+
+print "Print blast out";
 
 #Declaring variables - array and hash
 my @RESULTS_AND_SETTINGS_ARRAY; #will contain the typing results some setting and the hash with the results for each gene
@@ -249,7 +251,7 @@ foreach my $contig (keys %HoA_sort){
     my $hit = $_;
     #print "Second level: $hit\n";
     foreach my $i ( 0 .. $#{ $HoA_sort{$contig}{$hit} } ) {
-      #print "Third level: $HoA_sort{$contig}{$hit}[$i]\t";
+      print "Third level: $HoA_sort{$contig}{$hit}[$i]\t";
       push (@{$list[$k]},  $HoA_sort{$contig}{$hit}[$i]);
     }
     #print "\n\n";
@@ -359,18 +361,19 @@ my @control;
 my $major_variants_detector = 0;
 # Savning the best hits for output/results, with nice output
 foreach my $gene (@best_hit){
-  #print "Gene: $gene\t$GENEID{$gene}\n"; # $gene = $qid2, "hit_start"_"hit_end"_"contig_name", $GENEID{$gene} = $qid = genename_connecter_accessionNR (tet(A)_1_AB12345)
+  print "Gene: $gene\t$GENEID{$gene}\n"; # $gene = $qid2, "hit_start"_"hit_end"_"contig_name", $GENEID{$gene} = $qid = genename_connecter_accessionNR (tet(A)_1_AB12345)
 
   my $data = $gene;
 
   #Get accession number
-  my @tmp = split(/_/, $GENEID{$gene},3);
+  my @tmp = split(/:/, $GENEID{$gene},4);
   my $genename = $tmp[0];
-  my $accNR = $tmp[2];
-  #print "Gene: $genename\tAcc: $accNR\n";
+  my $accNR = $tmp[3];
+  print "Gene: $genename\tAcc: $accNR\n";
 
   $GENE_RESULTS_HASH{$gene} = ();
   $GENE_ALIGN_HIT_HASH{$gene} = ();
+  
   $GENE_ALIGN_HOMO_HASH{$gene} = ();
   $GENE_ALIGN_QUERY_HASH{$gene} = ();
 
