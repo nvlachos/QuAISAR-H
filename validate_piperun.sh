@@ -1101,9 +1101,7 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 		mlstype=$(echo "${info}" | cut -d'	' -f3)
 		mlstdb=$(echo "${info}" | cut -d'	' -f2)
 		#echo "'${mlstdb}:${mlstype}'"
-		if [[ "${mlstdb}" = "abaumannii_2" ]] || [[ "${mlstdb}" = "ecoli" ]]; then
-			mlstdb="${mlstdb}(Pasteur)"
-		fi
+		mlstdb="${mlstdb}(Pasteur)"
 		if [ "${mlstdb}" = "-" ]; then
 			if [ "${dec_genus}" ] && [ "${dec_species}" ]; then
 				printf "%-20s: %-8s : %s\\n" "MLST" "WARNING" "no scheme found, check pubmlst for ${dec_genus} ${dec_species}"
