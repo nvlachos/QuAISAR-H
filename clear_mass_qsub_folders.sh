@@ -30,7 +30,7 @@ if [[ ${1} -eq 1 ]] || [[ ${1} -eq 3 ]]; then
 			done
 		fi
 	done
-elif [[ ${1} = "-h" ]];
+elif [[ ${1} = "-h" ]]; then
 	echo "Will clean out script directory and mass qsub folders depending on parameter. 1 for qsub folder, 2, script fodler, or 3 for both"
 fi
 
