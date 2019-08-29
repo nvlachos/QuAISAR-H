@@ -1186,16 +1186,13 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 	num_srst2_mlsts=$(find ${OUTDATADIR}/MLST -type f -name "*_srst2_*.mlst" | wc -l)
 	echo "${num_srst2_mlsts}"
 	if [[ "${num_srst2_mlsts}" -eq 0 ]]; then
-		echo "No mlst srst2 was attempted on this isolate (${1})"
+		#echo "No mlst srst2 was attempted on this isolate (${1})"
 		:
 	elif [[ "${num_srst2_mlsts}" -eq 1 ]]; then
-		echo "1"
 		srst_mlst=$(find ${OUTDATADIR}/MLST -type f -name "*_srst2_*.mlst")
 		if [[ "${srst_mlst}" == *"-Standard.mlst" ]]; then
-			echo "OLd=${srst_mlst}"
 			new_srst_mlst=${srst_mlst/Standard/Pasteur}
-			echo "New=${new_srst_mlst}"
-			#mv ${srst_mlst} ${new_srst_mlst}
+			mv ${srst_mlst} ${new_srst_mlst}
 			srst_mlst=${new_srst_mlst}
 		fi
 		mlstype=$(tail -n1 ${srst_mlst} | cut -d'	' -f2)
@@ -1214,7 +1211,6 @@ if [[ -d "${OUTDATADIR}/MLST/" ]]; then
 			printf "%-20s: %-8s : %s\\n" "MLST-srst2" "SUCCESS" "TYPE is ${mlstype} from ${mlstdb}"
 		fi
 	elif [[ "${num_srst2_mlsts}" -eq 2 ]]; then
-		echo "2"
 		if [[ "${dec_genus}" = "Acinetobacter" ]]; then
 			if [[ -f "${OUTDATADIR}/MLST/${1}_srst2_Acinetobacter_baumannii#1-Oxford.mlst" ]]; then
 				srst_mlst="${OUTDATADIR}/MLST/${1}_srst2_Acinetobacter_baumannii#1-Oxford.mlst"
