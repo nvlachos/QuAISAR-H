@@ -59,7 +59,6 @@ echo "Running GAMA Taxonomic Classifier"
 OUTDATA="${OUTDATADIR}"
 
 if [[ "${3}" == "-c" ]]; then
-	echo "C"
 	assembly_source="${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
 	if [ ! -d "$OUTDATADIR/GAMA" ]; then  #create outdir if absent
 		echo "Creating $OUTDATADIR/GAMA"
@@ -67,7 +66,6 @@ if [[ "${3}" == "-c" ]]; then
 	fi
 	OUTDATADIR="${OUTDATADIR}/GAMA"
 elif [[ "${3}" == "-p" ]]; then
-	echo "P"
 	assembly_source="${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta"
 	if [ ! -d "$OUTDATADIR/GAMA_plasFlow" ]; then  #create outdir if absent
 		echo "Creating $OUTDATADIR/GAMA_plasFlow"
@@ -79,7 +77,7 @@ else
 	exit 5564
 fi
 ### GAMA AR Classifier ### in species mode
-python2 GAMA_4.6_ResGANNOT_SciComp_Exe.py "${assembly_source}" "${ARDB}" "${OUTDATADIR}/${1}.${ResGANNCBI_srst2_filename}.GAMA"
+python2 GAMA_ResGANNCBI_SciComp_Exe.py "${assembly_source}" "${ARDB}" "${OUTDATADIR}/${1}.${ResGANNCBI_srst2_filename}.GAMA"
 
 ml -blat -Python/2.7.3
 

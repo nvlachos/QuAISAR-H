@@ -70,7 +70,7 @@ def Indel_Match_Length(PSL_Line):
     """Determines the length of the match to the target gene"""
     List1 = PSL_Line.split('\t')
     Sum = Indel_Sum(PSL_Line)
-    Target_Length = int(List1[16]) - int(List1[15])
+    Target_Length = Match_Length_Maker(PSL_Line)
     Length = Target_Length + Sum
     return Length
 
@@ -408,8 +408,9 @@ def Indel_Line(PSL_Line, genome_gene, gene):
     Percent_Codons = str(Decimal(Coding_Length - Codon_Changes) / Decimal(Coding_Length))
     Percent_Bases = str(Decimal(int(List1[14]) - BP_Changes) / Decimal(int(List1[14])))
     Match_Length =  Indel_Match_Length(PSL_Line)
+    Blocks = Match_Start_Stop_Finder(PSL_Line)
     Percent_Length = str(Decimal(Match_Length) / Decimal(int(List1[14])))
-    Out = List1[13] + '\t' + List1[9] + '\t' + List1[11] + '\t' + List1[12] + '\t' + Type + '\t' + Description + '\t' + str(Codon_Changes) + '\t' + str(BP_Changes) + '\t' + Percent_Codons + '\t' + Percent_Bases + '\t' + Percent_Length + '\t' + str(Match_Length) + '\t' + List1[14] + '\t' + str(Transversions)
+    Out = List1[13] + '\t' + List1[9] + '\t' + str(Blocks[0][0]) + '\t' + str(Blocks[0][1]) + '\t' + Type + '\t' + Description + '\t' + str(Codon_Changes) + '\t' + str(BP_Changes) + '\t' + Percent_Codons + '\t' + Percent_Bases + '\t' + Percent_Length + '\t' + str(Match_Length) + '\t' + List1[14] + '\t' + str(Transversions)
     return Out
 
 def Indel_Edge_Line(PSL_Line, genome_gene, gene):
@@ -439,8 +440,9 @@ def Indel_Edge_Line(PSL_Line, genome_gene, gene):
     Percent_Codons = str(Decimal(Coding_Length - Codon_Changes) / Decimal(Coding_Length))
     Percent_Bases = str(Decimal(int(List1[14]) - BP_Changes) / Decimal(int(List1[14])))
     Match_Length =  Indel_Match_Length(PSL_Line)
+    Blocks = Match_Start_Stop_Finder(PSL_Line)
     Percent_Length = str(Decimal(Match_Length) / Decimal(int(List1[14])))
-    Out = List1[13] + '\t' + List1[9] + '\t' + List1[11] + '\t' + List1[12] + '\t' + Type + '\t' + Description + '\t' + str(Codon_Changes) + '\t' + str(BP_Changes) + '\t' + Percent_Codons + '\t' + Percent_Bases + '\t' + Percent_Length + '\t' + str(Match_Length) + '\t' + List1[14] + '\t' + str(Transversions)
+    Out = List1[13] + '\t' + List1[9] + '\t' + str(Blocks[0][0]) + '\t' + str(Blocks[0][1]) + '\t' + Type + '\t' + Description + '\t' + str(Codon_Changes) + '\t' + str(BP_Changes) + '\t' + Percent_Codons + '\t' + Percent_Bases + '\t' + Percent_Length + '\t' + str(Match_Length) + '\t' + List1[14] + '\t' + str(Transversions)
     return Out
 
 def Mutant_Line(PSL_Line, genome_gene, gene):
@@ -468,8 +470,9 @@ def Mutant_Line(PSL_Line, genome_gene, gene):
     Percent_Codons = str(Decimal(Coding_Length - Codon_Changes) / Decimal(Coding_Length))
     Percent_Bases = str(Decimal(int(List1[14]) - BP_Changes) / Decimal(int(List1[14])))
     Match_Length = List1[14]
+    Blocks = Match_Start_Stop_Finder(PSL_Line)
     Percent_Length = str(Decimal(Match_Length) / Decimal(int(List1[14])))
-    Out = List1[13] + '\t' + List1[9] + '\t' + List1[11] + '\t' + List1[12] + '\t' + Type + '\t' + Description + '\t' + str(Codon_Changes) + '\t' + str(BP_Changes) + '\t' + Percent_Codons + '\t' + Percent_Bases + '\t' + Percent_Length + '\t' + str(Match_Length) + '\t' + List1[14] + '\t' + str(Transversions)
+    Out = List1[13] + '\t' + List1[9] + '\t' + str(Blocks[0][0]) + '\t' + str(Blocks[0][1]) + '\t' + Type + '\t' + Description + '\t' + str(Codon_Changes) + '\t' + str(BP_Changes) + '\t' + Percent_Codons + '\t' + Percent_Bases + '\t' + Percent_Length + '\t' + str(Match_Length) + '\t' + List1[14] + '\t' + str(Transversions)
     return Out
 
 def Edge_Codon_Total(PSL_Line, genome_gene, gene):
@@ -519,15 +522,17 @@ def Edge_BP_Total(PSL_Line, genome_gene, gene):
 
 def Edge_BP_Missing(PSL_Line):
     List1 = PSL_Line.split('\t')
-    Total = int(List1[16]) - int(List1[15])
+    Blocks = Match_Start_Stop_Finder(PSL_Line)
+    Total = Blocks[1][1] - Blocks[1][0]
     Missing = int(List1[14]) - Total
     return Missing
 
 def Edge_Codon_Missing(PSL_Line):
     List1 = PSL_Line.split('\t')
+    Blocks = Match_Start_Stop_Finder(PSL_Line)
     Codons = int(List1[14]) / 3
-    Front = math.ceil(int(List1[15]) / 3)
-    Back = int(List1[16]) / 3
+    Front = math.ceil(Blocks[1][0] / 3)
+    Back = Blocks[1][1] / 3
     Missing = Codons - (Back - int(Front))
     return Missing
 
@@ -535,18 +540,19 @@ def Edge_Line(PSL_Line, genome_gene, gene):
     """Makes a GAMA line from edge matches w/o indels"""
     Type = "Contig Edge"
     List1 = PSL_Line.split('\t')
+    Blocks = Match_Start_Stop_Finder(PSL_Line)
     Codon_Changes = Edge_Codon_Total(PSL_Line, genome_gene, gene)
     Codon_Count = Edge_Codon_Count(PSL_Line, genome_gene, gene)
     Coding_Length = int(List1[14]) / 3
     BP_Changes = Edge_BP_Total(PSL_Line, genome_gene, gene)
     BP_Count = Edge_BP_Count(PSL_Line, genome_gene, gene)
     Transversions = Edge_Transversion_Count(PSL_Line, genome_gene, gene)
-    Description = str(BP_Count) + ' SNPs,' + str(Codon_Count) + ' coding mutations for ' + str(int(List1[15]) + 1) + '-' + str(int(List1[16])) + ' of ' + List1[14] + ' bp'
+    Description = str(BP_Count) + ' SNPs,' + str(Codon_Count) + ' coding mutations for ' + str(Blocks[1][0] + 1) + '-' + str(Blocks[1][1]) + ' of ' + List1[14] + ' bp'
     Percent_Codons = str(Decimal(Coding_Length - Codon_Changes) / Decimal(Coding_Length))
     Percent_Bases = str(Decimal(int(List1[14]) - BP_Changes) / Decimal(int(List1[14])))
-    Match_Length = int(List1[12]) - int(List1[11])
+    Match_Length = Match_Length_Maker(PSL_Line)
     Percent_Length = str(Decimal(Match_Length) / Decimal(int(List1[14])))
-    Out = List1[13] + '\t' + List1[9] + '\t' + List1[11] + '\t' + List1[12] + '\t' + Type + '\t' + Description + '\t' + str(Codon_Changes) + '\t' + str(BP_Changes) + '\t' + Percent_Codons + '\t' + Percent_Bases + '\t' + Percent_Length + '\t' + str(Match_Length) + '\t' + List1[14] + '\t' + str(Transversions)
+    Out = List1[13] + '\t' + List1[9] + '\t' + str(Blocks[0][0]) + '\t' + str(Blocks[0][1]) + '\t' + Type + '\t' + Description + '\t' + str(Codon_Changes) + '\t' + str(BP_Changes) + '\t' + Percent_Codons + '\t' + Percent_Bases + '\t' + Percent_Length + '\t' + str(Match_Length) + '\t' + List1[14] + '\t' + str(Transversions)
     return Out
 
 def Match_Start_Stop_Finder(PSL_Line):
@@ -621,6 +627,12 @@ def Match_Start_Stop_Finder(PSL_Line):
     Output.append(Genome_Starts)
     Output.append(Gene_Starts)
     return Output
+
+def Match_Length_Maker(PSL_Line):
+    """Finds the length of the bp between the start and stop of a gene match on a contig"""
+    Blocks = Match_Start_Stop_Finder(PSL_Line)
+    Length = int(Blocks[0][1]) - int(Blocks[0][0])
+    return Length
 
 def GAMA_Line_Maker(PSL, genome_fasta, genes_fasta):
     """Makes a list of potential GAMA lines from a PSL file matching Genes to a Genome"""
@@ -767,7 +779,7 @@ def GAMA_List(PSL, genome_fasta, genes_fasta):
 def GAMA_Output(PSL, genome_fasta, genes_fasta, Out_File):
     List1 = GAMA_List(PSL, genome_fasta, genes_fasta)
     Output = open(Out_File, 'w')
-    Output.write('Gene\tContig\tStart\tStop\tMatch_Type\tDescription\tCodon_Changes\tBP_Changes\tPercent_Codons\tPercent_BP\tPercent_Length\tMatch_Length\tTarget_Length\tStrand\n')
+    Output.write('Gene\tContig\tStart\tStop\tMatch_Type\tDescription\tCodon_Changes\tBP_Changes\tCodon_Percent\tBP_Percent\tPercent_Length\tMatch_Length\tTarget_Length\tStrand\n')
     for lines in List1:
         Output.write(lines + '\n')
     Output.close()
