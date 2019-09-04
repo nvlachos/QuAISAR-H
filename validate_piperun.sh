@@ -899,7 +899,7 @@ if [[ -d "${OUTDATADIR}/c-sstar/" ]]; then
 	else
 		sim="98"
 	fi
-	csstar_file=$(find ${OUTDATADIR}/c-sstar/${1}.ResGANNCBI.${gapping}_${sim}_sstar_summary.txt -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
+	csstar_file=$(find ${OUTDATADIR}/c-sstar/${1}.ResGANNCBI*.${gapping}_${sim}_sstar_summary.txt -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
 	if [[ -z "${csstar_file}" ]]; then
 		printf "%-20s: %-8s : %s\\n" "c-SSTAR" "FAILED" "/c-sstar/ does not have an sstar_summary file"
 		status="FAILED"
@@ -945,7 +945,7 @@ if [[ "${plasmidsFoundviaplasFlow}" -eq 1 ]]; then
 		else
 			sim="40"
 		fi
-		csstar_plasFlow_file=$(find ${OUTDATADIR}/c-sstar_plasFlow/${1}.ResGANNCBI.${gapping}_${sim}_sstar_summary.txt -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
+		csstar_plasFlow_file=$(find ${OUTDATADIR}/c-sstar_plasFlow/${1}.ResGANNCBI*.${gapping}_${sim}_sstar_summary.txt -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
 		if [[ -z "${csstar_plasFlow_file}" ]]; then
 			printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasFlow" "FAILED" "/c-sstar_plasFlow/ does not have an sstar_summary file"
 			echo "Looking for ${OUTDATADIR}/c-sstar_plasFlow/${1}.ResGANNCBI.${gapping}_${sim}_sstar_summary.txt"
