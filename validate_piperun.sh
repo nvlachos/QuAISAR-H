@@ -15,7 +15,7 @@ fi
 #
 # Checking to see if all standard reported sections of a sample have completed successfully
 #
-#./validate_piprun.sh   sample_name   miseq run id
+#./validate_piprun.sh   sample_name   miseq run id [gapping (gapped|ungapped)] [sim (40|80|95|998|99|100)]
 #
 
 # Checks for proper argumentation
@@ -26,7 +26,7 @@ elif [[ -z "${1}" ]]; then
 	echo "Empty sample name supplied to validate_piperun.sh, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./validate_piperun.sh   sample_name   miseq_run_id"
+	echo "Usage is ./validate_piperun.sh   sample_name   miseq_run_id [gapping (gapped|ungapped)] [sim (40|80|95|998|99|100)]"
 	echo "Output is only printed to screen, Pipe to file if desired"
 	exit 0
 elif [ -z "$2" ]; then
@@ -940,14 +940,15 @@ if [[ "${plasmidsFoundviaplasFlow}" -eq 1 ]]; then
 		else
 			gapping="gapped"
 		fi
-		if [[ ! -z "${5}" ]]; then
-			sim="${5}"
+		if [[ ! -z "${4}" ]]; then
+			sim="${4}"
 		else
 			sim="40"
 		fi
 		csstar_plasFlow_file=$(find ${OUTDATADIR}/c-sstar_plasFlow/${1}.ResGANNCBI.${gapping}_${sim}_sstar_summary.txt -maxdepth 1 -type f -printf '%p\n' | sort -k2,2 -rt '_' -n | head -n 1)
 		if [[ -z "${csstar_plasFlow_file}" ]]; then
 			printf "%-20s: %-8s : %s\\n" "c-SSTAR_plasFlow" "FAILED" "/c-sstar_plasFlow/ does not have an sstar_summary file"
+			echo "Looking for ${OUTDATADIR}/c-sstar_plasFlow/${1}.ResGANNCBI.${gapping}_${sim}_sstar_summary.txt"
 			status="FAILED"
 		else
 			header=$(head -n1 "${csstar_plasFlow_file}")
