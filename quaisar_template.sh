@@ -515,9 +515,6 @@ timeplasfin=$((end - start))
 echo "plasmidFinder - ${timeplasfin} seconds" >> "${time_summary}"
 totaltime=$((totaltime + timeplasfin))
 
-"${shareScript}/sample_cleaner.sh" "${filename}" "${project}"
-"${shareScript}/validate_piperun.sh" "${filename}" "${project}" > "${processed}/${project}/${filename}/${filename}_pipeline_stats.txt"
-
 # Run plasFlow if isolate is from the Enterobacteriaceae family  ##### When should we check if this will be expanded?
 if [[ "${family}" == "Enterobacteriaceae" ]]; then
 	start=$SECONDS
@@ -531,6 +528,9 @@ if [[ "${family}" == "Enterobacteriaceae" ]]; then
 	echo "plasmidFlow - ${timeplasflow} seconds" >> "${time_summary_redo}"
 	totaltime=$((totaltime + timeplasflow))
 fi
+
+"${shareScript}/sample_cleaner.sh" "${filename}" "${project}"
+"${shareScript}/validate_piperun.sh" "${filename}" "${project}" > "${processed}/${project}/${filename}/${filename}_pipeline_stats.txt"
 
 # Extra dump cleanse in case anything else failed
 	if [ -n "$(find "${shareScript}" -maxdepth 1 -name 'core.*' -print -quit)" ]; then
