@@ -178,10 +178,6 @@ done
 # Short print out summary of run settings
 echo -e "Source folder: ${INDATADIR}\\nOutput folder: ${BASEDIR}\\nList based analysis:  ${list_path}"
 
-if [[ -f "${list_path}" ]]; then
-	mv "${list_path}" "${list_path}.original"
-fi
-
 # Checks that a full FASTQ source path is given
 if [ "${INDATADIR:0:1}" != "/" ] && [ "${INDATADIR:0:1}" != "$" ]; then
 	echo "${INDATADIR}"
@@ -306,10 +302,10 @@ for run_sample in "${file_list[@]}"; do
 done
 
 # Concatenates lists if this run was an addition to an already processed folder
-if [[ -f "${processed}/${PROJECT}/${PROJECT}_list.txt.original" ]]; then
-	cat "${processed}/${PROJECT}/${PROJECT}_list.txt" >> "${processed}/${PROJECT}/${PROJECT}_list.txt.original"
+if [[ -f "${processed}/${PROJECT}/${PROJECT}_list_original.txt" ]]; then
+	cat "${processed}/${PROJECT}/${PROJECT}_list.txt" >> "${processed}/${PROJECT}/${PROJECT}_list_original.txt"
 	rm "${processed}/${PROJECT}/${PROJECT}_list.txt"
-	mv "${processed}/${PROJECT}/${PROJECT}_list.txt.original" "${processed}/${PROJECT}/${PROJECT}_list.txt"
+	mv "${processed}/${PROJECT}/${PROJECT}_list_original.txt" "${processed}/${PROJECT}/${PROJECT}_list.txt"
 fi
 
 # Get run summary info to send in an email
