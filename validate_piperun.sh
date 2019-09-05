@@ -1092,7 +1092,7 @@ fi
 
 # check MLST
 if [[ -d "${OUTDATADIR}/MLST/" ]]; then
-	if [[ -s "${OUTDATADIR}/MLST/${1}_Pasteur.mlst" ]] || [[ "${OUTDATADIR}/MLST/${1}.mlst" ]]; then
+	if [[ -s "${OUTDATADIR}/MLST/${1}_Pasteur.mlst" ]] || [[ -s "${OUTDATADIR}/MLST/${1}.mlst" ]]; then
 		if [[ -f "${OUTDATADIR}/MLST/${1}.mlst" ]]; then
 			mv "${OUTDATADIR}/MLST/${1}.mlst" "${OUTDATADIR}/MLST/${1}_Pasteur.mlst"
 		fi
