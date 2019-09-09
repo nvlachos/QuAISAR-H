@@ -29,45 +29,7 @@ fi
 while IFS= read -r var; do
 	sample_name=$(echo "${var}" | cut -d'/' -f2 | tr -d '[:space:]')
 	project=$(echo "${var}" | cut -d'/' -f1 | tr -d '[:space:]')
-	while IFS= read -r line; do
-		# Grab first letter of line (indicating taxonomic level)
-		first=${line:0:1}
-		# Assign taxonomic level value from 4th value in line (1st-classification level, 2nd-% by kraken, 3rd-true % of total reads, 4th-identifier)
-		if [ "${first}" = "s" ]
-		then
-			species=$(echo "${line}" | awk -F ' ' '{print $2}')
-		elif [ "${first}" = "G" ]
-		then
-			genus=$(echo "${line}" | awk -F ' ' '{print $2}')
-			# Only until ANI gets fixed
-			if [[ ${genus} == "Clostridioides" ]]; then
-				genus="Clostridium"
-			fi
-		fi
-	done < "${processed}/${project}/${sample_name}/${sample_name}.tax"
-
-	if [[ "${genus}" ==  "Shigella" ]]; then
-		genus="Escherichia"
-	elif [[ "${genus}" == "Clostridioides" ]]; then
-		genus="Clostridium"
-	fi
-
-	if [[ -f "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus,,}).txt" ]]; then
-		echo "Little exists"
-		if [[ ! -f "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus^}).txt" ]]; then
-			echo "Big does not"
-			mv "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus,,}).txt" "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus^}).txt"
-		fi
-		rm "${processed}/${project}/${sample_name}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${genus,,}).txt"
-	fi
-	if [[ -f "${processed}/${project}/${sample_name}/ANI/${genus,,}_and_${sample_name}_mashtree.dnd" ]]; then
-		echo "Little exists"
-		if [[ ! -f "${processed}/${project}/${sample_name}/ANI/${genus^}_and_${sample_name}_mashtree.dnd" ]]; then
-			echo "Big does not"
-			mv "${processed}/${project}/${sample_name}/ANI/${genus,,}_and_${sample_name}_mashtree.dnd" "${processed}/${project}/${sample_name}/ANI/${genus^}_and_${sample_name}_mashtree.dnd"
-		fi
-		rm "${processed}/${project}/${sample_name}/ANI/${genus,,}_and_${sample_name}_mashtree.dnd"
-	fi
+	cat "${processed}/${project}/${sample_name}/c-sstar/${sample_name}.cdiff_gyrases.gapped_98_sstar_summary.txt" >> "/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick/Projects/Clostridioides_difficile_project/100_gyrases.txt"
 done < "${1}"
 
 echo "All isolates completed"
