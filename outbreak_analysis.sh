@@ -376,11 +376,14 @@ while IFS= read -r line || [ -n "$line" ]; do
 		done < "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${ResGANNCBI_srst2_filename}_srst2__results.txt"
 		#echo "Test1"
 		if [[ -z "${srst2_results}" ]]; then
+			echo "1"
 			echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
 		else
+			echo "2"
 			echo "${project}	${sample_name}	${srst2_results}" >> ${output_directory}/${4}-srst2.txt
 		fi
 	else
+		echo "3"
 		echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
 	fi
 
