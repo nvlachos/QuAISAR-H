@@ -182,8 +182,6 @@ else
 	cp ${1} "${output_directory}/${4}_srst2_todo.txt"
 fi
 
-exit
-
 # Creating mashtree of all isolates in list
 echo "Creating mashtree of all samples"
 ${shareScript}/mashtree_of_list.sh -i "${1}" -d "${output_directory}/mashtree" -o "${4}"
