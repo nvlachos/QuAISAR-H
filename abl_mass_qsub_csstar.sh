@@ -58,7 +58,7 @@ fi
 if [[ "${5}" != 80 ]] && [[ "${5}" != 95 ]] && [[ "${5}" != 98 ]] && [[ "${5}" != 99 ]] && [[ "${5}" != 100 ]]; then
 	echo "Identity is not one of the presets for csstar and therefore will fail, defaulting to 98..."
 	sim="h"
-	sim_num=98
+	simnum=98
 else
 	if [ "${5}" == 98 ]; then
 		sim="h"

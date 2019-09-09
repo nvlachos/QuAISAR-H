@@ -442,7 +442,7 @@ while IFS= read -r var || [ -n "$var" ]; do
 			failure_flags="${failure_flags}-NO_c-SSTAR_summary"
 			failures=$(( failures + 1 ))
 		elif [[ "${tool}" == "MLST" ]]; then
-			if [[ -s "${processed}/${1}/${sample_name}/MLST/${1}.mlst" ]]; then
+			if [[ -s "${processed}/${1}/${sample_name}/MLST/${1}_Pasteur.mlst" ]]; then
 				failure_flags="${failure_flags}-NO_SCHEME-Check_that_pubMLST_has_${genus^}_${species})"
 				failures=$(( failures + 1 ))
 			else
