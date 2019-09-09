@@ -39,18 +39,8 @@ elif [[ "$1" = "-h" ]]; then
 elif [[ ! -f ${1} ]]; then
 	echo "list does not exist...exiting"
 	exit 1
-elif ! [[ ${6} =~ $number ]] || [[ -z "${6}" ]]; then
-	if [[ "${6}" == "keep" ]] || "${6}" == "clobber" ]]; then
-		echo "Clobberness is empty...keeping"
+elif  [[ "${6}" == "keep" ]] || [[ "${6}" == "clobber" ]]; then
 		clobberness=${6}
-	else
-		echo "clobberness not input coreectly, must be keep or clobber...keeping"
-		clobberness="keep"
-	fi
-elif  [[ -z "${7}" ]]; then
-	if [[ "${7}" == "keep" ]] || "${7}" == "clobber" ]]; then
-		echo "Clobberness is empty...keeping"
-		clobberness=${7}
 	else
 		echo "clobberness not input coreectly, must be keep or clobber...keeping"
 		clobberness="keep"
