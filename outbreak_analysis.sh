@@ -40,11 +40,10 @@ elif [[ ! -f ${1} ]]; then
 	echo "list does not exist...exiting"
 	exit 1
 elif  [[ "${6}" == "keep" ]] || [[ "${6}" == "clobber" ]]; then
-		clobberness=${6}
-	else
-		echo "clobberness not input coreectly, must be keep or clobber...keeping"
-		clobberness="keep"
-	fi
+	clobberness=${6}
+else
+	echo "clobberness not input coreectly, must be keep or clobber...keeping"
+	clobberness="keep"
 fi
 
 # Checks that the gapping is set to one of the csstar presets
