@@ -127,8 +127,13 @@ while IFS= read -r line || [ -n "$line" ]; do
 done < "${local_DBs}/star/group_defs.txt"
 
 # Set defaults for checking if all isolates have been compared to the newest ResGANNCBI DB file . If any isolates are not up-to-date, they will be submitted with the appropriate abl_mass_qsub.
-run_csstar="false"
-run_srst2="false"
+if [[ "${clobberness}" == "clobber" ]]; then
+	run_csstar="true"
+	run_srst2="true"
+else
+	run_csstar="false"
+	run_srst2="false"
+fi
 > "${output_directory}/${4}_csstar_todo.txt"
 > "${output_directory}/${4}_srst2_todo.txt"
 
