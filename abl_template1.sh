@@ -29,7 +29,7 @@ fi
 while IFS= read -r var; do
 	sample_name=$(echo "${var}" | cut -d'/' -f2 | tr -d '[:space:]')
 	project=$(echo "${var}" | cut -d'/' -f1 | tr -d '[:space:]')
-	cat "${processed}/${project}/${sample_name}/c-sstar/${sample_name}.cdiff_gyrases.gapped_98_sstar_summary.txt"
+	cat ${processed}/${project}/${sample_name}/c-sstar/${sample_name}.cdiff_gyrases.gapped_98_sstar_summary.txt
 	#cat "${processed}/${project}/${sample_name}/c-sstar/${sample_name}.cdiff_gyrases.gapped_98_sstar_summary.txt" >> "/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick/Projects/Clostridioides_difficile_project/set2_100_gyrases.txt"
 done < "${1}"
 
