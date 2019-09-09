@@ -213,7 +213,7 @@ fi
 #Returns to original directory
 cd "${owd}"
 
-ml -ncbi-blast+/LATEST
+ml -ncbi-blast+/LATEST -Python3/3.5.2
 
 #Script exited gracefully (unless something else inside failed)
 exit 0
