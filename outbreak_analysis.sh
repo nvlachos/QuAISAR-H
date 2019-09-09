@@ -127,13 +127,8 @@ while IFS= read -r line || [ -n "$line" ]; do
 done < "${local_DBs}/star/group_defs.txt"
 
 # Set defaults for checking if all isolates have been compared to the newest ResGANNCBI DB file . If any isolates are not up-to-date, they will be submitted with the appropriate abl_mass_qsub.
-if [[ "${clobberness}" == "clobber" ]]; then
-	run_csstar="true"
-	run_srst2="true"
-else
-	run_csstar="false"
-	run_srst2="false"
-fi
+run_csstar="false"
+run_srst2="false"
 > "${output_directory}/${4}_csstar_todo.txt"
 > "${output_directory}/${4}_srst2_todo.txt"
 
@@ -144,49 +139,58 @@ fi
 ex -s +'v/\S/d' -cwq ${1}
 
 # Check that each isolate has been compared to the newest ResGANNCBI DB file
-echo -e "\nMaking sure all isolates use the latest AR Database - ${ResGANNCBI_srst2_filename}\n"
-while IFS= read -r line || [ -n "$line" ]; do
-	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
-	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
-	OUTDATADIR="${processed}/${project}/${sample_name}"
-	#echo "checking for ${OUTDATADIR}/c-sstar/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt"
-	if [[ -s "${OUTDATADIR}/c-sstar/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt" ]];
-	then
-		#echo "${project}/${sample_name} has newest ResGANNCBI for normal csstar already"
-		:
-	else
-		echo "${project}/${sample_name} - ccstar needs to be run against ${ResGANNCBI_srst2_filename} at ${sim}"
-		echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
-		run_csstar="true"
-	fi
-	#echo "checking for ${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt"
-	# if [[ -s "${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta" ]]; then
-	# 	if [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt" ]] || [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_40_sstar_summary.txt" ]]; then
-	# 		#echo "${project}/${sample_name} has newest ResGANNCBI for plasmid csstar already"
-	# 		:
-	# 	else
-	# 		echo "${project}/${sample_name} - ccstar plasmid needs to be run against ${ResGANNCBI_srst2_filename}"
-	# 		echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
-	# 		sort -u "${output_directory}/${4}_csstar_todo.txt" > "${output_directory}/${4}_csstar_todo_no_dups.txt"
-	# 		cp "${output_directory}/${4}_csstar_todo_no_dups.txt" "${output_directory}/${4}_csstar_todo.txt"
-	# 		run_csstar="true"
-	# 	fi
-	# else
-	# 	echo "${sample_name} - No plasmid Assembly found, no need for csstar plasmid"
-	# fi
-	#echo "checking for ${OUTDATADIR}/srst2/${sample_name}__genes__${ResGANNCBI_srst2_filename}_srst2__results.txt"
-	if [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] && [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] || [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]] && [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]]; then
-		#echo "FASTQs exist"
-		if [[ -f "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${ResGANNCBI_srst2_filename}_srst2__results.txt" ]] || [[ -f "${OUTDATADIR}/srst2/${sample_name}__genes__${ResGANNCBI_srst2_filename}_srst2__results.txt" ]]; then
-				#echo "${project}/${sample_name} has newest ResGANNCBI for srst2 already"
-				:
-			else
-				echo "${project}/${sample_name} - SRST2 needs to be run against ${ResGANNCBI_srst2_filename}"
-				echo "${project}/${sample_name}" >> "${output_directory}/${4}_srst2_todo.txt"
-				run_srst2="true"
+if [[ "${clobberness}" == "keep" ]]; then
+	echo -e "\nMaking sure all isolates use the latest AR Database - ${ResGANNCBI_srst2_filename}\n"
+	while IFS= read -r line || [ -n "$line" ]; do
+		sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
+		project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
+		OUTDATADIR="${processed}/${project}/${sample_name}"
+		#echo "checking for ${OUTDATADIR}/c-sstar/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt"
+		if [[ -s "${OUTDATADIR}/c-sstar/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt" ]];
+		then
+			#echo "${project}/${sample_name} has newest ResGANNCBI for normal csstar already"
+			:
+		else
+			echo "${project}/${sample_name} - ccstar needs to be run against ${ResGANNCBI_srst2_filename} at ${sim}"
+			echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
+			run_csstar="true"
 		fi
-	fi
-done < ${1}
+		#echo "checking for ${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt"
+		# if [[ -s "${OUTDATADIR}/plasmidAssembly/${sample_name}_plasmid_scaffolds_trimmed.fasta" ]]; then
+		# 	if [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt" ]] || [[ -s "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_40_sstar_summary.txt" ]]; then
+		# 		#echo "${project}/${sample_name} has newest ResGANNCBI for plasmid csstar already"
+		# 		:
+		# 	else
+		# 		echo "${project}/${sample_name} - ccstar plasmid needs to be run against ${ResGANNCBI_srst2_filename}"
+		# 		echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
+		# 		sort -u "${output_directory}/${4}_csstar_todo.txt" > "${output_directory}/${4}_csstar_todo_no_dups.txt"
+		# 		cp "${output_directory}/${4}_csstar_todo_no_dups.txt" "${output_directory}/${4}_csstar_todo.txt"
+		# 		run_csstar="true"
+		# 	fi
+		# else
+		# 	echo "${sample_name} - No plasmid Assembly found, no need for csstar plasmid"
+		# fi
+		#echo "checking for ${OUTDATADIR}/srst2/${sample_name}__genes__${ResGANNCBI_srst2_filename}_srst2__results.txt"
+		if [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] && [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq ]] || [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]] && [[ -s ${OUTDATADIR}/FASTQs/${sample_name}_R1_001.fastq.gz ]]; then
+			#echo "FASTQs exist"
+			if [[ -f "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${ResGANNCBI_srst2_filename}_srst2__results.txt" ]] || [[ -f "${OUTDATADIR}/srst2/${sample_name}__genes__${ResGANNCBI_srst2_filename}_srst2__results.txt" ]]; then
+					#echo "${project}/${sample_name} has newest ResGANNCBI for srst2 already"
+					:
+				else
+					echo "${project}/${sample_name} - SRST2 needs to be run against ${ResGANNCBI_srst2_filename}"
+					echo "${project}/${sample_name}" >> "${output_directory}/${4}_srst2_todo.txt"
+					run_srst2="true"
+			fi
+		fi
+	done < ${1}
+else
+	run_csstar="true"
+	run_srst2="true"
+	rm "${output_directory}/${4}_csstar_todo.txt"
+	rm "${output_directory}/${4}_srst2_todo.txt"
+	cp ${1} "${output_directory}/${4}_csstar_todo.txt"
+	cp ${1} "${output_directory}/${4}_srst2_todo.txt"
+fi
 
 # Creating mashtree of all isolates in list
 echo "Creating mashtree of all samples"
