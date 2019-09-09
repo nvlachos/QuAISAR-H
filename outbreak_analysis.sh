@@ -188,7 +188,7 @@ else
 	run_srst2="true"
 	rm "${output_directory}/${4}_csstar_todo.txt"
 	rm "${output_directory}/${4}_srst2_todo.txt"
-	echo "Copying ${1} to ${output_directory}/${4}_csstar_todo.txt"
+	echo "Copying ${1} to ${output_directory}/${4}_*_todo.txt"
 	cp ${1} "${output_directory}/${4}_csstar_todo.txt"
 	cp ${1} "${output_directory}/${4}_srst2_todo.txt"
 fi
