@@ -13,7 +13,7 @@ fi
 
 . ./config.sh
 
-ml ncbi-blast+/LATEST
+ml Python3/3.5.2 ncbi-blast+/LATEST
 
 #
 # Finds anti-microbial resistance genes in the resFinder and ARG-ANNOT databases and exports a file containing list of all genes found
