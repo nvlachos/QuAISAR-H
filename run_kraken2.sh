@@ -80,7 +80,7 @@ elif [ "${3}" = "single" ]; then
 # Runs kraken2 on the assembly
 elif [ "${3}" = "assembled" ]; then
 	# Makes MPA output for unweighted assembly
-	kraken2 -db "${kraken2_mini_db}" --threads ${procs} --output - --report "${OUTDATADIR}/kraken2/preAssembly/${1}_${3}.mpa" --use-mpa-style --use-names "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
+	#kraken2 -db "${kraken2_mini_db}" --threads ${procs} --output - --report "${OUTDATADIR}/kraken2/preAssembly/${1}_${3}.mpa" --use-mpa-style --use-names "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
 	# Makes original list file to be used for calculations of % in pipeline stats. Makes kraken2 output to be used for weighing contigs later
 	kraken2 -db "${kraken2_mini_db}" --threads ${procs} --classified-out "${OUTDATADIR}/kraken2/preAssembly/${1}_${3}.classified" --output "${OUTDATADIR}/kraken2/preAssembly/${1}_${3}.kraken2" --report "${OUTDATADIR}/kraken2/preAssembly/${1}_${3}.list" --use-names "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
 
