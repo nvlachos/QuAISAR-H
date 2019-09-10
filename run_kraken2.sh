@@ -74,7 +74,7 @@ if [ "${3}" = "paired" ]; then
 	#rm "${OUTDATADIR}/trimmed/${1}_2.fq"
 # Runs kraken2 in single end mode on the concatenated single read file
 elif [ "${3}" = "single" ]; then
-	kraken2 --db "${kraken2_mini_db}" --fastq-input --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.classified ${OUTDATADIR}/FASTQs/${1}.single.fastq"
+	kraken2 --db "${kraken2_mini_db}" --fastq-input --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.classified ${OUTDATADIR}/FASTQs/${1}.single.fastq" "really"
 # Runs kraken2 on the assembly
 elif [ "${3}" = "assembled" ]; then
 	#kraken2 --db "${kraken2_mini_db}" --report "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.mpa" --use-mpa-style --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.classified" "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
