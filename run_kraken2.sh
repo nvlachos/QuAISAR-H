@@ -65,8 +65,8 @@ echo "[:] Running kraken2.  Output: ${1}.kraken2 / ${1}.classified"
 if [ "${3}" = "paired" ]; then
 	#gunzip -c "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq.gz" > "${OUTDATADIR}/trimmed/${1}_1.fq"
 	#gunzip -c "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq.gz"  > "${OUTDATADIR}/trimmed/${1}_2.fq"
-	temp="--paired --db ${kraken2_mini_db} --report --use-mpa-style ${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list --use-names --threads ${procs} --output ${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2 --classified-out ${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}\#.classified ${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq ${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
-	IFS=' ' read -r krakargs <<< ${temp}
+	temp="--paired,--db,${kraken2_mini_db},--report,--use-mpa-style,${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list,--use-names,--threads,${procs},--output,${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2,--classified-out,${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}\#.classified,${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq,${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
+	IFS=',' read -r krakargs <<< ${temp}
 	echo "Sending ${#krakargs[@]} args to krakens 2, with no compression"
 	kraken2 --paired --db "${kraken2_mini_db}" --report --use-mpa-style "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list" --use-names --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}\#.classified" "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
 
