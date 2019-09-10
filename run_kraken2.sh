@@ -123,8 +123,8 @@ fi
 # Run the metaphlan generator on the kraken2 output
 #module load kraken/0.10.5
 #. "${shareScript}/module_changers/perl_5221_to_5123.sh"
-echo "[:] Generating metaphlan compatible report."
-kraken-mpa-report --db "${kraken_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.mpa"
+#echo "[:] Generating metaphlan compatible report."
+#kraken-mpa-report --db "${kraken_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.mpa"
 # Run the krona generator on the metaphlan output
 echo "[:] Generating krona output for ${1}."
 # Convert mpa to krona file
