@@ -19,7 +19,7 @@ fi
 # requires kraken/2.0.0 perl/5.12.3 (NOT!!! 5.16.1-MT or 5.22.1)
 #
 
-ml kraken/2.0.8 krona/2.7 perl/5.12.3 Python3/3.5.2
+ml kraken/2.0.0 krona/2.7 perl/5.12.3 Python3/3.5.2
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -65,7 +65,7 @@ echo "[:] Running kraken2.  Output: ${1}.kraken2 / ${1}.classified"
 if [ "${3}" = "paired" ]; then
 	#gunzip -c "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq.gz" > "${OUTDATADIR}/trimmed/${1}_1.fq"
 	#gunzip -c "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq.gz"  > "${OUTDATADIR}/trimmed/${1}_2.fq"
-	kraken2 --paired --db "${kraken2_mini_db}" --report --use-mpa-style "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list" --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}#.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}#.classified" "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
+	kraken2 --paired --db "${kraken2_mini_db}" --report --use-mpa-style "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list" --use-names --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}#.classified" "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
 
 	# Original call
 	#kraken2 --paired --db "${kraken2_mini_db}" --report --use-mpa-style "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list" --use-names --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}#.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}#.classified" "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
@@ -144,7 +144,7 @@ echo "[:] Extracting best taxonomic matches"
 # Runs the extractor for pulling best taxonomic hit from a kraken2 run
 "${shareScript}/best_hit_from_kraken.sh" "${1}" "${2}" "${3}" "${4}"
 
-ml -kraken/2.0.8 -krona/2.7 -perl/5.12.3 -Python3/3.5.2
+ml -kraken/2.0.0 -krona/2.7 -perl/5.12.3 -Python3/3.5.2
 
 #Script exited gracefully (unless something else inside failed)
 exit 0
