@@ -66,7 +66,7 @@ if [ "${3}" = "paired" ]; then
 	#gunzip -c "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq.gz" > "${OUTDATADIR}/trimmed/${1}_1.fq"
 	#gunzip -c "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq.gz"  > "${OUTDATADIR}/trimmed/${1}_2.fq"
 	#kraken2 --paired --db "${kraken2_mini_db}" --report --use-mpa-style "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list" --use-names --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}\#.classified" "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
-	kraken2 -db "${kraken2_mini_db}" --threads 8 --classified-out "${OUTDATADIR}/kraken2/preAssembly/${1}_paired#.classified" --output "${OUTDATADIR}/kraken2/preAssembly/${1}_paired.kraken2" --report "${OUTDATADIR}/kraken2/preAssembly/${1}_paired.list" --paired --use-names "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
+	kraken2 -db "${kraken2_mini_db}" --threads 8 --classified-out "${OUTDATADIR}/kraken2/preAssembly/${1}_paired#.classified" --output "${OUTDATADIR}/kraken2/preAssembly/${1}_paired.kraken2" --report "${OUTDATADIR}/kraken2/preAssembly/${1}_paired.mpa" --paired --use-names "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
 	# Original call
 	#kraken2 --paired --db "${kraken2_mini_db}" --report --use-mpa-style "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list" --use-names --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}#.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}#.classified" "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
 
@@ -121,7 +121,7 @@ else
 fi
 
 # Run the metaphlan generator on the kraken2 output
-module load kraken/0.10.5
+#module load kraken/0.10.5
 #. "${shareScript}/module_changers/perl_5221_to_5123.sh"
 echo "[:] Generating metaphlan compatible report."
 kraken-mpa-report --db "${kraken_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.mpa"
@@ -135,7 +135,7 @@ perl "${shareScript}/Methaplan_to_krona.pl" -p "${OUTDATADIR}/kraken2/${2}Assemb
 ktImportText "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.krona" -o "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.html"
 # Return perl version back to 5.22.1
 #. "${shareScript}/module_changers/perl_5123_to_5221.sh"
-module unload kraken/0.10.5
+#module unload kraken/0.10.5
 # Creates the taxonomy list file from the kraken2 output
 echo "[:] Creating alternate report for taxonomic extraction"
 #kraken2 --report --db "${kraken2_mini_db}" "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" > "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list"
