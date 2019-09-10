@@ -66,8 +66,8 @@ if [ "${3}" = "paired" ]; then
 	#gunzip -c "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq.gz" > "${OUTDATADIR}/trimmed/${1}_1.fq"
 	#gunzip -c "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq.gz"  > "${OUTDATADIR}/trimmed/${1}_2.fq"
 	#kraken2 --paired --db "${kraken2_mini_db}" --report --use-mpa-style "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list" --use-names --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}\#.classified" "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
-	kraken2 -db "${kraken2_mini_db}" --threads ${procs} --classified-out "${OUTDATADIR}/kraken2/preAssembly/${1}_${3}#.classified" --output "${OUTDATADIR}/kraken2/preAssembly/${1}_${3}.kraken2" --report "${OUTDATADIR}/kraken2/preAssembly/${1}_${3}.mpa" -use-mpa-style --paired --use-names "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
-	kraken2 -db "${kraken2_mini_db}" --threads ${procs} --output - --report "${OUTDATADIR}/kraken2/preAssembly/${1}_${3}.list" --paired --use-names "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
+	kraken2 -db "${kraken2_mini_db}" --threads ${procs} --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}#.classified" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" --report "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.mpa" -use-mpa-style --paired --use-names "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
+	kraken2 -db "${kraken2_mini_db}" --threads ${procs} --output - --report "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list" --paired --use-names "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
 
 	# Original call
 	#kraken2 --paired --db "${kraken2_mini_db}" --report --use-mpa-style "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list" --use-names --threads "${procs}" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}#.kraken2" --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}#.classified" "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq"
@@ -80,9 +80,9 @@ elif [ "${3}" = "single" ]; then
 # Runs kraken2 on the assembly
 elif [ "${3}" = "assembled" ]; then
 	# Makes MPA output for unweighted assembly
-	#kraken2 -db "${kraken2_mini_db}" --threads ${procs} --output - --report "${OUTDATADIR}/kraken2/preAssembly/${1}_${3}.mpa" --use-mpa-style --use-names "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
+	#kraken2 -db "${kraken2_mini_db}" --threads ${procs} --output - --report "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.mpa" --use-mpa-style --use-names "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
 	# Makes original list file to be used for calculations of % in pipeline stats. Makes kraken2 output to be used for weighing contigs later
-	kraken2 -db "${kraken2_mini_db}" --threads ${procs} --classified-out "${OUTDATADIR}/kraken2/preAssembly/${1}_${3}.classified" --output "${OUTDATADIR}/kraken2/preAssembly/${1}_${3}.kraken2" --report "${OUTDATADIR}/kraken2/preAssembly/${1}_${3}.list" --use-names "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
+	kraken2 -db "${kraken2_mini_db}" --threads ${procs} --classified-out "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.classified" --output "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.kraken2" --report "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.list" --use-names "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
 
 
 	# Attempting to weigh contigs and produce standard krona and list output using a modified version of Rich's weighting scripts (will also be done on pure contigs later)
