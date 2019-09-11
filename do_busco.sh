@@ -22,7 +22,7 @@ fi
 # requires modules busco/3.0.1, Python/3.6.1
 #
 
-ml busco/3.0.1 Python3/3.6.1
+ml busco/3.0.1 Python3/3.5.4
 
 python3 -V
 
@@ -94,7 +94,7 @@ cd "${owd}"
 # Unloads python 3.6.1 (and loads python 3.5.2 back in)
 #. "${mod_changers}/unload_python_3.6.1.sh"
 
-ml -Python/3.6.1 -busco/3.0.1
+ml -Python/3.5.4 -busco/3.0.1
 
 #Script exited gracefully (unless something else inside failed)
 exit 0
