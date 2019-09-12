@@ -235,8 +235,8 @@ while IFS= read -r var || [ -n "$var" ]; do
 	file_count=$(find "${OUTDATADIR}/ANI/" -name *"${sample_name}"*"_vs_"*".txt" | wc -l)
 	# Rename files in old formating convention
 	ani_dec_genus=${dec_genus}
-	if [[ "${ani_dec_genus}" == "clostridioides" ]]; then
-		ani_dec_genus="clostridium"
+	if [[ "${ani_dec_genus}" == "Clostridioides" ]]; then
+		ani_dec_genus="Clostridium"
 	fi
 	if [[ -s "${OUTDATADIR}/ANI/best_hits_ordered.txt" ]]; then
 		mv "${OUTDATADIR}/ANI/best_hits_ordered.txt" "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${ani_dec_genus}).txt"
@@ -245,8 +245,8 @@ while IFS= read -r var || [ -n "$var" ]; do
 	# echo "test-${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${dec_genus}).txt"
 	if [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_All.txt" ]]; then
 		ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_All).txt")
-	elif [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${ani_dec_genus^}).txt" ]]; then
-		ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${ani_dec_genus^}).txt")
+	elif [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${ani_dec_genus}).txt" ]]; then
+		ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${ani_dec_genus}).txt")
 	# Report that more than one file exists
 	else
 		for file in "${OUTDATADIR}/ANI/"*
