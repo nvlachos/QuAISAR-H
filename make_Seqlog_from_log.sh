@@ -245,8 +245,8 @@ while IFS= read -r var || [ -n "$var" ]; do
 	# echo "test-${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${dec_genus}).txt"
 	if [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_All.txt" ]]; then
 		ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_All).txt")
-	elif [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${ani_dec_genus}).txt" ]]; then
-		ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${ani_dec_genus}).txt")
+	elif [[ -s "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${ani_dec_genus^}).txt" ]]; then
+		ani_info=$(head -n 1 "${OUTDATADIR}/ANI/best_ANI_hits_ordered(${sample_name}_vs_${ani_dec_genus^}).txt")
 	# Report that more than one file exists
 	else
 		for file in "${OUTDATADIR}/ANI/"*
@@ -255,6 +255,7 @@ while IFS= read -r var || [ -n "$var" ]; do
 				filename=${file}
 				echo "${OUTDATADIR}"
 				echo "${file}"
+				echo "${ani_dec_genus}"
 				echo "${dec_genus^}"
 				ani_info=$(head -n 1 "${file}")
 				break
