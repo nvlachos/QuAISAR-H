@@ -234,7 +234,7 @@ while IFS= read -r var || [ -n "$var" ]; do
 	# Count the number of matching format files for the current sample
 	file_count=$(find "${OUTDATADIR}/ANI/" -name *"${sample_name}"*"_vs_"*".txt" | wc -l)
 	# Rename files in old formating convention
-	ani_dec_genus=~${dec_genus}
+	ani_dec_genus=${dec_genus}
 	if [[ "${ani_dec_genus}" == "clostridioides" ]]; then
 		ani_dec_genus="clostridium"
 	fi
