@@ -235,7 +235,7 @@ while IFS= read -r var || [ -n "$var" ]; do
 	file_count=$(find "${OUTDATADIR}/ANI/" -name *"${sample_name}"*"_vs_"*".txt" | wc -l)
 	# Rename files in old formating convention
 	ani_dec_genus=${dec_genus}
-	if [[ "${ani_dec_genus}" == "Clostridioides" ]]; then
+	if [[ "${ani_dec_genus}" == "Clostridioides" ]] || [[ "${ani_dec_genus}" == "Hungateiclostridium"]]; then
 		ani_dec_genus="Clostridium"
 	fi
 	if [[ -s "${OUTDATADIR}/ANI/best_hits_ordered.txt" ]]; then
