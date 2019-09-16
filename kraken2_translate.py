@@ -47,7 +47,7 @@ def translate(input_kraken, output_labels):
 			tax_tree_dict[contig_taxID]=get_Taxon_Tree_From_NCBI(contig_taxID)
 		print(str(counter)+":"+contig_id+"	"+tax_tree_dict[contig_taxID])
 		label_lines.append(contig_id+"	"+tax_tree_dict[contig_taxID])
-		line=kraken.readline().strip()
+		line=kraken_file.readline().strip()
 		counter+=1
 	kraken.close()
 	label_file=open(output_labels, 'w')
