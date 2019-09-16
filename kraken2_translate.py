@@ -49,6 +49,7 @@ def translate(input_kraken, output_labels):
 		label_lines.append(contig_id+"	"+tax_tree_dict[contig_taxID])
 		line=kraken_file.readline().strip()
 		counter+=1
+		sleep(0.05)
 	kraken_file.close()
 	label_file=open(output_labels, 'w')
 	label_file.write("\n".join(label_lines))
