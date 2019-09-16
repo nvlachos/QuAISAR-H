@@ -42,16 +42,20 @@ elif [ -z "$3" ]; then
 elif [ -z "$4" ]; then
 	echo "Empty project id supplied to $0, exiting"
 	exit 1
+elif [ -z "$5" ]; then
+	echo "Empty out folder supplied to $0, exiting"
+	exit 1
 fi
-# Checks if full flag was set,indicating that it was a full kraken database comparison (and also in a different location)
-if [[ "${5}" = "full" ]]; then
-	full="_full"
-else
+fi
+# Checks what source flag was set as,indicating that it was from kraken or kraken2
+if [[ "${5}" != "kraken"]] || [[ "${5}" != "kraken2" ]]; then
 	full=""
+else
+	source="${5}"
 fi
 
 #Sets output folder to the correct path relative to assembly completion
-OUTDATADIR="${processed}/${4}/${1}/kraken/${2}Assembly${full}"
+OUTDATADIR="${processed}/${4}/${1}/${5}/${2}Assembly${full}"
 echo "-${OUTDATADIR}-"
 
 #Creates the default values for output in case any calculations are interrupted.
