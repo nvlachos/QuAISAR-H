@@ -48,7 +48,7 @@ elif [ -z "$5" ]; then
 fi
 
 # Checks what source flag was set as,indicating that it was from kraken or kraken2
-if [[ "${5}" != "kraken" ]] || [[ "${5}" != "kraken2" ]]; then
+if [[ "${5}" != "kraken" ]] && [[ "${5}" != "kraken2" ]]; then
 	echo "Source must be kraken or kraken2, exiting"
 	exit 334
 else
@@ -56,7 +56,7 @@ else
 fi
 
 #Sets output folder to the correct path relative to assembly completion
-OUTDATADIR="${processed}/${4}/${1}/${5}/${2}Assembly${full}"
+OUTDATADIR="${processed}/${4}/${1}/${5}/${2}Assembly"
 echo "-${OUTDATADIR}-"
 
 #Creates the default values for output in case any calculations are interrupted.
