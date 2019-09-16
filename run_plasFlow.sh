@@ -36,11 +36,11 @@ elif [[ -z "${2}" ]]; then
 	exit 1
 fi
 
-module load PlasFlow/1.1
+ml PlasFlow/1.1
 
 
 # Show loaded modules
-. ./module_changers/list_modules.sh
+ml
 
 # Create output directory
 if [[ ! -d "${processed}/${2}/${1}/plasFlow" ]]; then
@@ -87,15 +87,18 @@ if [[ -s "${processed}/${2}/${1}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
 	# Run plasflow on newly trimmed assembly file
 	PlasFlow.py --input "${processed}/${2}/${1}/plasFlow/${1}_scaffolds_trimmed_2000.fasta" --output "${processed}/${2}/${1}/plasFlow/${1}_plasFlow_results.tsv" --threshold 0.7
 	# Load all necessary modules to complete the realignment portion of analysis
-	module load Python/3.5.4;
-	module load bowtie2/2.2.9;
-	module load samtools/1.4.1;
-	module load bam2fastq/1.1.0;
-	module load Unicycler/0.4.4;
-	module load gcc/5.5;
-	module load SPAdes/3.11.1;
-	module load racon/1.2.0;
-	module load perl/5.22.1
+
+	#module load Python3/3.5.4;
+	#module load bowtie2/2.2.9;
+	#module load samtools/1.4.1;
+	#module load bam2fastq/1.1.0;
+	#module load Unicycler/0.4.4;
+	#module load gcc/5.5;
+	#module load SPAdes/3.13.0;
+	#module load racon/1.3.1;
+	#module load perl/5.22.1
+
+	ml Python3/3.5.4 bowtie2/2.2.9 samtools/1.4.1 bam2fastq/1.1.0 Unicycler/0.4.4 gcc/5.5 SPAdes/3.13.0 racon/1.3.1 perl/5.22.1
 
 	mkdir ${processed}/${2}/${1}/plasFlow/bowtie2-index/
 	bowtie2-build -f "${processed}/${2}/${1}/plasFlow/${1}_plasFlow_results.tsv_chromosomes.fasta" "${processed}/${2}/${1}/plasFlow/bowtie2-index/bowtie2_${1}_chr"
@@ -112,12 +115,14 @@ if [[ -s "${processed}/${2}/${1}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
 	rm "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta"
 fi
 
-module unload PlasFlow/1.1
-module unload Python/3.5.4
-module unload bowtie2/2.2.9
-module unload samtools/1.4.1
-module unload bam2fastq/1.1.0
-module unload Unicycler/0.4.4;
-module unload gcc/5.5;
-module unload SPAdes/3.11.1;
-module unload racon/1.2.0;
+#module unload PlasFlow/1.1
+#module unload Python3/3.5.4
+#module unload bowtie2/2.2.9
+#module unload samtools/1.4.1
+#module unload bam2fastq/1.1.0
+#module unload Unicycler/0.4.4;
+#module unload gcc/5.5;
+#module unload SPAdes/3.11.1;
+#module unload racon/1.2.0;
+
+ml -Python3/3.5.4 -bowtie2/2.2.9 -samtools/1.4.1 -bam2fastq/1.1.0 -Unicycler/0.4.4 -gcc/5.5 -SPAdes/3.13.0 -racon/1.3.1 -perl/5.22.1
