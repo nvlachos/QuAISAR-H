@@ -72,17 +72,18 @@ def get_mpa_string_From_NCBI(taxID):
 		#taxid = entry["Rank"]
 		#print(entry)
 		mpa_string=""
-		for r in entry["LineageEx"]:
-			#print(r)
-			#print(r["Rank"])
-			if r["Rank"] in recognized_ranks.keys():
-				current_rank=recognized_ranks[r["Rank"]]
-			#else:
-				#current_rank="-"
-				current_taxa=(r["ScientificName"])
-				rank_and_taxa=current_rank+"__"+current_taxa
-				#print(rank_and_taxa)
-				mpa_string+=rank_and_taxa+"|"
+		if "LineageEx" in taxon:
+			for r in entry["LineageEx"]:
+				#print(r)
+				#print(r["Rank"])
+				if r["Rank"] in recognized_ranks.keys():
+					current_rank=recognized_ranks[r["Rank"]]
+				#else:
+					#current_rank="-"
+					current_taxa=(r["ScientificName"])
+					rank_and_taxa=current_rank+"__"+current_taxa
+					#print(rank_and_taxa)
+					mpa_string+=rank_and_taxa+"|"
 		if entry["Rank"] in recognized_ranks.keys() or entry["Rank"] == "no rank":
 			if entry["Rank"] == "no rank":
 				current_rank="-"
