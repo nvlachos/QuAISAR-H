@@ -162,7 +162,7 @@ while IFS= read -r line  || [ -n "$line" ]; do
 		species_reads=${reads}
 		echo "New: ${species}-${species_reads}"
 	fi
-done < "${OUTDATADIR}/${1}_${3}.list"
+done < "${OUTDATADIR}/${1}_${3}.mpa"
 
 # Calculate % of unclassified reads using sum of highest taxon level reads against total reads found in QC counts
 # Grabs total possible reads from preQC counts if kraken was used on reads (pre assembly)
