@@ -25,10 +25,13 @@ def get_Taxon_Tree_From_NCBI(taxID):
 		taxid = taxon["TaxId"]
 		name = taxon["ScientificName"]
 		lineage=["root"]
-		for t in taxon["LineageEx"]:
-			lineage.append(t["ScientificName"])
-		lineage.append(name)
+		print(taxon)
+		if "LineageEx" in taxon:
+			for t in taxon["LineageEx"]:
+				lineage.append(t["ScientificName"])
+			lineage.append(name)
 		#print("%s\t|\t%s\t|\t%s" % (taxid, name, ";".join(lineage)))
+		#print(";".join(lineage))
 		return ";".join(lineage)
 		#print(' '.join(line.split()[1:]))
 
@@ -50,7 +53,7 @@ def translate(input_kraken, output_labels):
 		label_lines.append(contig_id+"	"+tax_tree_dict[contig_taxID])
 		line=kraken_file.readline().strip()
 		counter+=1
-		sleep(0.01)
+		sleep(0.005)
 	kraken_file.close()
 	label_file=open(output_labels, 'w')
 	label_file.write("\n".join(label_lines))
