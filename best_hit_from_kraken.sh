@@ -46,7 +46,7 @@ elif [ -z "$5" ]; then
 	echo "Empty out folder supplied to $0, exiting"
 	exit 1
 fi
-fi
+
 # Checks what source flag was set as,indicating that it was from kraken or kraken2
 if [[ "${5}" != "kraken"]] || [[ "${5}" != "kraken2" ]]; then
 	full=""
