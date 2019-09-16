@@ -25,6 +25,7 @@ def get_Taxon_Tree_From_NCBI(taxID):
 		taxid = taxon["TaxId"]
 		name = taxon["ScientificName"]
 		lineage=["root"]
+		print(taxon)
 		for t in taxon["LineageEx"]:
 			lineage.append(t["ScientificName"])
 		lineage.append(name)
