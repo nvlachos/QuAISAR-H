@@ -36,7 +36,7 @@ elif [[ -z "${2}" ]]; then
 	exit 1
 fi
 
-ml PlasFlow/1.1 R/3.4.4
+ml PlasFlow/1.1 R/3.6.1
 
 
 # Show loaded modules
@@ -127,4 +127,4 @@ fi
 #module unload SPAdes/3.11.1;
 #module unload racon/1.2.0;
 
-ml -bowtie2/2.3.5.1 -samtools/1.9 -bam2fastq/1.1.0 -Unicycler/0.4.7 -gcc/4.9.3 -SPAdes/3.13.0 -racon/1.3.1 -perl/5.26.1 -R/3.4.4
+ml -bowtie2/2.3.5.1 -samtools/1.9 -bam2fastq/1.1.0 -Unicycler/0.4.7 -gcc/4.9.3 -SPAdes/3.13.0 -racon/1.3.1 -perl/5.26.1 -R/3.6.1
