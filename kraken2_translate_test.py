@@ -31,6 +31,7 @@ def get_Taxon_Tree_From_NCBI(taxID):
 				lineage.append(t["ScientificName"])
 			lineage.append(name)
 		#print("%s\t|\t%s\t|\t%s" % (taxid, name, ";".join(lineage)))
+		print(";".join(lineage))
 		return ";".join(lineage)
 		#print(' '.join(line.split()[1:]))
 
