@@ -119,7 +119,7 @@ elif [ "${3}" = "assembled" ]; then
 #	 "${shareScript}/module_changers/perl_5123_to_5221.sh"
 	# Runs the extractor for pulling best taxonomic hit from a kraken2 run
 	echo "8"
-	"${shareScript}/best_hit_from_kraken.sh" "${1}" "${2}" "${3}_BP_data" "${4}"
+	"${shareScript}/best_hit_from_kraken.sh" "${1}" "${2}" "${3}_BP_data" "${4}" "kraken2"
 else
 	echo "Argument combination is incorrect"
 	exit 1
@@ -147,7 +147,7 @@ echo "[:] Creating alternate report for taxonomic extraction"
 # Parses the output for the best taxonomic hit
 echo "[:] Extracting best taxonomic matches"
 # Runs the extractor for pulling best taxonomic hit from a kraken2 run
-"${shareScript}/best_hit_from_kraken.sh" "${1}" "${2}" "${3}" "${4}"
+"${shareScript}/best_hit_from_kraken.sh" "${1}" "${2}" "${3}" "${4}" "kraken2"
 
 ml -kraken/2.0.0 -krona/2.7 -perl/5.22.1 -Python3/3.5.2
 
