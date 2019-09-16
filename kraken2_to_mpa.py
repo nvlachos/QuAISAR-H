@@ -72,7 +72,7 @@ def get_mpa_string_From_NCBI(taxID):
 		#taxid = entry["Rank"]
 		#print(entry)
 		mpa_string=""
-		if "LineageEx" in taxon:
+		if "LineageEx" in entry:
 			for r in entry["LineageEx"]:
 				#print(r)
 				#print(r["Rank"])
