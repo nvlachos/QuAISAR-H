@@ -98,7 +98,7 @@ if [[ -s "${processed}/${2}/${1}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
 	#module load racon/1.3.1;
 	#module load perl/5.22.1
 
-	ml bowtie2/2.3.5.1 samtools/1.9 bam2fastq/1.1.0 Unicycler/0.4.7 gcc/9.2.0 SPAdes/3.13.0 racon/1.3.1 perl/5.26.1
+	ml bowtie2/2.3.5.1 samtools/1.9 bam2fastq/1.1.0 Unicycler/0.4.7 gcc/4.9.3 SPAdes/3.13.0 racon/1.3.1 perl/5.26.1
 
 python3 -V
 
@@ -127,4 +127,4 @@ fi
 #module unload SPAdes/3.11.1;
 #module unload racon/1.2.0;
 
-ml -bowtie2/2.3.5.1 -samtools/1.9 -bam2fastq/1.1.0 -Unicycler/0.4.7 -gcc/9.2.0 -SPAdes/3.13.0 -racon/1.3.1 -perl/5.26.1
+ml -bowtie2/2.3.5.1 -samtools/1.9 -bam2fastq/1.1.0 -Unicycler/0.4.7 -gcc/4.9.3 -SPAdes/3.13.0 -racon/1.3.1 -perl/5.26.1
