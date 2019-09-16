@@ -103,7 +103,7 @@ elif [ "${3}" = "assembled" ]; then
 	# Convert mpa to krona file# Convert mpa to krona file
 	echo "4"
 #	. "${shareScript}/module_changers/perl_5221_to_5123.sh"
-	perl "${shareScript}/Methaplan_to_krona.pl" -p "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.mpa" -k "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.krona"
+	python3 "${shareScript}/Methaplan2krona.py" -p "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.mpa" -k "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.krona"
 	# Create taxonomy list file from kraken2 file
 	echo "5"
 	#module load kraken/0.10.5
