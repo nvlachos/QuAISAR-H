@@ -4,6 +4,7 @@ import fileinput
 import getpass
 import argparse
 from Bio import Entrez
+from time import sleep
 
 # Parse all arguments from command line
 def parseArgs(args=None):
