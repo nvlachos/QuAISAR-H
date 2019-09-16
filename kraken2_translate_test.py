@@ -26,9 +26,10 @@ def get_Taxon_Tree_From_NCBI(taxID):
 		name = taxon["ScientificName"]
 		lineage=["root"]
 		print(taxon)
-		for t in taxon["LineageEx"]:
-			lineage.append(t["ScientificName"])
-		lineage.append(name)
+		if "LineageEx" in taxon:
+			for t in taxon["LineageEx"]:
+				lineage.append(t["ScientificName"])
+			lineage.append(name)
 		#print("%s\t|\t%s\t|\t%s" % (taxid, name, ";".join(lineage)))
 		return ";".join(lineage)
 		#print(' '.join(line.split()[1:]))
