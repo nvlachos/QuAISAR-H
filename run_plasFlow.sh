@@ -100,7 +100,7 @@ if [[ -s "${processed}/${2}/${1}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
 
 	ml bowtie2/2.2.9 samtools/1.4.1 bam2fastq/1.1.0 Unicycler/0.4.4 gcc/5.4 SPAdes/3.13.0 racon/1.3.1 perl/5.22.1
 
-Python -V
+python3 -V
 
 	mkdir ${processed}/${2}/${1}/plasFlow/bowtie2-index/
 	bowtie2-build -f "${processed}/${2}/${1}/plasFlow/${1}_plasFlow_results.tsv_chromosomes.fasta" "${processed}/${2}/${1}/plasFlow/bowtie2-index/bowtie2_${1}_chr"
