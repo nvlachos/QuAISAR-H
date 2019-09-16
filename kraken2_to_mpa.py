@@ -120,6 +120,7 @@ def organize_mpas(input_kraken, output_mpa):
 				#print("Incrementing:", contig_taxID)
 				mpa_counts[contig_taxID]+=1
 		line=kraken.readline().strip()
+		sleep(0.005)
 	kraken.close()
 	mpa_taxon_counts={}
 	#print("mpa_dict length:", len(mpa_dict))
