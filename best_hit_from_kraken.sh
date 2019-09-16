@@ -48,8 +48,9 @@ elif [ -z "$5" ]; then
 fi
 
 # Checks what source flag was set as,indicating that it was from kraken or kraken2
-if [[ "${5}" != "kraken"]] || [[ "${5}" != "kraken2" ]]; then
-	full=""
+if [[ "${5}" != "kraken" ]] || [[ "${5}" != "kraken2" ]]; then
+	echo "Source must be kraken or kraken2, exiting"
+	exit 334
 else
 	source="${5}"
 fi
