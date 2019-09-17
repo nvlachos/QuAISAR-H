@@ -93,7 +93,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR, DB_name):
 		#	print(k, v)
 		#print("1:",csstar_line_sections[0])
 		#print("0:", csstar_line_sections[0], "1:", csstar_line_sections[1],"2:" , csstar_line_sections[2], "3:", csstar_line_sections[3])
-		samples.append([csstar_line_sections[0], csstar_line_sections[1], csstar_line_sections[2], csstar_line_sections[3],  csstar_line_sections[4], csstar_line_sections[5], csstar_line_sections[6], ar_dict])
+		samples.append([csstar_line_sections[0], csstar_line_sections[1], csstar_line_sections[2], csstar_line_sections[3],  csstar_line_sections[4], csstar_line_sections[5], csstar_line_sections[6], csstar_line_sections[7], csstar_line_sections[8], ar_dict])
 		#print("Total AR genes in sample set:", len(all_ARs_in_file)-1)
 		csstar_line = csstar_file.readline().strip()
 	csstar_file.close
@@ -203,22 +203,22 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR, DB_name):
 	#	print ("2:",sample[0])
 	#return
 	for sample in samples:
-		sample_details=[sample[1], sample[0], sample[2], sample[3], sample[4], sample[5], sample[6], DB_name]
+		sample_details=[sample[1], sample[0], sample[2], sample[3], sample[4], sample[5], sample[6], sample[7], sample[8], DB_name]
 		#print("pre:",sample)
 		for gene in all_ar_and_plasmids:
 			status=" "
 			if gene == "|":
 				sample_details.append(gene)
 				continue
-			if sample[7].get(gene):
-				status=sample[7].get(gene)
-			elif sample[8].get(gene):
-				if sample[9].get(gene):
-					status="F:"+sample[8].get(gene)+";P:"+sample[9].get(gene)
+			if sample[9].get(gene):
+				status=sample[9].get(gene)
+			elif sample[10].get(gene):
+				if sample[11].get(gene):
+					status="F:"+sample[10].get(gene)+";P:"+sample[11].get(gene)
 				else:
-					status="F:"+sample[8].get(gene)
-			elif sample[8].get(gene):
-				status="P:"+sample[9].get(gene)
+					status="F:"+sample[10].get(gene)
+			elif sample[10].get(gene):
+				status="P:"+sample[11].get(gene)
 			sample_details.append(status)
 		#print("Post Sample check", sample_details)
 		sample_details=','.join(map(str, sample_details))
