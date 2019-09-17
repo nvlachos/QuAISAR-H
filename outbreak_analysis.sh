@@ -260,9 +260,38 @@ while IFS= read -r line || [ -n "$line" ]; do
 		oar_list="No AR genes discovered"
 	fi
 
-	# Quick fix to rename mlst file after it was decided that all should be _Pasteur
-	if [[ -f "${OUTDATADIR}/MLST/${sample_name}.mlst" ]] && [[ ! -f "${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst" ]]; then
-		mv "${OUTDATADIR}/MLST/${sample_name}.mlst" "${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst"
+
+
+	# Extracts taxonomic info
+	if [[ ! -f "${OUTDATADIR}/${sample_name}.tax" ]]; then
+		"${shareScript}/determine_taxID.sh" "${sample_name}" "${project}"
+	fi
+	tax_file="${OUTDATADIR}/${sample_name}.tax"
+	sed -i '/^$/d' "${OUTDATADIR}/${sample_name}.tax"
+	tax_header=$(head -n1 "${OUTDATADIR}/${sample_name}.tax")
+	taxonomy_source_type=$(echo "${tax_header}" | cut -d'-' -f1)
+	taxonomy_source=$(echo "${tax_header}" | cut -d'-' -f3-)
+	#echo "Test-${tax_header};${taxonomy_source_type};${taxonomy_source}"
+
+	#echo "Looking at ${OUTDATADIR}/${sample_name}.tax"
+	genus=$(tail -n2 "${OUTDATADIR}/${sample_name}.tax" | head -n1 | cut -d'	' -f2)
+	species=$(tail -n1 "${OUTDATADIR}/${sample_name}.tax" | cut -d'	' -f2)
+	taxonomy="${genus} ${species}"
+	if [[ "${taxonomy_source_type}" = "(ANI)" ]]; then
+		confidence_info=$(head -n1 "${taxonomy_source}")
+	else
+		taxonomy_source_type=$(echo "${taxonomy_source_type}" | cut -d'(' -f2 | cut -d')' -f1)
+		confidence_percent=$(echo "${tax_header}" | cut -d'-' -f2)
+		confidence_info="NO_ANI...${taxonomy_source_type}=${confidence_percent}"
+	fi
+
+	# Quick fix to rename mlst filenames after it was decided that all should be _Pasteur
+	if [[ -s "${OUTDATADIR}/MLST/${1}_abaumannii.mlst" ]]; then
+		mv "${OUTDATADIR}/MLST/${1}_abaumannii.mlst" "${OUTDATADIR}/MLST/${1}_Oxford.mlst"
+	fi
+	if [[ -f "${OUTDATADIR}/MLST/${1}_ecoli_2.mlst" ]]; then
+		mv "${OUTDATADIR}/MLST/${1}_Pasteur.mlst" "${OUTDATADIR}/MLST/${1}_Achtman.mlst"
+		mv "${OUTDATADIR}/MLST/${1}_ecoli_2.mlst" "${OUTDATADIR}/MLST/${1}_Pasteur.mlst"
 	fi
 
 	# Pulls MLST type for sample and adds it to the summary file
@@ -304,28 +333,6 @@ while IFS= read -r line || [ -n "$line" ]; do
 	fi
 	echo -e "${project}\t${sample_name}\t${alt_mlst}\t${alt_alleles}" >> ${output_directory}/${4}-alt_mlst_summary.txt
 
-	# Extracts taxonomic info
-	if [[ ! -f "${OUTDATADIR}/${sample_name}.tax" ]]; then
-		"${shareScript}/determine_taxID.sh" "${sample_name}" "${project}"
-	fi
-	tax_file="${OUTDATADIR}/${sample_name}.tax"
-	sed -i '/^$/d' "${OUTDATADIR}/${sample_name}.tax"
-	tax_header=$(head -n1 "${OUTDATADIR}/${sample_name}.tax")
-	taxonomy_source_type=$(echo "${tax_header}" | cut -d'-' -f1)
-	taxonomy_source=$(echo "${tax_header}" | cut -d'-' -f3-)
-	#echo "Test-${tax_header};${taxonomy_source_type};${taxonomy_source}"
-
-	#echo "Looking at ${OUTDATADIR}/${sample_name}.tax"
-	genus=$(tail -n2 "${OUTDATADIR}/${sample_name}.tax" | head -n1 | cut -d'	' -f2)
-	species=$(tail -n1 "${OUTDATADIR}/${sample_name}.tax" | cut -d'	' -f2)
-	taxonomy="${genus} ${species}"
-	if [[ "${taxonomy_source_type}" = "(ANI)" ]]; then
-		confidence_info=$(head -n1 "${taxonomy_source}")
-	else
-		taxonomy_source_type=$(echo "${taxonomy_source_type}" | cut -d'(' -f2 | cut -d')' -f1)
-		confidence_percent=$(echo "${tax_header}" | cut -d'-' -f2)
-		confidence_info="NO_ANI...${taxonomy_source_type}=${confidence_percent}"
-	fi
 #	echo "${ANI}"
 # Print all extracted info to primary file
 	echo -e "${project}\t${sample_name}\t${taxonomy}\t${taxonomy_source_type}\t${confidence_info}\t${mlst}\t${alleles}\t${alt_mlst}\t${alt_alleles}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_full.txt
