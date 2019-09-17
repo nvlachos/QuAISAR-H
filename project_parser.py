@@ -6,98 +6,107 @@ import argparse
 # Parse all arguments from command line
 def parseArgs(args=None):
 	parser = argparse.ArgumentParser(description='Script to consolidate all info into a single report for outbreak analysis')
-	parser.add_argument('-c', '--csstar', required=True, help='input csstar filename')
+	parser.add_argument('-c', '--csstar', required=True, help='input summary filename')
 	parser.add_argument('-p', '--plasmid', required=True, help='input plasmid filename')
-	parser.add_argument('-s', '--srst2', required=True, help='input srst2 filename')
+	#parser.add_argument('-s', '--srst2', required=True, help='input srst2 filename')
 	parser.add_argument('-o', '--output', required=True, help='output csv filename')
 	parser.add_argument('-d', '--database', required=True, help='database file used in AR discovery')
 	return parser.parse_args()
 
 
 # main function that sorts and formats all AR genes found using csstar and srst2 that have already been filtered for % identity and % length
-def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR, DB_name):
+def do_AR(input_summary_AR, input_plas, output_file, DB_name):
 	all_ARs_in_file=[]
 	samples=[]
-	csstar_file=open(input_csstar_AR,'r')
-	csstar_line = csstar_file.readline().strip()
+	input_summary=open(input_summary_AR,'r')
+	summary_line = input_summary.readline().strip()
 	counter=0
 	#print("Start")
-	while csstar_line != '':
-		#print(counter, csstar_line)
+	while summary_line != '':
+		#print(counter, summary_line)
 		#print("Start csstar loop")
-		csstar_line_sections=csstar_line.split("	")
-		ar_list=csstar_line_sections[9].split(",")
-		print(ar_list)
+		summary_line_sections=summary_line.split("	")
+		csstar_list=summary_line_sections[9].split(",")
+		print(csstar_list)
 		ar_dict={}
-		for ar_gene in ar_list:
-			gene_name=ar_gene.split("[")[0]
+		for csstar_gene in csstar_list:
+			gene_name=csstar_gene.split("[")[0]
 			if gene_name == "No AR genes discovered":
 				gene_stats="[0/0:#-]C"
 			else:
-				gene_stats="["+ar_gene.split("[")[1]+"C"
+				gene_stats="["+csstar_gene.split("[")[1]+"C"
 			ar_dict[gene_name]=gene_stats
 			if gene_name not in all_ARs_in_file:
 				all_ARs_in_file.append(gene_name)
 				#print("Adding", gene_name)
-		srst2_file=open(input_srst2_AR,'r')
-		srst2_line=srst2_file.readline().strip()
-		counter=0
-		while srst2_line != '':
-			#print("Start srst2 loop")
-			spot_count=0
-			#for k, v in ar_dict.items():
-			#	print(spot_count)
-			#	print(k, v)
-			#	spot_count+=1
-			#print("Checking", srst2_line)
-			srst2_line_sections=srst2_line.split("	")
-			if csstar_line_sections[0] == srst2_line_sections[0] and csstar_line_sections[1] == srst2_line_sections[1]:
-				#print("Found",  csstar_line_sections[1], "in srst2 summary file")
-				if srst2_line_sections[2] == "No AR genes discovered":
-					gene_name="No AR genes discovered"
-					gene_stats="[0/0]S"
-					#print("Looking up", gene_name, "in csstar dic")
-					if ar_dict.get(gene_name):
-						ar_dict[gene_name]=""+ar_dict.get(gene_name)+":"+gene_stats
-					else:
-						print("New AR-less isolate found in srst2")
-						ar_dict[gene_name]=gene_stats
-					if gene_name not in all_ARs_in_file:
-						all_ARs_in_file.append(gene_name)
+
+		srst2_list=summary_line_sections[10].split(",")
+		for srst2_gene in srst2_list:
+			if srst2_line_sections[2] == "No AR genes discovered":
+				gene_name="No AR genes discovered"
+				gene_stats="[0/0]S"
+				#print("Looking up", gene_name, "in csstar dic")
+				if ar_dict.get(gene_name):
+					ar_dict[gene_name]=""+ar_dict.get(gene_name)+":"+gene_stats
 				else:
-					srst2_ar_list=srst2_line_sections[2].split(",")
-					for srst2_ar_gene in srst2_ar_list:
-						gene_name=srst2_ar_gene.split("[")[0]
-						gene_stats="["+srst2_ar_gene.split("[")[1]+"S"
-						#print("Looking up", gene_name, "in csstar dic")
-						if ar_dict.get(gene_name):
-							if ar_dict.get(gene_name) != "No Other AR genes":
-								#print("Found", gene_name, "in both outputs")
-								#print("New value: "+ar_dict.get(gene_name)+":"+gene_stats)
-								ar_dict[gene_name]=""+ar_dict.get(gene_name)+":"+gene_stats
-							#else:
-								#print("No AR found in csstar for", gene_name)
-							#	:
-						else:
-							#print("New gene", gene_name,"found in srst2")
-							ar_dict[gene_name]=gene_stats
-						if gene_name not in all_ARs_in_file:
-							all_ARs_in_file.append(gene_name)
-				break
-			#else:
-			#	#print(csstar_line_sections[1], "C does not equal S", srst2_line_sections[1])
-			#	:
-			srst2_line=srst2_file.readline().strip()
-			counter+=1
-		srst2_file.close()
-		#for k, v in ar_dict.items():
-		#	print(k, v)
-		#print("1:",csstar_line_sections[0])
-		#print("0:", csstar_line_sections[0], "1:", csstar_line_sections[1],"2:" , csstar_line_sections[2], "3:", csstar_line_sections[3])
-		samples.append([csstar_line_sections[0], csstar_line_sections[1], csstar_line_sections[2], csstar_line_sections[3],  csstar_line_sections[4], csstar_line_sections[5], csstar_line_sections[6], csstar_line_sections[7], csstar_line_sections[8], ar_dict])
+					print("New AR-less isolate found in srst2")
+					ar_dict[gene_name]=gene_stats
+				if gene_name not in all_ARs_in_file:
+					all_ARs_in_file.append(gene_name)
+			else:
+				gene_name=srst2_gene.split("[")[0]
+				gene_stats="["+srst2_gene.split("[")[1]+"S"
+				#print("Looking up", gene_name, "in csstar dic")
+				if ar_dict.get(gene_name):
+					if ar_dict.get(gene_name) != "No Other AR genes":
+						#print("Found", gene_name, "in both outputs")
+						#print("New value: "+ar_dict.get(gene_name)+":"+gene_stats)
+						ar_dict[gene_name]=""+ar_dict.get(gene_name)+":"+gene_stats
+					#else:
+						#print("No AR found in csstar for", gene_name)
+					#	:
+				else:
+					#print("New gene", gene_name,"found in srst2")
+					ar_dict[gene_name]=gene_stats
+				if gene_name not in all_ARs_in_file:
+					all_ARs_in_file.append(gene_name)
+					#break
+
+		GAMA_list=summary_line_sections[11].split(",")
+		for GAMA_gene in GAMA_list:
+			if GAMA_gene[2] == "No AR genes discovered":
+				gene_name="No AR genes discovered"
+				gene_stats="[0/0]G"
+				#print("Looking up", gene_name, "in csstar dic")
+				if ar_dict.get(gene_name):
+					ar_dict[gene_name]=""+ar_dict.get(gene_name)+":"+gene_stats
+				else:
+					print("New AR-less isolate found in GAMA")
+					ar_dict[gene_name]=gene_stats
+				if gene_name not in all_ARs_in_file:
+					all_ARs_in_file.append(gene_name)
+			else:
+				gene_name=GAMA_gene.split("[")[0]
+				gene_stats="["+GAMA_gene.split("[")[1]+"G"
+				#print("Looking up", gene_name, "in csstar dic")
+				if ar_dict.get(gene_name):
+					if ar_dict.get(gene_name) != "No Other AR genes":
+						#print("Found", gene_name, "in both outputs")
+						#print("New value: "+ar_dict.get(gene_name)+":"+gene_stats)
+						ar_dict[gene_name]=""+ar_dict.get(gene_name)+":"+gene_stats
+					#else:
+						#print("No AR found in csstar for", gene_name)
+					#	:
+				else:
+					#print("New gene", gene_name,"found in srst2")
+					ar_dict[gene_name]=gene_stats
+				if gene_name not in all_ARs_in_file:
+					all_ARs_in_file.append(gene_name)
+			#break
+		samples.append([summary_line_sections[0], summary_line_sections[1], summary_line_sections[2], summary_line_sections[3],  summary_line_sections[4], summary_line_sections[5], summary_line_sections[6], summary_line_sections[7], summary_line_sections[8], ar_dict])
 		#print("Total AR genes in sample set:", len(all_ARs_in_file)-1)
-		csstar_line = csstar_file.readline().strip()
-	csstar_file.close
+		summary_line = input_summary.readline().strip()
+	input_summary.close
 	all_ARs_in_file.sort()
 	if len(all_ARs_in_file) == 0:
 		print("\n")
@@ -231,4 +240,4 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR, DB_name):
 
 print("Parsing project AR files ...\n")
 args = parseArgs()
-do_AR(args.csstar, args.plasmid, args.output, args.srst2, args.database)
+do_AR(args.csstar, args.plasmid, args.output, args.database)

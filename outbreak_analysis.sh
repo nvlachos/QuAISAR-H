@@ -289,41 +289,49 @@ while IFS= read -r line; do
 	fi
 	#echo "${ARDB_full}"
 	# Extracts all AR genes from normal csstar output file and creates a lits of all genes that pass the filtering steps
-	while IFS= read -r line; do
-		# exit if no genes were found for the sample
-		if [[ -z "${line}" ]]; then
-			break
-		elif [[ "${line}" == *"DB	Resistance	Gene_Family	Gene	Contig	Start"* ]]; then
-			continue
-		fi
-		IFS='	' read -r -a ar_line <<< "$line"
-		percent_BP_ID=$(echo "${ar_line[11]}" | awk '{ printf "%d", ($1*100) }' )
-		percent_codon_ID=$(echo "${ar_line[12]}" | awk '{ printf "%d", ($1*100) }' )
-		percent_length=$(echo "${ar_line[13]}" | awk '{ printf "%d", ($1*100) }' )
-		conferred=$(echo "${ar_line[1]}" | rev | cut -d'_' -f2- | rev)
-		contig_number=$(echo "${ar_line[4]}" | rev | cut -d'_' -f3 | rev)
-		gene="${ar_line[3]}"
-		# Ensure that the gene passes % identity and % length threhsolds for reporting
-		if [[ ${percent_length} -ge ${project_parser_Percent_length} ]] && [[ ${percent_BP_ID} -ge ${project_parser_Percent_identity} ]]; then
-			if [[ -z "${GAMA_list}" ]]; then
-			#	echo "First GAMA: ${gene}"
-				GAMA_list="${gene}(${conferred})[${percent_BP_ID}/${percent_codon_ID}/${percent_length}:#${contig_number}]"
-				echo -e "${project}\t${sample_name}\t${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]" >> ${output_directory}/${4}-GAMA_summary.txt
-			else
-				if [[ ${GAMA_list} == *"${gene}"* ]]; then
-				#	echo "${gene} already found in ${GAMA_list}"
-					:
-				else
-				#	echo "${gene} not found in ${GAMA_list}...adding it"
-					GAMA_list="${GAMA_list},${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
-					echo -e "${project}\t${sample_name}\t${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]" >> ${output_directory}/${4}-GAMA_summary.txt
-				fi
+	if [[ -f ${GARDB_full} ]]; then
+		while IFS= read -r line; do
+			# exit if no genes were found for the sample
+			if [[ -z "${line}" ]]; then
+				break
+			elif [[ "${line}" == *"DB	Resistance	Gene_Family	Gene	Contig	Start"* ]]; then
+				continue
 			fi
-		# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
+			IFS='	' read -r -a ar_line <<< "$line"
+			percent_BP_ID=$(echo "${ar_line[11]}" | awk '{ printf "%d", ($1*100) }' )
+			percent_codon_ID=$(echo "${ar_line[12]}" | awk '{ printf "%d", ($1*100) }' )
+			percent_length=$(echo "${ar_line[13]}" | awk '{ printf "%d", ($1*100) }' )
+			conferred=$(echo "${ar_line[1]}" | rev | cut -d'_' -f2- | rev)
+			contig_number=$(echo "${ar_line[4]}" | rev | cut -d'_' -f3 | rev)
+			gene="${ar_line[3]}"
+			# Ensure that the gene passes % identity and % length threhsolds for reporting
+			if [[ ${percent_length} -ge ${project_parser_Percent_length} ]] && [[ ${percent_BP_ID} -ge ${project_parser_Percent_identity} ]]; then
+				if [[ -z "${GAMA_list}" ]]; then
+				#	echo "First GAMA: ${gene}"
+					GAMA_list="${gene}(${conferred})[${percent_BP_ID}/${percent_codon_ID}/${percent_length}:#${contig_number}]"
+				else
+					if [[ ${GAMA_list} == *"${gene}"* ]]; then
+					#	echo "${gene} already found in ${GAMA_list}"
+						:
+					else
+					#	echo "${gene} not found in ${GAMA_list}...adding it"
+						GAMA_list="${GAMA_list},${gene}(${conferred})[${percent_BP_ID}/${percent_codon_ID}/${percent_length}:#${contig_number}]"
+					fi
+				fi
+			# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
+			else
+				echo -e "${project}\t${sample_name}\tfull_assembly\t${line}" >> ${output_directory}/${4}-GAMA_rejects.txt
+			fi
+		done < ${GARDB_full}
+		if [[ -z "${GAMA_list}" ]]; then
+			echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-GAMA_summary.txt
 		else
-			echo -e "${project}\t${sample_name}\tfull_assembly\t${line}" >> ${output_directory}/${4}-GAMA_rejects.txt
+			echo "${project}	${sample_name}	${srst2_results}" >> ${output_directory}/${4}-GAMA_summary.txt
 		fi
-	done < ${GARDB_full}
+	else
+		echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-GAMA_summary.txt
+	fi
+
 	# Changes list names if empty
 	if [[ -z "${GAMA_list}" ]]; then
 		GAMA_list="No AR genes discovered"
