@@ -279,6 +279,7 @@ while IFS= read -r line; do
 
 	GAMA_list=""
 	# Extracts all AR genes from normal csstar output file and creates a lits of all genes that pass the filtering steps
+ECHO "^^^^^^^^^^^^^^^^^^^ "${OUTDATADIR}/GAMA/${sample_name}_${ResGANNCBI_srst2_filename}.GAMA""
 	if [[ -f "${OUTDATADIR}/GAMA/${sample_name}_${ResGANNCBI_srst2_filename}.GAMA" ]]; then
 		while IFS= read -r line; do
 			# exit if no genes were found for the sample
