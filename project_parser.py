@@ -27,6 +27,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR, DB_name):
 		#print("Start csstar loop")
 		csstar_line_sections=csstar_line.split("	")
 		ar_list=csstar_line_sections[9].split(",")
+		print(ar_list)
 		ar_dict={}
 		for ar_gene in ar_list:
 			gene_name=ar_gene.split("[")[0]
@@ -191,7 +192,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR, DB_name):
 	#all_AR_to_write.insert(0,",")
 	#all_AR_to_write.insert(0,",")
 	#all_AR_to_write=','.join(map(str, all_AR_to_write))
-	header="id, Project__autocolour, Species__autocolour, Species_determinant__autocolour, Species_Support__autocolour , MLST_Pasteur__autocolour, ALT_MLST__autocolour, AR_Database__autocolour, "
+	header="id, Project__autocolour, Species__autocolour, Species_determinant__autocolour, Species_Support__autocolour , MLST_Pasteur__autocolour, MLST_Pasteur_alleles__autocolour, ALT_MLST__autocolour, ALT_MLST_alleles__autocolour, AR_Database__autocolour, "
 	for thing in all_ar_and_plasmids:
 		header = header + " " + thing + "__autocolour,"
 	header = header[:-1]
