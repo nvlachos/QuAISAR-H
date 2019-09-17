@@ -286,6 +286,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 	fi
 
 	# Quick fix to rename mlst filenames after it was decided that all should be _Pasteur
+	echo -e "\n\n\n\n\n\n\n\n Checking to move ${OUTDATADIR}/MLST/${1}_abaumannii.mlst \n\n\n\n\n\n\n\n"
 	if [[ -f "${OUTDATADIR}/MLST/${1}_abaumannii.mlst" ]]; then
 		mv "${OUTDATADIR}/MLST/${1}_abaumannii.mlst" "${OUTDATADIR}/MLST/${1}_Oxford.mlst"
 	fi
@@ -298,7 +299,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 	if [[ -f "${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst" ]]; then
 		mlst=$(head -n 1 ${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst)
 		alleles=$(echo "${mlst}" | cut -d'	' -f4-)
-		alleles=${alleles/	/	}
+		alleles=${alleles/	/.}
 		mlst=$(echo "${mlst}" | cut -d'	' -f3)
 		if [[ "${mlst}" == "SUB" ]] || [[ "${mlst}" == "AU" ]]; then
 			:
@@ -322,7 +323,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 	if [[ ! -z "${alt_mlst_file}" ]]; then
 		alt_mlst=$(tail -n 1 "${alt_mlst_file}")
 		alt_alleles=$(echo "${alt_mlst}" | cut -d'	' -f4-)
-		alt_alleles=${alt_alleles/	/	}
+		alt_alleles=${alt_alleles/	/.}
 		alt_mlst=$(echo "${alt_mlst}" | cut -d'	' -f3)
 		if [[ "${alt_mlst}" == "SUB" ]] || [[ "${alt_mlst}" == "AU" ]]; then
 			:
