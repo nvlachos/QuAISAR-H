@@ -297,8 +297,8 @@ while IFS= read -r line || [ -n "$line" ]; do
 	# Pulls MLST type for sample and adds it to the summary file
 	if [[ -f "${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst" ]]; then
 		mlst=$(head -n 1 ${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst)
-		mlst=$(echo "${mlst}" | cut -d'	' -f3)
 		alleles=$(echo "${mlst}" | cut -d'	' -f4-)
+		mlst=$(echo "${mlst}" | cut -d'	' -f3)
 		if [[ "${mlst}" == "SUB" ]] || [[ "${mlst}" == "AU" ]]; then
 			:
 		else
@@ -320,8 +320,8 @@ while IFS= read -r line || [ -n "$line" ]; do
 	fi
 	if [[ ! -z "${alt_mlst_file}" ]]; then
 		alt_mlst=$(tail -n 1 "${alt_mlst_file}")
-		alt_mlst=$(echo "${alt_mlst}" | cut -d'	' -f3)
 		alt_alleles=$(echo "${alt_mlst}" | cut -d'	' -f4-)
+		alt_mlst=$(echo "${alt_mlst}" | cut -d'	' -f3)
 		if [[ "${alt_mlst}" == "SUB" ]] || [[ "${alt_mlst}" == "AU" ]]; then
 			:
 		else
