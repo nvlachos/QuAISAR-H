@@ -301,14 +301,14 @@ while IFS= read -r line; do
 			if [[ ${percent_length} -ge ${project_parser_Percent_length} ]] && [[ ${percent_BP_ID} -ge ${project_parser_Percent_identity} ]]; then
 				if [[ -z "${GAMA_list}" ]]; then
 				#	echo "First GAMA: ${gene}"
-					GAMA_list="${gene}(${conferred})[${percent_BP_ID}/${percent_codon_ID}/${percent_length}:#${contig_number}]"
+					GAMA_list="${gene,,}(${conferred})[${percent_BP_ID}/${percent_codon_ID}/${percent_length}:#${contig_number}]"
 				else
 					if [[ ${GAMA_list} == *"${gene}"* ]]; then
 					#	echo "${gene} already found in ${GAMA_list}"
 						:
 					else
 					#	echo "${gene} not found in ${GAMA_list}...adding it"
-						GAMA_list="${GAMA_list},${gene}(${conferred})[${percent_BP_ID}/${percent_codon_ID}/${percent_length}:#${contig_number}]"
+						GAMA_list="${GAMA_list},${gene,,}(${conferred})[${percent_BP_ID}/${percent_codon_ID}/${percent_length}:#${contig_number}]"
 					fi
 				fi
 			# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
