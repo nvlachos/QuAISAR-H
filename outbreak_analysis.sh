@@ -300,6 +300,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 		mlst=$(head -n 1 ${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst)
 		alleles=$(echo "${mlst}" | cut -d'	' -f4-)
 		alleles=${alleles/	/.}
+		alleles=${alleles/ /.}
 		mlst=$(echo "${mlst}" | cut -d'	' -f3)
 		if [[ "${mlst}" == "SUB" ]] || [[ "${mlst}" == "AU" ]]; then
 			:
@@ -324,6 +325,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 		alt_mlst=$(tail -n 1 "${alt_mlst_file}")
 		alt_alleles=$(echo "${alt_mlst}" | cut -d'	' -f4-)
 		alt_alleles=${alt_alleles/	/.}
+		alt_alleles=${alt_alleles/ /.}
 		alt_mlst=$(echo "${alt_mlst}" | cut -d'	' -f3)
 		if [[ "${alt_mlst}" == "SUB" ]] || [[ "${alt_mlst}" == "AU" ]]; then
 			:
