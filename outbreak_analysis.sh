@@ -286,7 +286,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 	fi
 
 	# Quick fix to rename mlst filenames after it was decided that all should be _Pasteur
-	if [[ -s "${OUTDATADIR}/MLST/${1}_abaumannii.mlst" ]]; then
+	if [[ -f "${OUTDATADIR}/MLST/${1}_abaumannii.mlst" ]]; then
 		mv "${OUTDATADIR}/MLST/${1}_abaumannii.mlst" "${OUTDATADIR}/MLST/${1}_Oxford.mlst"
 	fi
 	if [[ -f "${OUTDATADIR}/MLST/${1}_ecoli_2.mlst" ]]; then
