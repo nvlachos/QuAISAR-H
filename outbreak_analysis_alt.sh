@@ -500,15 +500,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 done < ${1}
 
 # Calls script that sorts and formats all isolates info into a matrix for easy viewing
-python3 "${shareScript}/project_parser.py" -c "${output_directory}/${4}-csstar_summary_full.txt" -p "${output_directory}/${4}-plasmid_summary.txt" -o "${output_directory}/${4}_AR_plasmid_report.csv" -s "${output_directory}/${4}-srst2.txt" -d "${Alt_db}"
-
-ResGANNCBI_date=$(echo "${Alt_db}" | cut -d'_' -f2)
-echo "${ResGANNCBI_date}"
-year_AR_made="${ResGANNCBI_date:0:4}"
-month_AR_made="${ResGANNCBI_date:4:2}"
-day_AR_made="${ResGANNCBI_date:6:2}"
-
-#echo -e "\n\tResGANNCBI AR Database created on:\t${month_AR_made}/${day_AR_made}/${year_AR_made}" >> "${output_directory}/${4}_AR_plasmid_report.csv"
+python3 "${shareScript}/project_parser.py" -c "${output_directory}/${4}-csstar_summary_full.txt" -p "${output_directory}/${4}-plasmid_summary.txt" -o "${output_directory}/${4}_AR_plasmid_report.csv" -d "${Alt_db}"
 
 submitter=$(whoami)
 global_end_time=$(date "+%m-%d-%Y @ %Hh_%Mm_%Ss")

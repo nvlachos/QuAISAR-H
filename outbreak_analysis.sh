@@ -218,37 +218,31 @@ if [[ "${run_GAMA}" = "true" ]]; then
 	qsub -sync y ${shareScript}/abl_mass_qsub_GAMA.sh "${output_directory}/${4}_GAMA_todo.txt" 25 "${mass_qsub_folder}" "${clobberness}"
 fi
 
-echo $(date)
+date
 sleep 10
 
 # # Loop through and extracts and formats AR genes found in all isolates, as well as the primary MLST type and plasmid replicons. Each are output to separate files. Any AR genes that do not meet the length or % identity are copied to the rejects file.
-while IFS= read -r line || [ -n "$line" ]; do
+while IFS= read -r line; do
  	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
  	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
  	OUTDATADIR="${processed}/${project}/${sample_name}"
-	sample_index=0
-	oar_list=""
+	csstar_list=""
 	# Looks at all the genes found for a sample
-	#ls ${OUTDATADIR}/c-sstar/
 	#echo "looking for ${OUTDATADIR}/c-sstar/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt"
 	if [[ -f "${OUTDATADIR}/c-sstar/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt" ]]; then
 		ARDB_full="${OUTDATADIR}/c-sstar/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt"
 	else
 		echo "IT STILL thinks it needs to run ${sample_name} through normal csstar"
-		#${shareScript}/run_c-sstar_on_single.sh "${sample_name}" "${gapping}" "${sim}" "${project}"
-		#ARDB_full="${OUTDATADIR}/c-sstar/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt"
 		exit
 	fi
 	#echo "${ARDB_full}"
 	# Extracts all AR genes from normal csstar output file and creates a lits of all genes that pass the filtering steps
-	while IFS= read -r line || [ -n "$line" ]; do
+	while IFS= read -r line; do
 		# exit if no genes were found for the sample
 		if [[ -z "${line}" ]] || [[ "${line}" == *"No anti-microbial genes were found"* ]]; then
 			break
 		fi
 		IFS='	' read -r -a ar_line <<< "$line"
-		length_1="${ar_line[7]}"
-		length_2="${ar_line[8]}"
 		percent_ID="${ar_line[6]}"
 		percent_length="${ar_line[9]}"
 		conferred=$(echo "${ar_line[1]}" | rev | cut -d'_' -f2- | rev)
@@ -256,17 +250,17 @@ while IFS= read -r line || [ -n "$line" ]; do
 		gene="${ar_line[4]}"
 		# Ensure that the gene passes % identity and % length threhsolds for reporting
 		if [[ ${percent_length} -ge ${project_parser_Percent_length} ]] && [[ ${percent_ID} -ge ${project_parser_Percent_identity} ]] ; then
-			if [[ -z "${oar_list}" ]]; then
-			#	echo "First oar: ${gene}"
-				oar_list="${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
+			if [[ -z "${csstar_list}" ]]; then
+			#	echo "First csstar: ${gene}"
+				csstar_list="${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
 				echo -e "${project}\t${sample_name}\t${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]" >> ${output_directory}/${4}-csstar_summary.txt
 			else
-				if [[ ${oar_list} == *"${gene}"* ]]; then
-				#	echo "${gene} already found in ${oar_list}"
+				if [[ ${csstar_list} == *"${gene}"* ]]; then
+				#	echo "${gene} already found in ${csstar_list}"
 					:
 				else
-				#	echo "${gene} not found in ${oar_list}...adding it"
-					oar_list="${oar_list},${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
+				#	echo "${gene} not found in ${csstar_list}...adding it"
+					csstar_list="${csstar_list},${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
 					echo -e "${project}\t${sample_name}\t${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]" >> ${output_directory}/${4}-csstar_summary.txt
 				fi
 			fi
@@ -276,70 +270,65 @@ while IFS= read -r line || [ -n "$line" ]; do
 		fi
 	done < ${ARDB_full}
 	# Changes list names if empty
-	if [[ -z "${oar_list}" ]]; then
-		oar_list="No AR genes discovered"
+	if [[ -z "${csstar_list}" ]]; then
+		csstar_list="No AR genes discovered"
 		echo -e "${project}\t${sample_name}\tNo AR genes discovered" >> ${output_directory}/${4}-csstar_summary.txt
 	fi
 
+	GAMA_list=""
+	# Looks at all the genes found for a sample
+	#ls ${OUTDATADIR}/c-sstar/
+	#echo "looking for ${OUTDATADIR}/c-sstar/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt"
+	if [[ -f "${OUTDATADIR}/GAMA/${sample_name}_${ResGANNCBI_srst2_filename}.GAMA" ]]; then
+		GARDB_full="${OUTDATADIR}/GAMA/${sample_name}_${ResGANNCBI_srst2_filename}.GAMA"
+	else
+		echo "IT STILL thinks it needs to run ${sample_name} through normal GAMA"
+		#${shareScript}/run_c-sstar_on_single.sh "${sample_name}" "${gapping}" "${sim}" "${project}"
+		#ARDB_full="${OUTDATADIR}/c-sstar/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt"
+		exit
+	fi
+	#echo "${ARDB_full}"
+	# Extracts all AR genes from normal csstar output file and creates a lits of all genes that pass the filtering steps
 	while IFS= read -r line; do
-	 	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
-	 	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
-	 	OUTDATADIR="${processed}/${project}/${sample_name}"
-		sample_index=0
-		GAMAAR_list=""
-		# Looks at all the genes found for a sample
-		#ls ${OUTDATADIR}/c-sstar/
-		#echo "looking for ${OUTDATADIR}/c-sstar/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt"
-		if [[ -f "${OUTDATADIR}/GAMA/${sample_name}_${ResGANNCBI_srst2_filename}.GAMA" ]]; then
-			GARDB_full="${OUTDATADIR}/GAMA/${sample_name}_${ResGANNCBI_srst2_filename}.GAMA"
-		else
-			echo "IT STILL thinks it needs to run ${sample_name} through normal GAMA"
-			#${shareScript}/run_c-sstar_on_single.sh "${sample_name}" "${gapping}" "${sim}" "${project}"
-			#ARDB_full="${OUTDATADIR}/c-sstar/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt"
-			exit
+		# exit if no genes were found for the sample
+		if [[ -z "${line}" ]]; then
+			break
+		elif [[ "${line}" == *"DB	Resistance	Gene_Family	Gene	Contig	Start"* ]]; then
+			continue
 		fi
-		#echo "${ARDB_full}"
-		# Extracts all AR genes from normal csstar output file and creates a lits of all genes that pass the filtering steps
-		while IFS= read -r line; do
-			# exit if no genes were found for the sample
-			if [[ -z "${line}" ]]; then
-				break
-			elif [[ "${line}" == *"DB	Resistance	Gene_Family	Gene	Contig	Start"* ]]; then
-				continue
-			fi
-			IFS='	' read -r -a ar_line <<< "$line"
-			percent_BP_ID=$(echo "${ar_line[11]}" | awk '{ printf "%d", ($1*100) }' )
-			percent_codon_ID=$(echo "${ar_line[12]}" | awk '{ printf "%d", ($1*100) }' )
-			percent_length=$(echo "${ar_line[13]}" | awk '{ printf "%d", ($1*100) }' )
-			conferred=$(echo "${ar_line[1]}" | rev | cut -d'_' -f2- | rev)
-			contig_number=$(echo "${ar_line[4]}" | rev | cut -d'_' -f3 | rev)
-			gene="${ar_line[3]}"
-			# Ensure that the gene passes % identity and % length threhsolds for reporting
-			if [[ ${percent_length} -ge ${project_parser_Percent_length} ]] && [[ ${percent_BP_ID} -ge ${project_parser_Percent_identity} ]]; then
-				if [[ -z "${oar_list}" ]]; then
-				#	echo "First oar: ${gene}"
-					GAMAAR_list="${gene}(${conferred})[${percent_BP_ID}/${percent_codon_ID}/${percent_length}:#${contig_number}]"
-					echo -e "${project}\t${sample_name}\t${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]" >> ${output_directory}/${4}-GAMA_summary.txt
-				else
-					if [[ ${GAMAAR_list} == *"${gene}"* ]]; then
-					#	echo "${gene} already found in ${oar_list}"
-						:
-					else
-					#	echo "${gene} not found in ${oar_list}...adding it"
-						GAMAAR_list="${GAMAAR_list},${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
-						echo -e "${project}\t${sample_name}\t${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]" >> ${output_directory}/${4}-GAMA_summary.txt
-					fi
-				fi
-			# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
+		IFS='	' read -r -a ar_line <<< "$line"
+		percent_BP_ID=$(echo "${ar_line[11]}" | awk '{ printf "%d", ($1*100) }' )
+		percent_codon_ID=$(echo "${ar_line[12]}" | awk '{ printf "%d", ($1*100) }' )
+		percent_length=$(echo "${ar_line[13]}" | awk '{ printf "%d", ($1*100) }' )
+		conferred=$(echo "${ar_line[1]}" | rev | cut -d'_' -f2- | rev)
+		contig_number=$(echo "${ar_line[4]}" | rev | cut -d'_' -f3 | rev)
+		gene="${ar_line[3]}"
+		# Ensure that the gene passes % identity and % length threhsolds for reporting
+		if [[ ${percent_length} -ge ${project_parser_Percent_length} ]] && [[ ${percent_BP_ID} -ge ${project_parser_Percent_identity} ]]; then
+			if [[ -z "${GAMA_list}" ]]; then
+			#	echo "First GAMA: ${gene}"
+				GAMA_list="${gene}(${conferred})[${percent_BP_ID}/${percent_codon_ID}/${percent_length}:#${contig_number}]"
+				echo -e "${project}\t${sample_name}\t${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]" >> ${output_directory}/${4}-GAMA_summary.txt
 			else
-				echo -e "${project}\t${sample_name}\tfull_assembly\t${line}" >> ${output_directory}/${4}-GAMA_rejects.txt
+				if [[ ${GAMA_list} == *"${gene}"* ]]; then
+				#	echo "${gene} already found in ${GAMA_list}"
+					:
+				else
+				#	echo "${gene} not found in ${GAMA_list}...adding it"
+					GAMA_list="${GAMA_list},${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
+					echo -e "${project}\t${sample_name}\t${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]" >> ${output_directory}/${4}-GAMA_summary.txt
+				fi
 			fi
-		done < ${GARDB_full}
-		# Changes list names if empty
-		if [[ -z "${GAMAAR_list}" ]]; then
-			GAMAAR_list="No AR genes discovered"
-			echo -e "${project}\t${sample_name}\tNo AR genes discovered" >> ${output_directory}/${4}-GAMA_summary.txt
+		# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
+		else
+			echo -e "${project}\t${sample_name}\tfull_assembly\t${line}" >> ${output_directory}/${4}-GAMA_rejects.txt
 		fi
+	done < ${GARDB_full}
+	# Changes list names if empty
+	if [[ -z "${GAMA_list}" ]]; then
+		GAMA_list="No AR genes discovered"
+		echo -e "${project}\t${sample_name}\tNo AR genes discovered" >> ${output_directory}/${4}-GAMA_summary.txt
+	fi
 
 		# Adding in srst2 output in a similar fashion as to how the csstar genes are output to the file.
 		if [[ -s "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${ResGANNCBI_srst2_filename}_srst2__results.txt" ]]; then
@@ -354,7 +343,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 					continue
 				fi
 				if [[ -z "${confers}" ]]; then
-					if [[ ! -z ${gene} ]]; then
+					if [[ -n ${gene} ]]; then
 						if [[ "${gene,,}" == "agly_flqn" ]]; then
 							confers="aminoglycoside_and_fluoroquinolone_resistance"
 						elif [[ "${gene,,}" == "tetracenomycinc" ]]; then
@@ -477,11 +466,10 @@ while IFS= read -r line || [ -n "$line" ]; do
 	else
 		alt_mlst_file=""
 	fi
-	if [[ ! -z "${alt_mlst_file}" ]]; then
+	if [[ -n "${alt_mlst_file}" ]]; then
 		alt_mlst=$(tail -n 1 "${alt_mlst_file}")
 		alt_alleles=$(echo "${alt_mlst}" | cut -d'	' -f4-)
 		alt_alleles=${alt_alleles//	/.}
-		#alt_alleles=${alt_alleles/ /.}
 		alt_mlst=$(echo "${alt_mlst}" | cut -d'	' -f3)
 		if [[ "${alt_mlst}" == "SUB" ]] || [[ "${alt_mlst}" == "AU" ]]; then
 			:
@@ -494,9 +482,8 @@ while IFS= read -r line || [ -n "$line" ]; do
 	fi
 	echo -e "${project}\t${sample_name}\t${alt_mlst}\t${alt_alleles}" >> ${output_directory}/${4}-alt_mlst_summary.txt
 
-#	echo "${ANI}"
 # Print all extracted info to primary file
-	echo -e "${project}\t${sample_name}\t${taxonomy}\t${taxonomy_source_type}\t${confidence_info}\t${mlst}\t${alleles}\t${alt_mlst}\t${alt_alleles}\t${oar_list}\t${srst2_results}\t${GAMAAR_list}" >> ${output_directory}/${4}-csstar_summary_full.txt
+	echo -e "${project}\t${sample_name}\t${taxonomy}\t${taxonomy_source_type}\t${confidence_info}\t${mlst}\t${alleles}\t${alt_mlst}\t${alt_alleles}\t${csstar_list}\t${srst2_results}\t${GAMA_list}" >> ${output_directory}/${4}-csstar_summary_full.txt
 
 
 
@@ -506,7 +493,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 	# # Parse through plasmid Assembly, although it is not used in the final report
 	# if [[ "${has_plasmidAssembly}" = "true" ]]; then
 	# 	# Repeat the c-sstar output organization of the plasmidAssembly
-	# 	oar_list=""
+	# 	pla-ar_list=""
 	# 	# Looks at all the genes found on the plasmid assembly for a sample
 	# 	if [[ -f "${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt" ]]; then
 	# 		ARDB_plasmid="${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt"
@@ -533,16 +520,16 @@ while IFS= read -r line || [ -n "$line" ]; do
 	# 		fi
 	# 		# Checks to see if gene passes the threshold rquirements for identity and length
 	# 		if [[ ${percent_length} -ge ${project_parser_Percent_length} ]] && [[ ${percent_ID} -ge ${project_parser_plasmid_Percent_identity} ]] ; then
-	# 			if [[ -z "${oar_list}" ]]; then
-	# 			#	echo "First oar: ${gene}"+
-	# 				oar_list="${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
+	# 			if [[ -z "${pla-ar_list}" ]]; then
+	# 			#	echo "First pla-ar: ${gene}"+
+	# 				pla-ar_list="${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
 	# 			else
-	# 				if [[ ${oar_list} == *"${gene}"* ]]; then
-	# 				#	echo "${gene} already found in ${oar_list}"
+	# 				if [[ ${pla-ar_list} == *"${gene}"* ]]; then
+	# 				#	echo "${gene} already found in ${pla-ar_list}"
 	# 					:
 	# 				else
-	# 				#	echo "${gene} not found in ${oar_list}...adding it"
-	# 					oar_list="${oar_list},${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
+	# 				#	echo "${gene} not found in ${pla-ar_list}...adding it"
+	# 					pla-ar_list="${pla-ar_list},${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
 	# 				fi
 	# 			fi
 	# 		# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
@@ -551,12 +538,12 @@ while IFS= read -r line || [ -n "$line" ]; do
 	# 		fi
 	# 	done < ${ARDB_plasmid}
 	# 	# Adds generic output saying nothing was found if the list was empty
-	# 	if [[ -z "${oar_list}" ]]; then
+	# 	if [[ -z "${pla-ar_list}" ]]; then
 	#
-	# 		oar_list="No AR genes discovered"
+	# 		pla-ar_list="No AR genes discovered"
 	# 	fi
 	# 	# Adds info to plasmid csstar summary file
-	# 	echo -e "${project}\t${sample_name}\t${oxa_list}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_plasmid.txt
+	# 	echo -e "${project}\t${sample_name}\t${oxa_list}\t${pla-ar_list}" >> ${output_directory}/${4}-csstar_summary_plasmid.txt
 	# fi
 
 
@@ -607,15 +594,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 done < ${1}
 
 # Calls script that sorts and formats all isolates info into a matrix for easy viewing
-python3 "${shareScript}/project_parser.py" -c "${output_directory}/${4}-csstar_summary_full.txt" -p "${output_directory}/${4}-plasmid_summary.txt" -o "${output_directory}/${4}_AR_plasmid_report.csv" -s "${output_directory}/${4}-srst2.txt" -d "${ResGANNCBI_srst2_filename}"
-
-ResGANNCBI_date=$(echo "${ResGANNCBI_srst2_filename}" | cut -d'_' -f2)
-echo "${ResGANNCBI_date}"
-year_AR_made="${ResGANNCBI_date:0:4}"
-month_AR_made="${ResGANNCBI_date:4:2}"
-day_AR_made="${ResGANNCBI_date:6:2}"
-
-#echo -e "\n\tResGANNCBI AR Database created on:\t${month_AR_made}/${day_AR_made}/${year_AR_made}" >> "${output_directory}/${4}_AR_plasmid_report.csv"
+python3 "${shareScript}/project_parser.py" -c "${output_directory}/${4}-csstar_summary_full.txt" -p "${output_directory}/${4}-plasmid_summary.txt" -o "${output_directory}/${4}_AR_plasmid_report.csv" -d "${ResGANNCBI_srst2_filename}"
 
 submitter=$(whoami)
 global_end_time=$(date "+%m-%d-%Y @ %Hh_%Mm_%Ss")
