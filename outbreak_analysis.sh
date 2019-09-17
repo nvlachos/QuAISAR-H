@@ -260,15 +260,26 @@ while IFS= read -r line || [ -n "$line" ]; do
 		oar_list="No AR genes discovered"
 	fi
 
+	# Quick fix to rename mlst file after it was decided that all should be _Pasteur
+	if [[ -f "${OUTDATADIR}/MLST/${sample_name}.mlst" ]] && [[ ! -f "${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst" ]]; then
+		mv "${OUTDATADIR}/MLST/${sample_name}.mlst" "${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst"
+	fi
+
 	# Pulls MLST type for sample and adds it to the summary file
 	if [[ -f "${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst" ]]; then
 		mlst=$(head -n 1 ${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst)
 		mlst=$(echo "${mlst}" | cut -d'	' -f3)
-		mlst="ST${mlst}"
+		alleles=$(echo "${mlst}" | cut -d'	' -f4-)
+		if [[ "${mlst}" == "SUB" ]] || [[ "${mlst}" == "AU" ]]; then
+			:
+		else
+			mlst="ST${mlst}"
+		fi
 	else
 		mlst="N/A"
+		alleles="N/A"
 	fi
-	echo -e "${project}\t${sample_name}\t${mlst}" >> ${output_directory}/${4}-mlst_summary.txt
+	echo -e "${project}\t${sample_name}\t${mlst}\t${alleles}" >> ${output_directory}/${4}-mlst_summary.txt
 
 	# Pulls Alternate MLST type for sample and adds it to the summary file
 	if [[ -f "${OUTDATADIR}/MLST/${sample_name}_Oxford.mlst" ]]; then
@@ -281,11 +292,17 @@ while IFS= read -r line || [ -n "$line" ]; do
 	if [[ ! -z "${alt_mlst_file}" ]]; then
 		alt_mlst=$(tail -n 1 "${alt_mlst_file}")
 		alt_mlst=$(echo "${alt_mlst}" | cut -d'	' -f3)
-		alt_mlst="ST${alt_mlst}"
+		alt_alleles=$(echo "${alt_mlst}" | cut -d'	' -f4-)
+		if [[ "${alt_mlst}" == "SUB" ]] || [[ "${alt_mlst}" == "AU" ]]; then
+			:
+		else
+			alt_mlst="ST${alt_mlst}"
+		fi
 	else
 		alt_mlst="N/A"
+		alt_alleles="N/A"
 	fi
-	echo -e "${project}\t${sample_name}\t${alt_mlst}" >> ${output_directory}/${4}-alt_mlst_summary.txt
+	echo -e "${project}\t${sample_name}\t${alt_mlst}\t${alt_alleles}" >> ${output_directory}/${4}-alt_mlst_summary.txt
 
 	# Extracts taxonomic info
 	if [[ ! -f "${OUTDATADIR}/${sample_name}.tax" ]]; then
@@ -311,7 +328,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 	fi
 #	echo "${ANI}"
 # Print all extracted info to primary file
-	echo -e "${project}\t${sample_name}\t${taxonomy}\t${taxonomy_source_type}\t${confidence_info}\t${mlst}\t${alt_mlst}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_full.txt
+	echo -e "${project}\t${sample_name}\t${taxonomy}\t${taxonomy_source_type}\t${confidence_info}\t${mlst}\t${alleles}\t${alt_mlst}\t${alt_alleles}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_full.txt
 
 	# Adding in srst2 output in a similar fashion as to how the csstar genes are output to the file.
 	if [[ -s "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${ResGANNCBI_srst2_filename}_srst2__results.txt" ]]; then

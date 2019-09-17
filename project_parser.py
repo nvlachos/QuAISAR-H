@@ -26,7 +26,7 @@ def do_AR(input_csstar_AR, input_plas, output_file, input_srst2_AR, DB_name):
 		#print(counter, csstar_line)
 		#print("Start csstar loop")
 		csstar_line_sections=csstar_line.split("	")
-		ar_list=csstar_line_sections[7].split(",")
+		ar_list=csstar_line_sections[9].split(",")
 		ar_dict={}
 		for ar_gene in ar_list:
 			gene_name=ar_gene.split("[")[0]
