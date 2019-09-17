@@ -118,8 +118,10 @@ done < "${local_DBs}/star/group_defs.txt"
 # Set defaults for checking if all isolates have been compared to the newest ResGANNCBI DB file . If any isolates are not up-to-date, they will be submitted with the appropriate abl_mass_qsub.
 run_csstar="false"
 run_srst2="false"
+run_GAMA="false"
 > "${output_directory}/${4}_csstar_todo.txt"
 > "${output_directory}/${4}_srst2_todo.txt"
+> "${output_directory}/${4}_GAMA_todo.txt"
 
 # Remove blank lines in list files
 #dos2unix ${1}
@@ -171,15 +173,27 @@ if [[ "${clobberness}" == "keep" ]]; then
 					run_srst2="true"
 			fi
 		fi
+		if [[ -s "${OUTDATADIR}/GAMA/${sample_name}_${ResGANNCBI_srst2_filename}.GAMA" ]];
+		then
+			#echo "${project}/${sample_name} has newest ResGANNCBI for normal csstar already"
+			:
+		else
+			echo "${project}/${sample_name} - GAMA needs to be run against ${ResGANNCBI_srst2_filename}"
+			echo "${project}/${sample_name}" >> "${output_directory}/${4}_GAMA_todo.txt"
+			run_GAMA="true"
+		fi
 	done < ${1}
 else
 	run_csstar="true"
 	run_srst2="true"
+	run_GAMA="true"
 	rm "${output_directory}/${4}_csstar_todo.txt"
 	rm "${output_directory}/${4}_srst2_todo.txt"
+	rm "${output_directory}/${4}_GAMA_todo.txt"
 	echo "Copying ${1} to ${output_directory}/${4}_*_todo.txt"
 	cp ${1} "${output_directory}/${4}_csstar_todo.txt"
 	cp ${1} "${output_directory}/${4}_srst2_todo.txt"
+	cp ${1} "${output_directory}/${4}_GAMA_todo.txt"
 fi
 
 # Creating mashtree of all isolates in list
@@ -198,6 +212,10 @@ fi
 if [[ "${run_srst2}" = "true" ]]; then
 	echo "Submitting list for srst2 qsub analysis"
 	qsub -sync y ${shareScript}/abl_mass_qsub_srst2.sh "${output_directory}/${4}_srst2_todo.txt" 25 "${mass_qsub_folder}" "${clobberness}"
+fi
+if [[ "${run_GAMA}" = "true" ]]; then
+	echo "Submitting list for GAMA qsub analysis"
+	qsub -sync y ${shareScript}/abl_mass_qsub_GAMA.sh "${output_directory}/${4}_GAMA_todo.txt" 25 "${mass_qsub_folder}" "${clobberness}"
 fi
 
 echo $(date)
@@ -241,6 +259,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 			if [[ -z "${oar_list}" ]]; then
 			#	echo "First oar: ${gene}"
 				oar_list="${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
+				echo -e "${project}\t${sample_name}\t${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]" >> ${output_directory}/${4}-csstar_summary.txt
 			else
 				if [[ ${oar_list} == *"${gene}"* ]]; then
 				#	echo "${gene} already found in ${oar_list}"
@@ -248,6 +267,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 				else
 				#	echo "${gene} not found in ${oar_list}...adding it"
 					oar_list="${oar_list},${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
+					echo -e "${project}\t${sample_name}\t${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]" >> ${output_directory}/${4}-csstar_summary.txt
 				fi
 			fi
 		# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
@@ -258,9 +278,142 @@ while IFS= read -r line || [ -n "$line" ]; do
 	# Changes list names if empty
 	if [[ -z "${oar_list}" ]]; then
 		oar_list="No AR genes discovered"
+		echo -e "${project}\t${sample_name}\tNo AR genes discovered" >> ${output_directory}/${4}-csstar_summary.txt
 	fi
 
+	while IFS= read -r line; do
+	 	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
+	 	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
+	 	OUTDATADIR="${processed}/${project}/${sample_name}"
+		sample_index=0
+		GAMAAR_list=""
+		# Looks at all the genes found for a sample
+		#ls ${OUTDATADIR}/c-sstar/
+		#echo "looking for ${OUTDATADIR}/c-sstar/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt"
+		if [[ -f "${OUTDATADIR}/GAMA/${sample_name}_${ResGANNCBI_srst2_filename}.GAMA" ]]; then
+			GARDB_full="${OUTDATADIR}/GAMA/${sample_name}_${ResGANNCBI_srst2_filename}.GAMA"
+		else
+			echo "IT STILL thinks it needs to run ${sample_name} through normal GAMA"
+			#${shareScript}/run_c-sstar_on_single.sh "${sample_name}" "${gapping}" "${sim}" "${project}"
+			#ARDB_full="${OUTDATADIR}/c-sstar/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt"
+			exit
+		fi
+		#echo "${ARDB_full}"
+		# Extracts all AR genes from normal csstar output file and creates a lits of all genes that pass the filtering steps
+		while IFS= read -r line; do
+			# exit if no genes were found for the sample
+			if [[ -z "${line}" ]]; then
+				break
+			elif [[ "${line}" == *"DB	Resistance	Gene_Family	Gene	Contig	Start"* ]]; then
+				continue
+			fi
+			IFS='	' read -r -a ar_line <<< "$line"
+			percent_BP_ID=$(echo "${ar_line[11]}" | awk '{ printf "%d", ($1*100) }' )
+			percent_codon_ID=$(echo "${ar_line[12]}" | awk '{ printf "%d", ($1*100) }' )
+			percent_length=$(echo "${ar_line[13]}" | awk '{ printf "%d", ($1*100) }' )
+			conferred=$(echo "${ar_line[1]}" | rev | cut -d'_' -f2- | rev)
+			contig_number=$(echo "${ar_line[4]}" | rev | cut -d'_' -f3 | rev)
+			gene="${ar_line[3]}"
+			# Ensure that the gene passes % identity and % length threhsolds for reporting
+			if [[ ${percent_length} -ge ${project_parser_Percent_length} ]] && [[ ${percent_BP_ID} -ge ${project_parser_Percent_identity} ]]; then
+				if [[ -z "${oar_list}" ]]; then
+				#	echo "First oar: ${gene}"
+					GAMAAR_list="${gene}(${conferred})[${percent_BP_ID}/${percent_codon_ID}/${percent_length}:#${contig_number}]"
+					echo -e "${project}\t${sample_name}\t${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]" >> ${output_directory}/${4}-GAMA_summary.txt
+				else
+					if [[ ${GAMAAR_list} == *"${gene}"* ]]; then
+					#	echo "${gene} already found in ${oar_list}"
+						:
+					else
+					#	echo "${gene} not found in ${oar_list}...adding it"
+						GAMAAR_list="${GAMAAR_list},${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
+						echo -e "${project}\t${sample_name}\t${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]" >> ${output_directory}/${4}-GAMA_summary.txt
+					fi
+				fi
+			# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
+			else
+				echo -e "${project}\t${sample_name}\tfull_assembly\t${line}" >> ${output_directory}/${4}-GAMA_rejects.txt
+			fi
+		done < ${GARDB_full}
+		# Changes list names if empty
+		if [[ -z "${GAMAAR_list}" ]]; then
+			GAMAAR_list="No AR genes discovered"
+			echo -e "${project}\t${sample_name}\tNo AR genes discovered" >> ${output_directory}/${4}-GAMA_summary.txt
+		fi
 
+		# Adding in srst2 output in a similar fashion as to how the csstar genes are output to the file.
+		if [[ -s "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${ResGANNCBI_srst2_filename}_srst2__results.txt" ]]; then
+			srst2_results=""
+			while IFS= read -r line || [ -n "$line" ]; do
+			#	echo "Start"
+				gene=$(echo "${line}" | cut -d'	' -f3)
+				#ODD WAY to do this right now, must look into later, but
+				confers=$(echo "${line}" | cut -d'	' -f14 | cut -d';' -f3)
+			#	echo "${gene}-${confers}"
+				if [[ "${confers}" = "annotation" ]]; then
+					continue
+				fi
+				if [[ -z "${confers}" ]]; then
+					if [[ ! -z ${gene} ]]; then
+						if [[ "${gene,,}" == "agly_flqn" ]]; then
+							confers="aminoglycoside_and_fluoroquinolone_resistance"
+						elif [[ "${gene,,}" == "tetracenomycinc" ]]; then
+							confers="tetracenomycinC_resistance"
+						else
+							confers=${groups[${gene:0:3}]}
+						fi
+					fi
+				fi
+				confers=${confers//_resistance/}
+				allele=$(echo "${line}" | cut -d'	' -f4 | rev | cut -d'_' -f2- | rev)
+				if [[ "${allele}" = "Zn-dependent" ]]; then
+					allele="${allele}_hydrolase"
+				fi
+				coverage=$(echo "${line}" | cut -d'	' -f5)
+				depth=$(echo "${line}" | cut -d'	' -f6)
+				diffs=$(echo "${line}" | cut -d'	' -f7)
+				if [[ ${diffs} == *"trunc"* ]]; then
+					allele="TRUNC-${allele}"
+				fi
+				uncertainty=$(echo "${line}" | cut -d'	' -f8)
+				divergence=$(echo "${line}" | cut -d'	' -f9)
+				``
+				length=$(echo "${line}" | cut -d'	' -f10)
+				percent_length=$(echo "$coverage / 1" | bc)
+				if [[ "${divergence}" = "0.0" ]]; then
+					percent_ID=100
+				else
+					percent_ID=$(echo "100 - (($divergence + 1) / 1)" | bc)
+				fi
+			#	echo "${allele}/${coverage}/${depth}/${diffs}/${uncertainty}/${divergence}/${length}/${percent_ID}/${percent_length}"
+			# Filter genes based on thresholds for length and percent identity
+				if [[ "${percent_ID}" -ge ${project_parser_Percent_identity} ]] && [[ "${percent_length}" -ge ${project_parser_Percent_length} ]]; then
+					info_line="${allele}(${confers})[${percent_ID}/${percent_length}]"
+					if [[ -z "${srst2_results}" ]]; then
+						srst2_results=${info_line,,}
+					else
+						srst2_results="${srst2_results},${info_line,,}"
+					fi
+				else
+					if [[ ${line} = "Sample	DB	gene"* ]]; then
+						:
+					else
+						echo ${line} >> ${output_directory}/${4}-srst2_rejects.txt
+					fi
+				fi
+			done < "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${ResGANNCBI_srst2_filename}_srst2__results.txt"
+			#echo "Test1"
+			if [[ -z "${srst2_results}" ]]; then
+				echo "1"
+				echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
+			else
+				echo "2"
+				echo "${project}	${sample_name}	${srst2_results}" >> ${output_directory}/${4}-srst2.txt
+			fi
+		else
+			echo "3"
+			echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
+		fi
 
 	# Extracts taxonomic info
 	if [[ ! -f "${OUTDATADIR}/${sample_name}.tax" ]]; then
@@ -343,81 +496,9 @@ while IFS= read -r line || [ -n "$line" ]; do
 
 #	echo "${ANI}"
 # Print all extracted info to primary file
-	echo -e "${project}\t${sample_name}\t${taxonomy}\t${taxonomy_source_type}\t${confidence_info}\t${mlst}\t${alleles}\t${alt_mlst}\t${alt_alleles}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_full.txt
+	echo -e "${project}\t${sample_name}\t${taxonomy}\t${taxonomy_source_type}\t${confidence_info}\t${mlst}\t${alleles}\t${alt_mlst}\t${alt_alleles}\t${oar_list}\t${srst2_results}\t${GAMAAR_list}" >> ${output_directory}/${4}-csstar_summary_full.txt
 
-	# Adding in srst2 output in a similar fashion as to how the csstar genes are output to the file.
-	if [[ -s "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${ResGANNCBI_srst2_filename}_srst2__results.txt" ]]; then
-		srst2_results=""
-		while IFS= read -r line || [ -n "$line" ]; do
-		#	echo "Start"
-			gene=$(echo "${line}" | cut -d'	' -f3)
-			#ODD WAY to do this right now, must look into later, but
-			confers=$(echo "${line}" | cut -d'	' -f14 | cut -d';' -f3)
-		#	echo "${gene}-${confers}"
-			if [[ "${confers}" = "annotation" ]]; then
-				continue
-			fi
-			if [[ -z "${confers}" ]]; then
-				if [[ ! -z ${gene} ]]; then
-					if [[ "${gene,,}" == "agly_flqn" ]]; then
-						confers="aminoglycoside_and_fluoroquinolone_resistance"
-					elif [[ "${gene,,}" == "tetracenomycinc" ]]; then
-						confers="tetracenomycinC_resistance"
-					else
-						confers=${groups[${gene:0:3}]}
-					fi
-				fi
-			fi
-			confers=${confers//_resistance/}
-			allele=$(echo "${line}" | cut -d'	' -f4 | rev | cut -d'_' -f2- | rev)
-			if [[ "${allele}" = "Zn-dependent" ]]; then
-				allele="${allele}_hydrolase"
-			fi
-			coverage=$(echo "${line}" | cut -d'	' -f5)
-			depth=$(echo "${line}" | cut -d'	' -f6)
-			diffs=$(echo "${line}" | cut -d'	' -f7)
-			if [[ ${diffs} == *"trunc"* ]]; then
-				allele="TRUNC-${allele}"
-			fi
-			uncertainty=$(echo "${line}" | cut -d'	' -f8)
-			divergence=$(echo "${line}" | cut -d'	' -f9)
-			``
-			length=$(echo "${line}" | cut -d'	' -f10)
-			percent_length=$(echo "$coverage / 1" | bc)
-			if [[ "${divergence}" = "0.0" ]]; then
-				percent_ID=100
-			else
-				percent_ID=$(echo "100 - (($divergence + 1) / 1)" | bc)
-			fi
-		#	echo "${allele}/${coverage}/${depth}/${diffs}/${uncertainty}/${divergence}/${length}/${percent_ID}/${percent_length}"
-		# Filter genes based on thresholds for length and percent identity
-			if [[ "${percent_ID}" -ge ${project_parser_Percent_identity} ]] && [[ "${percent_length}" -ge ${project_parser_Percent_length} ]]; then
-				info_line="${allele}(${confers})[${percent_ID}/${percent_length}]"
-				if [[ -z "${srst2_results}" ]]; then
-					srst2_results=${info_line,,}
-				else
-					srst2_results="${srst2_results},${info_line,,}"
-				fi
-			else
-				if [[ ${line} = "Sample	DB	gene"* ]]; then
-					:
-				else
-					echo ${line} >> ${output_directory}/${4}-srst2_rejects.txt
-				fi
-			fi
-		done < "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${ResGANNCBI_srst2_filename}_srst2__results.txt"
-		#echo "Test1"
-		if [[ -z "${srst2_results}" ]]; then
-			echo "1"
-			echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
-		else
-			echo "2"
-			echo "${project}	${sample_name}	${srst2_results}" >> ${output_directory}/${4}-srst2.txt
-		fi
-	else
-		echo "3"
-		echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
-	fi
+
 
 #Test
 #echo "Test"
