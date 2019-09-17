@@ -93,6 +93,9 @@ fi
 if [[ -f ${output_directory}/${4}-GAMA_summary.txt ]]; then
 	rm ${output_directory}/${4}-GAMA_summary.txt
 fi
+if [[ -f ${output_directory}/${4}-GAMA_rejects.txt ]]; then
+	rm ${output_directory}/${4}-GAMA_rejects.txt
+fi
 if [[ -f ${output_directory}/${4}-srst2.txt ]]; then
 	rm ${output_directory}/${4}-srst2.txt
 fi
@@ -251,7 +254,6 @@ while IFS= read -r line; do
 				if [[ -z "${csstar_list}" ]]; then
 					#	echo "First csstar: ${gene}"
 					csstar_list="${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
-					echo -e "${project}\t${sample_name}\t${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]" >> ${output_directory}/${4}-csstar_summary.txt
 				else
 					if [[ ${csstar_list} == *"${gene}"* ]]; then
 						#	echo "${gene} already found in ${csstar_list}"
@@ -259,7 +261,6 @@ while IFS= read -r line; do
 					else
 						#	echo "${gene} not found in ${csstar_list}...adding it"
 						csstar_list="${csstar_list},${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
-						echo -e "${project}\t${sample_name}\t${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]" >> ${output_directory}/${4}-csstar_summary.txt
 					fi
 				fi
 				# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
@@ -270,7 +271,7 @@ while IFS= read -r line; do
 		if [[ -z "${GAMA_list}" ]]; then
 			echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-csstar_summary.txt
 		else
-			echo "${project}	${sample_name}	${srst2_results}" >> ${output_directory}/${4}-csstar_summary.txt
+			echo "${project}	${sample_name}	${csstar_list}" >> ${output_directory}/${4}-csstar_summary.txt
 		fi
 	else
 		echo "${project}	${sample_name}	NO CURRENT FILE" >> ${output_directory}/${4}-csstar_summary.txt
@@ -286,6 +287,7 @@ while IFS= read -r line; do
 			elif [[ "${line}" == *"DB	Resistance	Gene_Family	Gene	Contig	Start"* ]]; then
 				continue
 			fi
+			echo "!!!!!!!!!!!!            ${line}"
 			IFS='	' read -r -a ar_line <<< "$line"
 			percent_BP_ID=$(echo "${ar_line[11]}" | awk '{ printf "%d", ($1*100) }' )
 			percent_codon_ID=$(echo "${ar_line[12]}" | awk '{ printf "%d", ($1*100) }' )
@@ -314,8 +316,9 @@ while IFS= read -r line; do
 		done < ${GARDB_full}
 		if [[ -z "${GAMA_list}" ]]; then
 			echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-GAMA_summary.txt
+			GAMA_list="No AR genes discovered"
 		else
-			echo "${project}	${sample_name}	${srst2_results}" >> ${output_directory}/${4}-GAMA_summary.txt
+			echo "${project}	${sample_name}	${GAMA_list}" >> ${output_directory}/${4}-GAMA_summary.txt
 		fi
 	else
 		echo "${project}	${sample_name}	NO CURRENT FILE" >> ${output_directory}/${4}-GAMA_summary.txt
