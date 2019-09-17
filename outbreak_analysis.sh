@@ -286,21 +286,24 @@ while IFS= read -r line || [ -n "$line" ]; do
 	fi
 
 	# Quick fix to rename mlst filenames after it was decided that all should be _Pasteur
-	echo -e "\n\n\n\n\n\n\n\n Checking to move ${OUTDATADIR}/MLST/${1}_abaumannii.mlst \n\n\n\n\n\n\n\n"
-	if [[ -f "${OUTDATADIR}/MLST/${1}_abaumannii.mlst" ]]; then
-		mv "${OUTDATADIR}/MLST/${1}_abaumannii.mlst" "${OUTDATADIR}/MLST/${1}_Oxford.mlst"
+	echo -e "\n\n\n\n\n\n\n\n Checking to move ${OUTDATADIR}/MLST/${sample_name}_abaumannii.mlst \n\n\n\n\n\n\n\n"
+	if [[ -f "${OUTDATADIR}/MLST/${sample_name}_abaumannii.mlst" ]]; then
+		mv "${OUTDATADIR}/MLST/${sample_name}_abaumannii.mlst" "${OUTDATADIR}/MLST/${sample_name}_Oxford.mlst"
 	fi
-	if [[ -f "${OUTDATADIR}/MLST/${1}_ecoli_2.mlst" ]]; then
-		mv "${OUTDATADIR}/MLST/${1}_Pasteur.mlst" "${OUTDATADIR}/MLST/${1}_Achtman.mlst"
-		mv "${OUTDATADIR}/MLST/${1}_ecoli_2.mlst" "${OUTDATADIR}/MLST/${1}_Pasteur.mlst"
+	if [[ -f "${OUTDATADIR}/MLST/${sample_name}_ecoli_2.mlst" ]]; then
+		mv "${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst" "${OUTDATADIR}/MLST/${sample_name}_Achtman.mlst"
+		mv "${OUTDATADIR}/MLST/${sample_name}_ecoli_2.mlst" "${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst"
 	fi
 
 	# Pulls MLST type for sample and adds it to the summary file
 	if [[ -f "${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst" ]]; then
 		mlst=$(head -n 1 ${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst)
 		alleles=$(echo "${mlst}" | cut -d'	' -f4-)
+		echo "${alleles}"
 		alleles=${alleles/	/.}
+		echo "${alleles}"
 		alleles=${alleles/ /.}
+		echo "${alleles}"
 		mlst=$(echo "${mlst}" | cut -d'	' -f3)
 		if [[ "${mlst}" == "SUB" ]] || [[ "${mlst}" == "AU" ]]; then
 			:
