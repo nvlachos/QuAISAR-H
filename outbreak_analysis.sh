@@ -87,8 +87,11 @@ fi
 if [[ -f ${output_directory}/${4}_AR_plasmid_report.csv ]]; then
 	rm ${output_directory}/${4}_AR_plasmid_report.csv
 fi
-if [[ -f ${output_directory}/${4}-csstar_summary_full.txt ]]; then
-	rm ${output_directory}/${4}-csstar_summary_full.txt
+if [[ -f ${output_directory}/${4}-sample_summary.txt ]]; then
+	rm ${output_directory}/${4}-sample_summary.txt
+fi
+if [[ -f ${output_directory}/${4}-GAMA_summary.txt ]]; then
+	rm ${output_directory}/${4}-GAMA_summary.txt
 fi
 if [[ -f ${output_directory}/${4}-srst2.txt ]]; then
 	rm ${output_directory}/${4}-srst2.txt
@@ -222,58 +225,56 @@ date
 sleep 10
 
 # # Loop through and extracts and formats AR genes found in all isolates, as well as the primary MLST type and plasmid replicons. Each are output to separate files. Any AR genes that do not meet the length or % identity are copied to the rejects file.
-while IFS= read -r line; do
- 	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
- 	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
- 	OUTDATADIR="${processed}/${project}/${sample_name}"
-	csstar_list=""
-	# Looks at all the genes found for a sample
-	#echo "looking for ${OUTDATADIR}/c-sstar/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt"
-	if [[ -f "${OUTDATADIR}/c-sstar/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt" ]]; then
-		ARDB_full="${OUTDATADIR}/c-sstar/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt"
-	else
-		echo "IT STILL thinks it needs to run ${sample_name} through normal csstar"
-		exit
-	fi
-	#echo "${ARDB_full}"
-	# Extracts all AR genes from normal csstar output file and creates a lits of all genes that pass the filtering steps
+if [[ -f "${OUTDATADIR}/c-sstar/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt" ]]; then
 	while IFS= read -r line; do
-		# exit if no genes were found for the sample
-		if [[ -z "${line}" ]] || [[ "${line}" == *"No anti-microbial genes were found"* ]]; then
-			break
-		fi
-		IFS='	' read -r -a ar_line <<< "$line"
-		percent_ID="${ar_line[6]}"
-		percent_length="${ar_line[9]}"
-		conferred=$(echo "${ar_line[1]}" | rev | cut -d'_' -f2- | rev)
-		contig_number=$(echo "${ar_line[5]}" | rev | cut -d'_' -f3 | rev)
-		gene="${ar_line[4]}"
-		# Ensure that the gene passes % identity and % length threhsolds for reporting
-		if [[ ${percent_length} -ge ${project_parser_Percent_length} ]] && [[ ${percent_ID} -ge ${project_parser_Percent_identity} ]] ; then
-			if [[ -z "${csstar_list}" ]]; then
-			#	echo "First csstar: ${gene}"
-				csstar_list="${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
-				echo -e "${project}\t${sample_name}\t${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]" >> ${output_directory}/${4}-csstar_summary.txt
-			else
-				if [[ ${csstar_list} == *"${gene}"* ]]; then
-				#	echo "${gene} already found in ${csstar_list}"
-					:
-				else
-				#	echo "${gene} not found in ${csstar_list}...adding it"
-					csstar_list="${csstar_list},${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
-					echo -e "${project}\t${sample_name}\t${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]" >> ${output_directory}/${4}-csstar_summary.txt
-				fi
+	 	sample_name=$(echo "${line}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
+	 	project=$(echo "${line}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
+	 	OUTDATADIR="${processed}/${project}/${sample_name}"
+		csstar_list=""
+		ARDB_full="${OUTDATADIR}/c-sstar/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt"
+		#echo "${ARDB_full}"
+		# Extracts all AR genes from normal csstar output file and creates a lits of all genes that pass the filtering steps
+		while IFS= read -r line; do
+			# exit if no genes were found for the sample
+			if [[ -z "${line}" ]] || [[ "${line}" == *"No anti-microbial genes were found"* ]]; then
+				break
 			fi
-		# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
+			IFS='	' read -r -a ar_line <<< "$line"
+			percent_ID="${ar_line[6]}"
+			percent_length="${ar_line[9]}"
+			conferred=$(echo "${ar_line[1]}" | rev | cut -d'_' -f2- | rev)
+			contig_number=$(echo "${ar_line[5]}" | rev | cut -d'_' -f3 | rev)
+			gene="${ar_line[4]}"
+			# Ensure that the gene passes % identity and % length threhsolds for reporting
+			if [[ ${percent_length} -ge ${project_parser_Percent_length} ]] && [[ ${percent_ID} -ge ${project_parser_Percent_identity} ]] ; then
+				if [[ -z "${csstar_list}" ]]; then
+				#	echo "First csstar: ${gene}"
+					csstar_list="${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
+					echo -e "${project}\t${sample_name}\t${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]" >> ${output_directory}/${4}-csstar_summary.txt
+				else
+					if [[ ${csstar_list} == *"${gene}"* ]]; then
+					#	echo "${gene} already found in ${csstar_list}"
+						:
+					else
+					#	echo "${gene} not found in ${csstar_list}...adding it"
+						csstar_list="${csstar_list},${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]"
+						echo -e "${project}\t${sample_name}\t${gene}(${conferred})[${percent_ID}/${percent_length}:#${contig_number}]" >> ${output_directory}/${4}-csstar_summary.txt
+					fi
+				fi
+			# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
+			else
+				echo -e "${project}\t${sample_name}\tfull_assembly\t${line}" >> ${output_directory}/${4}-csstar_rejects.txt
+			fi
+		done < ${ARDB_full}
+		if [[ -z "${GAMA_list}" ]]; then
+			echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-csstar_summary.txt
 		else
-			echo -e "${project}\t${sample_name}\tfull_assembly\t${line}" >> ${output_directory}/${4}-csstar_rejects.txt
+			echo "${project}	${sample_name}	${srst2_results}" >> ${output_directory}/${4}-csstar_summary.txt
 		fi
-	done < ${ARDB_full}
-	# Changes list names if empty
-	if [[ -z "${csstar_list}" ]]; then
-		csstar_list="No AR genes discovered"
-		echo -e "${project}\t${sample_name}\tNo AR genes discovered" >> ${output_directory}/${4}-csstar_summary.txt
+	else
+		echo "${project}	${sample_name}	NO CURRENT FILE" >> ${output_directory}/${4}-csstar_summary.txt
 	fi
+
 
 	GAMA_list=""
 	# Looks at all the genes found for a sample
@@ -329,7 +330,7 @@ while IFS= read -r line; do
 			echo "${project}	${sample_name}	${srst2_results}" >> ${output_directory}/${4}-GAMA_summary.txt
 		fi
 	else
-		echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-GAMA_summary.txt
+		echo "${project}	${sample_name}	NO CURRENT FILE" >> ${output_directory}/${4}-GAMA_summary.txt
 	fi
 
 	# Changes list names if empty
@@ -409,7 +410,7 @@ while IFS= read -r line; do
 			fi
 		else
 			echo "3"
-			echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
+			echo "${project}	${sample_name}	NO CURRENT FILE" >> ${output_directory}/${4}-srst2.txt
 		fi
 
 	# Extracts taxonomic info
@@ -491,7 +492,7 @@ while IFS= read -r line; do
 	echo -e "${project}\t${sample_name}\t${alt_mlst}\t${alt_alleles}" >> ${output_directory}/${4}-alt_mlst_summary.txt
 
 # Print all extracted info to primary file
-	echo -e "${project}\t${sample_name}\t${taxonomy}\t${taxonomy_source_type}\t${confidence_info}\t${mlst}\t${alleles}\t${alt_mlst}\t${alt_alleles}\t${csstar_list}\t${srst2_results}\t${GAMA_list}" >> ${output_directory}/${4}-csstar_summary_full.txt
+	echo -e "${project}\t${sample_name}\t${taxonomy}\t${taxonomy_source_type}\t${confidence_info}\t${mlst}\t${alleles}\t${alt_mlst}\t${alt_alleles}\t${csstar_list}\t${srst2_results}\t${GAMA_list}" >> ${output_directory}/${4}-sample_summary.txt
 
 
 
@@ -602,7 +603,7 @@ while IFS= read -r line; do
 done < ${1}
 
 # Calls script that sorts and formats all isolates info into a matrix for easy viewing
-python3 "${shareScript}/project_parser.py" -c "${output_directory}/${4}-csstar_summary_full.txt" -p "${output_directory}/${4}-plasmid_summary.txt" -o "${output_directory}/${4}_AR_plasmid_report.csv" -d "${ResGANNCBI_srst2_filename}"
+python3 "${shareScript}/project_parser.py" -c "${output_directory}/${4}-sample_summary.txt" -p "${output_directory}/${4}-plasmid_summary.txt" -o "${output_directory}/${4}_AR_plasmid_report.csv" -d "${ResGANNCBI_srst2_filename}"
 
 submitter=$(whoami)
 global_end_time=$(date "+%m-%d-%Y @ %Hh_%Mm_%Ss")
