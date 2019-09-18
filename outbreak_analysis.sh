@@ -34,7 +34,7 @@ if [[ $# -eq 0 ]]; then
 	exit 1
 # Shows a brief uasge/help section if -h option used as first argument
 elif [[ "$1" = "-h" ]]; then
-	echo "Usage is ./outbreak_analysis.sh path_to_list_file gapped/ungapped 80/95/98/99/100 output_prefix output_directory clobberness[keep|clobber] "
+	echo "Usage is ./outbreak_analysis.sh path_to_list_file gapped/ungapped 80/95/98/99/100 output_prefix output_directory clobberness[keep|clobber]"
 	exit 0
 elif [[ ! -f ${1} ]]; then
 	echo "list does not exist...exiting"
@@ -425,12 +425,15 @@ while IFS= read -r line; do
 
 	# Quick fix to rename mlst filenames after it was decided that all should be _Pasteur
 	echo -e "\n\n\n\n\n\n\n\n Checking to move ${OUTDATADIR}/MLST/${sample_name}_abaumannii.mlst \n\n\n\n\n\n\n\n"
-	if [[ -f "${OUTDATADIR}/MLST/${sample_name}_abaumannii.mlst" ]]; then
+
+	if [[ "${taxonomy}" == "Acinetobacter baumannii" ]]; then
 		mv "${OUTDATADIR}/MLST/${sample_name}_abaumannii.mlst" "${OUTDATADIR}/MLST/${sample_name}_Oxford.mlst"
-	fi
-	if [[ -f "${OUTDATADIR}/MLST/${sample_name}_ecoli_2.mlst" ]]; then
-		mv "${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst" "${OUTDATADIR}/MLST/${sample_name}_Achtman.mlst"
+		mv "${OUTDATADIR}/MLST/${sample_name}.mlst" "${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst"
+	elif [[ "${taxonomy}" == "Escherichia coli" ]]; then
+		mv "${OUTDATADIR}/MLST/${sample_name}.mlst" "${OUTDATADIR}/MLST/${sample_name}_Achtman.mlst"
 		mv "${OUTDATADIR}/MLST/${sample_name}_ecoli_2.mlst" "${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst"
+	else
+		mv "${OUTDATADIR}/MLST/${sample_name}.mlst" "${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst"
 	fi
 
 	# Pulls MLST type for sample and adds it to the summary file
