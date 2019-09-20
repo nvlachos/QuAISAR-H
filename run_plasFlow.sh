@@ -36,7 +36,7 @@ elif [[ -z "${2}" ]]; then
 	exit 1
 fi
 
-ml PlasFlow/1.1 Python3/3.5.4
+ml PlasFlow/1.1
 
 
 # Show loaded modules
