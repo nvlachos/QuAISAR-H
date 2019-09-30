@@ -181,6 +181,10 @@ if [[ "${clobberness}" == "keep" ]]; then
 		fi
 		if [[ -s "${OUTDATADIR}/GAMA/${sample_name}_${ResGANNCBI_srst2_filename}.GAMA" ]];
 		then
+			mv "${OUTDATADIR}/GAMA/${sample_name}_${ResGANNCBI_srst2_filename}.GAMA" "${OUTDATADIR}/GAMA/${sample_name}.${ResGANNCBI_srst2_filename}.GAMA"
+		fi
+		if [[ -s "${OUTDATADIR}/GAMA/${sample_name}.${ResGANNCBI_srst2_filename}.GAMA" ]];
+		then
 			#echo "${project}/${sample_name} has newest ResGANNCBI for normal csstar already"
 			:
 		else
