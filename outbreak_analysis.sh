@@ -283,7 +283,7 @@ while IFS= read -r line; do
 
 	GAMA_list=""
 	# Extracts all AR genes from normal csstar output file and creates a lits of all genes that pass the filtering steps
- 	echo "^^^^^^^^^^^^^^^^^^^ "${OUTDATADIR}/GAMA/${sample_name}_${ResGANNCBI_srst2_filename}.GAMA""
+ 	echo "^^^^^^^^^^^^^^^^^^^ ${OUTDATADIR}/GAMA/${sample_name}_${ResGANNCBI_srst2_filename}.GAMA"
 	if [[ -f "${OUTDATADIR}/GAMA/${sample_name}_${ResGANNCBI_srst2_filename}.GAMA" ]]; then
 		GARDB_full="${OUTDATADIR}/GAMA/${sample_name}_${ResGANNCBI_srst2_filename}.GAMA"
 		while IFS= read -r line; do
@@ -437,7 +437,9 @@ while IFS= read -r line; do
 		mv "${OUTDATADIR}/MLST/${sample_name}.mlst" "${OUTDATADIR}/MLST/${sample_name}_Achtman.mlst"
 		mv "${OUTDATADIR}/MLST/${sample_name}_ecoli_2.mlst" "${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst"
 	else
-		mv "${OUTDATADIR}/MLST/${sample_name}.mlst" "${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst"
+		if [[ -f "${OUTDATADIR}/MLST/${sample_name}.mlst" ]] && [[ ! -f "${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst"]]; then
+			mv "${OUTDATADIR}/MLST/${sample_name}.mlst" "${OUTDATADIR}/MLST/${sample_name}_Pasteur.mlst"
+		fi
 	fi
 
 	# Pulls MLST type for sample and adds it to the summary file
