@@ -19,6 +19,8 @@
 # No modules needed
 #
 
+ml Python3/3.5.2
+
 #  Function to print out help blurb
 show_help () {
 	echo "Usage is ./order_samples.sh -p project_name"
@@ -61,7 +63,7 @@ echo "${processed}/${project}/2019_MMBSeq_Log.xlsx"
 cp "${local_DBs}/Seqlog_copies/2019_MMBSeq_Log.xlsx" "${processed}/${project}/2019_MMBSeq_Log.xlsx"
 
 # Convert log file to csv format for searchability
-python2 ${shareScript}/xlsx_converter.py "${processed}/${project}/2019_MMBSeq_Log.xlsx" "FY19 Miseq Isolate Log" > "${processed}/${project}/2019_MMBSeq_Log.tsv"
+python3 ${shareScript}/xlsx_converter.py "${processed}/${project}/2019_MMBSeq_Log.xlsx" "FY19 Miseq Isolate Log" > "${processed}/${project}/2019_MMBSeq_Log.tsv"
 
 echo "Excel file: 2019_MMBSeq_Log.xlsx has been converted to TSV"
 
