@@ -22,7 +22,7 @@ fi
 # !Version 1
 #
 
-ml blat Python/2.7.3
+ml blat Python3/3.5.2
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
