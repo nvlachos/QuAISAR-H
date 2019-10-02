@@ -54,7 +54,7 @@ fi
 OUTDATADIR="${processed}/${2}/${1}"
 
 # Create necessary output directories
-echo "Running GAMA Taxonomic Classifier"
+echo "Running GAMA Antibiotic Resistance Gene Identifier"
 
 OUTDATA="${OUTDATADIR}"
 

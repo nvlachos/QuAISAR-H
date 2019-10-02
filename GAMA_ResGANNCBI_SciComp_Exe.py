@@ -14,9 +14,8 @@ getcontext().prec = 4
 import math
 
 ##Written by Rich Stantn (njr5@cdc.gov)
-##Requires Python/2.7.3 and bash
-##Usage: $ python GAMA_4.6.2_ResGANNCBI_SciComp_Exe.py my_scaffolds.fasta ResGANNOT.fasta My_output.GAMA
-## V4.6.3
+##Requires Python/2.7.3 and blat
+##Usage: $ python GAMA_4.6.4_NAR_SciComp_Exe.py my_scaffolds.fasta NAR.fasta My_output.GAMA
 
 def PSL_Type(PSL_Line):
     """Takes in a line from a PSL and returns its type"""
@@ -408,7 +407,7 @@ def Indel_Line(PSL_Line, genome_gene, gene):
     Coding_Length = int(List1[14]) / 3
     Percent_Codons = str(Decimal(Coding_Length - Codon_Changes) / Decimal(Coding_Length))
     Percent_Bases = str(Decimal(int(List1[14]) - BP_Changes) / Decimal(int(List1[14])))
-    Match_Length =  Indel_Match_Length(PSL_Line)
+    Match_Length = Match_Length_Maker(PSL_Line)
     Blocks = Match_Start_Stop_Finder(PSL_Line)
     Percent_Length = str(Decimal(Match_Length) / Decimal(int(List1[14])))
     Out = List1[13] + '\t' + List1[9] + '\t' + str(Blocks[0][0]) + '\t' + str(Blocks[0][1]) + '\t' + Type + '\t' + Description + '\t' + str(Codon_Changes) + '\t' + str(BP_Changes) + '\t' + Percent_Codons + '\t' + Percent_Bases + '\t' + Percent_Length + '\t' + str(Match_Length) + '\t' + List1[14] + '\t' + str(Transversions)
@@ -444,7 +443,7 @@ def Indel_Edge_Line(PSL_Line, genome_gene, gene):
     Coding_Length = int(List1[14]) / 3
     Percent_Codons = str(Decimal(Coding_Length - Codon_Total) / Decimal(Coding_Length))
     Percent_Bases = str(Decimal(int(List1[14]) - BP_Total) / Decimal(int(List1[14])))
-    Match_Length =  Indel_Match_Length(PSL_Line)
+    Match_Length = Match_Length_Maker(PSL_Line)
     Blocks = Match_Start_Stop_Finder(PSL_Line)
     Percent_Length = str(Decimal(Match_Length) / Decimal(int(List1[14])))
     Out = List1[13] + '\t' + List1[9] + '\t' + str(Blocks[0][0]) + '\t' + str(Blocks[0][1]) + '\t' + Type + '\t' + Description + '\t' + str(Codon_Total) + '\t' + str(BP_Total) + '\t' + Percent_Codons + '\t' + Percent_Bases + '\t' + Percent_Length + '\t' + str(Match_Length) + '\t' + List1[14] + '\t' + str(Transversions)
