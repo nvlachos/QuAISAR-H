@@ -256,7 +256,7 @@ def Indel_Codon_Count(PSL_Line, genome_gene, gene):
             Codon = math.ceil(entries[2] / float(3)) + Codon
             Codon = int(Codon)
             Block_Difference = Mutant_Count(genome_pro[Start + Codon_Difference:Codon + Codon_Difference], gene_pro[Start:Codon])
-            Codon_Difference = Offset / 3
+            Codon_Difference = Offset // 3
             Count = Count + Block_Difference + abs(Codon_Difference)
             Start = Codon
     Block_Difference = Mutant_Count(genome_pro[Start + Codon_Difference:], gene_pro[Start:])
@@ -284,7 +284,7 @@ def Indel_Mutant_Count(PSL_Line, genome_gene, gene):
             Codon = math.ceil(entries[2] / float(3)) + Codon
             Codon = int(Codon)
             Block_Difference = Mutant_Count(genome_pro[Start + Codon_Difference:Codon + Codon_Difference], gene_pro[Start:Codon])
-            Codon_Difference = Offset / 3
+            Codon_Difference = Offset // 3
             Count = Count + Block_Difference#+ abs(Codon_Difference)
             Start = Codon
     Block_Difference = Mutant_Count(genome_pro[Start + Codon_Difference:], gene_pro[Start:])
@@ -313,7 +313,7 @@ def Indel_Codon_Info(PSL_Line, genome_gene, gene):
             Codon = int(Codon)
             Mutants = Mutant_Info_Offset(genome_pro[Start + Codon_Difference:Codon + Codon_Difference], gene_pro[Start:Codon], Start)
             Info = Info + Mutants
-            Codon_Difference = Offset / 3
+            Codon_Difference = Offset // 3
             Start = Codon
     Mutants = Mutant_Info_Offset(genome_pro[Start + Codon_Difference:], gene_pro[Start:], Start)
     Info = Info + Mutants
@@ -393,7 +393,7 @@ def Indel_Line(PSL_Line, genome_gene, gene):
     Codon_Changes = Indel_Codon_Count(PSL_Line, genome_gene, gene)
     Codon_Mutants = Indel_Mutant_Count(PSL_Line, genome_gene, gene)
     Sum = Indel_Sum(PSL_Line)
-    Codon_Sum = Sum / 3
+    Codon_Sum = Sum // 3
     if Type == 'Indel Truncation':
         Location = Truncation_Location(genome_gene)
         Location = str(Location + 1)
@@ -406,12 +406,12 @@ def Indel_Line(PSL_Line, genome_gene, gene):
         Description = Info + str(Codon_Mutants) + ' coding mutations'
     BP_Changes = Indel_BP_Count(PSL_Line, genome_gene, gene)
     Transversions = Indel_Transversion_Count(PSL_Line, genome_gene, gene)
-    Coding_Length = int(List1[14]) / 3
-    Percent_Codons = str(Decimal(Coding_Length - Codon_Changes) / Decimal(Coding_Length))
-    Percent_Bases = str(Decimal(int(List1[14]) - BP_Changes) / Decimal(int(List1[14])))
+    Coding_Length = int(List1[14]) // 3
+    Percent_Codons = str(Decimal(Coding_Length - Codon_Changes) // Decimal(Coding_Length))
+    Percent_Bases = str(Decimal(int(List1[14]) - BP_Changes) // Decimal(int(List1[14])))
     Match_Length = Match_Length_Maker(PSL_Line)
     Blocks = Match_Start_Stop_Finder(PSL_Line)
-    Percent_Length = str(Decimal(Match_Length) / Decimal(int(List1[14])))
+    Percent_Length = str(Decimal(Match_Length) // Decimal(int(List1[14])))
     Out = List1[13] + '\t' + List1[9] + '\t' + str(Blocks[0][0]) + '\t' + str(Blocks[0][1]) + '\t' + Type + '\t' + Description + '\t' + str(Codon_Changes) + '\t' + str(BP_Changes) + '\t' + Percent_Codons + '\t' + Percent_Bases + '\t' + Percent_Length + '\t' + str(Match_Length) + '\t' + List1[14] + '\t' + str(Transversions)
     return Out
 
@@ -428,7 +428,7 @@ def Indel_Edge_Line(PSL_Line, genome_gene, gene):
     BP_Missing = Edge_BP_Missing(PSL_Line)
     BP_Total = BP_Changes + BP_Missing
     Sum = Indel_Sum(PSL_Line)
-    Codon_Sum = Sum / 3
+    Codon_Sum = Sum // 3
     if Type == 'Indel Truncation':
         Location = Truncation_Location(genome_gene)
         Location = str(Location + 1)
@@ -442,12 +442,12 @@ def Indel_Edge_Line(PSL_Line, genome_gene, gene):
     Type = Type + ' (contig edge)'
     Description = Description + ' for ' + str(int(List1[15]) + 1) + '-' + str(int(List1[16])) + ' of ' + List1[14] + ' bp'
     Transversions = Indel_Transversion_Count(PSL_Line, genome_gene, gene)
-    Coding_Length = int(List1[14]) / 3
-    Percent_Codons = str(Decimal(Coding_Length - Codon_Total) / Decimal(Coding_Length))
-    Percent_Bases = str(Decimal(int(List1[14]) - BP_Total) / Decimal(int(List1[14])))
+    Coding_Length = int(List1[14]) // 3
+    Percent_Codons = str(Decimal(Coding_Length - Codon_Total) // Decimal(Coding_Length))
+    Percent_Bases = str(Decimal(int(List1[14]) - BP_Total) // Decimal(int(List1[14])))
     Match_Length = Match_Length_Maker(PSL_Line)
     Blocks = Match_Start_Stop_Finder(PSL_Line)
-    Percent_Length = str(Decimal(Match_Length) / Decimal(int(List1[14])))
+    Percent_Length = str(Decimal(Match_Length) // Decimal(int(List1[14])))
     Out = List1[13] + '\t' + List1[9] + '\t' + str(Blocks[0][0]) + '\t' + str(Blocks[0][1]) + '\t' + Type + '\t' + Description + '\t' + str(Codon_Total) + '\t' + str(BP_Total) + '\t' + Percent_Codons + '\t' + Percent_Bases + '\t' + Percent_Length + '\t' + str(Match_Length) + '\t' + List1[14] + '\t' + str(Transversions)
     return Out
 
@@ -470,14 +470,14 @@ def Mutant_Line(PSL_Line, genome_gene, gene):
     if Is_Partial(PSL_Line) == True:
         Type = Type + ' (partial match)'
         Description = List1[1] + ' SNPs in ' + str(int(List1[15]) + 1) + '-' + str(int(List1[16])) + ',' + Description
-    Coding_Length = int(List1[14]) / 3
+    Coding_Length = int(List1[14]) // 3
     BP_Changes = Mutant_Count(str(genome_gene.seq), str(gene.seq))
     Transversions = Transversion_Count(str(genome_gene.seq), str(gene.seq))
-    Percent_Codons = str(Decimal(Coding_Length - Codon_Changes) / Decimal(Coding_Length))
-    Percent_Bases = str(Decimal(int(List1[14]) - BP_Changes) / Decimal(int(List1[14])))
+    Percent_Codons = str(Decimal(Coding_Length - Codon_Changes) // Decimal(Coding_Length))
+    Percent_Bases = str(Decimal(int(List1[14]) - BP_Changes) // Decimal(int(List1[14])))
     Match_Length = List1[14]
     Blocks = Match_Start_Stop_Finder(PSL_Line)
-    Percent_Length = str(Decimal(Match_Length) / Decimal(int(List1[14])))
+    Percent_Length = str(Decimal(Match_Length) // Decimal(int(List1[14])))
     Out = List1[13] + '\t' + List1[9] + '\t' + str(Blocks[0][0]) + '\t' + str(Blocks[0][1]) + '\t' + Type + '\t' + Description + '\t' + str(Codon_Changes) + '\t' + str(BP_Changes) + '\t' + Percent_Codons + '\t' + Percent_Bases + '\t' + Percent_Length + '\t' + str(Match_Length) + '\t' + List1[14] + '\t' + str(Transversions)
     return Out
 
@@ -536,9 +536,9 @@ def Edge_BP_Missing(PSL_Line):
 def Edge_Codon_Missing(PSL_Line):
     List1 = PSL_Line.split('\t')
     Blocks = Match_Start_Stop_Finder(PSL_Line)
-    Codons = int(List1[14]) / 3
+    Codons = int(List1[14]) // 3
     Front = math.ceil(Blocks[1][0] / float(3))
-    Back = Blocks[1][1] / 3
+    Back = Blocks[1][1] // 3
     Missing = Codons - (Back - int(Front))
     return Missing
 
@@ -549,15 +549,15 @@ def Edge_Line(PSL_Line, genome_gene, gene):
     Blocks = Match_Start_Stop_Finder(PSL_Line)
     Codon_Changes = Edge_Codon_Total(PSL_Line, genome_gene, gene)
     Codon_Count = Edge_Codon_Count(PSL_Line, genome_gene, gene)
-    Coding_Length = int(List1[14]) / 3
+    Coding_Length = int(List1[14]) // 3
     BP_Changes = Edge_BP_Total(PSL_Line, genome_gene, gene)
     BP_Count = Edge_BP_Count(PSL_Line, genome_gene, gene)
     Transversions = Edge_Transversion_Count(PSL_Line, genome_gene, gene)
     Description = str(BP_Count) + ' SNPs,' + str(Codon_Count) + ' coding mutations for ' + str(Blocks[1][0] + 1) + '-' + str(Blocks[1][1]) + ' of ' + List1[14] + ' bp'
-    Percent_Codons = str(Decimal(Coding_Length - Codon_Changes) / Decimal(Coding_Length))
-    Percent_Bases = str(Decimal(int(List1[14]) - BP_Changes) / Decimal(int(List1[14])))
+    Percent_Codons = str(Decimal(Coding_Length - Codon_Changes) // Decimal(Coding_Length))
+    Percent_Bases = str(Decimal(int(List1[14]) - BP_Changes) // Decimal(int(List1[14])))
     Match_Length = Match_Length_Maker(PSL_Line)
-    Percent_Length = str(Decimal(Match_Length) / Decimal(int(List1[14])))
+    Percent_Length = str(Decimal(Match_Length) // Decimal(int(List1[14])))
     Out = List1[13] + '\t' + List1[9] + '\t' + str(Blocks[0][0]) + '\t' + str(Blocks[0][1]) + '\t' + Type + '\t' + Description + '\t' + str(Codon_Changes) + '\t' + str(BP_Changes) + '\t' + Percent_Codons + '\t' + Percent_Bases + '\t' + Percent_Length + '\t' + str(Match_Length) + '\t' + List1[14] + '\t' + str(Transversions)
     return Out
 
