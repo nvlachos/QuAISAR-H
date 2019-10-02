@@ -17,6 +17,8 @@ import math
 ##Requires Python/2.7.3 and blat
 ##Usage: $ python GAMA_4.6.4_NAR_SciComp_Exe.py my_scaffolds.fasta NAR.fasta My_output.GAMA
 
+print (sys.version)
+
 def PSL_Type(PSL_Line):
     """Takes in a line from a PSL and returns its type"""
     List1 = PSL_Line.split('\t')
