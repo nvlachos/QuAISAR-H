@@ -7,19 +7,26 @@
 #$ -q short.q
 
 #Import the config file with shortcuts and settings
+if [[ ! -f "./config.sh" ]]; then
+	cp config_template.sh config.sh
+fi
 . ./config.sh
-${shareScript}/module_changers/list_modules.sh
+
+#
+# Description: Script to calculate the average nucleotide identity of a sample to a sketch file. *****INCOMPLETE***** at the moment
+#
+# Usage: ./run_ANI_from_sketch.sh sample_name	run_ID
+#
+# Output location: default_config.sh_output_location/run_ID/sample_name/ANI/
+#
+# Modules required: Python3/3.5.2, pyani/0.2.7, mashtree/0.29
+#
+# V1.0
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
 
 ml Python3/3.5.2 pyani/0.2.7 mashtree/0.29
-
-#
-# Script to calculate the average nucleotide identity of a sample to a sketch file
-# The most similar match is identified and provided for confirmation
-#
-# Usage ./run_ANI_from_sketch.sh sample_name	run_id
-#
-# Python/3.5.2 (pyani is located in Nick_DIR/script folder, not run from scicomp module)
-#
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -30,7 +37,7 @@ elif [[ -z "${1}" ]]; then
 	exit 1
 # Gives the user a brief usage and help section if requested with the -h option argument
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_ANI_from_sketch.sh sample_name run_id"
+	echo "Usage is ./run_ANI_from_sketch.sh sample_name run_ID"
 	echo "Output is saved to in ${processed}/sample_name/ANI"
 	exit 0
 elif [ -z "$2" ]; then
@@ -61,8 +68,8 @@ fi
 
 # Gets persons name to use as email during entrez request to identify best matching sample
 me=$(whoami)
-#echo ${me}"___"${1}___${2}___${3}___${4}
 
+# Using the premade sketch file of all refseq assemblies
 mash dist "${local_DBs}/aniDB/refseq.genomes.k21s1000.msh" "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" > "${OUTDATADIR}/ANI/${1}_all_refSeq.dists"
 sort -k3 -n -o "${OUTDATADIR}/ANI/${1}_all_sorted_refSeq.dists" "${OUTDATADIR}/ANI/${1}_all_refSeq.dists"
 
@@ -100,13 +107,20 @@ python -V
 echo "${OUTDATADIR}/ANI/localANIDB/"
 "${shareScript}/pyani_1/average_nucleotide_identity.py" -i "${OUTDATADIR}/ANI/localANIDB/" -o "${OUTDATADIR}/ANI/aniM5" -l "${OUTDATADIR}/ANI/aniM5.log" -m ANIm
 #./fastANI --refList "${OUTDATADIR}/ANI/twenty_closest_mash.list" --queryList "${OUTDATADIR}/ANI/twenty_closest_mash.list" -t "${procs}" --matrix -o "${OUTDATADIR}/ANI/matrix_identity.tsv"
-./fastANI --refList "${OUTDATADIR}/ANI/twenty_closest_mash.list" --query "${OUTDATADIR}/ANI/localANIDB/sample_${1}.fasta" -t "${procs}"
 
-#Calls pyani using scicomp module
-#module load pyani
-#. "${shareScript}/module_changers/load_python_3.6.sh"
-#`average_nucleotide_identity.py -i "${OUTDATADIR}/ANI/localANIDB" -o "${OUTDATADIR}/ANI/aniM3"`
-#. "${shareScript}/module_changers/unload_python_3.6.sh"
+
+
+
+
+This needs to be replaced with the pyani version, or replace the fastANI script before this will work
+#./fastANI --refList "${OUTDATADIR}/ANI/twenty_closest_mash.list" --query "${OUTDATADIR}/ANI/localANIDB/sample_${1}.fasta" -t "${procs}"
+
+
+
+
+
+
+
 
 #Extracts the query sample info line for percentage identity from the percent identity file
 while IFS='' read -r line || [ -n "$line" ]; do

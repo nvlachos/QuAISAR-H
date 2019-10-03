@@ -1,3 +1,21 @@
+#!/usr/bin/env python3
+
+#
+# Description: Script to go through an isolates MLST output and check and reformat any instances of partial or multiple profiles found. SUB for profile or allele means that there is
+# 	a novel allele or the profile has not been assigned yet, hence something needs to be submitted to pubmlst. AU (Allele Unknown) implies that an allele can not be determined
+# 	no profile can be determined from the current assembly/qc_reads
+#
+# Usage: is python3 ./check_and_fix_MLST.py -i input_MLST_file -t filetype_of_MLST_input_file (standard or srst2)
+#
+# Output location: default_config.sh_output_location/run_ID/sample_name/MLST/
+#
+# Modules required: None
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
+
 import sys
 import os
 import glob

@@ -7,14 +7,23 @@
 #$ -q short.q
 
 #Import the config file with shortcuts and settings
+if [[ ! -f "./config.sh" ]]; then
+	cp ./config_template.sh ./config.sh
+fi
 . ./config.sh
 
 #
-# Creates a tsv file that matches the output for the MMB_Seq log
+# Description: Creates a tsv file that matches the order of samples on the this when the run was created in QuAISAR (instead of matching the MMB_Seq log)
 #
-# Usage ./make_Seqlog_from_list.sh path_to_list
+# Usage: ./make_Seqlog_from_list.sh path_to_list
 #
-# No modules needed
+# Output location: same folder as path_to_list input parameter
+#
+# Modules required: None
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
 # Checks for proper argumentation

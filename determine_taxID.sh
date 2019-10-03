@@ -13,12 +13,16 @@ fi
 . ./config.sh
 
 #
-# Creates a single file that attempts to pull the best taxonomic information from the isolate. Currently, it operates in a linear fashion, e.g. 1.ANI, 2.16s, 3.kraken, 4.Gottcha
-# The taxon is chosen based on the highest ranked classifier first
+# Description: Creates a single file that attempts to pull the best taxonomic information from the isolate. Currently, it operates in a linear fashion, e.g. 1.ANI, 2.16s, 3.kraken, 4.Gottcha
+# 	The taxon is chosen based on the highest ranked classifier first
 #
-# Usage ./determine_texID.sh sample_name project_ID
+# Usage: ./determine_texID.sh sample_name project_ID
 #
-# No modules required
+# Modules required: None
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
 # Checks for proper argumentation
@@ -33,7 +37,7 @@ elif [[ "${1}" = "-h" ]]; then
 	echo "Output is saved to ${processed}/run_ID/sample_ID/taxonomy.csv"
 	exit 0
 elif [[ -z "${2}" ]]; then
-	echo "Empty run_id supplied to determine_taxID.sh, exiting"
+	echo "Empty run_ID supplied to determine_taxID.sh, exiting"
 	exit 1
 fi
 

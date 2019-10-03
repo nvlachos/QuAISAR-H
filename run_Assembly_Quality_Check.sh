@@ -12,14 +12,23 @@ if [[ ! -f "./config.sh" ]]; then
 fi
 . ./config.sh
 
-ml quast/4.3 Python2/2.7.15
+#
+# Description: Checks the Assembly quality  using Toms tool and QUAST and comparing the output of both
+# 	Important stats are # of contigs, assembly length, n%0 and G/C content
+#
+# Usage: ./run_Assembly_Quality_Check.sh   sample_name   run_ID [-p]
+# 	Optional p flag is to run it only on the plasmid assembly, assuming it is in the default location of the config file and unicycled
+#
+# Output location: default_config.sh_output_location/run_ID/sample_name/Assembly_Stats(_plasFlow)
+#
+# Modules required: quast/4.3, python2/2.7.15(loaded by quast/4.3)
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
 
-#
-# Checks the Assembly quality  using Toms tool and QUAST and comparing the output of both
-# Important stats are # of contigs, assembly length, n%0 and G/C content
-#
-# Usage ./run_Assembly_Quality_Check.sh   sample_name   run_id [-p]
-#
+ml quast/4.3 Python2/2.7.15
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -30,8 +39,8 @@ elif [[ -z "${1}" ]]; then
 	exit 1
 # Gives the user a brief usage and help section if requested with the -h option argument
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_Assembly_Quality_Check.sh   sample_name run_id"
-	echo "Output is saved to ${processed}/miseq_run_id/sample_name/Assembly_Stats"
+	echo "Usage is ./run_Assembly_Quality_Check.sh   sample_name run_ID"
+	echo "Output is saved to ${processed}/miseq_run_ID/sample_name/Assembly_Stats"
 	exit 0
 elif [ -z "$2" ]; then
 	echo "Empty project id supplied to run_Assembly_Quality_Check.sh, exiting"

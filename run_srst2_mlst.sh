@@ -6,22 +6,28 @@
 #$ -cwd
 #$ -q short.q
 
-#Import the config file with shortcuts and settings
+# Import the config file with shortcuts and settings
+if [[ ! -f "./config.sh" ]]; then
+	cp ./config_template.sh ./config.sh
+fi
 . ./config.sh
-#Import the module file that loads all necessary mods
-#. "${mod_changers}/pipeline_mods"
-#module clear
-#. "${mod_changers}/prep_srst2.sh"
-#. "${mod_changers}/list_modules.sh"
+
+#
+# Description: Script to use srst2 to attempt to find mlst profile on reads. Used if standard mlst profiling fails
+#
+# Usage: ./run_srst2_mlst.sh   sample_name   MiSeq_Run_ID	Genus	species
+#
+# Output location: default_config.sh_output_location/run_ID/sample_name/MLST/
+#
+# Modules required: srst2/0.2.0 bowtie2/2.2.4(?)
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
 
 ml srst2 bowtie2/2.2.4
-
 ml
-#
-# Usage ./run_srst2_mlst.sh   sample_name   MiSeq_Run_ID	Genus	species
-#
-# script uses srst2 to find MLST types
-#
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -154,5 +160,4 @@ if [[ -f "${processed}/${2}/${1}/MLST/${1}__${1}.${genus}_${species}.sorted.bam"
 	rm -r "${processed}/${2}/${1}/MLST/${1}__${1}.${genus}_${species}.sorted.bam"
 fi
 
-
-# . "${mod_changers}/close_srst2.sh"
+ml -srst2 -bowtie2/2.2.4

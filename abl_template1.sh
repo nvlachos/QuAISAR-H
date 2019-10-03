@@ -7,12 +7,23 @@
 #$ -q short.q
 
 #Import the config file with shortcuts and settings
+if [[ ! -f "./config.sh" ]]; then
+	cp ./config_template.sh ./config.sh
+fi
 . ./config.sh
-#Import the module file that loads all necessary mods
-#. "${mod_changers}/pipeline_mods"
 
 #
-# Usage ./act_by_list_template.sh path_to_list path_for_output_file
+# Description: Quick and dirty way to perform something on a list of samples in the standard format (project/sample_name)
+#
+# Usage: ./act_by_list_template.sh path_to_list
+#
+# Output location: Varies on contents
+#
+# Modules required: Varies on contents
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
 # Checks for proper argumentation
@@ -23,16 +34,19 @@ if [[ $# -eq 0 ]]; then
 elif [[ "$1" = "-h" ]]; then
 	echo "Usage is ./act_by_list_template.sh path_for_list_file"
 	exit 0
+elif [[ ! -f "${1}" ]]; then
+	echo "List file (${1}) does not exist, can not proceed"
+	exit 0
 fi
 
 # Loop through and act on each sample name in the passed/provided list
 while IFS= read -r var; do
 	sample_name=$(echo "${var}" | cut -d'/' -f2 | tr -d '[:space:]')
 	project=$(echo "${var}" | cut -d'/' -f1 | tr -d '[:space:]')
-	cat ${processed}/${project}/${sample_name}/c-sstar/${sample_name}.cdiff_gyrases.gapped_98_sstar_summary.txt
-	#cat "${processed}/${project}/${sample_name}/c-sstar/${sample_name}.cdiff_gyrases.gapped_98_sstar_summary.txt" >> "/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick/Projects/Clostridioides_difficile_project/set2_100_gyrases.txt"
+	echo "Found ${project}/${sample_name} in the list"
 done < "${1}"
 
+# Send a completion email to whoever ran the script
 echo "All isolates completed"
 global_end_time=$(date "+%m-%d-%Y @ %Hh_%Mm_%Ss")
 #Script exited gracefully (unless something else inside failed)

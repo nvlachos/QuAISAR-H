@@ -1,9 +1,17 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-# ==============================================================================
-# Conversion script: from MetaPhlAn output to Krona text input file
-# Author: Daniel Brami (daniel.brami@gmail.com)
-# ==============================================================================
+#
+# Conversion script from MetaPhlAn output to Krona text input file
+# Usage python ./Metaphlan2krona.py -p metaphlan_input_file -k krona_output_file
+#
+# Output location: Parameter
+#
+# Modules required: None
+#
+# v1.0 (10/3/2019)
+#
+# Created by Daniel Brami (daniel.brami@gmail.com)
+#
 
 import sys
 import optparse
@@ -13,7 +21,7 @@ def main():
     #Parse Command Line
     parser = optparse.OptionParser()
     parser.add_option( '-p', '--profile', dest='profile', default='', action='store', help='The input file is the MetaPhlAn standard result file' )
-    parser.add_option( '-k', '--krona', dest='krona', default='krona.out', action='store', help='the Krons output file name' )
+    parser.add_option( '-k', '--krona', dest='krona', default='krona.out', action='store', help='the Krona output file name' )
     ( options, spillover ) = parser.parse_args()
 
     if not options.profile or not options.krona:
@@ -29,7 +37,7 @@ def main():
         metaPhLan = f.readlines()
     f.close()
 
-    krona_tmp = options.krona 
+    krona_tmp = options.krona
     metaPhLan_FH = open(krona_tmp, 'w')
 
     for aline in (metaPhLan):

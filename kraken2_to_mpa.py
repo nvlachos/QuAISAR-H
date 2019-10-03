@@ -1,3 +1,19 @@
+#!/usr/bin/env python3
+
+#
+# Description: Script to convert kraken2 file to mpa file
+#
+# Usage: python3 ./kraken2_report_from_kraken.py -i input_kraken2_file -o output_mpa_filename
+#
+# Output location: parameter
+#
+# Modules required: Biopython must be available in python instance
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
+
 import sys
 import glob
 import fileinput

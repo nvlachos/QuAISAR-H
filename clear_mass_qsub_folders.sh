@@ -7,10 +7,23 @@
 #$ -q short.q
 
 #Import the config file with shortcuts and settings
+if [[ ! -f "./config.sh" ]]; then
+	cp ./config_template.sh ./config.sh
+fi
 . ./config.sh
 
 #
+# Description: Script to clean up script and mass qsub folders of proscripts made while mass submitting many parallele jobs
+#
 # Usage ./clear_mass_qsub_folders [1,2,3] (1-qsub folders, 2-sharescript outs/errs, 3-Both) folder_containing_script_files_to_be_deleted
+#
+# Output location: No output created
+#
+# Modules required: None
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
 # Clears out script folder of all .sh, .err, and .out files and the complete folders within each qsub type folder

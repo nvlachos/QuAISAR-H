@@ -12,18 +12,23 @@ if [[ -f config_template.sh ]]; then
 		cp config_template.sh config.sh
 	fi
 fi
-. ./config.sh
-#Import the module file that loads all necessary mods
-. "${mod_changers}/pipeline_mods"
-. "${mod_changers}/list_modules.sh"
 
-ml Python3/3.5.2 mashtree/0.29
-
+#
+# Description: Pulls out MLST, AR genes, and plasmid repicons and creates a mashtree for the listed samples and consolidates them into one sheet
 #
 # Usage ./outbreak_analysis.sh path_to_list gapped/ungapped (analysis ran) identity (80/95/98/99/100) analysis_identifier(e.g. outbreak identifier) output_directory(will create a folder at this location with name of analysis_identifier) clobberness[keep|clobber]
-# ***Must be submitted as a job (or run on the cluster) if there are isolates that need to have csstar or srst2 updated
-# Pulls out MLST, AR genes, and plasmid repicons and creates a mashtree for the listed samples and consolidates them into one sheet
 #
+# Output location: Parameter
+#
+# Modules required: Python3/3.5.2, mashtree/0.29
+#		***Must be submitted as a job (or run on the cluster) if there are isolates that need to have csstar, GAMA or srst2 updated
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
+
+ml Python3/3.5.2 mashtree/0.29
 
 # Number regex to test max concurrent submission parametr
 number='^[0-9]+$'
@@ -103,6 +108,9 @@ if [[ -f ${output_directory}/${4}-srst2_rejects.txt ]]; then
 	rm ${output_directory}/${4}-srst2_rejects.txt
 fi
 
+# Clean list of any extra spaces and formatting
+"${shareScript}/clean_list.sh" "${1}"
+
 # Creates a dictionary to match genes to AR conferred when parsing srst files
 declare -A groups
 echo ""
@@ -128,12 +136,6 @@ run_GAMA="false"
 > "${output_directory}/${4}_csstar_todo.txt"
 > "${output_directory}/${4}_srst2_todo.txt"
 > "${output_directory}/${4}_GAMA_todo.txt"
-
-# Remove blank lines in list files
-#dos2unix ${1}
-#sed -i "" '/^[[:space:]]*$/d' ${i}
-#cat ${1} | tr -s '\n' '\n'
-ex -s +'v/\S/d' -cwq ${1}
 
 # Check that each isolate has been compared to the newest ResGANNCBI DB file
 if [[ "${clobberness}" == "keep" ]]; then
@@ -504,7 +506,7 @@ while IFS= read -r line; do
 	# 		ARDB_plasmid="${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt"
 	# 	else
 	# 		echo "It STILL STILL thinks it needs to put ${sample_name} trhough plasmid csstar"
-	# 		#${shareScript}/run_c-sstar_on_single.sh "${sample_name}" "${gapping}" "${sim}" "${project}" "--plasmid"
+	# 		#${shareScript}/run_c-sstar.sh "${sample_name}" "${gapping}" "${sim}" "${project}" "--plasmid"
 	# 		#ARDB_plasmid="${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${ResGANNCBI_srst2_filename}.${2}_${sim}_sstar_summary.txt"
 	# 	fi
 	# 	while IFS= read -r line || [ -n "$line" ]; do
@@ -599,7 +601,7 @@ while IFS= read -r line; do
 done < ${1}
 
 # Calls script that sorts and formats all isolates info into a matrix for easy viewing
-python3 "${shareScript}/project_parser.py" -c "${output_directory}/${4}-sample_summary.txt" -p "${output_directory}/${4}-plasmid_summary.txt" -o "${output_directory}/${4}_AR_plasmid_report.csv" -d "${ResGANNCBI_srst2_filename}"
+python3 "${shareScript}/project_parser.py" -s "${output_directory}/${4}-sample_summary.txt" -p "${output_directory}/${4}-plasmid_summary.txt" -o "${output_directory}/${4}_AR_plasmid_report.csv" -d "${ResGANNCBI_srst2_filename}"
 
 submitter=$(whoami)
 global_end_time=$(date "+%m-%d-%Y @ %Hh_%Mm_%Ss")

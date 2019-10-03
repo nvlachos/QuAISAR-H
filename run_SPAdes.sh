@@ -13,11 +13,17 @@ fi
 . ./config.sh
 
 #
-# Runs SPAdes on sample to align reads into best possible assembly
+# Description: Runs SPAdes on sample to align reads into best possible assembly
 #
-# Usage ./run_spades.sh sample_name   normal/plasmid    run_id
+# Usage: ./run_spades.sh sample_name   normal/plasmid    run_ID
 #
-# Modules required SPAdes/3.10.1
+# Output location: default_config.sh_output_location/run_ID/sample_name/Assembly
+#
+# Modules required: SPAdes/3.10.1
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
 ml SPAdes/3.13.0
@@ -30,8 +36,8 @@ elif [[ -z "${1}" ]]; then
 	echo "Empty sample name supplied to run_SPAdes.sh, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_SPAdes.sh sample_name   [normal/plasmid]   run_id"
-	echo "Output by default is sent to ${processed}/miseq_run_id/sample_name/Assembly"
+	echo "Usage is ./run_SPAdes.sh sample_name   [normal/plasmid]   run_ID"
+	echo "Output by default is sent to ${processed}/miseq_run_ID/sample_name/Assembly"
 	exit 0
 elif [ -z "$2" ]; then
 	echo "Empty run type supplied to run_SPAdes.sh, Should be either normal or  plasmid. Exiting"

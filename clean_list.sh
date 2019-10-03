@@ -13,9 +13,17 @@ fi
 . ./config.sh
 
 #
-# Script to clean any list file of extra newlines and space
+# Description: Script to clean any list file of extra newlines and space
 #
 # Usage ./clean_list.sh path_to_list_file
+#
+# Output location: same folder as path_to_list
+#
+# Modules required: None
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
 # Checks for proper argumentation
@@ -31,28 +39,23 @@ elif [[ "${1}" = "-h" ]]; then
 	exit 0
 fi
 
+# Makes a backup of original list file
 cp -f ${1} ${1}.original
+
+# Puts list through dos2unix to convert any windows line returns to unix
 dos2unix ${1}.original
-#> ${1}
-#while IFS= read -r line; do
-#	echo "O:${line}"
-#	line=$(sed 's/*[[:space:]]*//g')
-#	echo "N:${line}:"
-#done < "${1}.original"
 
 tr -d ' \t\r\f' < ${1}.original > ${1}
 ex -s +'v/\S/d' -cwq ${1}
 
+# Shows all old lines from list
 while IFS= read -r line; do
 	echo "O:${line}:"
-#	line=$(sed 's/*[[:space:]]*//g')
-#	echo "N:${line}:"
 done < "${1}.original"
 
+# Shows all new lines in list
 while IFS= read -r line; do
 	echo "N:${line}:"
-#	line=$(sed 's/*[[:space:]]*//g')
-#	echo "N:${line}:"
 done < "${1}"
 
 #Script exited gracefully (unless something else inside failed)

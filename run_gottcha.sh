@@ -13,13 +13,17 @@ fi
 . ./config.sh
 
 #
-# Runs the gottcha classification tool (now only at species level) which identifies the most likely taxonomic classification for the sample
+# Description: Runs the gottcha classification tool (now only at species level) which identifies the most likely taxonomic classification for the sample
 #
-# Usage ./run_gottcha.sh sample_name run_id
+# Usage: ./run_gottcha.sh sample_name run_ID
 #
-# requires modules gottcha and perl 5.12.3
+# Output location: default_config.sh_output_location/run_ID/sample_name/gottcha/
 #
-# !Version 1
+# Modules required: gottcha, perl/5.12.3
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
 ml perl/5.12.3  gottcha
@@ -32,8 +36,8 @@ elif [[ -z "${1}" ]]; then
 	echo "Empty sample name supplied to run_gottcha.sh, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_gottcha.sh   sample_name    run_id"
-	echo "Output is saved to ${processed}/miseq_run_id/sample_name/gottcha/"
+	echo "Usage is ./run_gottcha.sh   sample_name    run_ID"
+	echo "Output is saved to ${processed}/miseq_run_ID/sample_name/gottcha/"
 	exit 0
 elif [ -z "$2" ]; then
 	echo "Empty project id name supplied to run_gottcha.sh, exiting"
@@ -53,9 +57,6 @@ if [ ! -d "$OUTDATADIR/gottcha/gottcha_S" ]; then  #create outdir if absent
 	echo "Creating $OUTDATADIR/gottcha/gottcha_S"
 	mkdir -p "$OUTDATADIR/gottcha/gottcha_S"
 fi
-
-# Needs perl v5.12.3 to function properly
-. "${shareScript}/module_changers/perl_5221_to_5123.sh"
 
 if [[ ! -f "${OUTDATADIR}/trimmed/${1}.paired.fq" ]]; then
 	if [[ -f "${OUTDATADIR}/trimmed/${1}.paired.fq.gz" ]]; then

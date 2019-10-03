@@ -6,11 +6,31 @@
 #$ -cwd
 #$ -q short.q
 
-# Copy config file into working directory to allow changes to made to output directory if necessary
+# Sets the sharescript variable temporarily to the current working directory, allowing it to find the original config.sh file
 shareScript=$(pwd)
 #Import the config file with shortcuts and settings
 . ${shareScript}/config.sh
 
+#
+# Description: The wrapper script that runs the QuAISAR-H pipeline in a grid scheduler environment.
+# There are 2 ways to call the script. 1. If there is a default location and format that reads are kept then set that in the config file and use -p and the subfolder name containing the fastq files,
+# or if the location is not in a standard place then use -i and the format number matching the reads post_fix and set output directory with -o as follows
+#
+# Usage 1: ./parallel_quaisar.sh -p name_of_subfolder_within_default_read_location
+# Usage 2: ./parallel_quaisar.sh -i path_to_reads_folder 1|2|3|4 -o path_to_parent_output_folder_location name_of_output_folder
+#
+# Output location: Parameter or default_config.sh_output_location if p flag is used
+#
+# Modules required: None
+#		*script must be run on cluster or grid scheduler machine
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
+
+
+# Creates a copy of config file to use for each run of the script, in case there is a change in output locations
 echo "${shareScript}"
 config_counter=0
 while true
@@ -33,20 +53,6 @@ do
 	fi
 done
 
-
-
-
-#
-# The wrapper script that runs all the tools that have been designated as necessary (and some others that are typically run also)
-#
-# Usage ./parallel_quisar.sh
-# -i path (1,2,3)						: Path to directory containing all zipped fastq files, must include numerical identifier of postfix naming scheme (1:_L001_SX_RX_00X.fastq.gz 2: _(R)X.fastq.gz 3: _RX_00X.fastq.gz 4: _SX_RX_00X.fastq.gz)
-# -p/l/s(project/list/single) identifier: project pulls every sample from a particular "project" (or run identifier). Samples will be downloaded from instruments also.
-# 							   			  list will only process samples found on the list
-#							   			  sample will process the single sample supplied
-#                                         *list and sample must have had the fastq files already downloaded and extracted
-#
-
 #Print out which type of machine the script is running on (Biolinux or Aspen as an interactive session or node based)
 if [ "${host}" = "biolinux" ];
 then
@@ -68,9 +74,13 @@ fi
 
 # Checking for proper number of arguments from command line
 if [[ $# -lt 1  || $# -gt 7 ]]; then
-        echo "Usage: ./parallel_quaisar.sh [i] [o] [p] [project_name/list_of_samples.txt/sample_name]"
-        echo "You have used $# args"
-        exit 3
+	echo "If reads are in default location set in config file then"
+  echo "Usage: ./parallel_quaisar.sh -p project_name"
+	echo "else if you are running it on reads not in the default location or format"
+	echo "Usage: ./parallel_quaisar.sh -i location_of_reads 1|2|3|4 -o path_to_parent_output_folder_location name_of_output_folder "
+	echo "filename postfix numbers are as follows 1:_L001_SX_RX_00X.fastq.gz 2: _(R)X.fastq.gz 3: _RX_00X.fastq.gz 4: _SX_RX_00X.fastq.gz"
+  echo "You have used $# args"
+  exit 3
 fi
 
 # Checks the arguments (more to come)
@@ -87,13 +97,11 @@ for ((i=1 ; i <= nopts ; i++)); do
 		#Help/Usage section
 		-h | --help)
 			echo -e "\\n\\n\\n"
-			echo "Usage: ./parallel_quisar.sh [i] directory of FASTQ files [1,2,3,4] name format [o] output directory [p] project_name(folder)"
-			echo "i - input folder location containing all ZIPPED FASTQ files, must also include additional parameter after this indicating what postfix files will be"
-			echo "1,2,3 - options that correlate to postfix files types (1=_SX_RX_00X_fastq.gz. 2=_RX.fastq.gz. 3=X.fastq.gz)"
-			echo "o - output folder where to put project folder"
-			echo "Must also give identifier to type of files, whether it is the project name, the text file containing a list of samples, or simply"
-			echo "a single sample_id".
-			echo "For samples in list or single mode - each name must include source project \"e.g. 170818_M02103_0075_000000000-B8VHY/1723664\""
+			echo "If reads are in default location set in config file then"
+		  echo "Usage: ./parallel_quaisar.sh -p project_name"
+			echo "else if you are running it on reads not in the default location or format"
+			echo "Usage: ./parallel_quaisar.sh -i location_of_reads 1|2|3|4 -o path_to_parent_output_folder_location name_of_output_folder "
+			echo "filename postfix numbers are as follows 1:_L001_SX_RX_00X.fastq.gz 2: _(R)X.fastq.gz 3: _RX_00X.fastq.gz 4: _SX_RX_00X.fastq.gz"
 			echo -e "\\n\\n\\n"
 			exit 0
 			;;
@@ -138,14 +146,14 @@ for ((i=1 ; i <= nopts ; i++)); do
 				for run_folder in "${instrument}"/*
 				do
 					# Gets folder names in current directory
-					run_id=${run_folder##*/}
-					#echo "${run_id} - ${PROJECT}"
+					run_ID=${run_folder##*/}
+					#echo "${run_ID} - ${PROJECT}"
 					# If folder name matches project name
-					if [[ "${run_id}" = "${PROJECT}" ]]; then
+					if [[ "${run_ID}" = "${PROJECT}" ]]; then
 						# Print that a match was found
-						echo "Found project ${run_id} in ${instrument}"
+						echo "Found project ${run_ID} in ${instrument}"
 						# Go through every file in the Basecalls folder of the found folder (all files will only be fastq.gzs)
-						INDATADIR="${instrument}/${run_id}/Data/Intensities/BaseCalls"
+						INDATADIR="${instrument}/${run_ID}/Data/Intensities/BaseCalls"
 						break
 					fi
 				done
@@ -344,11 +352,10 @@ if [ -n "$(find "${shareScript}" -maxdepth 1 -name 'core.*' -print -quit)" ]; th
 	find "${shareScript}" -maxdepth 1 -name 'core.*' -exec rm -f {} \;
 fi
 
-# Copy the config file to the log directory so as not to hold up any future quaisar runs that count the number of config files present
+# Copy the config file to the log directory so as not to hold up any future quaisar runs that count the number of config files present, but for some reason does not remove from script folder
 if [[ -f "${shareScript}/config_${config_counter}.sh" ]]; then
 	echo "Supposedly moving config file(config_${config_counter}.sh) to log directory ($log_dir)"
 	mv "${shareScript}/config_${config_counter}.sh" "${log_dir}/config_${PROJECT}.sh"
-	:
 fi
 
 end_date=$(date "+%m_%d_%Y_at_%Hh_%Mm")

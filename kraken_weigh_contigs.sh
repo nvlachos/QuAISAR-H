@@ -11,14 +11,19 @@ if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
 . ./config.sh
-# No MODs needed
 
 #
-# Grabs the best species match based on %/read hits from the kraken tool run
+# Description: Grabs the best species match based on %/read hits from the kraken tool run
 #
-# Usage ./kraken_weigh_contigs.sh sample_name run_id kraken_version[kraken|kraken2]
+# Usage: ./kraken_weigh_contigs.sh sample_name run_ID kraken_version[kraken|kraken2]
 #
-# No modules needed to run
+# Output location: default_config.sh_output_location/run_ID/sample_name/kraken(2)/
+#
+# No modules required
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
 # Checks for proper argumentation
@@ -29,8 +34,8 @@ elif [ -z "$1" ]; then
 	echo "Empty sample name supplied to $0, exiting"
 	exit 1
 elif [[ "$1" = "-h" ]]; then
-	echo "Usage is ./kraken_weigh_contigs.sh  sample_name  [pre/post] [paired/assembled] run_id"
-	echo "Output is saved to ${processed}/miseq_run_id_id/sample_name/kraken/(pre/post)assembly/sample_name_kraken_summary_(paired/assembled)"
+	echo "Usage is ./kraken_weigh_contigs.sh  sample_name  [pre/post] [paired/assembled] run_ID"
+	echo "Output is saved to ${processed}/miseq_run_ID_id/sample_name/kraken/(pre/post)assembly/sample_name_kraken_summary_(paired/assembled)"
 	exit 0
 elif [ -z "$2" ]; then
 	echo "Empty project id supplied to $0, exiting"
@@ -51,6 +56,7 @@ if [[ ! -s "${OUTDATADIR}/${1}_assembled.${3}" ]]; then
 	exit 1
 fi
 
+# Tells script which version of kraken was run (and where to go to get the correct files)
 if [[ "${3}" != "kraken" ]] && [[ "${3}" != "kraken2" ]]; then
 	echo "Invalid kraken version supplied, exiting"
 	exit 4
@@ -110,10 +116,6 @@ if [[ ! -s "${OUTDATADIR}/${1}_assembled_weighted.mpa" ]]; then
 	echo "${OUTDATADIR}/${1}_assembled_weighted.mpa does not exist, cant do mpa adjustment"
 	exit 1
 fi
-
-
-
-
 
 #Script exited gracefully (unless something else inside failed)
 exit 0

@@ -3,8 +3,20 @@
 
 
 #
-# Script to consolidate all configuration type settings for quasar pipeline and any tools contained within
+# Description: Script to consolidate all configuration type settings for quasar pipeline and any tools contained within
+# 	Just needs to be sourced within a script to acquire all variables stored within
 #
+# Usage: . ./config.sh
+#
+# Output location: No output created
+#
+# Modules required: None
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
+
 
 # Get hostname to help determine if certain tools can be run and how to specifically get others to run with the right options
 hostname=$(hostname -f)
@@ -37,8 +49,7 @@ mass_qsub_folder="/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/mass_subs"
 if [[ ! -d "/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/mass_subs" ]]; then
 	mkdir -p "/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/mass_subs"
 fi
-# Location of any files being called that have an effect on loaded modules
-mod_changers="${shareScript}/module_changers"
+
 # Local databases that are necessary for pipeline...ANI, BUSCO, star, adapters, phiX
 local_DBs="/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases"
 # Scicomp databases that are necessary for pipeline...eventually refseq, kraken, gottcha,

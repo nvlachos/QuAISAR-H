@@ -13,9 +13,17 @@ fi
 . ./config.sh
 
 #
-# Runs SPAdes on sample to align reads into best possible assembly
+# Description: Runs SCCmesFinder on isolate to find mec types in staph samples
 #
-# Usage ./run_SCCmecFinder.sh sample_name	run_id
+# Usage: ./run_SCCmecFinder.sh sample_name	run_ID
+#
+# Output location: default_config.sh_output_location/run_ID/sample_name/SCCmec
+#
+# Modules required: None
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
 # Checks for proper argumentation
@@ -26,8 +34,8 @@ elif [[ -z "${1}" ]]; then
 	echo "Empty sample name supplied to run_SPAdes.sh, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_SCCmecFinder.sh sample_name	run_id"
-	echo "Output by default is sent to ${processed}/miseq_run_id/sample_name/SCCmec"
+	echo "Usage is ./run_SCCmecFinder.sh sample_name	run_ID"
+	echo "Output by default is sent to ${processed}/miseq_run_ID/sample_name/SCCmec"
 	exit 0
 elif [ -z "${2}" ]; then
 	echo "Empty project id supplied to run_SPAdes.sh, exiting"

@@ -17,6 +17,23 @@ But mostly I guessed how the format works.  So bugs are guaranteed.
 brendan o'connor - anyall.org - gist.github.com/22764
 """
 
+#
+# Description: Script to convert our seqlog xlsx file to a command line manageable tsv file
+#   *** Must be run in python2, currently. Working on converting it to python3
+#
+# Usage: python2 ./xlsx_converter.py input_xlsx_file sheet_name_to_convert
+#
+# Output location: standard out
+#
+# Modules required: None
+#
+# v1.0 (10/3/2019)
+#
+# Created by brendan o'connor
+# Git: gist.github.com/22764
+#
+
+
 #from __future__ import print_function
 import xml.etree.ElementTree as ET
 import os,sys,zipfile,re,itertools

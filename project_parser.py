@@ -1,3 +1,19 @@
+#!/usr/bin/env python3
+
+#
+# Description: Conversion script from MetaPhlAn output to Krona text input file
+#
+# Usage: python ./project_parser.py -p metaphlan_input_file -k krona_output_file
+#
+# Output location: Parameter
+#
+# Modules required: None
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
+
 import sys
 import glob
 import math
@@ -6,15 +22,15 @@ import argparse
 # Parse all arguments from command line
 def parseArgs(args=None):
 	parser = argparse.ArgumentParser(description='Script to consolidate all info into a single report for outbreak analysis')
-	parser.add_argument('-c', '--csstar', required=True, help='input summary filename')
+	#parser.add_argument('-c', '--csstar', required=True, help='input summary filename')
 	parser.add_argument('-p', '--plasmid', required=True, help='input plasmid filename')
-	#parser.add_argument('-s', '--srst2', required=True, help='input srst2 filename')
+	parser.add_argument('-s', '--summary', required=True, help='input sample summary file filename')
 	parser.add_argument('-o', '--output', required=True, help='output csv filename')
 	parser.add_argument('-d', '--database', required=True, help='database file used in AR discovery')
 	return parser.parse_args()
 
 
-# main function that sorts and formats all AR genes found using csstar and srst2 that have already been filtered for % identity and % length
+# main function that sorts and formats all AR genes found using csstar, GAMA and srst2 that have already been filtered for % identity and % length
 def do_AR(input_summary_AR, input_plas, output_file, DB_name):
 	all_ARs_in_file=[]
 	samples=[]
@@ -265,4 +281,4 @@ def do_AR(input_summary_AR, input_plas, output_file, DB_name):
 
 print("Parsing project AR files ...\n")
 args = parseArgs()
-do_AR(args.csstar, args.plasmid, args.output, args.database)
+do_AR(args.summary, args.plasmid, args.output, args.database)

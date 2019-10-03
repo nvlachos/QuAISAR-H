@@ -3,7 +3,7 @@
 #$ -o qfa.out
 #$ -e qfa.err
 #$ -N qfa
-#$ -pe smp 10
+#$ -pe smp 12
 #$ -cwd
 #$ -q short.q
 
@@ -14,10 +14,18 @@ fi
 . ./config.sh
 
 #
-# Accessory to original quaisar that only completes from assembly on for any failed assembly isolates
+# Description: Alternate version of the main QuAISAR-H pipeline that (re)starts from the assembly step, project/isolate_name must already have a populated FASTQs folder to work with
+# 	This script assumes the sample is located in the default location ($processed) specified within the config file
 #
-# Usage ./quaisar_failed_assembly.sh isolate_name project_name
-#  project/isolate_name must already have a populated FASTQs folder to work with
+# Usage: ./quaisar_failed_assembly.sh isolate_name project_name
+#
+# Output location: default_config.sh_output_location
+#
+# Modules required: None
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
 # Checks for proper argumentation
@@ -25,12 +33,12 @@ if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./quaisar_failed_assembly.sh  sample_name miseq_run_id(or_project_name)"
-	echo "Populated FASTQs folder needs to be present in ${2}/${1}, wherever it resides"
-	echo "Output by default is processed to processed/miseq_run_id/sample_name"
+	echo "Usage is ./quaisar_failed_assembly.sh  sample_name miseq_run_ID(or_project_name)"
+	echo "Populated trimmed folder needs to be present in ${2}/${1}, wherever it resides"
+	echo "Output by default is processed to processed/miseq_run_ID/sample_name"
 	exit 0
 elif [[ -z "${2}" ]]; then
-	echo "No Project/Run_ID supplied to quaisar_template.sh, exiting"
+	echo "No Project/Run_ID supplied to quaisar_failed_assembly.sh, exiting"
 	exit 33
 fi
 
@@ -283,7 +291,6 @@ if [[ -d "${OUTDATADIR}/${sample_name}/ANI" ]]; then
 fi
 
 "${shareScript}/run_ANI.sh" "${sample_name}" "${genus}" "${species}" "${project}"
-#"${shareScript}/run_ANI.sh" "${sample_name}" "All" "All" "${project}"
 # Get end time of ANI and calculate run time and append to time summary (and sum to total time used
 end=$SECONDS
 timeANI=$((end - start))
@@ -339,8 +346,8 @@ echo "----- Running c-SSTAR for AR Gene identification -----"
 start=$SECONDS
 
 # Run csstar in default mode from config.sh
-"${shareScript}/run_c-sstar_on_single.sh" "${sample_name}" "${csstar_gapping}" "${csstar_identity}" "${project}"
-"${shareScript}/run_c-sstar_on_single_alternate_DB.sh" "${sample_name}" "${csstar_gapping}" "${csstar_identity}" "${project}" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
+"${shareScript}/run_c-sstar.sh" "${sample_name}" "${csstar_gapping}" "${csstar_identity}" "${project}"
+"${shareScript}/run_c-sstar_altDB.sh" "${sample_name}" "${csstar_gapping}" "${csstar_identity}" "${project}" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
 
 
 # Run GAMA on Assembly
@@ -409,7 +416,7 @@ totaltime=$((totaltime + timeplasfin))
 if [[ "${family}" == "Enterobacteriaceae" ]]; then
 	start=$SECONDS
 	${shareScript}/run_plasFlow.sh "${sample_name}" "${project}"
-	${shareScript}/run_c-sstar_on_single_plasFlow.sh "${sample_name}" g o "${project}" -p
+	${shareScript}/run_c-sstar_plasFlow.sh "${sample_name}" g o "${project}" -p
 	${shareScript}/run_plasmidFinder.sh "${sample_name}" "${project}" plasmid_on_plasFlow
 	${shareScript}/run_GAMA.sh "${filename}" "${project}" -p
 

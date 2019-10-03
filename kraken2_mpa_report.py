@@ -1,3 +1,19 @@
+#!/usr/bin/env python3
+
+#
+# Description: Script to translate kraken2 file to label file
+#
+# Usage: python3 ./kraken2_mpa_report.py -i input_kraken2_file -o output_label_filename
+#
+# Output location: parameter
+#
+# Modules required: Biopython must be available in python instance
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
+
 import sys
 import glob
 import fileinput

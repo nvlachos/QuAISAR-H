@@ -1,3 +1,19 @@
+#!/usr/bin/env python3
+
+#
+# Description: Changes headers in SPAdes assembly fasta from contig# length=length# depth=depthx to Name_contig#_length_length#_depth_depthx
+#
+# Output location: standard out
+#
+# Usage: ./Fastq_Quality_Printer.py -1 path_to_R1 -2 path_to_R2
+#
+# Modules required: None
+#
+# v1.0 (10/3/2019)
+#
+# Created by Rich Stanton (njr5@cdc.gov)
+#
+
 import sys
 import argparse
 from decimal import *
@@ -5,8 +21,8 @@ getcontext().prec = 4
 
 def parseArgs(args=None):
 	parser = argparse.ArgumentParser(description='Script to count quality metrics from paired fastq files')
-	parser.add_argument('-1', '--r1', required=True, help='input fasta filename')
-	parser.add_argument('-2', '--r2', required=True, help='output filename')
+	parser.add_argument('-1', '--r1', required=True, help='input R1 filename')
+	parser.add_argument('-2', '--r2', required=True, help='input R2 filename')
 	return parser.parse_args()
 
 

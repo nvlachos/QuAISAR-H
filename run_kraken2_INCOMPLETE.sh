@@ -12,14 +12,21 @@ if [[ ! -f "./config.sh" ]]; then
 fi
 . ./config.sh
 
-# Runs the kraken2 classification tool which identifies the most likely taxonomic classification for the sample
 #
-# Usage ./run_kraken2.sh sample_name pre/post(assembly) source_type(paired/R1/R2/single/assembled) run_id
+# Description: Runs the kraken2 classification tool which identifies the most likely taxonomic classification for the sample
 #
-# requires kraken/2.0.0 perl/5.12.3 (NOT!!! 5.16.1-MT or 5.22.1)
+# Usage: ./run_kraken2.sh sample_name pre/post(assembly) source_type(paired/R1/R2/single/assembled) run_ID
+#
+# Output location: default_config.sh_output_location/run_ID/sample_name/kraken2/
+#
+# Modules required: kraken/2.0.0, krona/2.7, Python3/3.5.2, perl/5.12.3 (still necessary?)
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
-ml kraken/2.0.0 krona/2.7 perl/5.22.1 Python3/3.5.2
+ml kraken/2.0.0 krona/2.7 perl/5.12.3 Python3/3.5.2
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -30,8 +37,8 @@ elif [[ -z "${1}" ]]; then
 	exit 1
 # Gives the user a brief usage and help section if requested with the -h option argument
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_kraken2.sh   sample_name   assembly_relativity(pre or post)   read_type(paired,assembled, or single)   run_id"
-	echo "Output is saved to in ${processed}/miseq_run_id/sample_name/kraken2/assembly_relativity"
+	echo "Usage is ./run_kraken2.sh   sample_name   assembly_relativity(pre or post)   read_type(paired,assembled, or single)   run_ID"
+	echo "Output is saved to in ${processed}/miseq_run_ID/sample_name/kraken2/assembly_relativity"
 	exit 0
 elif [ -z "$2" ]; then
 	echo "Empty assembly relativity supplied to run_kraken2.sh. Second argument should be 'pre' or 'post' (no quotes). Exiting"
@@ -103,7 +110,7 @@ elif [ "${3}" = "assembled" ]; then
 	# Convert mpa to krona file# Convert mpa to krona file
 	echo "4"
 #	. "${shareScript}/module_changers/perl_5221_to_5123.sh"
-	python3 "${shareScript}/Methaplan2krona.py" -p "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.mpa" -k "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.krona"
+	python3 "${shareScript}/Metaphlan2krona.py" -p "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.mpa" -k "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}_weighted.krona"
 	# Create taxonomy list file from kraken2 file
 	echo "5"
 	#module load kraken/0.10.5
@@ -135,9 +142,9 @@ fi
 # Run the krona generator on the metaphlan output
 echo "[:] Generating krona output for ${1}."
 # Convert mpa to krona file
-perl "${shareScript}/Methaplan_to_krona.pl" -p "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.mpa" -k "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.krona"
+python3 "${shareScript}/Metaphlan2krona.py" -p "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.mpa" -k "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.krona"
 # Change perl version to allow ktimporttext to work ( cant use anything but 5.12.3
-. "${shareScript}/module_changers/perl_5221_to_5123.sh"
+#. "${shareScript}/module_changers/perl_5221_to_5123.sh"
 # Run the krona graph generator from krona output
 ktImportText "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.krona" -o "${OUTDATADIR}/kraken2/${2}Assembly/${1}_${3}.html"
 # Return perl version back to 5.22.1

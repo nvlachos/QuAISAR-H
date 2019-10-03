@@ -1,14 +1,20 @@
 #!/usr/bin/env python3
 
-'''
-Changes fasta header from:
-contig# length=length# depth=depthx
-to
-Name_contig#_length_length#_depth_depthx
-
-
-Usage: ./get_subsequence.py input.fasta output.fasta
-'''
+#
+# Description: Script to extract a subsequence from a fasta sequence
+#
+# Usage: python ./get_subsequence.py -i fasta_file -s start_position_of_wanted_sequence -e stop_position_of_wanted_sequence
+#   -t title_of_fasta_if_multi_fasta-ed -r do_reverse_complement_on_sequence. I must recheck to see what the -b and -f do. It
+#   may be even a subsequence of the subsequence
+#
+# Output location: standard out
+#
+# Modules required: Biopython must be available in python instance
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
 
 from Bio import SeqIO
 from Bio.Seq import Seq
@@ -16,9 +22,6 @@ from Bio.SeqRecord import SeqRecord
 import argparse
 import sys
 import os
-
-#print("Starting")
-
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input', help='input file', required=True, dest='input_file')

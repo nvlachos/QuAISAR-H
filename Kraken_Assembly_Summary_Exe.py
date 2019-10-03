@@ -1,3 +1,19 @@
+#!/usr/bin/env python3
+
+#
+# Description: Script to summarize the weighted kraken file output
+#
+# Usage: python3 ./Kraken_Assembly_Summary_Exe.py -k input_kraken_file -l label_file -t list_file -o output_filename
+#
+# Output location: parameter
+#
+# Modules required: Biopython must be available in python instance
+#
+# v1.0 (10/3/2019)
+#
+# Created by Rich Stanton (njr5@cdc.gov)
+#
+
 import sys
 import glob
 from Bio import SeqIO
@@ -89,7 +105,7 @@ def Kraken_Assembly_Converter(input_kraken, output_kraken):
     String1 = f.readline()
     while String1 != '':
         List1 = String_Converter(String1)
-        Count = int(round(float(List1[3]) / Min_Length))
+        Count = int(round(float(List1[3]) // Min_Length))
         Out_Line = ''
         for items in List1[0:4]:
             Out_Line = Out_Line + items + '\t'
@@ -197,7 +213,7 @@ def List_Combiner(input_list):
     return Output_List
 
 def Two_Decimal_Percent(number, total):
-    our_value = 100 * Decimal(float(number) / total)
+    our_value = 100 * Decimal(float(number) // total)
     output = Decimal(our_value.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP))
     Value = str(output)
     return Value

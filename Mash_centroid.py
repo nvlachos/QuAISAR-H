@@ -1,3 +1,19 @@
+#!/usr/bin/env python3
+
+#
+# Description: Script to choose the centroid sample, via mash distances, within a list of samples
+#
+# Usage: python3 ./Mash_centroid.py -i input_list_file -o output_list_filename
+#
+# Output location: parameter
+#
+# Modules required: None
+#
+# v1.0 (10/3/2019)
+#
+# Created by Rich Stanton (njr5@cdc.gov)
+#
+
 import sys
 import glob
 import numpy
@@ -5,9 +21,12 @@ import operator
 from operator import itemgetter
 import subprocess
 
-#Modules required: Python/2.7.3 and Mash
-#Written by Rich Stanton, rstanton@cdc.gov
-
+# Parse all argument from command line
+def parseArgs(args=None):
+	parser = argparse.ArgumentParser(description='Script to choose the centroid sample, via mash distances, within a list of samples')
+	parser.add_argument('-i', '--input', required=True, help='input list')
+	parser.add_argument('-o', '--output', required=True, help='output centroided lst')
+	return parser.parse_args()
 
 def Mash_List(Mash_Index):
     """Takes in an index of Mash files and makes a list of the info from each"""
@@ -103,7 +122,5 @@ def Scicomp_Mash_Centroid(input_list, output_list):
     Best_Centroid = Best_List[8] + '/' + Best_List[9]
     List_Reorder(input_list, Best_Centroid, output_list)
 
-Input = sys.argv[1]
-Output = sys.argv[2]
-
-Scicomp_Mash_Centroid(Input, Output)
+args = parseArgs()
+Scicomp_Mash_Centroid(args.input, args.output)

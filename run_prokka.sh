@@ -13,16 +13,21 @@ fi
 . ./config.sh
 #. "${mod_changers}/perl_5221_to_5123.sh"
 
-ml prokka/1.12 perl/5.12.3
+#
+# Description: Runs prokka gene identifier on sample to discover all identifiable genes. Also necessary for downstream busco processing
+#
+# Usage ./run_prokka.sh   sample_name   run_ID
+#
+# Output location: default_config.sh_output_location/run_ID/sample_name/prokka
+#
+# Modules required: prokka/1.12, perl/5.12.3
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
 
-#
-# Runs prokka gene identifier on sample to discover all identifiable genes. Also necessary for downstream busco processing
-#
-# Usage ./run_prokka.sh   sample_name   run_id
-#
-# requires prokka/1.12, perl/5.12.3 (loaded via perl_5221_to_5123.sh)
-#
-# !!!!! prokka requires perl 5.12.3 (at least works on it, but fails on 5.22.1)
+ml prokka/1.12 perl/5.12.3
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -33,8 +38,8 @@ elif [[ -z "${1}" ]]; then
 	exit 1
 # Gives the user a brief usage and help section if requested with the -h option argument
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_prokka.sh sample_name run_id"
-	echo "Output is saved to ${processed}/miseq_run_id/sample_name/prokka"
+	echo "Usage is ./run_prokka.sh sample_name run_ID"
+	echo "Output is saved to ${processed}/miseq_run_ID/sample_name/prokka"
 	exit 0
 elif [ -z "$2" ]; then
 	echo "Empty project id supplied to run_prokka.sh, exiting"
@@ -70,8 +75,6 @@ for pfile in ${OUTDATADIR}/prokka/*.*; do
 done
 
 #Script exited gracefully (unless something else inside failed)
-# reload perl to 5.22.1 before exiting
-#. "${mod_changers}/perl_5123_to_5221.sh"
 
 ml -prokka/1.12 -perl/5.12.3
 

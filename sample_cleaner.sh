@@ -13,10 +13,19 @@ fi
 . ./config.sh
 
 #
+# Description: Script uses Gulviks SPAdes cleaner along with general folder cleanup to decrease footprint of samples after processing
+#
 # Usage ./sample_cleaner.sh   sample_name   run_ID
 #
-# script uses Gulviks SPAdes cleaner along with general folder cleanup to decrease footprint of samples after processing
+# Output location: No output created
 #
+# Modules required: None
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
+
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then

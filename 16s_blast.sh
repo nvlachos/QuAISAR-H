@@ -12,29 +12,29 @@ if [[ ! -f "./config.sh" ]]; then
 fi
 . ./config.sh
 
-# Load modules necessary for barrnap (that arent automatically loaded)
-#module load barrnap/0.8
-#module unload perl/5.22.1
-#module load perl/5.12.3
+#
+# Description: Creates a species prediction based on blasting the largest and also 'best' hit of the suggested 16s sequences found using barrnap
+#
+# Usage: ./16s_blast.sh -n sample_name -p run_ID
+#
+# Output location: default_config.sh_output_location/run_ID/sample_name/16s/
+#
+# Modules required: barrnap/0.8, ncbi-blast+/LATEST, perl/5.12.3. hmmer/3.1b2 loaded by barrnap/0.8
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
 
 ml perl/5.12.3 barrnap/0.8 ncbi-blast+/LATEST
 
-#
-# Creates a species prediction based on blasting the largest and also best hit of the suggested 16s sequences found using barrnap
-# Usage ./16s_blast.sh -n sample_name -p run_id
-#
-# Required modules: barrnap/0.8
-# Sub-required modules (loaded by required modules): hmmer/3.1b2
-#
-# Required modules that arent automatically loaded: perl 5.12.3 (not 5.22.1)
-#
-
 #  Function to print out help blurb
 show_help () {
-	echo "Usage is ./16s_blast.sh -n sample_name -p run_id"
-	echo "Output is saved to ${processed}/run_id/sample_name/16s"
+	echo "Usage is ./16s_blast.sh -n sample_name -p run_ID"
+	echo "Output is saved to ${processed}/run_ID/sample_name/16s"
 }
 
+# Parse command line options
 options_found=0
 while getopts ":h?n:p:" option; do
 	options_found=$(( options_found + 1 ))
@@ -59,6 +59,7 @@ while getopts ":h?n:p:" option; do
 	esac
 done
 
+# Show help info for when no options are given
 if [[ "${options_found}" -eq 0 ]]; then
 	echo "No options found"
 	show_help
@@ -73,34 +74,7 @@ if [ ! -d "${OUTDATADIR}/16s" ]; then
 	mkdir "${OUTDATADIR}/16s"
 fi
 
-
-# # Function to create and add a "fasta" entry to the list of 16s hits
-# make_fasta() {
-# 	header=">$3"
-# 	rna_seq=""
-# 	cstart=$4
-# 	cstart=$(( cstart - 1 ))
-# 	cstop=$5
-# 	clength=$(( cstop - cstart + 1))
-# 	match=0
-# 	# Finds the matching contig and extracts sequence ##### REPLACE WITH SUBSEQUENCE ONCE IT CAN HANDLE MULTI_FASTAS !!!
-# 	while IFS='' read -r line || [ -n "$line" ]; do
-#  		if [ "$line" == "${header}" ]; then
-# 			match=1
-# 			continue
-# 		elif [[ "$line" = ">"* ]]; then
-# 			match=0
-# 		fi
-# 		if [ $match -eq 1 ]; then
-# 			rna_seq="$rna_seq$line"
-# 		fi
-# 	done < "${OUTDATADIR}/Assembly/${sample_name}_scaffolds_trimmed.fasta"
-# 	# Extracts appropriate sequence from contig using start and stop positions
-# 	rna="${rna_seq:$cstart:$clength}"
-# 	# Adds new fasta entry to the file
-# 	echo -e "${header}\n${rna_seq:$cstart:$clength}" >> ${processed}/${project}/${sample_name}/16s/${sample_name}_16s_rna_seqs.txt
-# }
-
+# Get original working directory so that it can return to it after running (may not need to do this but havent tested it out yet)
 owd=$(pwd)
 cd ${OUTDATADIR}/16s
 
@@ -145,7 +119,7 @@ blastn -word_size 10 -task blastn -remote -db nt -max_hsps 1 -max_target_seqs 1 
 # Sorts the list based on sequence match length to find the largest hit
 sort -k4 -n "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN" --reverse > "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN.sorted"
 
-# Gets taxon info from the best (literal top) hit from the blast list
+# Gets taxon info from the best bitscore (literal top) hit from the blast list
 if [[ -s "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN" ]]; then
 	me=$(whoami)
 	accessions=$(head -n 1 "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN")
@@ -180,6 +154,7 @@ fi
 
 best_blast_id=${blast_id}
 
+# Gets taxon info from the largest hit from the blast list
 if [[ ${skip_largest} != "true" ]]; then
 	# Gets taxon info from the largest hit from the blast list
 	if [[ -s "${OUTDATADIR}/16s/${sample_name}.nt.RemoteBLASTN.sorted" ]]; then

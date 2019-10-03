@@ -1,12 +1,17 @@
-#!/usr/bin/env python
-#  @ Author: Nick Vlachos
-#  + Version .1
-#  + 1 August 2017
-#  Dependencies:  none
+#!/usr/bin/env python3
 
+#
+# Description: Script to find taxonomic name by submitting accession to entrez server
+#
 # Usage python ./entrez_get_taxon_from_accession.py accession_number your_email(for entrez tools)
 #
-# Requires module Entrez/E-utilities
+# Output location: standard out
+#
+# Modules required: Biopython with Entrez must be available in python instance
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
 from Bio import Entrez

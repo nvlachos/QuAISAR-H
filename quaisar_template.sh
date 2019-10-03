@@ -3,15 +3,22 @@
 #$ -o quaisar_X.out
 #$ -e quaisar_X.err
 #$ -N quasX
-#$ -pe smp 10
+#$ -pe smp 12
 #$ -cwd
 #$ -q short.q
 
 #
-# The straight pipeline that runs all the tools that have been designated as necessary (and some others that are typically run also)
+# Description: The full QuAISAR-H pipeline start to end serially, project/isolate_name must already have a populated FASTQs folder to work with
 #
-# Usage ./quaisar_template.sh isolate_name project_name path_to_config_file_to_use [output_directory_to_put_project/isolate_name]
-#  project/isolate_name must already have a populated FASTQs folder to work with
+# Usage: ./quaisar_template.sh isolate_name project_name path_to_config_file_to_use
+#
+# Output location: default_config.sh_output_location
+#
+# Modules required: None
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
 # Checks for proper argumentation
@@ -19,15 +26,19 @@ if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./quaisar_template.sh  sample_name miseq_run_id(or_project_name) config_file_to_use optional_alternate_directory"
+	echo "Usage is ./quaisar_template.sh  sample_name miseq_run_ID(or_project_name) config_file_to_use"
 	echo "Populated FASTQs folder needs to be present in ${2}/${1}, wherever it resides"
-	echo "Output by default is processed to processed/miseq_run_id/sample_name"
+	echo "Output by default is processed to processed/miseq_run_ID/sample_name"
 	exit 0
-elif [[ -z "{2}" ]]; then
+elif [[ -z "${2}" ]]; then
 	echo "No Project/Run_ID supplied to quaisar_template.sh, exiting"
 	exit 33
+elif [[ -z "${3}" ]]; then
+	echo "No config file supplied to quaisar_template.sh, exiting"
+	exit 34
 fi
 
+# Check if config file exist and source when found
 if [[ ! -f "${3}" ]]; then
 	echo "no config file to load (${3}), exiting"
 	exit 223
@@ -35,7 +46,6 @@ else
 	echo "${2}/${1} is loading config file ${3}"
 	ml purge
 	. "${3}"
-	. ${mod_changers}/pipeline_mods
 fi
 
 
@@ -47,9 +57,6 @@ start_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 filename="${1}"
 project="${2}"
 OUTDATADIR="${processed}/${2}"
-if [[ ! -z "${4}" ]]; then
-	OUTDATADIR="${4}/${2}"
-fi
 
 # Remove old run stats as the presence of the file indicates run completion
 if [[ -f "${processed}/${proj}/${file}/${file}_pipeline_stats.txt" ]]; then
@@ -182,10 +189,9 @@ if [ ! -d "$OUTDATADIR/$filename/preQCcounts" ]; then
 	mkdir -p "$OUTDATADIR/$filename/preQCcounts"
 fi
 # Run qc count check on filtered reads
-python2 "${shareScript}/Fastq_Quality_Printer.py" -1 "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.paired.fq" -2 "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.paired.fq" > "${OUTDATADIR}/${filename}/preQCcounts/${filename}_trimmed_counts.txt"
+python3 "${shareScript}/Fastq_Quality_Printer.py" -1 "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.paired.fq" -2 "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.paired.fq" > "${OUTDATADIR}/${filename}/preQCcounts/${filename}_trimmed_counts.txt"
 
 # Merge both unpaired fq files into one for GOTTCHA
-#cat "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.paired.fq" "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.paired.fq" > "${OUTDATADIR}/${filename}/trimmed/${filename}.paired.fq"
 cat "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.unpaired.fq" "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.unpaired.fq" > "${OUTDATADIR}/${filename}/trimmed/${filename}.single.fq"
 
 
@@ -224,8 +230,8 @@ totaltime=$((totaltime + timeGott))
 # Check reads using SRST2
 echo "----- Running SRST2 -----"
 start=$SECONDS
-"${shareScript}/run_srst2_on_singleDB.sh" "${filename}" "${project}"
-"${shareScript}/run_srst2_on_singleDB_alternateDB.sh" "${filename}" "${project}" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
+"${shareScript}/run_srst2AR.sh" "${filename}" "${project}"
+"${shareScript}/run_srst2AR_altDB.sh" "${filename}" "${project}" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
 end=$SECONDS
 timesrst2=$((end - start))
 echo "SRST2 - ${timesrst2} seconds" >> "${time_summary}"
@@ -392,7 +398,6 @@ elif [[ "${genus}" = "Shigella" ]]; then
 	genus="Escherichia"
 fi
 "${shareScript}/run_ANI.sh" "${filename}" "${genus}" "${species}" "${project}"
-#"${shareScript}/run_ANI.sh" "${filename}" "All" "All" "${project}"
 # Get end time of ANI and calculate run time and append to time summary (and sum to total time used
 end=$SECONDS
 timeANI=$((end - start))
@@ -448,8 +453,8 @@ echo "----- Running c-SSTAR for AR Gene identification -----"
 start=$SECONDS
 
 # Run csstar in default mode from config.sh
-"${shareScript}/run_c-sstar_on_single.sh" "${filename}" "${csstar_gapping}" "${csstar_identity}" "${project}"
-"${shareScript}/run_c-sstar_on_single_alternate_DB.sh" "${filename}" "${csstar_gapping}" "${csstar_identity}" "${project}" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
+"${shareScript}/run_c-sstar.sh" "${filename}" "${csstar_gapping}" "${csstar_identity}" "${project}"
+"${shareScript}/run_c-sstar_altDB.sh" "${filename}" "${csstar_gapping}" "${csstar_identity}" "${project}" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
 
 # Run GAMA on assembly
 ${shareScript}/run_GAMA.sh "${filename}" "${project}" -c
@@ -520,7 +525,7 @@ if [[ "${family}" == "Enterobacteriaceae" ]]; then
 	start=$SECONDS
 	${shareScript}/run_plasFlow.sh "${filename}" "${project}"
 	${shareScript}/run_Assembly_Quality_Check.sh "${filename}" "${project}" -p
-	${shareScript}/run_c-sstar_on_single_plasFlow.sh "${filename}" g o "${project}" -p
+	${shareScript}/run_c-sstar_plasFlow.sh "${filename}" g o "${project}" -p
 	${shareScript}/run_plasmidFinder.sh "${filename}" "${project}" plasmid_on_plasFlow
 	${shareScript}/run_GAMA.sh "${filename}" "${project}" -p
 	end=$SECONDS

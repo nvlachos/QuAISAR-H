@@ -12,27 +12,22 @@ if [[ ! -f ./config.sh ]]; then
 fi
 . ./config.sh
 
-#Import list of mods used during pipeline analysis (or downstream)
-#. "${mod_changers}/load_SNVPhyl.sh"
-
-. ${mod_changers}/list_modules.sh
-
-# Switching to ml syntax
-#module load snvphyl-galaxy-cli/1.3.0
-#module unload Python/2.7.15
-#module load Python/2.7.13
-#module load Mash/2.0
+#
+# Description: Runs SNVPhyl on a group of samples to determine relatedness
+#
+# Usage: ./run_SNVPhyl.sh path_to_list_file (First sample on list will be reference) output_directory analysis_identifier (outbreak or project name)
+#
+# Output location: parameter
+#
+# Modules required: snvphyl-galaxy-cli/1.3.0, Python/2.7.13 Mash/2.0
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
 
 ml purge
 ml snvphyl-galaxy-cli/1.3.0 -Python/2.7.15 Python/2.7.13 Mash/2.0
-
-#
-# Runs SNVPhyl on a group of samples to determine relatedness
-#
-# Usage ./run_SNVPhyl.sh path_to_list_file (First sample on list will be reference) output_directory analysis_identifier (outbreak or project name)
-#
-# requires modules SNVPhyl, ncbi-BLAST+/2.3.0 (using2.6.0),
-#
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -56,10 +51,10 @@ elif [[ -z "${3}" ]]; then
 fi
 
 # Not being run on cluster=no run
-#if [[ ${host} != "cluster"* ]]; then
-#	echo "No scheduling system, can not run SNVPhyl"
-#	exit 1
-#fi
+if [[ ${host} != "cluster"* ]]; then
+	echo "No scheduling system, can not run SNVPhyl"
+	exit 1
+fi
 
 # Sets output folder to group_name under Phylogeny_analyses in MMB_Data folder
 OUTDATADIR=${2}/${3}

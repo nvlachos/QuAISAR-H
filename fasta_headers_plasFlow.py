@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
 
-'''
-Changes fasta header from:
-contig# length=length# depth=depthx
-to
-Name_contig#_length_length#_depth_depthx
-
-
-Usage: ./fasta_headers_plasFlow.py -i input.fasta -o output.fasta
-'''
+#
+# Description: Changes headers in plasFlow assembly fasta from contig# length=length# depth=depthx to Name_contig#_length_length#_depth_depthx
+#
+# Usage: ./fasta_headers_plasFlow.py -i input.fasta -o output.fasta
+#
+# Output location: parameter
+#
+# Modules required: Biopython must be available in python instance
+#
+# V1.0
+#
+# Created by Erisa Sula (nvd4@cdc.gov) and Nick Vlachos (nvx4@cdc.gov)
+#
 
 from Bio import SeqIO
 import sys

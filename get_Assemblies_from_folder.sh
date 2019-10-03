@@ -13,9 +13,17 @@ fi
 . ./config.sh
 
 #
-# Will find all assembly files (.fna or .fasta) within the given folder
+# Description: Will find all assembly files (.fna or .fasta) within the given folder
 #
-# Usage ./get_Assemblies_from_folder.sh run_id folder_with_Assemblies
+# Usage: ./get_Assemblies_from_folder.sh run_ID folder_with_Assemblies
+#
+# Output location: default_config.sh_output_location/run_ID
+#
+# Modules required: None
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
 # Checks for proper argumentation
@@ -26,8 +34,8 @@ elif [[ -z "${1}" ]]; then
 	echo "Empty project name supplied to $0, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./get_Assemblies_from_folder.sh  run_id location_of_Assemblies"
-	echo "Output by default is downloaded to ${processed}/run_id and copied to ${processed}/run_id/sample_name/Assembly"
+	echo "Usage is ./get_Assemblies_from_folder.sh  run_ID location_of_Assemblies"
+	echo "Output by default is downloaded to ${processed}/run_ID and copied to ${processed}/run_ID/sample_name/Assembly"
 	exit 0
 elif [[ -z "${2}" ]]; then
 	echo "Empty source supplied to $0, exiting"

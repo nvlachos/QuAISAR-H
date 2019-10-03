@@ -10,30 +10,36 @@
 if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
-
 . ./config.sh
 
-ml ncbi-blast+/LATEST Python3/3.5.2
+#
+# Description: Finds anti-microbial resistance genes in the resFinder and ARG-ANNOT databases and exports a file containing list of all genes found
+#
+# Usage: ./run_c-sstar.sh sample_name run_type(g/u for gapped/ungapped) similarity(l/m/h/u/p/o for low(80),medium(95),high(98),ultra-high(99),perfect(100),other(set in config.sh)) run_ID [-p])
+# 	-p flag is to run it on the plasFlow assembly, assuming it is in the default config location
+#
+# Output location: default_config.sh_output_location/run_ID/sample_name/csstar(_plasFlow)/
+#
+# Modules required: Python/3.5.2, ncbi-blast+/LATEST
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
 
-#
-# Finds anti-microbial resistance genes in the resFinder and ARG-ANNOT databases and exports a file containing list of all genes found
-#
-# Usage ./run_c-sstar_on_single_plasFlow.sh sample_name run_type(g/u for gapped/ungapped) similarity(l/m/h/u/p/o for low(80),medium(95),high(98),ultra-high(99),perfect(100),other(set in config.sh)) run_id
-#
-# Python/3.5.2
-#
+ml Python3/3.5.2 ncbi-blast+/LATEST
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [[ -z "${1}" ]]; then
-	echo "Empty sample name supplied to run_c-sstar_on_single_plasFlow.sh, exiting"
+	echo "Empty sample name supplied to run_c-sstar.sh, exiting"
 	exit 1
 # Gives the user a brief usage and help section if requested with the -h option argument
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_c-sstar.sh   sample_name   run-type[g/u](for gapped/ungapped)   similarity[l/m/h/u/p/o](for low/medium/high/ultra-high/perfect as 80/95/98/99/100, other(st in config.sh) run_id"
-	echo "Output is saved to ${processed}/sample_name/c-sstar_plasFlow"
+	echo "Usage is ./run_c-sstar.sh   sample_name   run-type[g/u](for gapped/ungapped)   similarity[l/m/h/u/p/o](for low/medium/high/ultra-high/perfect as 80/95/98/99/100, other(st in config.sh) run_ID [-p]"
+	echo "Output is saved to ${processed}/sample_name/c-sstar"
 	exit
 elif [ -z "$2" ]; then
 	echo "Empty run type supplied to run_c-sstar.sh, exiting"
@@ -68,22 +74,31 @@ else
 	sim=${csstar_high}
 fi
 # Check if there was a request to run it on the plasmid assembly of the sample, change fasta source as necessary
-if [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta" ]]; then
+if [[ "${5}" == "--plasmid" ]] || [[ "${5}" == "-p" ]]; then
+	if [[ -s "${OUTDATADIR}/plasmidAssembly/${1}_plasmid_scaffolds_trimmed.fasta" ]]; then
+	#if [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.fasta" ]]; then
 		source_assembly="${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta"
 		OUTDATADIR="${OUTDATADIR}/c-sstar_plasFlow"
+		#source_assembly="${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/assembly.fasta"
+		#OUTDATADIR="${OUTDATADIR}/plasFlow_plasmid"
+	else
+		if [[ "${2}" = "g" ]]; then
+			suffix="gapped"
+		elif [[ "${2}" = "u" ]]; then
+			suffix="ungapped"
+		fi
+		"No anti-microbial genes were found using c-SSTAR because there were No Plasmids Found" > "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}.sstar"
+		exit
+	fi
 else
-	echo "Not found: ${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta"
-	if [[ "${2}" = "g" ]]; then
-		suffix="gapped"
-	elif [[ "${2}" = "u" ]]; then
-		suffix="ungapped"
+	if [[ ! -s "${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
+		echo "No Assembly found to run c-sstar with (${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta does not exist)"
+		exit
 	fi
-	if [[ ! -d "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}" ]]; then
-		mkdir -p "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}"
-	fi
-	echo "No anti-microbial genes were found using c-SSTAR because there were No Plasmids Found" > "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}.sstar"
-	exit
+	source_assembly="${OUTDATADIR}/Assembly/${1}_scaffolds_trimmed.fasta"
+	OUTDATADIR="${OUTDATADIR}/c-sstar"
 fi
+
 
 
 # Creates the output c-sstar folder if it does not exist yet
@@ -177,6 +192,14 @@ while IFS= read -r line || [ -n "$line" ]; do
 	len1=$(echo "${line}" | cut -d '	' -f7 | tr -d '[:space:]')
 	len2=$(echo "${line}" | cut -d '	' -f8 | tr -d '[:space:]')
 	plen=$(echo "${line}" | cut -d '	' -f9 | tr -d '[:space:]')
+	# Catch instances where match length is longer than gene (gaps cause extension)
+	#if [[ ${len1} -ge ${len2} ]]; then
+	#	plen=100
+	# Determine % length match
+	#else
+	#	plen=$( echo "${len1} ${len2}" | awk '{ printf "%d", ($1*100)/$2 }' )
+	#fi
+	# Check and display any flags found, otherwise mark it as normal
 	if [[ -z "${info1}" ]]; then
 		info1="normal"
 	else

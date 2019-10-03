@@ -11,22 +11,23 @@ if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
 . ./config.sh
-#Import the module file that loads all necessary mods
-#. "${mod_changers}/prep_srst2.sh"
-#ml -Python2/2.7.15 Python2/2.7.11
-#ml bowtie2/2.2.4
+
+#
+# Description: Script to use srst2 to attempt to find AR genes in parllel with assembly searches by other tools. This uses an alternate DB of genes
+#
+# Usage: ./run_srst2AR_altDB.sh   sample_name   MiSeq_Run_ID	path_to_alternate_DB
+#
+# Output location: default_config.sh_output_location/run_ID/sample_name/srst2/
+#
+# Modules required: srst2/0.2.0 bowtie2/2.2.4(?)
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
+
 ml purge
 ml srst2 #bowtie2/2.2.4
-
-ml
-
-#
-# Usage ./run_srst2.sh   sample_name   run_ID
-#
-# script uses srst2 to find AR genes from ResGANNCBI DBs.
-#
-#  Modules needed (loaded via prep_srst2.sh script - Python2/2.7.11, bowtie2/2.2.4, samtools/0.1.18
-#
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -104,5 +105,4 @@ find ${processed}/${2}/${1}/srst2 -type f -name "*ResGANNCBI__*" | while read FI
     mv "${FILE}" "${dirname}/${filename}"
 done
 
-# Close out modules that were loaded specifically for srst2
-#. "${mod_changers}/close_srst2.sh"
+ml -srst2 #-bowtie2/2.2.4

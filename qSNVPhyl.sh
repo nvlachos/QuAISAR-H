@@ -11,15 +11,20 @@ if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
 . ./config.sh
-#Import the module file that loads all necessary mods
-#. "${mod_changers}/pipeline_mods"
 
 #
-# The wrapper script that runs the lowest possible run_SNVPhyl.sh script on the cluster
+# Description: The wrapper script that runs the run_SNVPhyl_template.sh script on the cluster, allowing multiple instances to run different sets of isolates
 #
-# Usage ./qSNVPhyl path_to_list_file output_directory project_identifier
+# Usage: ./qSNVPhyl path_to_list_file output_directory project_identifier
 #
-
+# Output location: Parameter
+#
+# Modules required: None
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
 
 # Shows a brief uasge/help section if -h option used as first argument
 if [[ "$1" = "-h" ]]; then
@@ -55,8 +60,8 @@ while [[ -f ${shareScript}/run_SNVPhyl_${counter}.sh ]]; do
 		exit
 	fi
 done
-#echo "Counted to ${counter}"
 
+# Copy and convert snvphyl template to a specific numbered version
 cp ${shareScript}/run_SNVPhyl_template.sh ${shareScript}/run_SNVPhyl_temp.sh
 sed -i -e "s/run_SNVPhyl/run_SNVPhyl_${counter}/g" "${shareScript}/run_SNVPhyl_temp.sh"
 sed -i -e "s/SNVPhyl_X/SNVPhyl_${counter}/g" "${shareScript}/run_SNVPhyl_temp.sh"
@@ -64,15 +69,14 @@ mv ${shareScript}/run_SNVPhyl_temp.sh ${shareScript}/run_SNVPhyl_${counter}.sh
 echo "${shareScript}/run_SNVPhyl_${counter}.sh $@"
 echo "Created and ran run_SNVPhyl_${counter}.sh"
 
+# Submit the new snyphyl run file
 qsub -sync y "${shareScript}/run_SNVPhyl_${counter}.sh" "$@"
 rm ${shareScript}/run_SNVPhyl_${counter}.sh
 
-global_end_time=$(date "+%m-%d-%Y @ %Hh_%Mm_%Ss")
-#Script exited gracefully (unless something else inside failed)
-
+# Sent an email showing that the script has completed
 submitter=$(whoami)
 global_end_time=$(date "+%m-%d-%Y @ %Hh_%Mm_%Ss")
 printf "%s %s" "qSNVPhyl.sh has completed running run_SNVPhyl_${counter}.sh" "${global_end_time}" | mail -s "SNVPhyl ${counter} analysis complete" "${submitter}@cdc.gov"
 
-printf "%s %s" "qSNVPhyl.sh has completed running run_SNVPhyl_${counter}.sh " "${global_end_time}"
+#Script exited gracefully (unless something else inside failed)
 exit 0

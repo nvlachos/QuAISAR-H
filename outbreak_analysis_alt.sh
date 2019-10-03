@@ -13,17 +13,23 @@ if [[ -f config_template.sh ]]; then
 	fi
 fi
 . ./config.sh
-#Import the module file that loads all necessary mods
-. "${mod_changers}/pipeline_mods"
-. "${mod_changers}/list_modules.sh"
+
+#
+# Description: Pulls out MLST, AR genes, and plasmid repicons and creates a mashtree for the listed samples and consolidates them into one sheet when run from an alternate or old database
+#
+# Usage ./outbreak_analysis.sh path_to_list gapped/ungapped (analysis ran) identity (80/95/98/99/100) analysis_identifier(e.g. outbreak identifier) output_directory(will create a folder at this location with name of analysis_identifier) clobberness[keep|clobber]
+#
+# Output location: Parameter
+#
+# Modules required: Python3/3.5.2, mashtree/0.29
+#		***Must be submitted as a job (or run on the cluster) if there are isolates that need to have csstar, GAMA or srst2 updated
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
 
 ml Python3/3.5.2 mashtree/0.29
-
-#
-# Usage ./outbreak_analysis.sh path_to_list gapped/ungapped (analysis ran) identity (80/95/98/99/100) analysis_identifier(e.g. outbreak identifier) output_directory(will create a folder at this location with name of analysis_identifier) clobberness[keep|clobber] path_to_alt_database
-# ***Must be submitted as a job (or run on the cluster) if there are isolates that need to have csstar or srst2 updated
-# Pulls out MLST, AR genes, and plasmid repicons and creates a mashtree for the listed samples and consolidates them into one sheet
-#
 
 # Number regex to test max concurrent submission parametr
 number='^[0-9]+$'
@@ -110,6 +116,9 @@ fi
 if [[ -f ${output_directory}/${4}-srst2_rejects.txt ]]; then
 	rm ${output_directory}/${4}-srst2_rejects.txt
 fi
+
+# Clean list of any extra spaces and formatting
+"${shareScript}/clean_list.sh" "${1}"
 
 # Creates a dictionary to match genes to AR conferred when parsing srst files
 declare -A groups
@@ -226,7 +235,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 		ARDB_full="${OUTDATADIR}/c-sstar/${sample_name}.${Alt_db}.${2}_${sim}_sstar_summary.txt"
 	else
 		echo "IT STILL thinks it needs to run ${sample_name} through normal csstar"
-		#${shareScript}/run_c-sstar_on_single.sh "${sample_name}" "${gapping}" "${sim}" "${project}"
+		#${shareScript}/run_c-sstar.sh "${sample_name}" "${gapping}" "${sim}" "${project}"
 		#ARDB_full="${OUTDATADIR}/c-sstar/${sample_name}.${Alt_db}.${2}_${sim}_sstar_summary.txt"
 		exit
 	fi
@@ -405,7 +414,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 	# 		ARDB_plasmid="${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${Alt_db}.${2}_${sim}_sstar_summary.txt"
 	# 	else
 	# 		echo "It STILL STILL thinks it needs to put ${sample_name} trhough plasmid csstar"
-	# 		#${shareScript}/run_c-sstar_on_single.sh "${sample_name}" "${gapping}" "${sim}" "${project}" "--plasmid"
+	# 		#${shareScript}/run_c-sstar.sh "${sample_name}" "${gapping}" "${sim}" "${project}" "--plasmid"
 	# 		#ARDB_plasmid="${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${Alt_db}.${2}_${sim}_sstar_summary.txt"
 	# 	fi
 	# 	while IFS= read -r line || [ -n "$line" ]; do

@@ -12,17 +12,21 @@ if [[ ! -f "./config.sh" ]]; then
 fi
 . ./config.sh
 
-# Load necessary modules to run mashtree
-#module unload perl/5.22.1
-#module load perl/5.16.1-MT
-#Switiching to ml syntax
-ml -perl/5.22.1 perl/5.16.1-MT mashtree/0.29
+#
+# Description: Script to create mashtree of specified isolates that were processed by Quaisar pipeline
+#
+# Usage: ./mashtree_of_folder.sh -f path_to_assemblies -o output_filename -e extension_of_files_to_process
+#
+# Output location: parameter
+#
+# Modules required: perl/5.16.1-MT, mashtree/0.29
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
 
-#
-# Script to create mashtree of specified isolates that were processed by Quaisar pipeline
-#
-# Usage ./mashtree_of_folder.sh -f path_to_assemblies -o output_filename -e extension_of_files_to_process
-#
+ml perl/5.16.1-MT mashtree/0.29
 
 #  Function to print out help blurb
 show_help () {
@@ -67,7 +71,6 @@ fi
 cd ${DATADIR}
 mashtree.pl --numcpus ${procs} *.${extension} --tempdir ${DATADIR}/temp > "${DATADIR}/${outfile}.dnd";
 
-module unload perl/5.16.1-MT
-module load perl/5.22.1
+ml -perl/5.16.1-MT
 
 exit

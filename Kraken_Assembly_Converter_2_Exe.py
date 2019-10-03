@@ -1,3 +1,19 @@
+#!/usr/bin/env python3
+
+#
+# Description: Script to do convert regular kraken file to weighted kraken file
+#
+# Usage: python3 ./Kraken_Assembly_Converter_2_Exe.py -i input_kraken_file
+#
+# Output location: parameter
+#
+# Modules required: Biopython must be available in python instance
+#
+# v1.0 (10/3/2019)
+#
+# Created by Rich Stanton (njr5@cdc.gov)
+#
+
 import sys
 import glob
 import argparse
@@ -52,7 +68,7 @@ def Kraken_Assembly_Converter_2(input_kraken, output_kraken):
     String1 = f.readline()
     while String1 != '':
         List1 = String_Converter(String1)
-        Count = int(round(float(List1[3]) / Min_Length))
+        Count = int(round(float(List1[3]) // Min_Length))
         Out_Line = ''
         for items in List1[0:4]:
             Out_Line = Out_Line + items + '\t'

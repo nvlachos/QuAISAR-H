@@ -1,3 +1,20 @@
+#!/usr/bin/env python3
+
+#
+# Description: Script to remove all contigs in an assembly file that are smaller than a given size. Will assume sample is located in default location
+#
+# Usage: python3 ./removeShortContigs.py -i input_assembly_file -t threshold_to_trim_all_contigs_smaller_than -s
+#
+# Output location: -s SPAdes default_config.sh_output_location/run_ID/sample_name/sample_name/SPAdes/sample_name_scaffolds_trimmed.fasta or
+#	-s SPAdes default_config.sh_output_location/run_ID/sample_name/sample_name/Unicycler_assemblies/sample_name_uni_assembly/sample_name_plasmid_assembly_trimmed.fasta
+#
+# Modules required: None
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
+#
+
 import sys
 import glob
 import fileinput

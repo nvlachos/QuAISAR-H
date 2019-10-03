@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
 
-'''
-Changes fasta header between:
-NODE_contig#_length_length#_cov_cov#
-and
-Name_contig#_length_length#
-
-
-Usage: ./fasta_headers.py -i file.fasta -o output.fasta [-r]
-'''
+#
+# Description: Changes headers in SPAdes assembly fasta from contig# length=length# depth=depthx to Name_contig#_length_length#_depth_depthx
+#
+# Usage: ./fasta_headers_plasFlow.py -i input.fasta -o output.fasta
+#
+# Output location: parameter
+#
+# Modules required: Biopython must be available in python instance
+#
+# v1.0 (10/3/2019)
+#
+# Created by Erisa Sula (nvd4@cdc.gov)
+#
 
 from Bio import SeqIO
 import sys

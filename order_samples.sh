@@ -7,16 +7,23 @@
 #$ -q short.q
 
 #Import the config file with shortcuts and settings
+if [[ ! -f "./config.sh" ]]; then
+	cp config_template.sh config.sh
+fi
 . ./config.sh
 
 #
-# Creates a txt list file that contains run and samples for a given MiSeq run that matches the order of the output for the MMB_Seq log
+# Description: Creates a txt list file that contains run and samples for a given MiSeq run that matches the order of the output for the MMB_Seq log
 #
-# Usage ./order_samples.sh MiSeq_Run_ID
+# Usage: ./order_samples.sh MiSeq_Run_ID
 #
-# Output will be /MiseqAnalysisFiles/Run_ID/Run_ID_list_ordered.txt
+# Output location: /deafult_config.sh_output_location/Run_ID/Run_ID_list_ordered.txt
 #
-# No modules needed
+# Modules required: Python3/3.5.2
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
 ml Python3/3.5.2
@@ -27,6 +34,7 @@ show_help () {
 	echo "Output is saved to path_to_folder"
 }
 
+# Parse through command line options
 options_found=0
 while getopts ":h?n:p:" option; do
 	options_found=$(( options_found + 1 ))
@@ -70,7 +78,7 @@ echo "Excel file: 2019_MMBSeq_Log.xlsx has been converted to TSV"
 # Parse log file csv until run_if matches
 counter=0
 while IFS= read -r var || [ -n "$var" ]; do
-	# Check the format of the city/state column in the log file to determine how many tabs need to be used to find run_id in line
+	# Check the format of the city/state column in the log file to determine how many tabs need to be used to find run_ID in line
 	#echo "checking ${var}"
 	# city_state=$(echo "${var}" | cut -d',' -f17)
 	# echo "|^| "${#city_state}" : "${city_state}
@@ -83,7 +91,7 @@ while IFS= read -r var || [ -n "$var" ]; do
 	# fi
 	line_project=$(echo "${var}" | cut -d'	' -f21)
 	# echo "${line_project}:${project}"
-	# If the run_id matches, then add ID to list (automatically placing them in the proper order)
+	# If the run_ID matches, then add ID to list (automatically placing them in the proper order)
 	if [[ "${line_project}" = "${project}" ]]; then
 		line_id=$(echo "${var}" | cut -d'	' -f3)
 		#echo "Adding ${counter}: ${project}/${line_id}"

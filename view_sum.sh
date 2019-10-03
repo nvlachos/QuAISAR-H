@@ -13,11 +13,17 @@ fi
 . ./config.sh
 
 #
-# Parses through summary file for the run and prints out a one word status for each sample in the run
+# Description: Parses through summary file for the run and prints out a one word status for each sample in the run
 #
-# Usage ./run_sum.sh run_id
+# Usage: ./run_sum.sh run_ID
 #
-# No modules required
+# Output location: standard out
+#
+# Modules required: None
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
 # Checks for proper argumentation
@@ -25,11 +31,11 @@ if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [[ -z "${1}" ]]; then
-	echo "Empty run_id supplied to run_sum.sh, exiting"
+	echo "Empty run_ID supplied to run_sum.sh, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_sum.sh miseq_run_id -l(optional, if using a list instead of project)"
-	echo "Output is saved to ${processed}/miseq_run_id"
+	echo "Usage is ./run_sum.sh miseq_run_ID -l(optional, if using a list instead of project)"
+	echo "Output is saved to ${processed}/miseq_run_ID"
 	exit 0
 fi
 

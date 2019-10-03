@@ -1,12 +1,17 @@
-#!/usr/bin/env python
-#  @ Author: Nick Vlachos
-#  + Version .1
-#  + 1 August 2017
-#  Dependencies:  none
+#!/usr/bin/env python3
 
-# Usage python ./entrez_get_taxon_from_number.py ncbi-taxonomy-number your_email(for entrez tools)
 #
-# Requires module Entrez/E-utilities
+# Description: Script to find taxonomic name by submitting taxon number to entrez server
+#
+# Usage python ./entrez_get_taxon_from_number.py number your_email(for entrez tools)
+#
+# Output location: standard out
+#
+# Modules required: Biopython with Entrez must be available in python instance
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
 from Bio import Entrez

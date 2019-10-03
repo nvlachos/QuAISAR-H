@@ -7,6 +7,17 @@
 #$ -cwd
 #$ -q short.q
 
+#
+# Description: Script to discover best AR gene hits from each cluster from an srst2 formatted database allowing gaps in matches
+#
+# Usage is python ./c-SSTAR_gapped.py -d srst2_formatted_database -g fasta_genome -b basename_of_output_file -o output_directory -s similarity_%_minimum [-e number_of_bases_at _contig_edge] [-v show_version]
+#
+# Output location: parameter
+#
+# Modules required: Biopython must be available in python instance
+#
+# Created by Chris Gulvik, Tom de Man and Adrian Lawsin (kqj9@cdc.gov)
+#
 
 __version__ = '1.2c'
 

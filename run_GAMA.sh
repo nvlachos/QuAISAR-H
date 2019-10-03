@@ -13,13 +13,17 @@ fi
 . ./config.sh
 
 #
-# Runs the GAMA AR classification tool
+# Description: Runs the GAMA AR classification tool
 #
-# Usage ./run_GAMA.sh sample_name run_id -c|p [path_to_alt_DB]
+# Usage: ./run_GAMA.sh sample_name run_ID -c|p [path_to_alt_DB]
 #
-# requires modules blat Python/2.7.3
+# Output location: default_config.sh_output_location/run_ID/sample_name/GAMA/
 #
-# !Version 1
+# Modules required: blat, Python/2.7.3
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
 ml blat Python3/3.5.2
@@ -32,8 +36,8 @@ elif [[ -z "${1}" ]]; then
 	echo "Empty sample name supplied to run_GAMA.sh, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_GAMA.sh   sample_name    run_id	c|p	[path_to_alt_DB]"
-	echo "Output is saved to ${processed}/miseq_run_id/sample_name/GAMA/"
+	echo "Usage is ./run_GAMA.sh   sample_name    run_ID	c|p	[path_to_alt_DB]"
+	echo "Output is saved to ${processed}/miseq_run_ID/sample_name/GAMA/"
 	exit 0
 elif [ -z "$2" ]; then
 	echo "Empty project id name supplied to run_GAMA.sh, exiting"

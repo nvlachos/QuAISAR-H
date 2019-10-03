@@ -11,14 +11,19 @@ if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
 . ./config.sh
-# No MODs needed
 
 #
-# Grabs the best species match based on read hits (not relative abundance) from the gottcha tool run
+# Description: Grabs the best species match based on read hits (not relative abundance) from the gottcha tool run
 #
-# Usage ./best_hit_from_gottcha1.sh sample_name run_id
+# Usage: ./best_hit_from_gottcha1.sh sample_name run_ID
 #
-# No modules required
+# Output location: default_config.sh_output_location/run_ID/sample_name/gottcha/
+#
+# Modules required: None
+#
+# V1.0
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
 # Checks for proper argumentation
@@ -33,8 +38,8 @@ elif [ -z "$2" ]; then
 	exit 1
 # command line version of usage for script
 elif [[ "$1" = "-h" ]]; then
-	echo "Usage is ./best_hit_from_gottcha1.sh   sample_name   run_id"
-	echo "Output is saved to ${processed}/miseq_run_id/sample_name/gottcha/"
+	echo "Usage is ./best_hit_from_gottcha1.sh   sample_name   run_ID"
+	echo "Output is saved to ${processed}/miseq_run_ID/sample_name/gottcha/"
 	exit 0
 fi
 
@@ -69,6 +74,7 @@ species_reads=0
 
 # If the source TSV produced from gottcha does not exist then the script will exit with error code 1
 if [[ ! -s "${OUTDATADIR}/gottcha_S/${1}.gottcha.tsv" ]]; then
+	echo "GOTTCHA output tsv does not exist, exiting..."
 	exit 1
 fi
 

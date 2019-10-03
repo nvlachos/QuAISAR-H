@@ -11,14 +11,19 @@ if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
 . ./config.sh
-#Import the module file that loads all necessary mods
-. "${mod_changers}/pipeline_mods"
-
-#List all currently loaded modules
-#. ./module_changers/list_modules.sh
 
 #
-# Usage ./abl_mass_qsub_GAMA.sh path_to_list max_concurrent_submissions output_directory_for_scripts clobberness[keep|clobber]
+# Description: A script to submit a list of isolates to the cluster to perform GAMA on many isolates in parallel
+#
+# Usage: ./abl_mass_qsub_GAMA.sh path_to_list max_concurrent_submissions output_directory_for_scripts clobberness[keep|clobber]
+#
+# Output location: default_config.sh_output_location/run_ID/sample_name/GAMA/. Temp scripts will be in default_mass_qsubs_folder_from_config.sh/GAMA_subs
+#
+# Modules required: None, run_GAMA.sh will load Python3/3.5.2 and blat/35
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
 # Number regex to test max concurrent submission parametr

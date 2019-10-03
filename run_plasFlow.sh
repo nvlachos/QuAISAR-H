@@ -11,13 +11,20 @@ if [[ ! -f "./config.sh" ]]; then
 	cp ./config_template.sh ./config.sh
 fi
 . ./config.sh
-#. "${mod_changers}/pipeline_mods"
-#. ./module_changers/list_modules.sh
+
 
 #
-# Will attempt to find any plasmids in sample
+# Description: Will attempt to find any plasmids in sample using plasFlow methods
 #
-# Usage ./run_plasFlow.sh sample_name run_id
+# Usage: ./run_plasFlow.sh sample_name run_ID
+#
+# Output location: default_config.sh_output_location/run_ID/sample_name/plasFlow/
+#
+# Modules required: PlasFlow/1.1
+#
+# v1.0 (10/3/2019)
+#
+# Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
 # Checks for proper argumentation
@@ -28,19 +35,15 @@ elif [[ -z "${1}" ]]; then
 	echo "Empty sample name supplied to run_plasmidFlow.sh, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_plasmFlow.sh  sample_name run_id"
-	echo "Output by default is ${processed}/miseq_run_id/sample_name/plasmFlow"
+	echo "Usage is ./run_plasmFlow.sh  sample_name run_ID"
+	echo "Output by default is ${processed}/miseq_run_ID/sample_name/plasmFlow"
 	exit 0
 elif [[ -z "${2}" ]]; then
-	echo "Empty run_id supplied to run_plasFlow.sh, exiting"
+	echo "Empty run_ID supplied to run_plasFlow.sh, exiting"
 	exit 1
 fi
 
 ml PlasFlow/1.1
-
-
-# Show loaded modules
-ml
 
 # Create output directory
 if [[ ! -d "${processed}/${2}/${1}/plasFlow" ]]; then
@@ -98,7 +101,7 @@ if [[ -s "${processed}/${2}/${1}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
 	#module load racon/1.3.1;
 	#module load perl/5.22.1
 
-	ml -Python3/3.5 bowtie2/2.2.9 samtools/1.4.1 bam2fastq/1.1.0 Unicycler/0.4.7 SPAdes/3.13.0 racon/1.3.1
+	ml -Python3/3.5 bowtie2/2.2.9 samtools/1.4.1 bam2fastq/1.1.0 Unicycler/0.4.4 SPAdes/3.13.0 racon/1.3.1
 
 	mkdir ${processed}/${2}/${1}/plasFlow/bowtie2-index/
 	bowtie2-build -f "${processed}/${2}/${1}/plasFlow/${1}_plasFlow_results.tsv_chromosomes.fasta" "${processed}/${2}/${1}/plasFlow/bowtie2-index/bowtie2_${1}_chr"
@@ -125,4 +128,4 @@ fi
 #module unload SPAdes/3.11.1;
 #module unload racon/1.2.0;
 
-ml -Python3/3.5.4 -bowtie2/2.2.9 -samtools/1.4.1 -bam2fastq/1.1.0 -Unicycler/0.4.7 -SPAdes/3.13.0 -racon/1.3.1
+ml -Python3/3.5.4 -bowtie2/2.2.9 -samtools/1.4.1 -bam2fastq/1.1.0 -Unicycler/0.4.4 -SPAdes/3.13.0 -racon/1.3.1
