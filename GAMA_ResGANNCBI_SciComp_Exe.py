@@ -1,3 +1,20 @@
+#!/usr/bin/env python
+
+#
+# Description: Script to find AR genes, nucleotide and AA with differences, within fasta assembly
+#
+# Usage: python GAMA_ResGANNCBI_SciComp_Exe.py -i my_scaffolds.fasta -d NAR.fasta -o My_output.GAMA
+#   ** Requires python2, working on converting to py3
+#
+# Output location: parameter
+#
+# Modules required: Biopython must be available in python instance
+#
+# v1.0 (10/3/2019)
+#
+# Created by Rich Stanton (njr5@cdc.gov)
+#
+
 import sys
 import Bio
 import glob
@@ -18,6 +35,13 @@ import math
 ##Usage: $ python GAMA_4.6.4_NAR_SciComp_Exe.py my_scaffolds.fasta NAR.fasta My_output.GAMA
 
 print (sys.version)
+
+def parseArgs(args=None):
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--input', help='input file', required=True, dest='input_file')
+    parser.add_argument('-o', '--output', help='output file name.GAMA', required=True, dest='output')
+    parser.add_argument('-d', '--database', help='database location', required=True, dest='database')
+    return parser.parse_args()
 
 def PSL_Type(PSL_Line):
     """Takes in a line from a PSL and returns its type"""
@@ -810,4 +834,5 @@ Output = sys.argv[3]
 
 subprocess.call('blat' + ' ' + Gene_DB + ' '  + Fasta + ' -noHead ' + Output + '.psl', shell=True)
 
-GAMA_ResGANNOT_Output(Output +'.psl', Fasta, Gene_DB, Output)
+args = parseArgs()
+GAMA_ResGANNOT_Output(args.output +'.psl', args.input, args.output, args.database, args.output)
