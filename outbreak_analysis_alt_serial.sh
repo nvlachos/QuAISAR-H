@@ -210,12 +210,17 @@ rm -r ${output_directory}/mashtree
 # Submits the list of isolates that need the newest ResGANNCBI file for csstar
 if [[ "${run_csstar}" = "true" ]]; then
 	echo "Submitting list for csstar qsub analysis"
-	qsub -sync y ${shareScript}/abl_mass_qsub_csstar.sh "${output_directory}/${4}_csstar_todo.txt" 25 "${mass_qsub_folder}" "${clobberness}" "${sim}"
+	${shareScript}/serial_csstar.sh "${output_directory}/${4}_csstar_todo.txt" "${clobberness}" "${sim}"
+fi
+# Submits the list of isolates that need the newest ResGANNCBI file for GAMA
+if [[ "${run_GAMA}" = "true" ]]; then
+	echo "Submitting list for GAMA qsub analysis"
+	${shareScript}/serial_GAMA.sh "${output_directory}/${4}_GAMA_todo.txt" "${clobberness}"
 fi
 # Submits the list of isolates that need the newest ResGANNCBI file for srst2
 if [[ "${run_srst2}" = "true" ]]; then
 	echo "Submitting list for srst2 qsub analysis"
-	qsub -sync y ${shareScript}/abl_mass_qsub_srst2.sh "${output_directory}/${4}_srst2_todo.txt" 25 "${mass_qsub_folder}" "${clobberness}"
+	${shareScript}/serial_srst2.sh "${output_directory}/${4}_srst2_todo.txt" "${clobberness}"
 fi
 
 echo $(date)

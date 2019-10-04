@@ -15,7 +15,7 @@ fi
 #
 # Description: A script to submit a list of isolates to the cluster to perform GAMA on many isolates in parallel
 #
-# Usage: ./serial_GAMA.sh path_to_list max_concurrent_submissions output_directory_for_scripts clobberness[keep|clobber]
+# Usage: ./serial_GAMA.sh path_to_list clobberness[keep|clobber]
 #
 # Output location: default_config.sh_output_location/run_ID/sample_name/GAMA/. Temp scripts will be in default_mass_qsubs_folder_from_config.sh/GAMA_subs
 #
@@ -25,9 +25,6 @@ fi
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
-
-# Number regex to test max concurrent submission parametr
-number='^[0-9]+$'
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -40,23 +37,17 @@ elif [[ "$1" = "-h" ]]; then
 elif [[ ! -f "${1}" ]]; then
 	echo "${1} (list) does not exist...exiting"
 	exit 1
-elif ! [[ ${2} =~ $number ]] || [[ -z "${2}" ]]; then
-	echo "${2} is not a number or is empty. Please input max number of concurrent qsub submissions...exiting"
-	exit 2
-elif [[ -z "${3}" ]]; then
-	echo "Output directory parameter is empty...exiting"
-	exit 1
-elif [[ -z "${4}" ]]; then
+elif [[ -z "${2}" ]]; then
 	echo "Clobberness was not input, be sure to add keep or clobber as 4th parameter...exiting"
 	exit 1
 fi
 
 # Check that clobberness is a valid option
-if [[ "${4}" != "keep" ]] && [[ "${4}" != "clobber" ]]; then
+if [[ "${2}" != "keep" ]] && [[ "${2}" != "clobber" ]]; then
 	echo "Clobberness was not input, be sure to add keep or clobber as 5th parameter...exiting"
 	exit 1
 else
-	clobberness="${4}"
+	clobberness="${2}"
 fi
 
 # create an array of all samples in the list
