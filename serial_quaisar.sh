@@ -12,17 +12,16 @@ shareScript=$(pwd)
 . ${shareScript}/config.sh
 
 #
-# Description: The wrapper script that runs the QuAISAR-H pipeline in a grid scheduler environment.
+# Description: The wrapper script that runs the QuAISAR-H pipeline in a standard non-scheduler environment.
 # There are 2 ways to call the script. 1. If there is a default location and format that reads are kept then set that in the config file and use -p and the subfolder name containing the fastq files,
 # or if the location is not in a standard place then use -i and the format number matching the reads post_fix and set output directory with -o as follows
 #
-# Usage 1: ./parallel_quaisar.sh -p name_of_subfolder_within_default_read_location
-# Usage 2: ./parallel_quaisar.sh -i path_to_reads_folder 1|2|3|4 -o path_to_parent_output_folder_location name_of_output_folder
+# Usage 1: ./serial_quaisar.sh -p name_of_subfolder_within_default_read_location
+# Usage 2: ./serial_quaisar.sh -i path_to_reads_folder 1|2|3|4 -o path_to_parent_output_folder_location name_of_output_folder
 #
 # Output location: Parameter or default_config.sh_output_location if p flag is used
 #
 # Modules required: None
-#		*script must be run on cluster or grid scheduler machine
 #
 # v1.0 (10/3/2019)
 #
@@ -36,7 +35,7 @@ config_counter=0
 while true
 do
 	if [[ "${config_counter}" -gt ${max_quaisars} ]]; then
-		echo "Already ${max_quaisars} parallel quaisar sets running, please wait until one finishes (or check script directory for any straggling config_X.sh files that may not be being used anymore)...exiting"
+		echo "Already ${max_quaisars} serial quaisar sets running, please wait until one finishes (or check script directory for any straggling config_X.sh files that may not be being used anymore)...exiting"
 		exit 324
 	fi
 	if [[ ! -f "${shareScript}/config_${config_counter}.sh" ]]; then
@@ -75,9 +74,9 @@ fi
 # Checking for proper number of arguments from command line
 if [[ $# -lt 1  || $# -gt 7 ]]; then
 	echo "If reads are in default location set in config file then"
-  echo "Usage: ./parallel_quaisar.sh -p project_name"
+  echo "Usage: ./serial_quaisar.sh -p project_name"
 	echo "else if you are running it on reads not in the default location or format"
-	echo "Usage: ./parallel_quaisar.sh -i location_of_reads 1|2|3|4 -o path_to_parent_output_folder_location name_of_output_folder "
+	echo "Usage: ./serial_quaisar.sh -i location_of_reads 1|2|3|4 -o path_to_parent_output_folder_location name_of_output_folder "
 	echo "filename postfix numbers are as follows 1:_L001_SX_RX_00X.fastq.gz 2: _(R)X.fastq.gz 3: _RX_00X.fastq.gz 4: _SX_RX_00X.fastq.gz"
   echo "You have used $# args"
   exit 3
@@ -98,9 +97,9 @@ for ((i=1 ; i <= nopts ; i++)); do
 		-h | --help)
 			echo -e "\\n\\n\\n"
 			echo "If reads are in default location set in config file then"
-		  echo "Usage: ./parallel_quaisar.sh -p project_name"
+		  echo "Usage: ./serial_quaisar.sh -p project_name"
 			echo "else if you are running it on reads not in the default location or format"
-			echo "Usage: ./parallel_quaisar.sh -i location_of_reads 1|2|3|4 -o path_to_parent_output_folder_location name_of_output_folder "
+			echo "Usage: ./serial_quaisar.sh -i location_of_reads 1|2|3|4 -o path_to_parent_output_folder_location name_of_output_folder "
 			echo "filename postfix numbers are as follows 1:_L001_SX_RX_00X.fastq.gz 2: _(R)X.fastq.gz 3: _RX_00X.fastq.gz 4: _SX_RX_00X.fastq.gz"
 			echo -e "\\n\\n\\n"
 			exit 0
@@ -241,17 +240,7 @@ if [[ "${assemblies}" == "true" ]]; then
 		if [[ -f "${processed}/${proj}/${file}/${file}_pipeline_stats.txt" ]]; then
 			rm "${processed}/${proj}/${file}/${file}_pipeline_stats.txt"
 		fi
-		if [[ ! -f ${shareScript}/quaisar_on_assembly_${file}.sh ]]; then
-			cp ${shareScript}/quaisar_on_assembly_template.sh ${shareScript}/quaisar_on_assembly_${file}.sh
-			sed -i -e "s/qoa_X/qoa_${file}/g" "${shareScript}/quaisar_on_assembly_${file}.sh"
-			sed -i -e "s/qoaX/qoa_${file}/g" "${shareScript}/quaisar_on_assembly_${file}.sh"
-			echo "Entering ${shareScript}/quaisar_on_assembly_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
-			qsub "${shareScript}/quaisar_on_assembly_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
-			echo "Created and ran quaisar_on_assembly_${file}.sh"
-		else
-			echo "${shareScript}/quaisar_on_assembly_${file}.sh already exists, will resubmit"
-			qsub "${shareScript}/quaisar_on_assembly_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
-		fi
+		"${shareScript}/quaisar_on_assembly.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
 	done
 else
 	for projfile in "${file_list[@]}";
@@ -263,51 +252,9 @@ else
 		if [[ -f "${processed}/${proj}/${file}/${file}_pipeline_stats.txt" ]]; then
 			rm "${processed}/${proj}/${file}/${file}_pipeline_stats.txt"
 		fi
-		if [[ ! -f ${shareScript}/quaisar_${file}.sh ]]; then
-			cp ${shareScript}/quaisar_template.sh ${shareScript}/quaisar_${file}.sh
-			sed -i -e "s/quaisar_X/quaisar_${file}/g" "${shareScript}/quaisar_${file}.sh"
-			sed -i -e "s/quasX/quasp_${file}/g" "${shareScript}/quaisar_${file}.sh"
-			echo "Entering ${shareScript}/quaisar_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
-			qsub "${shareScript}/quaisar_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
-			echo "Created and ran quaisar_${file}.sh"
-		else
-			echo "${shareScript}/quaisar_${file}.sh already exists, will resubmit"
-			qsub "${shareScript}/quaisar_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
-		fi
+		"${shareScript}/quaisar.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
 	done
 fi
-
-# Hold for completion of all submited single quaisars
-for run_sample in "${file_list[@]}"; do
-	waiting_sample=$(echo "${run_sample}" | cut -d'/' -f2)
-	if [[ -f "${processed}/${PROJECT}/${waiting_sample}/${waiting_sample}_pipeline_stats.txt" ]]; then
-		echo "${waiting_sample} is complete"
-		mv ${shareScript}/quaisar_${waiting_sample}.sh ${log_dir}
-		mv ${shareScript}/quaisar_${waiting_sample}.err ${log_dir}
-		mv ${shareScript}/quaisar_${waiting_sample}.out ${log_dir}
-	else
-		while :
-		do
-				if [[ ${timer} -gt 1440 ]]; then
-					echo "Timer exceeded limit of 86400 seconds(24 hours), Must complete other steps manually for ${project}"
-					exit 1
-				fi
-				if [[ -f "${processed}/${PROJECT}/${waiting_sample}/${waiting_sample}_pipeline_stats.txt" ]]; then
-					echo "${waiting_sample} is complete"
-					mv ${shareScript}/quaisar_${waiting_sample}.sh ${log_dir}
-					mv ${shareScript}/quaisar_${waiting_sample}.err ${log_dir}
-					mv ${shareScript}/quaisar_${waiting_sample}.out ${log_dir}
-					break
-				else
-					timer=$(( timer + 1 ))
-					if [[ $(( timer % 5 )) -eq 0 ]]; then
-						echo "Slept for ${timer} minutes so far"
-					fi
-					sleep 60
-				fi
-		done
-	fi
-done
 
 # Concatenates lists if this run was an addition to an already processed folder
 if [[ -f "${processed}/${PROJECT}/${PROJECT}_list_original.txt" ]]; then

@@ -11,7 +11,7 @@
 # Description: Alternate version of the main QuAISAR-H pipeline that (re)starts from after assembly step, project/isolate_name/Assembly must already have an assembly file (scaffolds.fasta) to work with
 # 	This script assumes the sample is located in the default location ($processed) specified within the config file
 #
-# Usage: ./quaisar_on_assembly_template.sh isolate_name project_name
+# Usage: ./quaisar_on_assembly.sh isolate_name project_name
 #
 # Output location: default_config.sh_output_location
 #
@@ -31,7 +31,7 @@ elif [[ "${1}" = "-h" ]]; then
 	echo "Output by default is processed to processed/miseq_run_ID/sample_name"
 	exit 0
 elif [[ -z "{2}" ]]; then
-	echo "No Project/Run_ID supplied to quaisar_template.sh, exiting"
+	echo "No Project/Run_ID supplied to quaisar.sh, exiting"
 	exit 33
 fi
 

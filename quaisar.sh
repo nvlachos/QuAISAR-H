@@ -10,7 +10,7 @@
 #
 # Description: The full QuAISAR-H pipeline start to end serially, project/isolate_name must already have a populated FASTQs folder to work with
 #
-# Usage: ./quaisar_template.sh isolate_name project_name path_to_config_file_to_use
+# Usage: ./quaisar.sh isolate_name project_name path_to_config_file_to_use
 #
 # Output location: default_config.sh_output_location
 #
@@ -26,15 +26,15 @@ if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./quaisar_template.sh  sample_name miseq_run_ID(or_project_name) config_file_to_use"
+	echo "Usage is ./quaisar.sh  sample_name miseq_run_ID(or_project_name) config_file_to_use"
 	echo "Populated FASTQs folder needs to be present in ${2}/${1}, wherever it resides"
 	echo "Output by default is processed to processed/miseq_run_ID/sample_name"
 	exit 0
 elif [[ -z "${2}" ]]; then
-	echo "No Project/Run_ID supplied to quaisar_template.sh, exiting"
+	echo "No Project/Run_ID supplied to quaisar.sh, exiting"
 	exit 33
 elif [[ -z "${3}" ]]; then
-	echo "No config file supplied to quaisar_template.sh, exiting"
+	echo "No config file supplied to quaisar.sh, exiting"
 	exit 34
 fi
 

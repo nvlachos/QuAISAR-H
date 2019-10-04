@@ -30,10 +30,6 @@ from decimal import *
 getcontext().prec = 4
 import math
 
-##Written by Rich Stantn (njr5@cdc.gov)
-##Requires Python/2.7.3 and blat
-##Usage: $ python GAMA_4.6.4_NAR_SciComp_Exe.py my_scaffolds.fasta NAR.fasta My_output.GAMA
-
 print (sys.version)
 
 def parseArgs(args=None):
