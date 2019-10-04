@@ -15,7 +15,7 @@ fi
 #
 # Description: Will attempt to recalculate the best hit from a previously completed ANI analysis
 #
-# Usage: ./run_ANI.sh sample_name   genus species   run_ID  list_samples_to_include(optional)
+# Usage: ./retry_ANI_best_hit.sh sample_name   genus	species   run_ID  list_samples_to_include(optional)
 #
 # Output location: default_config.sh_output_location/run_ID/sample_name/ANI/
 #
@@ -37,11 +37,11 @@ elif [[ -z "${1}" ]]; then
 	exit 1
 # Gives the user a brief usage and help section if requested with the -h option argument
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_ANI.sh sample_name ani_database(which is also genus) species run_ID list_of_samples_to_include(optional)"
+	echo "Usage is ./retry_ANI_best_hit.sh sample_name ani_database(which is also genus) species run_ID list_of_samples_to_include(optional)"
 	echo "Output is saved to in ${processed}/sample_name/ANI"
 	exit 0
 elif [ -z "$2" ]; then
-	echo "Empty database name supplied to run_ANI.sh. Second argument should be a genus found in ${local_DBs}/ANI/  ...Exiting"
+	echo "Empty database name supplied to retry_ANI_best_hit.sh. Second argument should be a genus found in ${local_DBs}/ANI/  ...Exiting"
 	exit 1
 elif [ ! -s "${local_DBs}/aniDB/${2,}" ]; then
 	echo "The genus does not exist in the ANI database. This will be noted and the curator of the database will be notified. However, since nothing can be done at the moment....exiting"
