@@ -69,7 +69,7 @@ echo $(python3 -V)
 
 ${shareScript}/clean_list.sh ${1}
 centroid_filename=$(basename ${1}).centroid
-python3 ${shareScript}/Mash_centroid.py ${1} ${OUTDATADIR}/${centroid_filename}
+python3 ${shareScript}/Mash_centroid.py -i ${1} -o ${OUTDATADIR}/${centroid_filename}
 
 counter=0
 while IFS= read -r var || [ -n "$var" ]; do
