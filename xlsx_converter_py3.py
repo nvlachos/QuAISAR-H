@@ -142,7 +142,7 @@ def cell_text_clean(text):
   if "\n".encode("utf-8") in s: warning("Clobbering embedded newline")
   if "\r".encode("utf-8") in s: warning("Clobbering embedded carriage return")
   s = s.replace("\t".encode("utf-8")," ".encode("utf-8")).replace("\n".encode("utf-8")," ".encode("utf-8")).replace("\r".encode("utf-8")," ".encode("utf-8"))
-  return s
+  return s.decode()
 
 for row in rows:
   cells_elts = row.findall(n("c"))
@@ -154,7 +154,7 @@ for row in rows:
   for c,j in zip(cells_elts,inds):
     cells[j] = c
   #print( *(cell2text( c ).encode("utf-8").replace("\t"," ") for c in cells), sep="\t")
-  print(myjoin((cell_text_clean(cell2text( c )) for c in cells), sep="\t").decode())
+  print(myjoin((cell_text_clean(cell2text( c )) for c in cells), sep="\t"))
 
 if warning_count > warning_max:
   print("%d total warnings, %d hidden" % (warning_count, warning_count-warning_max), file=sys.stderr)
