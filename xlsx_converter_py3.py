@@ -139,8 +139,8 @@ def warning(s):
 def cell_text_clean(text):
   s = text.encode("utf-8")
   if "\t".encode("utf-8") in s: warning("Clobbering embedded tab")
-  if "\n" in s: warning("Clobbering embedded newline")
-  if "\r" in s: warning("Clobbering embedded carriage return")
+  if "\n".encode("utf-8") in s: warning("Clobbering embedded newline")
+  if "\r".encode("utf-8") in s: warning("Clobbering embedded carriage return")
   s = s.replace("\t"," ").replace("\n"," ").replace("\r"," ")
   return s
 
