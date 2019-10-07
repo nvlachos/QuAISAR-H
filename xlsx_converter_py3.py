@@ -141,7 +141,7 @@ def cell_text_clean(text):
   if "\t".encode("utf-8") in s: warning("Clobbering embedded tab")
   if "\n".encode("utf-8") in s: warning("Clobbering embedded newline")
   if "\r".encode("utf-8") in s: warning("Clobbering embedded carriage return")
-  s = s.replace("\t".encode("utf-8")," ").replace("\n".encode("utf-8")," ").replace("\r".encode("utf-8")," ")
+  s = s.replace("\t".encode("utf-8")," ".encode("utf-8")).replace("\n".encode("utf-8")," ".encode("utf-8")).replace("\r".encode("utf-8")," ".encode("utf-8"))
   return s
 
 for row in rows:
