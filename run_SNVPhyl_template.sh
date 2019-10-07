@@ -27,7 +27,7 @@ fi
 #
 
 ml purge
-ml snvphyl-galaxy-cli/1.3.0 -Python/2.7.15 Python2/2.7.13 Mash/2.0
+ml snvphyl-galaxy-cli/1.3.0 -Python/2.7.15 Python2/2.7.13 Mash/2.0 Python3/3.5.2
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -69,7 +69,7 @@ echo $(python3 -V)
 
 ${shareScript}/clean_list.sh ${1}
 centroid_filename=$(basename ${1}).centroid
-python ${shareScript}/Mash_centroid.py ${1} ${OUTDATADIR}/${centroid_filename}
+python3 ${shareScript}/Mash_centroid.py ${1} ${OUTDATADIR}/${centroid_filename}
 
 counter=0
 while IFS= read -r var || [ -n "$var" ]; do
@@ -140,9 +140,8 @@ sed -i "s/reference/${ref}/g" "${OUTDATADIR}/output/phylogeneticTree.newick"
 
 echo -e "\nReference:\t${ref}\nSNVPhyl core estimate:\t${snv_est}%\n" >> "${OUTDATADIR}/output/snvMatrix.tsv"
 
+ml -snvphyl-galaxy-cli/1.3.0 -Python2/2.7.13 -Mash/2.0 -Python3/3.5.2
 
-
-. "${mod_changers}/unload_SNVPhyl.sh"
 cd ${owd}
 
 exit 0
