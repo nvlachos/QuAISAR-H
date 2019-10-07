@@ -26,7 +26,7 @@ fi
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
-ml Python3/3.5.2
+ml Python2/2.7.13
 
 #  Function to print out help blurb
 show_help () {
@@ -71,7 +71,7 @@ echo "${processed}/${project}/2019_MMBSeq_Log.xlsx"
 cp "${local_DBs}/Seqlog_copies/2019_MMBSeq_Log.xlsx" "${processed}/${project}/2019_MMBSeq_Log.xlsx"
 
 # Convert log file to csv format for searchability
-python3 ${shareScript}/xlsx_converter.py "${processed}/${project}/2019_MMBSeq_Log.xlsx" "FY19 Miseq Isolate Log" > "${processed}/${project}/2019_MMBSeq_Log.tsv"
+python ${shareScript}/xlsx_converter.py "${processed}/${project}/2019_MMBSeq_Log.xlsx" "FY19 Miseq Isolate Log" > "${processed}/${project}/2019_MMBSeq_Log.tsv"
 
 echo "Excel file: 2019_MMBSeq_Log.xlsx has been converted to TSV"
 
@@ -117,3 +117,5 @@ else
 	echo "sorted file contains entries"
 	:
 fi
+
+ml -Python2/2.7.13
