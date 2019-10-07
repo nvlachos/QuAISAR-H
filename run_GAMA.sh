@@ -21,7 +21,7 @@ fi
 #
 # Modules required: blat, Python/2.7.3
 #
-# v1.0 (10/3/2019)
+# v1.0.1 (10/7/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
@@ -81,7 +81,7 @@ else
 	exit 5564
 fi
 ### GAMA AR Classifier ### in species mode
-python3 GAMA_ResGANNCBI_SciComp_Exe.py "${assembly_source}" "${ARDB}" "${OUTDATADIR}/${1}.${ResGANNCBI_srst2_filename}.GAMA"
+python3 GAMA_ResGANNCBI_SciComp_Exe.py "-i" "${assembly_source}" "-d" "${ARDB}" "-o" "${OUTDATADIR}/${1}.${ResGANNCBI_srst2_filename}.GAMA"
 
 ml -blat -Python/2.7.3
 
