@@ -48,7 +48,7 @@ def Average_Mash(input_mash_list):
     Entry = List1[0]
     values = []
     for entries in input_mash_list:
-        List1 = entries.split('\t')
+        List1 = entries.decode().split('\t')
         if List1[0] != Entry:
             average = numpy.mean(values)
             Total = []
@@ -93,7 +93,7 @@ def Fasta_List(input_file):
     while String1 != '':
         if String1[-1] == '\n':
             String1 = String1[0:-1]
-        List1 = String1.split('/')
+        List1 = String1.decode().split('/')
         Out_String = '/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/' + String1 + '/Assembly/' + List1[1] + '_scaffolds_trimmed.fasta'
         Out_List.append(Out_String)
         String1 = f.readline()
@@ -119,7 +119,7 @@ def Scicomp_Mash_Centroid(input_list, output_list):
     """Takes in an input list and returns an output list with the centroid isolate at the top"""
     Fastas = Fasta_List(input_list)
     Centroid = Mash_Centroid(Fastas)
-    Best_List = Centroid.split('/')
+    Best_List = Centroid.decode().split('/')
     Best_Centroid = Best_List[8] + '/' + Best_List[9]
     List_Reorder(input_list, Best_Centroid, output_list)
 
