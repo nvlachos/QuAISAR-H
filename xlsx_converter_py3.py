@@ -154,7 +154,7 @@ for row in rows:
   for c,j in zip(cells_elts,inds):
     cells[j] = c
   #print( *(cell2text( c ).encode("utf-8").replace("\t"," ") for c in cells), sep="\t")
-  print(myjoin((cell_text_clean(cell2text( c )) for c in cells).encode('utf-8'), sep="\t").decode())
+  print(myjoin((cell_text_clean(cell2text( c )) for c in cells), sep="\t").decode())
 
 if warning_count > warning_max:
   print("%d total warnings, %d hidden" % (warning_count, warning_count-warning_max), file=sys.stderr)
