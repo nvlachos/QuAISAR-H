@@ -49,7 +49,7 @@ if args:
 elif not sys.stdin.isatty():
   z = zipfile.ZipFile(sys.stdin)
 else:
-  print __doc__.strip()
+  print __doc__.decode().strip()
   sys.exit(1)
 
 n=lambda x: "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}%s" % x
