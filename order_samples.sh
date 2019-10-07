@@ -19,7 +19,7 @@ fi
 #
 # Output location: /deafult_config.sh_output_location/Run_ID/Run_ID_list_ordered.txt
 #
-# Modules required: Python3/3.5.2
+# Modules required: Python2.7.13
 #
 # v1.0 (10/3/2019)
 #
