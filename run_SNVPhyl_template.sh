@@ -27,7 +27,7 @@ fi
 #
 
 ml purge
-ml snvphyl-galaxy-cli/1.3.0 -Python/2.7.15 Python/2.7.13 Mash/2.0
+ml snvphyl-galaxy-cli/1.3.0 -Python/2.7.15 Python2/2.7.13 Mash/2.0
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
