@@ -829,11 +829,11 @@ def GAMA_ResGANNOT_Output(PSL, genome_fasta, genes_fasta, Out_File):
         Output.write(Out_Line + '\n')
     Output.close()
 
-Fasta = sys.argv[1]
-Gene_DB = sys.argv[2]
-Output = sys.argv[3]
+Fasta = args.input
+Gene_DB = args.database
+Output = args.output
 
 subprocess.call('blat' + ' ' + Gene_DB + ' '  + Fasta + ' -noHead ' + Output + '.psl', shell=True)
 
 args = parseArgs()
-GAMA_ResGANNOT_Output(args.output +'.psl', args.input, args.output, args.database, args.output)
+GAMA_ResGANNOT_Output(Output +'.psl', Fasta, Gene_DB, Output)
