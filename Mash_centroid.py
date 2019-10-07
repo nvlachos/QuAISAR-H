@@ -44,7 +44,7 @@ def Mash_List(Mash_Index):
 def Average_Mash(input_mash_list):
     """Takes in a Mash_List (made using Mash_List) and then makes a list with the average value for each entry"""
     Average_List = []
-    List1 = input_mash_list[0].split('\t')
+    List1 = input_mash_list[0].decode().split('\t')
     Entry = List1[0]
     values = []
     for entries in input_mash_list:
