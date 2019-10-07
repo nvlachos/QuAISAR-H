@@ -10,7 +10,7 @@
 #
 # Modules required: Biopython must be available in python instance
 #
-# v1.0 (10/3/2019)
+# v1.0.1 (10/7/2019)
 #
 # Created by Rich Stanton (njr5@cdc.gov)
 #
@@ -29,6 +29,7 @@ from operator import itemgetter
 from decimal import *
 getcontext().prec = 4
 import math
+import argparse
 
 ##Written by Rich Stantn (njr5@cdc.gov)
 ##Requires Python/2.7.3 and blat

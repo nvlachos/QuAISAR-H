@@ -9,7 +9,7 @@
 #
 # Modules required: None
 #
-# v1.0 (10/3/2019)
+# v1.0.1 (10/7/2019)
 #
 # Created by Rich Stanton (njr5@cdc.gov)
 #
@@ -20,6 +20,7 @@ import numpy
 import operator
 from operator import itemgetter
 import subprocess
+import argparse
 
 # Parse all argument from command line
 def parseArgs(args=None):
