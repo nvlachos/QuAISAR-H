@@ -219,7 +219,6 @@ if [ "${u_percent}" = "UNK" ]; then
 # All true classified values are calculated using 100*taxa_reads/total_reads
 else
 	domain_percent_total=$( echo "${domain_reads} ${file_reads}" | awk '{ printf "%2.2f", ($1*100)/$2 }' )
-	echo "scale=2; ${domain_reads}*100/${file_reads}" | bc
 	phylum_percent_total=$( echo "${phylum_reads} ${file_reads}" | awk '{ printf "%2.2f", ($1*100)/$2 }' )
 	class_percent_total=$( echo "${class_reads} ${file_reads}" | awk '{ printf "%2.2f", ($1*100)/$2 }' )
 	order_percent_total=$( echo "${order_reads} ${file_reads}" | awk '{ printf "%2.2f", ($1*100)/$2 }' )
