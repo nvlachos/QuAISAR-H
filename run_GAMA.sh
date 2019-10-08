@@ -19,9 +19,9 @@ fi
 #
 # Output location: default_config.sh_output_location/run_ID/sample_name/GAMA/
 #
-# Modules required: blat, Python/2.7.3
+# Modules required: blat, Python3/3.5.2
 #
-# v1.0.1 (10/7/2019)
+# v1.0.2 (10/8/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
