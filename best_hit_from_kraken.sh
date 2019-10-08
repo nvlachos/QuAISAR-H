@@ -225,7 +225,6 @@ else
 	family_percent_total=$( echo "${family_reads} ${file_reads}" | awk '{ printf "%2.2f", ($1*100)/$2 }' )
 	genus_percent_total=$( echo "${genus_reads} ${file_reads}" | awk '{ printf "%2.2f", ($1*100)/$2 }' )
 	species_percent_total=$( echo "${species_reads} ${file_reads}" | awk '{ printf "%2.2f", ($1*100)/$2 }' )
-	echo -e "U: ${unclass_percent} (${u_percent}) unclassified\\nD: ${domain_reads}	${domain_percent} (${domain_percent_total}) ${domain}\\nP: ${phylum_reads}	${phylum_percent} (${phylum_percent_total}) ${phylum}\\nC: ${class_reads}	${class_percent} (${class_percent_total}) ${class}\\nO: ${order_reads}	${order_percent} (${order_percent_total}) ${order}\\nF: ${family_reads}	${family_percent} (${family_percent_total}) ${family}\\nG: ${genus_reads}	${genus_percent} (${genus_percent_total}) ${genus}\\nS: ${species_reads}	${species_percent} (${species_percent_total}) ${species} \\n ${file_reads}"
 fi
 
 #Print out the best taxa for each level and its corresponding % of reads reported by kraken, % reads of total, taxon description
