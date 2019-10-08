@@ -106,7 +106,7 @@ def Indel_Match_Length(PSL_Line):
     return Length
 
 def In_Contig(Start_Stop_List, Contig_Length):
-    print("pre5")
+    #print("pre5")
     """Tells if a start and stop list (like from Genome_Region) is within a contig"""
     if Start_Stop_List[0] >= 0 and  Start_Stop_List[1] <= Contig_Length:
         return True
@@ -181,7 +181,7 @@ def Mutant_Typer(PSL_Line, genome_gene, gene):
         return Type
 
 def Is_Partial(PSL_Line):
-    print("pre11")
+    #print("pre11")
     """If partial match (<90% length) returns True"""
     List1 = PSL_Line.split('\t')
     Match_Length = int(List1[12]) - int(List1[11])
@@ -621,7 +621,7 @@ def Edge_Line(PSL_Line, genome_gene, gene):
     return Out
 
 def Match_Start_Stop_Finder(PSL_Line):
-    print("pre35")
+    #print("pre35")
     """Finds the start and stop for the contig and gene"""
     List1 = PSL_Line.split('\t')
     Output = []
