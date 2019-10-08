@@ -10,7 +10,7 @@
 #
 # Modules required: Biopython must be available in python instance
 #
-# v1.0.1 (10/7/2019)
+# v1.0.2 (10/8/2019)
 #
 # Created by Rich Stanton (njr5@cdc.gov)
 #
