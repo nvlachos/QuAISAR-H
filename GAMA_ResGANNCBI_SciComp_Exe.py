@@ -667,6 +667,7 @@ def Match_Length_Maker(PSL_Line):
 
 def GAMA_Line_Maker(PSL, genome_fasta, genes_fasta):
     """Makes a list of potential GAMA lines from a PSL file matching Genes to a Genome"""
+    print("pre")
     f = open(PSL, 'r')
     Lines = []
     String1 = f.readline()
@@ -676,6 +677,7 @@ def GAMA_Line_Maker(PSL, genome_fasta, genes_fasta):
     f.close()
     Genome = SeqIO.to_dict(SeqIO.parse(genome_fasta, 'fasta'))
     Genes = SeqIO.to_dict(SeqIO.parse(genes_fasta, 'fasta'))
+    print("psot")
     Output = []
     for line in Lines:
         List1 = line.split('\t')
@@ -835,8 +837,8 @@ Fasta = args.input
 Gene_DB = args.database
 Output = args.output
 
-print("pre")
+
 subprocess.call('blat' + ' ' + Gene_DB + ' '  + Fasta + ' -noHead ' + Output + '.psl', shell=True)
-print("post")
+
 
 GAMA_ResGANNOT_Output(Output +'.psl', Fasta, Gene_DB, Output)
