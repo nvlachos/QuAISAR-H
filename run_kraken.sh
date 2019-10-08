@@ -99,7 +99,7 @@ elif [ "${3}" = "assembled" ]; then
 	ktImportText "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_weighted.krona" -o "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_weighted_BP_krona.html"
 	# Runs the extractor for pulling best taxonomic hit from a kraken run
 	echo "8"
-	"${shareScript}/best_hit_from_kraken.sh" "${1}" "${2}" "${3}_BP_data" "${4}" "kraken"
+	"${shareScript}/best_hit_from_kraken.sh" "${1}" "${2}" "${3}_BP" "${4}" "kraken"
 else
 	echo "Argument combination is incorrect"
 	exit 1
