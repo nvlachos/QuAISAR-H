@@ -766,11 +766,11 @@ def Internal(a,b):
     return (a[0] >= b[0] and a[1] <= b[1]) or (b[0] >= a[0] and b[1] <= a[1])
 
 def Overlap(a,b):
-    print("pre40")
+    #print("pre40")
     return (a[0] >= b[0] and a[1] <= b[1]) or (b[0] >= a[0] and b[1] <= a[1]) or (a[0] < b[1] and a[1] > b[0]) or (b[0] < a[1] and b[1] > a[0])
 
 def Overlap_Fraction(a,b):
-    print("pre41")
+    #print("pre41")
     if Overlap(a,b) == False:
         Fraction = 0
     Length_a = a[1] - a[0]
