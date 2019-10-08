@@ -45,7 +45,7 @@ def parseArgs(args=None):
     return parser.parse_args()
 
 def PSL_Type(PSL_Line):
-    print("pre1")
+    #print("pre1")
     """Takes in a line from a PSL and returns its type"""
     List1 = PSL_Line.split('\t')
     Match_Length = int(List1[12]) - int(List1[11])
@@ -65,7 +65,7 @@ def PSL_Type(PSL_Line):
     return Type
 
 def Indel_Sum(PSL_Line):
-    print("pre2")
+    #print("pre2")
     """Returns the sum of the indels (+1 for insertions, -1 for deletions)"""
     Count = 0
     Indels = Indel_Base_Info(PSL_Line)
@@ -77,7 +77,7 @@ def Indel_Sum(PSL_Line):
     return Count
 
 def Genome_Region(PSL_Line):
-    print("pre3")
+    #print("pre3")
     """Determines the Genome start and stop positions of the match"""
     List1 = PSL_Line.split('\t')
     if List1[8] == '-':
@@ -144,7 +144,7 @@ def Indel_Typer(PSL_Line, genome_gene, gene):
         return Type
 
 def N_Counter(input_gene):
-    print("pre8")
+    #print("pre8")
     """Determines if gene has Ns"""
     Count = 0
     sequence = str(input_gene.seq)
@@ -162,7 +162,7 @@ def Truncation_Location(genome_gene):
             return positions
 
 def Mutant_Typer(PSL_Line, genome_gene, gene):
-    print("pre10")
+    #print("pre10")
     """Determines the type of Indel"""
     gene_pro = str(gene.seq.translate())
     genome_pro = str(genome_gene.seq.translate())
@@ -191,7 +191,7 @@ def Is_Partial(PSL_Line):
         return False
 
 def Indel_Base_Info(PSL_Line):
-    print("pre12")
+    #print("pre12")
     """Makes a list of Indel lengths and types from a PSL line"""
     Start_Stops_Blocks = Match_Start_Stop_Finder(PSL_Line)
     List1 = PSL_Line.split('\t')
@@ -374,7 +374,7 @@ def Frameshifted(PSL_Line):
         return False
 
 def Transversion_Count(mutant_gene, native_gene):
-    print("pre20")
+    #print("pre20")
     """Takes in a mutant gene and a native gene and returns the # of mutations"""
     Count = 0
     mutant_gene = mutant_gene.upper()
@@ -393,7 +393,7 @@ def Transversion_Count(mutant_gene, native_gene):
     return Count
 
 def Mutant_Count(mutant_gene, native_gene):
-    print("pre21")
+    #print("pre21")
     """Takes in a mutant gene and a native gene and returns the # of mutations"""
     Count = 0
     mutant_gene = mutant_gene.upper()
@@ -409,7 +409,7 @@ def Mutant_Count(mutant_gene, native_gene):
     return Count
 
 def Mutant_Info(mutant_gene, native_gene):
-    print("pre22")
+    #print("pre22")
     mutant_gene = mutant_gene.upper()
     native_gene = native_gene.upper()
     Output = ''
@@ -695,7 +695,7 @@ def Match_Start_Stop_Finder(PSL_Line):
     return Output
 
 def Match_Length_Maker(PSL_Line):
-    print("pre36")
+    #print("pre36")
     """Finds the length of the bp between the start and stop of a gene match on a contig"""
     Blocks = Match_Start_Stop_Finder(PSL_Line)
     Length = int(Blocks[0][1]) - int(Blocks[0][0])
