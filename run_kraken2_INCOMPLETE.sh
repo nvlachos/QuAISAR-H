@@ -128,7 +128,7 @@ elif [ "${3}" = "assembled" ]; then
 #	 "${shareScript}/module_changers/perl_5123_to_5221.sh"
 	# Runs the extractor for pulling best taxonomic hit from a kraken2 run
 	echo "8"
-	"${shareScript}/best_hit_from_kraken.sh" "${1}" "${2}" "${3}_BP_data" "${4}" "kraken2"
+	"${shareScript}/best_hit_from_kraken.sh" "${1}" "${2}" "${3}_BP" "${4}" "kraken2"
 else
 	echo "Argument combination is incorrect"
 	exit 1

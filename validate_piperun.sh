@@ -580,15 +580,15 @@ else
 	status="FAILED"
 fi
 #Check extraction and unclassified values for weighted kraken post assembly
-if [[ -s "${OUTDATADIR}/kraken/postAssembly/${1}_kraken_summary_assembled_BP_data.txt" ]]; then
+if [[ -s "${OUTDATADIR}/kraken/postAssembly/${1}_kraken_summary_assembled_BP.txt" ]]; then
 	# Extracts many elements of the summary file to report unclassified and species classified reads and percentages
-	unclass=$(head -n 1 "${OUTDATADIR}/kraken/postAssembly/${1}_kraken_summary_assembled_BP_data.txt" | cut -d' ' -f2)
-	#true_unclass=$(head -n 1 "${OUTDATADIR}/kraken/postAssembly/${1}_kraken_summary_assembled_BP_data.txt" | cut -d' ' -f3 | sed -r 's/[)]+/%)/g')
-	domain=$(sed -n '2p' "${OUTDATADIR}/kraken/postAssembly/${1}_kraken_summary_assembled_BP_data.txt" | cut -d' ' -f2)
-	genusweighted=$(sed -n '7p' "${OUTDATADIR}/kraken/postAssembly/${1}_kraken_summary_assembled_BP_data.txt" | cut -d' ' -f4)
-	speciesweighted=$(sed -n '8p' "${OUTDATADIR}/kraken/postAssembly/${1}_kraken_summary_assembled_BP_data.txt" | cut -d' ' -f4)
-	speciespercent=$(sed -n '8p' "${OUTDATADIR}/kraken/postAssembly/${1}_kraken_summary_assembled_BP_data.txt" | cut -d' ' -f2)
-	#true_speciespercent=$(sed -n '8p' "${OUTDATADIR}/kraken/postAssembly/${1}_kraken_summary_assembled_BP_data.txt" | cut -d' ' -f3 | sed -r 's/[)]+/%)/g')
+	unclass=$(head -n 1 "${OUTDATADIR}/kraken/postAssembly/${1}_kraken_summary_assembled_BP.txt" | cut -d' ' -f2)
+	#true_unclass=$(head -n 1 "${OUTDATADIR}/kraken/postAssembly/${1}_kraken_summary_assembled_BP.txt" | cut -d' ' -f3 | sed -r 's/[)]+/%)/g')
+	domain=$(sed -n '2p' "${OUTDATADIR}/kraken/postAssembly/${1}_kraken_summary_assembled_BP.txt" | cut -d' ' -f2)
+	genusweighted=$(sed -n '7p' "${OUTDATADIR}/kraken/postAssembly/${1}_kraken_summary_assembled_BP.txt" | cut -d' ' -f4)
+	speciesweighted=$(sed -n '8p' "${OUTDATADIR}/kraken/postAssembly/${1}_kraken_summary_assembled_BP.txt" | cut -d' ' -f4)
+	speciespercent=$(sed -n '8p' "${OUTDATADIR}/kraken/postAssembly/${1}_kraken_summary_assembled_BP.txt" | cut -d' ' -f2)
+	#true_speciespercent=$(sed -n '8p' "${OUTDATADIR}/kraken/postAssembly/${1}_kraken_summary_assembled_BP.txt" | cut -d' ' -f3 | sed -r 's/[)]+/%)/g')
 	# If there are no reads at the domain level, then report no classified reads
 	if (( $(echo "${domain} <= 0" | bc -l) )); then
 		printf "%-20s: %-8s : %s\\n" "weighted Classify" "FAILED" "There are no classified reads (Did post assembly kraken fail too?)"
@@ -610,12 +610,12 @@ if [[ -s "${OUTDATADIR}/kraken/postAssembly/${1}_kraken_summary_assembled_BP_dat
 	fi
 # If no summary file was found
 else
-	printf "%-20s: %-8s : %s\\n" "weighted Classify" "FAILED" "/kraken/postAssembly/${1}_kraken_summary_assembled_BP_data.txt not found"
+	printf "%-20s: %-8s : %s\\n" "weighted Classify" "FAILED" "/kraken/postAssembly/${1}_kraken_summary_assembled_BP.txt not found"
 	status="FAILED"
 fi
 
 # Quick separate check for contamination by finding # of species above ${contamination_threshold} in list file from kraken
-if [[ -s "${OUTDATADIR}/kraken/postAssembly/${1}_assembled_BP_data.list" ]]; then
+if [[ -s "${OUTDATADIR}/kraken/postAssembly/${1}_assembled_BP.list" ]]; then
 	number_of_species=0
 	while IFS= read -r line; do
 		arrLine=(${line})
@@ -628,7 +628,7 @@ if [[ -s "${OUTDATADIR}/kraken/postAssembly/${1}_assembled_BP_data.list" ]]; the
 			#echo "Adding ${line} because its S and greater than ${contamination_threshold}... ${percent_integer}"
 			number_of_species=$(( number_of_species + 1 ))
 		fi
-	done < ${OUTDATADIR}/kraken/postAssembly/${1}_assembled_BP_data.list
+	done < ${OUTDATADIR}/kraken/postAssembly/${1}_assembled_BP.list
 	if [[ $number_of_species -gt 1 ]]; then
 		printf "%-20s: %-8s : %s\\n" "weighted Contam." "FAILED" "${number_of_species} species have been found above the ${contamination_threshold}% threshold"
 		status="FAILED"

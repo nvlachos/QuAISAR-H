@@ -402,7 +402,7 @@ while IFS= read -r var || [ -n "$var" ]; do
 				failures=$(( failures + 1 ))
 			fi
 		elif [[ "${tool}" == "weightedClassify" ]]; then
-			if [[ -s "${processed}/${1}/${sample_name}/kraken/postAssembly/${1}_kraken_summary_assembled_BP_data.txt" ]]; then
+			if [[ -s "${processed}/${1}/${sample_name}/kraken/postAssembly/${1}_kraken_summary_assembled_BP.txt" ]]; then
 				failure_flags="${failure_flags}-NO_classified_reads(post)"
 				failures=$(( failures + 1 ))
 			else

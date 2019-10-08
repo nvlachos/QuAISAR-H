@@ -108,7 +108,7 @@ Check_source() {
 		fi
 	fi
 	if [[ "${start_at}" -le 4 ]]; then
-		if [[ -s "${processed}/${project}/${sample}/kraken/postAssembly/${sample}_kraken_summary_assembled_BP_data.txt" ]]; then
+		if [[ -s "${processed}/${project}/${sample}/kraken/postAssembly/${sample}_kraken_summary_assembled_BP.txt" ]]; then
 			do_Kraken
 		return
 		fi
@@ -185,7 +185,7 @@ do_GOTTCHA() {
 # Function to pull info from kraken output based on assembly
 do_Kraken() {
 	source="Kraken"
-	source_file="${processed}/${project}/${sample}/kraken/postAssembly/${sample}_kraken_summary_assembled_BP_data.txt"
+	source_file="${processed}/${project}/${sample}/kraken/postAssembly/${sample}_kraken_summary_assembled_BP.txt"
 	#echo "${source}"
 	while IFS= read -r line  || [ -n "$line" ]; do
 		# Grab first letter of line (indicating taxonomic level)
@@ -198,7 +198,7 @@ do_Kraken() {
 		then
 			Genus=$(echo "${line}" | awk -F ' ' '{print $4}')
 		fi
-	done < "${processed}/${project}/${sample}/kraken/postAssembly/${sample}_kraken_summary_assembled_BP_data.txt"
+	done < "${processed}/${project}/${sample}/kraken/postAssembly/${sample}_kraken_summary_assembled_BP.txt"
 	confidence_index=$(tail -n1 "${source_file}" | cut -d' ' -f2)
 	confidence_index="${confidence_index}"
 }
