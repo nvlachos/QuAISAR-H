@@ -71,6 +71,8 @@ ${shareScript}/clean_list.sh ${1}
 centroid_filename=$(basename ${1}).centroid
 python3 ${shareScript}/Mash_centroid.py -i ${1} -o ${OUTDATADIR}/${centroid_filename}
 
+ml -Python3/3.5.2 Python2/2.7.13
+
 counter=0
 while IFS= read -r var || [ -n "$var" ]; do
 	echo "var:$var"
@@ -140,7 +142,7 @@ sed -i "s/reference/${ref}/g" "${OUTDATADIR}/output/phylogeneticTree.newick"
 
 echo -e "\nReference:\t${ref}\nSNVPhyl core estimate:\t${snv_est}%\n" >> "${OUTDATADIR}/output/snvMatrix.tsv"
 
-ml -snvphyl-galaxy-cli/1.3.0 -Python2/2.7.13 -Mash/2.0 -Python3/3.5.2
+ml -snvphyl-galaxy-cli/1.3.0 -Python2/2.7.13 -Mash/2.0
 
 cd ${owd}
 
