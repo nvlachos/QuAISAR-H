@@ -39,7 +39,7 @@ print (sys.version)
 
 def parseArgs(args=None):
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--input', help='input file', required=True, dest='input_file')
+    parser.add_argument('-i', '--input', help='input file', required=True, dest='input')
     parser.add_argument('-o', '--output', help='output file name.GAMA', required=True, dest='output')
     parser.add_argument('-d', '--database', help='database location', required=True, dest='database')
     return parser.parse_args()
