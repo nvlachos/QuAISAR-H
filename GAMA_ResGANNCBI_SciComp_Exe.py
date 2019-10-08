@@ -835,7 +835,8 @@ Fasta = args.input
 Gene_DB = args.database
 Output = args.output
 
+print("pre")
 subprocess.call('blat' + ' ' + Gene_DB + ' '  + Fasta + ' -noHead ' + Output + '.psl', shell=True)
-
+print("post")
 
 GAMA_ResGANNOT_Output(Output +'.psl', Fasta, Gene_DB, Output)
