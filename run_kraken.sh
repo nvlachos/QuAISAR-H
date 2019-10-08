@@ -80,8 +80,8 @@ elif [ "${3}" = "assembled" ]; then
 	# Attempting to weigh contigs and produce standard krona and list output using a modified version of Rich's weighting scripts (will also be done on pure contigs later)
 	echo "1"
 	python3 ${shareScript}/Kraken_Assembly_Converter_2_Exe.py -i "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}.kraken"
-	echo "2"
-	kraken-translate --db "${kraken_mini_db}" "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_BP.kraken" > "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_BP.labels"
+#	echo "2"
+#	kraken-translate --db "${kraken_mini_db}" "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_BP.kraken" > "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_BP.labels"
 	# Create an mpa report
 	echo "3"
 	kraken-mpa-report --db "${kraken_mini_db}" "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_BP.kraken" > "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_weighted.mpa"
@@ -92,8 +92,8 @@ elif [ "${3}" = "assembled" ]; then
 	echo "5"
 	kraken-report --db "${kraken_mini_db}" "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_BP.kraken" > "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_BP.list"
 	# Weigh taxonomy list file
-	echo "6"
-	python3 ${shareScript}/Kraken_Assembly_Summary_Exe.py -k "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_BP.kraken" -l "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_BP.labels" -t "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_BP.list" -o "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_BP_data.list"
+#	echo "6"
+#	python3 ${shareScript}/Kraken_Assembly_Summary_Exe.py -k "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_BP.kraken" -l "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_BP.labels" -t "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_BP.list" -o "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_BP_data.list"
 	# Run the krona graph generator from krona output
 	echo "7"
 	ktImportText "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_weighted.krona" -o "${OUTDATADIR}/kraken/${2}Assembly/${1}_${3}_weighted_BP_krona.html"
