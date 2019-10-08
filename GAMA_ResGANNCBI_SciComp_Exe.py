@@ -45,6 +45,7 @@ def parseArgs(args=None):
     return parser.parse_args()
 
 def PSL_Type(PSL_Line):
+    print("pre1")
     """Takes in a line from a PSL and returns its type"""
     List1 = PSL_Line.split('\t')
     Match_Length = int(List1[12]) - int(List1[11])
@@ -64,6 +65,7 @@ def PSL_Type(PSL_Line):
     return Type
 
 def Indel_Sum(PSL_Line):
+    print("pre2")
     """Returns the sum of the indels (+1 for insertions, -1 for deletions)"""
     Count = 0
     Indels = Indel_Base_Info(PSL_Line)
@@ -75,6 +77,7 @@ def Indel_Sum(PSL_Line):
     return Count
 
 def Genome_Region(PSL_Line):
+    print("pre3")
     """Determines the Genome start and stop positions of the match"""
     List1 = PSL_Line.split('\t')
     if List1[8] == '-':
@@ -94,6 +97,7 @@ def Genome_Region(PSL_Line):
     return Output
 
 def Indel_Match_Length(PSL_Line):
+    print("pre4")
     """Determines the length of the match to the target gene"""
     List1 = PSL_Line.split('\t')
     Sum = Indel_Sum(PSL_Line)
@@ -102,6 +106,7 @@ def Indel_Match_Length(PSL_Line):
     return Length
 
 def In_Contig(Start_Stop_List, Contig_Length):
+    print("pre5")
     """Tells if a start and stop list (like from Genome_Region) is within a contig"""
     if Start_Stop_List[0] >= 0 and  Start_Stop_List[1] <= Contig_Length:
         return True
@@ -109,6 +114,7 @@ def In_Contig(Start_Stop_List, Contig_Length):
         return False
 
 def Genome_Region_Extractor(PSL_Line, genome):
+    print("pre6")
     """Returns the genome region of the full length match"""
     List1 = PSL_Line.split('\t')
     Positions = Genome_Region(PSL_Line)
@@ -122,6 +128,7 @@ def Genome_Region_Extractor(PSL_Line, genome):
     return gene
 
 def Indel_Typer(PSL_Line, genome_gene, gene):
+    print("pre7")
     """Determines the type of Indel"""
     gene_pro = str(gene.seq.translate())
     genome_pro = str(genome_gene.seq.translate())
@@ -137,6 +144,7 @@ def Indel_Typer(PSL_Line, genome_gene, gene):
         return Type
 
 def N_Counter(input_gene):
+    print("pre8")
     """Determines if gene has Ns"""
     Count = 0
     sequence = str(input_gene.seq)
@@ -147,12 +155,14 @@ def N_Counter(input_gene):
     return Count
 
 def Truncation_Location(genome_gene):
+    print("pre9")
     genome_pro = str(genome_gene.seq.translate())
     for positions in range(len(genome_pro)):
         if genome_pro[positions] == '*':
             return positions
 
 def Mutant_Typer(PSL_Line, genome_gene, gene):
+    print("pre10")
     """Determines the type of Indel"""
     gene_pro = str(gene.seq.translate())
     genome_pro = str(genome_gene.seq.translate())
@@ -171,6 +181,7 @@ def Mutant_Typer(PSL_Line, genome_gene, gene):
         return Type
 
 def Is_Partial(PSL_Line):
+    print("pre11")
     """If partial match (<90% length) returns True"""
     List1 = PSL_Line.split('\t')
     Match_Length = int(List1[12]) - int(List1[11])
@@ -180,6 +191,7 @@ def Is_Partial(PSL_Line):
         return False
 
 def Indel_Base_Info(PSL_Line):
+    print("pre12")
     """Makes a list of Indel lengths and types from a PSL line"""
     Start_Stops_Blocks = Match_Start_Stop_Finder(PSL_Line)
     List1 = PSL_Line.split('\t')
@@ -204,6 +216,7 @@ def Indel_Base_Info(PSL_Line):
     return Output
 
 def Indel_Base_Output(PSL_Line):
+    print("pre13")
     """Makes a readable output from Indel Info"""
     Info_List = Indel_Base_Info(PSL_Line)
     Output = ''
@@ -213,6 +226,7 @@ def Indel_Base_Output(PSL_Line):
     return Output
 
 def Indel_BP_Count(PSL_Line, genome_gene, gene):
+    print("pre14")
     """Makes a count of mutants and indels"""
     genome_gene = str(genome_gene.seq)
     gene = str(gene.seq)
@@ -238,6 +252,7 @@ def Indel_BP_Count(PSL_Line, genome_gene, gene):
     return Count
 
 def Indel_Transversion_Count(PSL_Line, genome_gene, gene):
+    print("pre15")
     """Makes a count of transversions"""
     genome_gene = str(genome_gene.seq)
     gene = str(gene.seq)
@@ -261,6 +276,7 @@ def Indel_Transversion_Count(PSL_Line, genome_gene, gene):
     return Count
 
 def Indel_Codon_Count(PSL_Line, genome_gene, gene):
+    print("pre16")
     """Makes a count of mutants and indels"""
     List1 = PSL_Line.split('\t')
     Length = len(gene)
@@ -289,6 +305,7 @@ def Indel_Codon_Count(PSL_Line, genome_gene, gene):
     return Count
 
 def Indel_Mutant_Count(PSL_Line, genome_gene, gene):
+    print("pre17")
     """Makes a count of mutants in an indel"""
     List1 = PSL_Line.split('\t')
     Length = len(gene)
@@ -317,6 +334,7 @@ def Indel_Mutant_Count(PSL_Line, genome_gene, gene):
     return Count
 
 def Indel_Codon_Info(PSL_Line, genome_gene, gene):
+    print("pre18")
     """Returns the mutation and indel info"""
     List1 = PSL_Line.split('\t')
     Length = len(gene)
@@ -347,6 +365,7 @@ def Indel_Codon_Info(PSL_Line, genome_gene, gene):
     return Info
 
 def Frameshifted(PSL_Line):
+    print("pre19")
     """Determines if Indels have caused a frameshift"""
     Count = Indel_Sum(PSL_Line)
     if Count % 3 != 0:
@@ -355,6 +374,7 @@ def Frameshifted(PSL_Line):
         return False
 
 def Transversion_Count(mutant_gene, native_gene):
+    print("pre20")
     """Takes in a mutant gene and a native gene and returns the # of mutations"""
     Count = 0
     mutant_gene = mutant_gene.upper()
@@ -373,6 +393,7 @@ def Transversion_Count(mutant_gene, native_gene):
     return Count
 
 def Mutant_Count(mutant_gene, native_gene):
+    print("pre21")
     """Takes in a mutant gene and a native gene and returns the # of mutations"""
     Count = 0
     mutant_gene = mutant_gene.upper()
@@ -388,6 +409,7 @@ def Mutant_Count(mutant_gene, native_gene):
     return Count
 
 def Mutant_Info(mutant_gene, native_gene):
+    print("pre22")
     mutant_gene = mutant_gene.upper()
     native_gene = native_gene.upper()
     Output = ''
@@ -397,6 +419,7 @@ def Mutant_Info(mutant_gene, native_gene):
     return Output
 
 def Mutant_Info_Offset(mutant_gene, native_gene, offset):
+    print("pre23")
     """Same as Mutant_Info but provides an offset value to match positions"""
     mutant_gene = mutant_gene.upper()
     native_gene = native_gene.upper()
@@ -411,6 +434,7 @@ def Mutant_Info_Offset(mutant_gene, native_gene, offset):
     return(Output)
 
 def Indel_Line(PSL_Line, genome_gene, gene):
+    print("pre24")
     """Makes a GAMA Line for an Indel"""
     Type = Indel_Typer(PSL_Line, genome_gene, gene)
     List1 = PSL_Line.split('\t')
@@ -441,6 +465,7 @@ def Indel_Line(PSL_Line, genome_gene, gene):
     return Out
 
 def Indel_Edge_Line(PSL_Line, genome_gene, gene):
+    print("pre25")
     """Makes a GAMA Line for an Indel"""
     Type = Indel_Typer(PSL_Line, genome_gene, gene)
     List1 = PSL_Line.split('\t')
@@ -477,6 +502,7 @@ def Indel_Edge_Line(PSL_Line, genome_gene, gene):
     return Out
 
 def Mutant_Line(PSL_Line, genome_gene, gene):
+    print("pre26")
     """Makes a GAMA Line for an Mutant"""
     Type = Mutant_Typer(PSL_Line, genome_gene, gene)
     List1 = PSL_Line.split('\t')
@@ -507,6 +533,7 @@ def Mutant_Line(PSL_Line, genome_gene, gene):
     return Out
 
 def Edge_Codon_Total(PSL_Line, genome_gene, gene):
+    print("pre27")
     """Counts codon differences from edge matches"""
     Positions = Match_Start_Stop_Finder(PSL_Line)
     Gene_Start = Positions[1][0]
@@ -521,6 +548,7 @@ def Edge_Codon_Total(PSL_Line, genome_gene, gene):
     return Count
 
 def Edge_Codon_Count(PSL_Line, genome_gene, gene):
+    print("pre28")
     """Counts codon differences from edge matches"""
     Positions = Match_Start_Stop_Finder(PSL_Line)
     Gene_Start = Positions[1][0]
@@ -535,16 +563,19 @@ def Edge_Codon_Count(PSL_Line, genome_gene, gene):
     return Count
 
 def Edge_BP_Count(PSL_Line, genome_gene, gene):
+    print("pre29")
     """Counts bp differences from edge matches"""
     Count = Mutant_Count(genome_gene, gene)
     return Count
 
 def Edge_Transversion_Count(PSL_Line, genome_gene, gene):
+    print("pre30")
     """Counts transversion differences from edge matches"""
     Count = Transversion_Count(genome_gene, gene)
     return Count
 
 def Edge_BP_Total(PSL_Line, genome_gene, gene):
+    print("pre31")
     """Counts bp differences from edge matches"""
     Count = Mutant_Count(genome_gene, gene)
     Missing = Edge_BP_Missing(PSL_Line)
@@ -552,6 +583,7 @@ def Edge_BP_Total(PSL_Line, genome_gene, gene):
     return Count
 
 def Edge_BP_Missing(PSL_Line):
+    print("pre32")
     List1 = PSL_Line.split('\t')
     Blocks = Match_Start_Stop_Finder(PSL_Line)
     Total = Blocks[1][1] - Blocks[1][0]
@@ -559,6 +591,7 @@ def Edge_BP_Missing(PSL_Line):
     return Missing
 
 def Edge_Codon_Missing(PSL_Line):
+    print("pre33")
     List1 = PSL_Line.split('\t')
     Blocks = Match_Start_Stop_Finder(PSL_Line)
     Codons = int(List1[14]) // 3
@@ -568,6 +601,7 @@ def Edge_Codon_Missing(PSL_Line):
     return Missing
 
 def Edge_Line(PSL_Line, genome_gene, gene):
+    print("pre34")
     """Makes a GAMA line from edge matches w/o indels"""
     Type = "Contig Edge"
     List1 = PSL_Line.split('\t')
@@ -587,6 +621,7 @@ def Edge_Line(PSL_Line, genome_gene, gene):
     return Out
 
 def Match_Start_Stop_Finder(PSL_Line):
+    print("pre35")
     """Finds the start and stop for the contig and gene"""
     List1 = PSL_Line.split('\t')
     Output = []
@@ -660,14 +695,15 @@ def Match_Start_Stop_Finder(PSL_Line):
     return Output
 
 def Match_Length_Maker(PSL_Line):
+    print("pre36")
     """Finds the length of the bp between the start and stop of a gene match on a contig"""
     Blocks = Match_Start_Stop_Finder(PSL_Line)
     Length = int(Blocks[0][1]) - int(Blocks[0][0])
     return Length
 
 def GAMA_Line_Maker(PSL, genome_fasta, genes_fasta):
+    print("pre37")
     """Makes a list of potential GAMA lines from a PSL file matching Genes to a Genome"""
-    print("pre")
     f = open(PSL, 'r')
     Lines = []
     String1 = f.readline()
@@ -677,7 +713,6 @@ def GAMA_Line_Maker(PSL, genome_fasta, genes_fasta):
     f.close()
     Genome = SeqIO.to_dict(SeqIO.parse(genome_fasta, 'fasta'))
     Genes = SeqIO.to_dict(SeqIO.parse(genes_fasta, 'fasta'))
-    print("psot")
     Output = []
     for line in Lines:
         List1 = line.split('\t')
@@ -711,6 +746,7 @@ def GAMA_Line_Maker(PSL, genome_fasta, genes_fasta):
     return Output
 
 def Contig_Overlaps(input_list):
+    print("pre38")
     """Takes in a GAMA list and makes a list of lists based on overlaps"""
     Out_List = []
     for lines in input_list:
@@ -726,12 +762,15 @@ def Contig_Overlaps(input_list):
     return Out_List
 
 def Internal(a,b):
+    print("pre39")
     return (a[0] >= b[0] and a[1] <= b[1]) or (b[0] >= a[0] and b[1] <= a[1])
 
 def Overlap(a,b):
+    print("pre40")
     return (a[0] >= b[0] and a[1] <= b[1]) or (b[0] >= a[0] and b[1] <= a[1]) or (a[0] < b[1] and a[1] > b[0]) or (b[0] < a[1] and b[1] > a[0])
 
 def Overlap_Fraction(a,b):
+    print("pre41")
     if Overlap(a,b) == False:
         Fraction = 0
     Length_a = a[1] - a[0]
@@ -742,6 +781,7 @@ def Overlap_Fraction(a,b):
     return Fraction
 
 def Frame_Finder(GAMA_Line):
+    print("pre42")
     """Determines the frame of a GAMA_line"""
     List1 = GAMA_Line.split('\t')
     if List1[-1] == '-':
@@ -752,6 +792,7 @@ def Frame_Finder(GAMA_Line):
     return Frame
 
 def Frame_Overlap(GAMA_Line_1, GAMA_Line_2):
+    print("pre43")
     """Determines if genes are coded on same frame"""
     Frame_1 = Frame_Finder(GAMA_Line_1)
     Frame_2 = Frame_Finder(GAMA_Line_1)
@@ -762,6 +803,7 @@ def Frame_Overlap(GAMA_Line_1, GAMA_Line_2):
 
 
 def Best_List(input_contig_list):
+    print("pre44")
     """Finds the best matches for a set of matches to the same contig"""
     Output_List = []
     for items in input_contig_list:
@@ -800,6 +842,7 @@ def Best_List(input_contig_list):
     return(Output_List)
 
 def GAMA_List(PSL, genome_fasta, genes_fasta):
+    print("pre45")
     Lines = GAMA_Line_Maker(PSL, genome_fasta, genes_fasta)
     Contig_Lines = Contig_Overlaps(Lines)
     Final_List = []
@@ -810,6 +853,7 @@ def GAMA_List(PSL, genome_fasta, genes_fasta):
     return Final_List
 
 def GAMA_Output(PSL, genome_fasta, genes_fasta, Out_File):
+    print("pre46")
     List1 = GAMA_List(PSL, genome_fasta, genes_fasta)
     Output = open(Out_File, 'w')
     Output.write('Gene\tContig\tStart\tStop\tMatch_Type\tDescription\tCodon_Changes\tBP_Changes\tCodon_Percent\tBP_Percent\tPercent_Length\tMatch_Length\tTarget_Length\tStrand\n')
@@ -818,6 +862,7 @@ def GAMA_Output(PSL, genome_fasta, genes_fasta, Out_File):
     Output.close()
 
 def GAMA_ResGANNOT_Output(PSL, genome_fasta, genes_fasta, Out_File):
+    print("pre47")
     List1 = GAMA_List(PSL, genome_fasta, genes_fasta)
     Output = open(Out_File, 'w')
     Output.write('DB\tResistance\tGene_Family\tGene\tContig\tStart\tStop\tMatch_Type\tDescription\tCodon_Changes\tBP_Changes\tCodon_Percent\tBP_Percent\tPercent_Length\tMatch_Length\tTarget_Length\tStrand\n')
