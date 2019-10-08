@@ -81,7 +81,7 @@ else
 	exit 5564
 fi
 ### GAMA AR Classifier ### in species mode
-python3 GAMA_ResGANNCBI_SciComp_Exe.py "-i" "${assembly_source}" "-d" "${ARDB}" "-o" "${OUTDATADIR}/${1}.${ResGANNCBI_srst2_filename}.GAMA"
+python3 GAMA_ResGANNCBI_SciComp_Exe.py -i "${assembly_source}" -d "${ARDB}" -o "${OUTDATADIR}/${1}.${ResGANNCBI_srst2_filename}.GAMA"
 
 ml -blat -Python/2.7.3
 
