@@ -24,7 +24,7 @@ fi
 # Modules required: Python3/3.5.2, mashtree/0.29
 #		***Must be submitted as a job (or run on the cluster) if there are isolates that need to have csstar, GAMA or srst2 updated
 #
-# v1.0 (10/3/2019)
+# v1.0.1 (10/8/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
