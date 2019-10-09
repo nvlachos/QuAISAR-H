@@ -22,7 +22,7 @@ fi
 #
 # Modules required: PlasFlow/1.1
 #
-# v1.0 (10/3/2019)
+# v1.0.1 (10/9/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
@@ -101,7 +101,7 @@ if [[ -s "${processed}/${2}/${1}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
 	#module load racon/1.3.1;
 	#module load perl/5.22.1
 
-	ml -Python3/3.5 bowtie2/2.2.9 samtools/1.4.1 bam2fastq/1.1.0 Unicycler/0.4.4 SPAdes/3.13.0 racon/1.3.1
+	ml -Python3/3.5 bowtie2/2.2.9 samtools/1.4.1 bam2fastq/1.1.0 Unicycler/0.4.4 #SPAdes/3.13.0 racon/1.3.1
 
 	mkdir ${processed}/${2}/${1}/plasFlow/bowtie2-index/
 	bowtie2-build -f "${processed}/${2}/${1}/plasFlow/${1}_plasFlow_results.tsv_chromosomes.fasta" "${processed}/${2}/${1}/plasFlow/bowtie2-index/bowtie2_${1}_chr"
@@ -116,6 +116,8 @@ if [[ -s "${processed}/${2}/${1}/Assembly/${1}_scaffolds_trimmed.fasta" ]]; then
 	python3 "${shareScript}/removeShortContigs.py" -i "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta" -t 500 -s "plasFlow"
 	mv "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta.TRIMMED.fasta" "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta"
 	rm "${processed}/${2}/${1}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta"
+else
+	echo "${processed}/${2}/${1}/Assembly/${1}_scaffolds_trimmed.fasta (Assembly) not found, cant do anything"
 fi
 
 #module unload PlasFlow/1.1
