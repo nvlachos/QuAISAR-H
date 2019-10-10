@@ -85,11 +85,8 @@ owd=$(pwd)
 cd "${OUTDATADIR}"
 
 
-export PATH=${local_DBs}/lib:$PATH
-export PATH=$PATH:/apps/x86_64/busco/busco/build/lib/pipebricks
+export PATH="scicomp/home/nvx4/.local/lib/python3.5/":$PATH
 echo "${PATH//:/$'\n'}"
-
-
 
 # Run busco on the prokka output using the database provided by command line ($2)
 run_BUSCO.py -i "${OUTDATADIR}/prokka/${1}_PROKKA.faa" -o "${1}" -l "${buscoDB}" -m prot
