@@ -85,7 +85,7 @@ owd=$(pwd)
 cd "${OUTDATADIR}"
 
 
-export PATH=:/scicomp/home/nvx4/.local/lib/python3.5/:$PATH
+export PATH=/scicomp/home/nvx4/.local/lib/python3.5/:$PATH
 echo "${PATH//:/$'\n'}"
 
 # Run busco on the prokka output using the database provided by command line ($2)
