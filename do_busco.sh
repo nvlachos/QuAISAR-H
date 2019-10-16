@@ -26,7 +26,7 @@ fi
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
-ml busco/3.0.1
+ml busco/3.0.1 Python3/3.5.4
 
 python3 -V
 
@@ -84,7 +84,7 @@ mkdir -p "$OUTDATADIR/BUSCO"
 owd=$(pwd)
 cd "${OUTDATADIR}"
 
-#export PYTHONPATH=$PYTHONPATH:"/apps/x86_64/busco/busco/build/lib/"
+export PYTHONPATH=$PYTHONPATH:"/apps/x86_64/busco/busco/build/lib/"
 echo "${PATH//:/$'\n'}"
 
 # Run busco on the prokka output using the database provided by command line ($2)
@@ -102,7 +102,7 @@ cd "${owd}"
 # Unloads python 3.6.1 (and loads python 3.5.2 back in)
 #. "${mod_changers}/unload_python_3.6.1.sh"
 
-ml -busco/3.0.1
+ml -Python/3.5.4 -busco/3.0.1
 
 #Script exited gracefully (unless something else inside failed)
 exit 0
