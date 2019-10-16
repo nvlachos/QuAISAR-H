@@ -21,7 +21,7 @@ fi
 #
 # Modules required: busco/3.0.1, Python3/3.5.4 (whatever version used to install it, must have pipebricks)
 #
-# v1.0.1 (10/10/2019)
+# v1.0.1t (10/10/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
