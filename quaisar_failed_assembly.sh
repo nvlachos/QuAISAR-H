@@ -21,12 +21,14 @@ fi
 #
 # Output location: default_config.sh_output_location
 #
-# Modules required: None
+# Modules required: Python3/3.5.4
 #
-# v1.0 (10/3/2019)
+# v1.0.1 (10/16/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
+
+ml Python3/3.5.4
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -448,3 +450,5 @@ echo "
 				completed at ${global_end_time}
 
 "
+
+ml -Python3/3.5.4
