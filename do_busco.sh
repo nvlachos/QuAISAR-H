@@ -84,7 +84,7 @@ mkdir -p "$OUTDATADIR/BUSCO"
 owd=$(pwd)
 cd "${OUTDATADIR}"
 
-export PYTHONPATH=$PYTHONPATH:"/apps/x86_64/busco/busco/build/lib/"
+#export PYTHONPATH=$PYTHONPATH:"/apps/x86_64/busco/busco/build/lib/"
 echo "${PATH//:/$'\n'}"
 
 # Run busco on the prokka output using the database provided by command line ($2)
