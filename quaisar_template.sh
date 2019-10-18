@@ -16,7 +16,7 @@
 #
 # Modules required: Python3/3.5.2
 #
-# v1.0.1 (10/3/2019)
+# v1.0.1 (10/18/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
