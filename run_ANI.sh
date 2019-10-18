@@ -21,7 +21,7 @@ fi
 #
 # Modules required: Python3/3.5.2, pyani/0.2.7, mashtree/0.29
 #
-# V1.0
+# V1.0.1(10/18/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
