@@ -21,12 +21,12 @@ fi
 #
 # Modules required: busco/3.0.1, Python3/3.5.4 (whatever version used to install it, must have pipebricks)
 #
-# v1.0.1 (10/10/2019)
+# v1.0.2t (10/18/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
-ml busco/3.0.1 Python3/3.6.1
+ml busco/3.0.2
 
 python3 -V
 
@@ -84,7 +84,7 @@ mkdir -p "$OUTDATADIR/BUSCO"
 owd=$(pwd)
 cd "${OUTDATADIR}"
 
-export PYTHONPATH=$PYTHONPATH:"/apps/x86_64/busco/busco/build/lib/"
+#export PYTHONPATH=$PYTHONPATH:"/apps/x86_64/busco/busco/build/lib/"
 echo "${PATH//:/$'\n'}"
 
 # Run busco on the prokka output using the database provided by command line ($2)
