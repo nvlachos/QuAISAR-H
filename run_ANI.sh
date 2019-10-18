@@ -140,9 +140,7 @@ done
 # Mashtree trimming to reduce run time for ANI
 owd=$(pwd)
 cd ${OUTDATADIR}/ANI/localANIDB/
-. "${mod_changers}/perl_5221_to_5161mt.sh"
 mashtree.pl --numcpus ${procs} *.fasta --tempdir ${OUTDATADIR}/ANI/temp > ${OUTDATADIR}/ANI/"${genus_in}_and_${1}_mashtree.dnd";
-. "${mod_changers}/perl_5161mt_to_5221.sh"
 
 # Get total number of isolates compared in tree
 sample_count=$(find ${OUTDATADIR}/ANI/localANIDB/ -type f | wc -l)
