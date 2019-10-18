@@ -168,7 +168,7 @@ if [ ! -d "$OUTDATADIR/$filename/trimmed" ]; then
 	mkdir -p "$OUTDATADIR/$filename/trimmed"
 fi
 
-ml trimmomatic/0.36
+ml trimmomatic/0.35
 # Run trimmomatic
 trimmomatic "${trim_endtype}" -"${trim_phred}" -threads "${procs}" "${OUTDATADIR}/${filename}/removedAdapters/${filename}-noPhiX-R1.fsq" "${OUTDATADIR}/${filename}/removedAdapters/${filename}-noPhiX-R2.fsq" "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.paired.fq" "${OUTDATADIR}/${filename}/trimmed/${filename}_R1_001.unpaired.fq" "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.paired.fq" "${OUTDATADIR}/${filename}/trimmed/${filename}_R2_001.unpaired.fq" ILLUMINACLIP:"${trim_adapter_location}:${trim_seed_mismatch}:${trim_palindrome_clip_threshold}:${trim_simple_clip_threshold}:${trim_min_adapt_length}:${trim_complete_palindrome}" SLIDINGWINDOW:"${trim_window_size}:${trim_window_qual}" LEADING:"${trim_leading}" TRAILING:"${trim_trailing}" MINLEN:"${trim_min_length}"
 # Get end time of trimmomatic and calculate run time and append to time summary (and sum to total time used)
@@ -176,7 +176,7 @@ end=$SECONDS
 timeTrim=$((end - start))
 echo "Trimming - ${timeTrim} seconds" >> "${time_summary}"
 totaltime=$((totaltime + timeTrim))
-ml -trimmomatic/0.36
+ml -trimmomatic/0.35
 
 # Check differences after QC and trimming (also for gottcha proper read count for assessing unclassified reads)
 # Get start time for qc check on trimmed reads
