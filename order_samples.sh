@@ -15,7 +15,7 @@ fi
 #
 # Description: Creates a txt list file that contains run and samples for a given MiSeq run that matches the order of the output for the MMB_Seq log
 #
-# Usage: ./order_samples.sh MiSeq_Run_ID
+# Usage: ./order_samples.sh -p MiSeq_Run_ID -y log_year
 #
 # Output location: /deafult_config.sh_output_location/Run_ID/Run_ID_list_ordered.txt
 #
@@ -30,11 +30,9 @@ ml Python3/3.5.2
 
 #  Function to print out help blurb
 show_help () {
-	echo "Usage is ./order_samples.sh -p project_name [-y year]"
+	echo "Usage is ./order_samples.sh -p project_name -y year"
 	echo "Output is saved to path_to_folder"
 }
-
-year=2019
 
 # Parse through command line options
 options_found=0
