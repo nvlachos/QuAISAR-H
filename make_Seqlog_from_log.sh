@@ -42,7 +42,7 @@ fi
 
 if [[ -z "${2}" ]]; then
 	year=2019
-elif [[ "${2}" -lt 2017 ]] || [[ "${2}" -gt 2099 ]]: then
+elif [[ "${2}" -lt 2017 ]] || [[ "${2}" -gt 2099 ]]; then
 	echo "Year must be between 2017 and 2099, exiting"
 	exit 44
 else
