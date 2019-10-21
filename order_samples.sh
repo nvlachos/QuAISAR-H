@@ -21,7 +21,7 @@ fi
 #
 # Modules required: Python2.7.13
 #
-# v1.0 (10/3/2019)
+# v1.0.1 (10/21/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
@@ -30,9 +30,11 @@ ml Python3/3.5.2
 
 #  Function to print out help blurb
 show_help () {
-	echo "Usage is ./order_samples.sh -p project_name"
+	echo "Usage is ./order_samples.sh -p project_name [-y year]"
 	echo "Output is saved to path_to_folder"
 }
+
+year=2019
 
 # Parse through command line options
 options_found=0
@@ -47,6 +49,9 @@ while getopts ":h?n:p:" option; do
 		p)
 			echo "Option -p triggered, argument = ${OPTARG}"
 			project=${OPTARG};;
+		y)
+			echo "Option -y triggered, argument = ${OPTARG}"
+			year=${OPTARG};;
 		:)
 			echo "Option -${OPTARG} requires as argument";;
 		h)
@@ -65,15 +70,15 @@ fi
 #### #copy MMBSEQLog to local
 > "${processed}/${project}/${project}_list_ordered.txt"
 
-echo "${processed}/${project}/2019_MMBSeq_Log.xlsx"
+echo "${processed}/${project}/${year}_MMBSeq_Log.xlsx"
 
 # Copy the newest log file to the local directory
-cp "${local_DBs}/Seqlog_copies/2019_MMBSeq_Log.xlsx" "${processed}/${project}/2019_MMBSeq_Log.xlsx"
+cp "${local_DBs}/Seqlog_copies/${year}_MMBSeq_Log.xlsx" "${processed}/${project}/${year}_MMBSeq_Log.xlsx"
 
 # Convert log file to csv format for searchability
-python3 ${shareScript}/xlsx_converter_py3.py "${processed}/${project}/2019_MMBSeq_Log.xlsx" "FY19 Miseq Isolate Log" > "${processed}/${project}/2019_MMBSeq_Log.tsv"
+python3 ${shareScript}/xlsx_converter_py3.py "${processed}/${project}/${year}_MMBSeq_Log.xlsx" "FY19 Miseq Isolate Log" > "${processed}/${project}/${year}_MMBSeq_Log.tsv"
 
-echo "Excel file: 2019_MMBSeq_Log.xlsx has been converted to TSV"
+echo "Excel file: ${year}_MMBSeq_Log.xlsx has been converted to TSV"
 
 # Parse log file csv until run_if matches
 counter=0
@@ -101,12 +106,12 @@ while IFS= read -r var || [ -n "$var" ]; do
 		:
 	fi
 	counter=$(( counter + 1 ))
-done < ${processed}/${project}/2019_MMBSeq_Log.tsv
+done < ${processed}/${project}/${year}_MMBSeq_Log.tsv
 
 
 # Remove intermediate files from sorting
-rm -r ${processed}/${project}/2019_MMBSeq_Log.tsv
-rm -r ${processed}/${project}/2019_MMBSeq_Log.xlsx
+rm -r ${processed}/${project}/${year}_MMBSeq_Log.tsv
+rm -r ${processed}/${project}/${year}_MMBSeq_Log.xlsx
 
 # Check if the sorted file has content, else delete it since something went wrong
 if [[ ! -s "${processed}/${project}/${project}_list_ordered.txt" ]]; then
