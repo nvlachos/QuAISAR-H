@@ -26,7 +26,7 @@ fi
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
-ml blat Python3/3.5.2
+ml blat Python3/3.5.4
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -83,7 +83,7 @@ fi
 ### GAMA AR Classifier ### in species mode
 python3 GAMA_ResGANNCBI_SciComp_Exe.py -i "${assembly_source}" -d "${ARDB}" -o "${OUTDATADIR}/${1}.${ResGANNCBI_srst2_filename}.GAMA"
 
-ml -blat -Python/2.7.3
+ml -blat -Python3/3.5.4
 
 #Script exited gracefully (unless something else inside failed)
 exit 0
