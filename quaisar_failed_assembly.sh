@@ -353,7 +353,7 @@ start=$SECONDS
 
 
 # Run GAMA on Assembly
-${shareScript}/run_GAMA.sh "${filename}" "${project}" -c
+"${shareScript}/run_GAMA.sh" "${sample_name}" "${project}" -c
 
 # Get end time of csstar and calculate run time and append to time summary (and sum to total time used
 end=$SECONDS
@@ -364,42 +364,42 @@ totaltime=$((totaltime + timestar))
 # Get MLST profile
 echo "----- Running MLST -----"
 start=$SECONDS
-"${shareScript}/run_MLST.sh" "${filename}" "${project}"
-python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}.mlst" -t standard
+"${shareScript}/run_MLST.sh" "${sample_name}" "${project}"
+python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${sample_name}/MLST/${sample_name}.mlst" -t standard
 if [[ "${genus}_${species}" = "Acinetobacter_baumannii" ]]; then
-	"${shareScript}/run_MLST.sh" "${filename}" "${project}" "-f" "abaumannii"
-	python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_abaumannii.mlst" -t standard
-	mv "${processed}/${project}/${filename}/MLST/${filename}_abaumannii.mlst" "${processed}/${project}/${filename}/MLST/${filename}_Oxford.mlst"
-	mv "${processed}/${project}/${filename}/MLST/${filename}.mlst" "${processed}/${project}/${filename}/MLST/${filename}_Pasteur.mlst"
+	"${shareScript}/run_MLST.sh" "${sample_name}" "${project}" "-f" "abaumannii"
+	python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${sample_name}/MLST/${sample_name}_abaumannii.mlst" -t standard
+	mv "${processed}/${project}/${sample_name}/MLST/${sample_name}_abaumannii.mlst" "${processed}/${project}/${sample_name}/MLST/${sample_name}_Oxford.mlst"
+	mv "${processed}/${project}/${sample_name}/MLST/${sample_name}.mlst" "${processed}/${project}/${sample_name}/MLST/${sample_name}_Pasteur.mlst"
 	#Check for "-", unidentified type
-	type1=$(tail -n1 ${processed}/${project}/${filename}/MLST/${filename}_abaumannii.mlst | cut -d' ' -f3)
-	type2=$(head -n1 ${processed}/${project}/${filename}/MLST/${filename}.mlst | cut -d' ' -f3)
+	type1=$(tail -n1 ${processed}/${project}/${sample_name}/MLST/${sample_name}_abaumannii.mlst | cut -d' ' -f3)
+	type2=$(head -n1 ${processed}/${project}/${sample_name}/MLST/${sample_name}.mlst | cut -d' ' -f3)
 	if [[ "${type1}" = "-" ]]; then
-		"${shareScript}/run_srst2_mlst.sh" "${filename}" "${project}" "Acinetobacter" "baumannii#1"
-		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_srst2_acinetobacter_baumannii-baumannii#1.mlst" -t srst2
+		"${shareScript}/run_srst2_mlst.sh" "${sample_name}" "${project}" "Acinetobacter" "baumannii#1"
+		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${sample_name}/MLST/${sample_name}_srst2_acinetobacter_baumannii-baumannii#1.mlst" -t srst2
 	fi
 	if [[ "${type2}" = "-" ]]; then
-		"${shareScript}/run_srst2_mlst.sh" "${filename}" "${project}" "Acinetobacter" "baumannii#2"
-		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_srst2_acinetobacter_baumannii-baumannii#2.mlst" -t srst2
+		"${shareScript}/run_srst2_mlst.sh" "${sample_name}" "${project}" "Acinetobacter" "baumannii#2"
+		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${sample_name}/MLST/${sample_name}_srst2_acinetobacter_baumannii-baumannii#2.mlst" -t srst2
 	fi
 elif [[ "${genus}_${species}" = "Escherichia_coli" ]]; then
 	# Verify that ecoli_2 is default and change accordingly
-	"${shareScript}/run_MLST.sh" "${filename}" "${project}" "-f" "ecoli_2"
-	python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_ecoli_2.mlst" -t standard
-	mv "${processed}/${project}/${filename}/MLST/${filename}_ecoli_2.mlst" "${processed}/${project}/${filename}/MLST/${filename}_Pasteur.mlst"
-	mv "${processed}/${project}/${filename}/MLST/${filename}.mlst" "${processed}/${project}/${filename}/MLST/${filename}_Achtman.mlst"
-	type2=$(tail -n1 ${processed}/${project}/${filename}/MLST/${filename}_ecoli_2.mlst | cut -d' ' -f3)
-	type1=$(head -n1 ${processed}/${project}/${filename}/MLST/${filename}.mlst | cut -d' ' -f3)
+	"${shareScript}/run_MLST.sh" "${sample_name}" "${project}" "-f" "ecoli_2"
+	python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${sample_name}/MLST/${sample_name}_ecoli_2.mlst" -t standard
+	mv "${processed}/${project}/${sample_name}/MLST/${sample_name}_ecoli_2.mlst" "${processed}/${project}/${sample_name}/MLST/${sample_name}_Pasteur.mlst"
+	mv "${processed}/${project}/${sample_name}/MLST/${sample_name}.mlst" "${processed}/${project}/${sample_name}/MLST/${sample_name}_Achtman.mlst"
+	type2=$(tail -n1 ${processed}/${project}/${sample_name}/MLST/${sample_name}_ecoli_2.mlst | cut -d' ' -f3)
+	type1=$(head -n1 ${processed}/${project}/${sample_name}/MLST/${sample_name}.mlst | cut -d' ' -f3)
 	if [[ "${type1}" = "-" ]]; then
-		"${shareScript}/run_srst2_mlst.sh" "${filename}" "${project}" "Escherichia" "coli#1"
-		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_srst2_escherichia_coli-coli#1.mlst" -t srst2
+		"${shareScript}/run_srst2_mlst.sh" "${sample_name}" "${project}" "Escherichia" "coli#1"
+		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${sample_name}/MLST/${sample_name}_srst2_escherichia_coli-coli#1.mlst" -t srst2
 	fi
 	if [[ "${type2}" = "-" ]]; then
-		"${shareScript}/run_srst2_mlst.sh" "${filename}" "${project}" "Escherichia" "coli#2"
-		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${filename}/MLST/${filename}_srst2_escherichia_coli-coli#2.mlst" -t srst2
+		"${shareScript}/run_srst2_mlst.sh" "${sample_name}" "${project}" "Escherichia" "coli#2"
+		python3 "${shareScript}/check_and_fix_MLST.py" -i "${processed}/${project}/${sample_name}/MLST/${sample_name}_srst2_escherichia_coli-coli#2.mlst" -t srst2
 	fi
 else
-	mv "${processed}/${project}/${filename}/MLST/${filename}.mlst" "${processed}/${project}/${filename}/MLST/${filename}_Pasteur.mlst"
+	mv "${processed}/${project}/${sample_name}/MLST/${sample_name}.mlst" "${processed}/${project}/${sample_name}/MLST/${sample_name}_Pasteur.mlst"
 fiend=$SECONDS
 timeMLST=$((end - start))
 echo "MLST - ${timeMLST} seconds" >> "${time_summary_redo}"
@@ -420,7 +420,7 @@ if [[ "${family}" == "Enterobacteriaceae" ]]; then
 	${shareScript}/run_plasFlow.sh "${sample_name}" "${project}"
 	${shareScript}/run_c-sstar_plasFlow.sh "${sample_name}" g o "${project}" -p
 	${shareScript}/run_plasmidFinder.sh "${sample_name}" "${project}" plasmid_on_plasFlow
-	${shareScript}/run_GAMA.sh "${filename}" "${project}" -p
+	${shareScript}/run_GAMA.sh "${sample_name}" "${project}" -p
 
 	end=$SECONDS
 	timeplasflow=$((end - start))
