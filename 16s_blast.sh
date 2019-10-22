@@ -21,12 +21,12 @@ fi
 #
 # Modules required: barrnap/0.8, ncbi-blast+/LATEST, perl/5.12.3. hmmer/3.1b2 loaded by barrnap/0.8
 #
-# v1.0 (10/3/2019)
+# v1.0.1 (10/21/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
-ml perl/5.12.3 barrnap/0.8 ncbi-blast+/LATEST
+ml perl/5.12.3 barrnap/0.8 ncbi-blast+/LATEST Python3/3.5.2
 
 #  Function to print out help blurb
 show_help () {
