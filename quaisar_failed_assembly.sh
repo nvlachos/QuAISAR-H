@@ -23,7 +23,7 @@ fi
 #
 # Modules required: Python3/3.5.4
 #
-# v1.0.1 (10/16/2019)
+# v1.0.2 (10/22/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
@@ -352,7 +352,8 @@ start=$SECONDS
 "${shareScript}/run_c-sstar_altDB.sh" "${sample_name}" "${csstar_gapping}" "${csstar_identity}" "${project}" "${local_DBs}/star/ResGANNOT_20180608_srst2.fasta"
 
 
-# Run GAMA on Assembly
+### GAMA - finding AR Genes ###
+echo "----- Running GAMA for AR Gene identification -----"
 "${shareScript}/run_GAMA.sh" "${sample_name}" "${project}" -c
 
 # Get end time of csstar and calculate run time and append to time summary (and sum to total time used
