@@ -69,10 +69,6 @@ cd "${processed}/${1}/"
 ls  *run_summary* | sort -n -t _  -k 10,10r -k 8,8r -k 9,9r > "sorted_summaries.txt"
 cd ${owd}
 
-month=$(head -n 1 "${processed}/${1}/sorted_summaries.txt" | cut -d'_' -f8)
-day=$(head -n 1 "${processed}/${1}/sorted_summaries.txt" | cut -d'_' -f9)
-year=$(head -n 1 "${processed}/${1}/sorted_summaries.txt" | cut -d'_' -f10)
-
 rm -r "${processed}/${1}/sorted_summaries.txt"
 
 # Order samples (according to logsheet) in folder if not already done so
