@@ -108,8 +108,8 @@ done < ${processed}/${project}/${year}_MMBSeq_Log.tsv
 
 
 # Remove intermediate files from sorting
-#rm -r ${processed}/${project}/${year}_MMBSeq_Log.tsv
-#rm -r ${processed}/${project}/${year}_MMBSeq_Log.xlsx
+rm -r ${processed}/${project}/${year}_MMBSeq_Log.tsv
+rm -r ${processed}/${project}/${year}_MMBSeq_Log.xlsx
 
 # Check if the sorted file has content, else delete it since something went wrong
 if [[ ! -s "${processed}/${project}/${project}_list_ordered.txt" ]]; then
