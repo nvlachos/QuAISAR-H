@@ -44,13 +44,14 @@ else
 	assembly="Unknown"
 	completion="Unknown"
 	while IFS= read -r var; do
-		if [[ "${var}" == "Assembly            :"* ]]; 
+		if [[ "${var}" == "Assembly            :"* ]];
 			assembly=$(echo "${var}" | cut -d':' -f2 | tr -d [:space:])
 			break
 		fi
 	done < "${processed}/${project}/${sample_name}/${sample_name}_pipeline_stats.txt"
 	completion=$(tail -n1 "${processed}/${project}/${sample_name}/${sample_name}_pipeline_stats.txt" | cut -d' ' -f5)
 	echo "${completion}:${assembly}"
+fi
 
 #Script exited gracefully (unless something else inside failed)
 exit 0
