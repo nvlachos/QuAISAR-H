@@ -74,7 +74,7 @@ echo "${project}/${sample_name} started at ${global_time}"
 # unzipping paired reads for SPAdes
 if [[ ! -f ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R1_001.paired.fq ]]; then
 		if [[ -f ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R1_001.paired.fq.gz ]]; then
-			echo "unzipping paired1"
+			echo "Unzipping paired1"
 			gunzip < ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R1_001.paired.fq.gz > ${OUTDATADIR}/${sample_name}/trimmed/${sample_name}_R1_001.paired.fq
 		else
 			echo "No R1 trimmed paired read, can NOT continue...exiting)"
@@ -150,8 +150,8 @@ fi
 if [[ -d ${OUTDATADIR}/${sample_name}/plasFlow ]]; then
 	rm -r ${OUTDATADIR}/${sample_name}/plasFlow
 fi
-if [[ -d ${OUTDATADIR}/${sample_name}/plasmidFinder ]]; then
-	rm -r ${OUTDATADIR}/${sample_name}/plasmidFinder
+if [[ -d ${OUTDATADIR}/${sample_name}/plasmid ]]; then
+	rm -r ${OUTDATADIR}/${sample_name}/plasmid
 fi
 if [[ -d ${OUTDATADIR}/${sample_name}/plasmid_on_plasFlow ]]; then
 	rm -r ${OUTDATADIR}/${sample_name}/plasmid_on_plasFlow
@@ -159,8 +159,15 @@ fi
 if [[ -d ${OUTDATADIR}/${sample_name}/prokka ]]; then
 	rm -r ${OUTDATADIR}/${sample_name}/prokka
 fi
-
-
+if [[ -d ${OUTDATADIR}/${sample_name}/GAMA ]]; then
+	rm -r ${OUTDATADIR}/${sample_name}/GAMA
+fi
+if [[ -d ${OUTDATADIR}/${sample_name}/Assembly_Stats ]]; then
+	rm -r ${OUTDATADIR}/${sample_name}/Assembly_Stats
+fi
+if [[ -d ${OUTDATADIR}/${sample_name}/kraken/postAssembly ]]; then
+	rm -r ${OUTDATADIR}/${sample_name}/postAssembly
+fi
 
 # Get end time of SPAdes and calculate run time and append to time summary (and sum to total time used)
 end=$SECONDS

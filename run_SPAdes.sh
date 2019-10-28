@@ -54,7 +54,7 @@ OUTDATADIR="${processed}/${3}/${1}"
 if [ "${2}" = "normal" ]; then
 	spades.py --careful --only-assembler --pe1-1 "${OUTDATADIR}/trimmed/${1}_R1_001.paired.fq" --pe1-2 "${OUTDATADIR}/trimmed/${1}_R2_001.paired.fq" --pe1-s "${OUTDATADIR}/trimmed/${1}.single.fq" -o "${OUTDATADIR}/Assembly" --phred-offset "${phred}" -t "${procs}"
 elif [ "${2}" = "continue" ]; then
- 	spades.py -o "${OUTDATADIR}/plasmidAssembly"
+ 	spades.py -o "${OUTDATADIR}/Assembly"
 else
 	echo "Unknown type requested...not running SPAdes"
 fi
