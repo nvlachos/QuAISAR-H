@@ -17,7 +17,7 @@ fi
 # Description: Alternate version of the main QuAISAR-H pipeline that (re)starts from the assembly step, project/isolate_name must already have a populated FASTQs folder to work with
 # 	This script assumes the sample is located in the default location ($processed) specified within the config file
 #
-# Usage: ./quaisar_failed_assembly.sh isolate_name project_name
+# Usage: ./quaisar_failed_assembly.sh isolate_name project_name [continue]
 #
 # Output location: default_config.sh_output_location
 #
@@ -35,13 +35,16 @@ if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./quaisar_failed_assembly.sh  sample_name miseq_run_ID(or_project_name)"
+	echo "Usage is ./quaisar_failed_assembly.sh  sample_name miseq_run_ID(or_project_name) [continue]"
 	echo "Populated trimmed folder needs to be present in ${2}/${1}, wherever it resides"
 	echo "Output by default is processed to processed/miseq_run_ID/sample_name"
 	exit 0
 elif [[ -z "${2}" ]]; then
 	echo "No Project/Run_ID supplied to quaisar_failed_assembly.sh, exiting"
 	exit 33
+elif [[ ! -z "${3}" ]] && [[ "${3}" != "continue" ]]; then
+	echo "Continue flag not set correctly, can ONLY be continue, exiting"
+	exit 34
 fi
 
 #Time tracker to gauge time used by each step
@@ -105,7 +108,11 @@ do
 		echo "Previous assembly already exists, using it (delete/rename the assembly folder at ${OUTDATADIR}/ if you'd like to try to reassemble"
 	# Run normal mode if no assembly file was found
 	else
-		"${shareScript}/run_SPAdes.sh" "${sample_name}" normal "${project}"
+		if [[ "${3}" == "continue" ]] || [[ "${1}" -gt 1 ]]; then
+			"${shareScript}/run_SPAdes.sh" "${sample_name}" "continue" "${project}"
+		else
+			"${shareScript}/run_SPAdes.sh" "${sample_name}" normal "${project}"
+		fi
 	fi
 	# Removes any core dump files (Occured often during testing and tweaking of memory parameter
 	if [ -n "$(find "${shareScript}" -maxdepth 1 -name 'core.*' -print -quit)" ]; then

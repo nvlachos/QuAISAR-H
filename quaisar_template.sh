@@ -16,7 +16,7 @@
 #
 # Modules required: Python3/3.5.2
 #
-# v1.0.2 (10/22/2019)
+# v1.0.3 (10/28/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
@@ -250,7 +250,11 @@ do
 		echo "Previous assembly already exists, using it (delete/rename the assembly folder at ${OUTDATADIR}/ if you'd like to try to reassemble"
 	# Run normal mode if no assembly file was found
 	else
-		"${shareScript}/run_SPAdes.sh" "${filename}" normal "${project}"
+		if [[ "${1}" -gt 1 ]]; then
+			"${shareScript}/run_SPAdes.sh" "${sample_name}" "continue" "${project}"
+		else
+			"${shareScript}/run_SPAdes.sh" "${sample_name}" normal "${project}"
+		fi
 	fi
 	# Removes any core dump files (Occured often during testing and tweaking of memory parameter
 	if [ -n "$(find "${shareScript}" -maxdepth 1 -name 'core.*' -print -quit)" ]; then
