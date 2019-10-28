@@ -38,6 +38,9 @@ elif [[ $# -gt 2 ]]; then
 	exit 1
 fi
 
+sample_name="${1}"
+project="${2}"
+
 echo "Checking for ${processed}/${project}/${sample_name}/${sample_name}_pipeline_stats.txt"
 
 if [[ ! -f "${processed}/${project}/${sample_name}/${sample_name}_pipeline_stats.txt" ]]; then
