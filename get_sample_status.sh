@@ -44,7 +44,7 @@ else
 	assembly="Unknown"
 	completion="Unknown"
 	while IFS= read -r var; do
-		if [[ "${var}" == "Assembly            :"* ]];
+		if [[ "${var}" == "Assembly            :"* ]]; then
 			assembly=$(echo "${var}" | cut -d':' -f2 | tr -d [:space:])
 			break
 		fi
