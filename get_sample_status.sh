@@ -38,6 +38,8 @@ elif [[ $# -gt 2 ]]; then
 	exit 1
 fi
 
+echo "Checking for ${processed}/${project}/${sample_name}/${sample_name}_pipeline_stats.txt"
+
 if [[ ! -f "${processed}/${project}/${sample_name}/${sample_name}_pipeline_stats.txt" ]]; then
 	echo "Pipeline stats file does not exist, can not continue"
 else
