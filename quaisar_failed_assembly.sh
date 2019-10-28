@@ -108,7 +108,7 @@ do
 		echo "Previous assembly already exists, using it (delete/rename the assembly folder at ${OUTDATADIR}/ if you'd like to try to reassemble"
 	# Run normal mode if no assembly file was found
 	else
-		if [[ "${3}" == "continue" ]] || [[ "${1}" -gt 1 ]]; then
+		if [[ "${3}" == "continue" ]] || [[ "${i}" -gt 1 ]]; then
 			"${shareScript}/run_SPAdes.sh" "${sample_name}" "continue" "${project}"
 		else
 			"${shareScript}/run_SPAdes.sh" "${sample_name}" normal "${project}"
@@ -166,7 +166,7 @@ if [[ -d ${OUTDATADIR}/${sample_name}/Assembly_Stats ]]; then
 	rm -r ${OUTDATADIR}/${sample_name}/Assembly_Stats
 fi
 if [[ -d ${OUTDATADIR}/${sample_name}/kraken/postAssembly ]]; then
-	rm -r ${OUTDATADIR}/${sample_name}/postAssembly
+	rm -r ${OUTDATADIR}/${sample_name}/kraken/postAssembly
 fi
 
 # Get end time of SPAdes and calculate run time and append to time summary (and sum to total time used)
