@@ -415,7 +415,8 @@ elif [[ "${genus}_${species}" = "Escherichia_coli" ]]; then
 	fi
 else
 	mv "${processed}/${project}/${sample_name}/MLST/${sample_name}.mlst" "${processed}/${project}/${sample_name}/MLST/${sample_name}_Pasteur.mlst"
-fiend=$SECONDS
+fi
+end=$SECONDS
 timeMLST=$((end - start))
 echo "MLST - ${timeMLST} seconds" >> "${time_summary_redo}"
 totaltime=$((totaltime + timeMLST))
