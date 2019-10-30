@@ -23,7 +23,7 @@ fi
 #
 # Modules required: Python3/3.5.4
 #
-# v1.0.2 (10/22/2019)
+# v1.0.3 (10/30/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
@@ -329,8 +329,7 @@ if [ -s "${OUTDATADIR}/${sample_name}/prokka/${sample_name}_PROKKA.gbf" ] || [ -
 	busco_found=0
 	for tax in $species $genus $family $order $class $phylum $kingdom $domain
 	do
-		if [ -d "${local_DBs}/BUSCO/${tax,}_odb9" ]
-		then
+		if [ -d "${local_DBs}/BUSCO/${tax,}_odb9" ]; then
 			buscoDB="${tax,}_odb9"
 			busco_found=1
 			break
@@ -424,7 +423,7 @@ totaltime=$((totaltime + timeMLST))
 # Try to find any plasmids
 echo "----- Identifying plasmids using plasmidFinder -----"
 start=$SECONDS
-"${shareScript}/run_plasmidFinder.sh" "${sample_name}" "${project}" "plasmid"
+"${shareScript}/run_plasmidFinder.sh" "${sample_name}" "${project}" plasmid
 end=$SECONDS
 timeplasfin=$((end - start))
 echo "plasmidFinder - ${timeplasfin} seconds" >> "${time_summary_redo}"
@@ -444,18 +443,18 @@ if [[ "${family}" == "Enterobacteriaceae" ]]; then
 	totaltime=$((totaltime + timeplasflow))
 fi
 
-"${shareScript}/validate_piperun.sh" "${filename}" "${project}" > "${processed}/${project}/${filename}/${filename}_pipeline_stats.txt"
+"${shareScript}/validate_piperun.sh" "${sample_name}" "${project}" > "${processed}/${project}/${sample_name}/${sample_name}_pipeline_stats.txt"
 
-status=$(tail -n1 "${processed}/${project}/${filename}/${filename}_pipeline_stats.txt" | cut -d' ' -f5)
+status=$(tail -n1 "${processed}/${project}/${sample_name}/${sample_name}_pipeline_stats.txt" | cut -d' ' -f5)
 if [[ "${status}" != "FAILED" ]]; then
-	"${shareScript}/sample_cleaner.sh" "${filename}" "${project}"
+	"${shareScript}/sample_cleaner.sh" "${sample_name}" "${project}"
 fi
 
 # Extra dump cleanse in case anything else failed
-	if [ -n "$(find "${shareScript}" -maxdepth 1 -name 'core.*' -print -quit)" ]; then
-		echo "Found core dump files at end of processing ${sample_name} and attempting to delete"
-		find "${shareScript}" -maxdepth 1 -name 'core.*' -exec rm -f {} \;
-	fi
+if [ -n "$(find "${shareScript}" -maxdepth 1 -name 'core.*' -print -quit)" ]; then
+	echo "Found core dump files at end of processing ${sample_name} and attempting to delete"
+	find "${shareScript}" -maxdepth 1 -name 'core.*' -exec rm -f {} \;
+fi
 
 global_end_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 
