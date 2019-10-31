@@ -77,7 +77,7 @@ if [[ $# -lt 1  || $# -gt 7 ]]; then
 	echo "If reads are in default location set in config file then"
   echo "Usage: ./parallel_quaisar.sh -p project_name"
 	echo "else if you are running it on reads not in the default location or format"
-	echo "Usage: ./parallel_quaisar.sh -i location_of_reads 1|2|3|4 -o path_to_parent_output_folder_location name_of_output_folder "
+	echo "Usage: ./parallel_quaisar.sh -i location_of_reads 1|2|3|4 -o path_to_parent_output_folder_location name_of_output_folder [-a]"
 	echo "filename postfix numbers are as follows 1:_L001_SX_RX_00X.fastq.gz 2: _(R)X.fastq.gz 3: _RX_00X.fastq.gz 4: _SX_RX_00X.fastq.gz"
   echo "You have used $# args"
   exit 3
@@ -100,7 +100,7 @@ for ((i=1 ; i <= nopts ; i++)); do
 			echo "If reads are in default location set in config file then"
 		  echo "Usage: ./parallel_quaisar.sh -p project_name"
 			echo "else if you are running it on reads not in the default location or format"
-			echo "Usage: ./parallel_quaisar.sh -i location_of_reads 1|2|3|4 -o path_to_parent_output_folder_location name_of_output_folder "
+			echo "Usage: ./parallel_quaisar.sh -i location_of_reads 1|2|3|4 -o path_to_parent_output_folder_location name_of_output_folder [-a]"
 			echo "filename postfix numbers are as follows 1:_L001_SX_RX_00X.fastq.gz 2: _(R)X.fastq.gz 3: _RX_00X.fastq.gz 4: _SX_RX_00X.fastq.gz"
 			echo -e "\\n\\n\\n"
 			exit 0

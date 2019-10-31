@@ -1,8 +1,8 @@
 #!/bin/bash -l
 
-#$ -o qfa.out
-#$ -e qfa.err
-#$ -N qfa
+#$ -o qfa_X.out
+#$ -e qfa_X.err
+#$ -N qfa_X
 #$ -pe smp 12
 #$ -cwd
 #$ -q short.q
@@ -35,7 +35,7 @@ if [[ $# -eq 0 ]]; then
 	echo "No argument supplied to $0, exiting"
 	exit 1
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./quaisar_failed_assembly.sh  sample_name miseq_run_ID(or_project_name) [continue]"
+	echo "Usage is ./quaisar_failed_assembly.sh  sample_name miseq_run_ID(or_project_name) continue config_file_to_run_on"
 	echo "Populated trimmed folder needs to be present in ${2}/${1}, wherever it resides"
 	echo "Output by default is processed to processed/miseq_run_ID/sample_name"
 	exit 0
@@ -46,6 +46,16 @@ elif [[ ! -z "${3}" ]] && [[ "${3}" != "continue" ]]; then
 	echo "Continue flag not set correctly, can ONLY be continue, exiting"
 	exit 34
 fi
+
+if [[ ! -f "${3}" ]]; then
+	echo "no config file to load (${3}), exiting"
+	exit 223
+else
+	echo "${2}/${1} is loading config file ${4}"
+	. "${4}"
+fi
+
+
 
 #Time tracker to gauge time used by each step
 totaltime=0
