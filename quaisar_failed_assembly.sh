@@ -109,9 +109,9 @@ do
 	# Run normal mode if no assembly file was found
 	else
 		if [[ "${3}" == "continue" ]] || [[ "${i}" -gt 1 ]]; then
-			"${shareScript}/run_SPAdes.sh" "${sample_name}" "continue" "${project}"
+			"${shareScript}/run_SPAdes.sh" "${filename}" "continue" "${project}"
 		else
-			"${shareScript}/run_SPAdes.sh" "${sample_name}" normal "${project}"
+			"${shareScript}/run_SPAdes.sh" "${filename}" normal "${project}"
 		fi
 	fi
 	# Removes any core dump files (Occured often during testing and tweaking of memory parameter
@@ -250,9 +250,9 @@ if [ -s "${OUTDATADIR}/${sample_name}/${sample_name}.tax" ]; then
 			domain=$(echo "${line}" | awk -F ' ' '{print $2}')
 		fi
 	done < "${OUTDATADIR}/${sample_name}/${sample_name}.tax"
-# Print out taxonomy for confirmation/fun
-echo "Taxonomy - ${domain} ${kingdom} ${phylum} ${class} ${order} ${family} ${genus} ${species}"
-# If no kraken summary file was found
+	# Print out taxonomy for confirmation/fun
+	echo "Taxonomy - ${domain} ${kingdom} ${phylum} ${class} ${order} ${family} ${genus} ${species}"
+	# If no kraken summary file was found
 else
 	echo "No Taxonomy output available to make best call from, skipped"
 fi

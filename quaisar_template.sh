@@ -251,9 +251,9 @@ do
 	# Run normal mode if no assembly file was found
 	else
 		if [[ "${1}" -gt 1 ]]; then
-			"${shareScript}/run_SPAdes.sh" "${sample_name}" "continue" "${project}"
+			"${shareScript}/run_SPAdes.sh" "${filename}" "continue" "${project}"
 		else
-			"${shareScript}/run_SPAdes.sh" "${sample_name}" normal "${project}"
+			"${shareScript}/run_SPAdes.sh" "${filename}" normal "${project}"
 		fi
 	fi
 	# Removes any core dump files (Occured often during testing and tweaking of memory parameter
