@@ -132,9 +132,9 @@ outarray+=("${PROJECT} started at ${run_start_time} and saved to failed_redo_on_
 for projfile in "${file_list[@]}";
 do
 	echo "${projfile}"
-	file=$(echo "${projfile}" | awk -F/ '{ print $2}' | tr -d '[:space:]')
-	proj=$(echo "${projfile}" | awk -F/ '{ print $1}' | tr -d '[:space:]')
-	echo "${file} ${proj} ${BASEDIR}"
+	file=$(echo "${projfile}" | cut -d'/' -f2 | tr -d '[:space:]')
+	proj=$(echo "${projfile}" | cut -d'/' -f1 | tr -d '[:space:]')
+	echo "${file} ${proj}"
 	if [[ -f "${processed}/${proj}/${file}/${file}_pipeline_stats.txt" ]]; then
 		rm "${processed}/${proj}/${file}/${file}_pipeline_stats.txt"
 	fi
