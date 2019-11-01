@@ -142,7 +142,7 @@ do
 		cp ${shareScript}/quaisar_failed_assembly_template.sh ${shareScript}/quaisar_FA_${file}.sh
 		sed -i -e "s/qfa_X/qfa_${file}/g" "${shareScript}/quaisar_FA_${file}.sh"
 		echo "Entering ${shareScript}/quaisar_FA_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
-		qsub "${shareScript}/quaisar_FA_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
+		qsub "${shareScript}/quaisar_FA_${file}.sh" "${file}" "${proj}" "continue" "${shareScript}/config_${config_counter}.sh"
 		echo "Created and ran quaisar_FA_${file}.sh"
 	else
 		echo "${shareScript}/quaisar_FA_${file}.sh already exists, will resubmit"
