@@ -65,8 +65,8 @@ start_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 sample_name="${1}"
 project="${2}"
 OUTDATADIR="${processed}/${project}"
-if [[ ! -z "${4}" ]]; then
-	OUTDATADIR="${4}/${project}"
+if [[ ! -z "${5}" ]]; then
+	OUTDATADIR="${5}/${project}"
 fi
 
 # Remove old run stats as the presence of the file indicates run completion
