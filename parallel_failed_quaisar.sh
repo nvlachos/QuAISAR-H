@@ -68,7 +68,7 @@ then
 fi
 
 # Checking for proper number of arguments from command line
-if [[ $# -lt 1  || $# -gt 7 ]]; then
+if [[ $# -ne 1 ]]; then
 	echo "If reads are in default location set in config file then"
   echo "Usage: ./parallel_quaisar.sh list_of_samples"
 	echo "You have used $# args"
