@@ -146,7 +146,7 @@ do
 		echo "Created and ran quaisar_FA_${file}.sh"
 	else
 		echo "${shareScript}/quaisar_FA_${file}.sh already exists, will resubmit"
-		qsub "${shareScript}/quaisar_FA_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
+		qsub "${shareScript}/quaisar_FA_${file}.sh" "${file}" "${proj}" "continue" "${shareScript}/config_${config_counter}.sh"
 	fi
 done
 
