@@ -47,8 +47,8 @@ elif [[ ! -z "${3}" ]] && [[ "${3}" != "continue" ]]; then
 	exit 34
 fi
 
-if [[ ! -f "${3}" ]]; then
-	echo "no config file to load (${3}), exiting"
+if [[ ! -f "${4}" ]]; then
+	echo "no config file to load (${4}), exiting"
 	exit 223
 else
 	echo "${2}/${1} is loading config file ${4}"
