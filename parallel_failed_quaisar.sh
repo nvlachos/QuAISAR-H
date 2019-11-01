@@ -124,8 +124,8 @@ log_dir="${Quaisar_H_log_directory}/failed_redo_on_${run_start_time}"
 #Get the time the run started to use as the identifier
 outarray=()
 echo "Run started at ${run_start_time}; Log directory will be ${log_dir}/failed_redo_on_${run_start_time}"
-echo "Run started at ${run_start_time}" > "${log_dir}/failed_redo_on_${run_start_time}/failed_redo_on_${run_start_time}.log"
-outarray+=("${PROJECT} started at ${run_start_time} and saved to failed_redo_on_${run_start_time}.log")
+echo "Run started at ${run_start_time}" > "${log_dir}/failed_redo_on_${run_start_time}.log"
+outarray+=("failed_redo started at ${run_start_time} and saved to failed_redo_on_${run_start_time}.log")
 
 
 #Each file in the list is put through the full pipeline
