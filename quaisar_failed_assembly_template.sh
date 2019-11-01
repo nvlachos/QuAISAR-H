@@ -120,11 +120,11 @@ do
 	else
 		# Cant figure out why continue does not work yet
 		#if [[ "${1}" -gt 1 ]]; then
-		#	"${shareScript}/run_SPAdes.sh" "${filename}" "continue" "${project}"
+		#	"${shareScript}/run_SPAdes.sh" "${sample_name}" "continue" "${project}"
 		#else
-		#	"${shareScript}/run_SPAdes.sh" "${filename}" normal "${project}"
+		#	"${shareScript}/run_SPAdes.sh" "${sample_name}" normal "${project}"
 		#fi
-		"${shareScript}/run_SPAdes.sh" "${filename}" normal "${project}"
+		"${shareScript}/run_SPAdes.sh" "${sample_name}" normal "${project}"
 	fi
 	# Removes any core dump files (Occured often during testing and tweaking of memory parameter
 	if [ -n "$(find "${shareScript}" -maxdepth 1 -name 'core.*' -print -quit)" ]; then
