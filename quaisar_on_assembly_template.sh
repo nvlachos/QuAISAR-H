@@ -41,7 +41,6 @@ if [[ ! -f "${3}" ]]; then
 else
 	echo "${2}/${1} is loading config file ${3}"
 	. "${3}"
-	. ${mod_changers}/pipeline_mods
 fi
 
 
