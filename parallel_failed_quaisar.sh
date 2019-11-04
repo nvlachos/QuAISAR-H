@@ -139,7 +139,7 @@ do
 		rm "${processed}/${proj}/${file}/${file}_pipeline_stats.txt"
 	fi
 	if [[ ! -f ${shareScript}/qfa_${file}.sh ]]; then
-		cp ${shareScript}/qfailed_assembly_template.sh ${shareScript}/qfa_${file}.sh
+		cp ${shareScript}/failed_assembly_template.sh ${shareScript}/qfa_${file}.sh
 		sed -i -e "s/qfa_X/qfa_${file}/g" "${shareScript}/qfa_${file}.sh"
 		echo "Entering ${shareScript}/qfa_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
 		qsub "${shareScript}/qfa_${file}.sh" "${file}" "${proj}" "continue" "${shareScript}/config_${config_counter}.sh"
