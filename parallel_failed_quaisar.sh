@@ -91,9 +91,9 @@ declare -a file_list=()
 declare -a run_list=()
 while IFS= read -r file || [ -n "$file" ]; do
 	echo "Found: ${file}"
-	file=$(echo "${file}" | cut -d'/' -f1)
-	file_list+=("${file}")
+	file=$(echo "${file}" | cut -d'/' -f2)
 	run_id=$(echo ${file} | cut -d'/' -f1)
+	file_list+=("${run_id}/${file}")
 	found=0
 	for item in "${run_list[@]}"; do
 		if [[ "${item}" == "${run_id}" ]]; then
@@ -139,7 +139,7 @@ do
 		rm "${processed}/${proj}/${file}/${file}_pipeline_stats.txt"
 	fi
 	if [[ ! -f ${shareScript}/qfa_${file}.sh ]]; then
-		cp ${shareScript}/failed_assembly_template.sh ${shareScript}/qfa_${file}.sh
+		cp ${shareScript}/quaisar_failed_assembly_template.sh ${shareScript}/qfa_${file}.sh
 		sed -i -e "s/qfa_X/qfa_${file}/g" "${shareScript}/qfa_${file}.sh"
 		echo "Entering ${shareScript}/qfa_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
 		qsub "${shareScript}/qfa_${file}.sh" "${file}" "${proj}" "continue" "${shareScript}/config_${config_counter}.sh"
