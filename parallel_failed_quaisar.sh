@@ -138,15 +138,15 @@ do
 	if [[ -f "${processed}/${proj}/${file}/${file}_pipeline_stats.txt" ]]; then
 		rm "${processed}/${proj}/${file}/${file}_pipeline_stats.txt"
 	fi
-	if [[ ! -f ${shareScript}/quaisar_FA_${file}.sh ]]; then
-		cp ${shareScript}/quaisar_failed_assembly_template.sh ${shareScript}/quaisar_FA_${file}.sh
-		sed -i -e "s/qfa_X/qfa_${file}/g" "${shareScript}/quaisar_FA_${file}.sh"
-		echo "Entering ${shareScript}/quaisar_FA_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
-		qsub "${shareScript}/quaisar_FA_${file}.sh" "${file}" "${proj}" "continue" "${shareScript}/config_${config_counter}.sh"
-		echo "Created and ran quaisar_FA_${file}.sh"
+	if [[ ! -f ${shareScript}/qfa_${file}.sh ]]; then
+		cp ${shareScript}/qfailed_assembly_template.sh ${shareScript}/qfa_${file}.sh
+		sed -i -e "s/qfa_X/qfa_${file}/g" "${shareScript}/qfa_${file}.sh"
+		echo "Entering ${shareScript}/qfa_${file}.sh" "${file}" "${proj}" "${shareScript}/config_${config_counter}.sh"
+		qsub "${shareScript}/qfa_${file}.sh" "${file}" "${proj}" "continue" "${shareScript}/config_${config_counter}.sh"
+		echo "Created and ran qfa_${file}.sh"
 	else
-		echo "${shareScript}/quaisar_FA_${file}.sh already exists, will resubmit"
-		qsub "${shareScript}/quaisar_FA_${file}.sh" "${file}" "${proj}" "continue" "${shareScript}/config_${config_counter}.sh"
+		echo "${shareScript}/qfa_${file}.sh already exists, will resubmit"
+		qsub "${shareScript}/qha_${file}.sh" "${file}" "${proj}" "continue" "${shareScript}/config_${config_counter}.sh"
 	fi
 done
 
@@ -156,9 +156,9 @@ for run_sample in "${file_list[@]}"; do
 	proj=$(echo "${run_sample}" | cut -d'/' -f1)
 	if [[ -f "${processed}/${proj}/${waiting_sample}/${waiting_sample}_pipeline_stats.txt" ]]; then
 		echo "${waiting_sample} is complete"
-		mv ${shareScript}/quaisar_FA_${waiting_sample}.sh ${log_dir}
-		mv ${shareScript}/quaisar_FA_${waiting_sample}.err ${log_dir}
-		mv ${shareScript}/quaisar_FA_${waiting_sample}.out ${log_dir}
+		mv ${shareScript}/qfa_${waiting_sample}.sh ${log_dir}
+		mv ${shareScript}/qfa_${waiting_sample}.err ${log_dir}
+		mv ${shareScript}/qfa_${waiting_sample}.out ${log_dir}
 	else
 		while :
 		do
