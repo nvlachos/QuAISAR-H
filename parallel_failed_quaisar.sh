@@ -91,9 +91,9 @@ declare -a file_list=()
 declare -a run_list=()
 while IFS= read -r file || [ -n "$file" ]; do
 	echo "Found: ${file}"
-	file=$(echo "${file}" | cut -d'/' -f2)
+	sample_id=$(echo "${file}" | cut -d'/' -f2)
 	run_id=$(echo ${file} | cut -d'/' -f1)
-	file_list+=("${run_id}/${file}")
+	file_list+=("${run_id}/${sample_id}")
 	found=0
 	for item in "${run_list[@]}"; do
 		if [[ "${item}" == "${run_id}" ]]; then
