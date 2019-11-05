@@ -21,7 +21,7 @@ fi
 #
 # Modules required: Python3/3.5.2, ncbi-blast+/LATEST
 #
-# v1.0.1 (10/29/2019)
+# v1.0.2 (11/05/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
@@ -86,7 +86,7 @@ else
 	if [[ ! -d "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}" ]]; then
 		mkdir -p "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}"
 	fi
-	echo "No anti-microbial genes were found using c-SSTAR because there were No Plasmids Found" > "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}.sstar"
+	#echo "No anti-microbial genes were found using c-SSTAR because there were No Plasmids Found" > "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}.sstar"
 	exit
 fi
 

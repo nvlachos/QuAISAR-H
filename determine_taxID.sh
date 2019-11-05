@@ -20,7 +20,7 @@ fi
 #
 # Modules required: None
 #
-# v1.0 (10/3/2019)
+# v1.0.1 (11/4/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
@@ -128,7 +128,7 @@ do_ANI() {
 	header=$(head -n 1 "${source_file}")
 	#echo "${header}"
 	Genus=$(echo "${header}" | cut -d' ' -f1 | cut -d'-' -f2)
-	species=$(echo "${header}" | cut -d' ' -f2 | cut -d'(' -f1)
+	species=$(echo "${header}" | cut -d' ' -f2 | cut -d'(' -f1 | sed 's/[][]//g')
 	confidence_index=$(echo "${header}" | cut -d' ' -f1 | cut -d'%' -f1)
 	#echo "${Genus}-${species}"
 }
