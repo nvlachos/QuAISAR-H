@@ -85,46 +85,50 @@ if [ -d "${sample_folder}/plasmidAssembly" ]; then
 	echo "Using Gulviks SPAdes cleaner on plasmidAssembly"
 	${shareScript}/gulvic_SPAdes_cleaner.sh "${sample_folder}/plasmidAssembly"
 fi
-	# Remove hmm_output folder from BUSCO analysis if found
-	echo "Cleaning BUSCO Folder"
-	if [ -d "${sample_folder}/BUSCO/hmm_output" ]; then
-		echo "Deleting hmm_output"
-		rm -r "${sample_folder}/BUSCO/hmm_output"
-	fi
-	echo "Cleaning GOTTCHA Folder"
-	# Remove splitrim fodler from gottcha output, if found
-	if [ -d "${sample_folder}/gottcha/gottcha_S/${sample_name}_temp/splitrim" ]; then
-		echo "Deleting splitrim folder"
-		rm -r "${sample_folder}/gottcha/gottcha_S/${sample_name}_temp/splitrim"
-	fi
-	# Removed intermediate folder that has reads with no adapters, but have not been trimmed yet
-	echo "Cleaning Adapter Folder"
-	if [ -d "${sample_folder}/removedAdapters" ]; then
-		echo "Deleting adapterless reads"
-		rm -r "${sample_folder}/removedAdapters"
-	fi
-	# Clean trimmed folder of catted and unpaired reads, leaving only R1 and R2
-	echo "Cleaning Trimmed Folder"
-	if [ -d "${sample_folder}/trimmed" ]; then
-		echo "Deleting extraneous reads"
-		if [ -f "${sample_folder}/trimmed/${sample_name}.paired.fq" ]; then
-			echo "Deleting catted paired reads"
-			rm "${sample_folder}/trimmed/${sample_name}.paired.fq"
+echo "Cleaning GOTTCHA Folder"
+# Remove splitrim fodler from gottcha output, if found
+if [ -d "${sample_folder}/gottcha/gottcha_S/${sample_name}_temp/splitrim" ]; then
+	echo "Deleting splitrim folder"
+	rm -r "${sample_folder}/gottcha/gottcha_S/${sample_name}_temp/splitrim"
+fi
+# Removed intermediate folder that has reads with no adapters, but have not been trimmed yet
+echo "Cleaning Adapter Folder"
+if [ -d "${sample_folder}/removedAdapters" ]; then
+	echo "Deleting adapterless reads"
+	rm -r "${sample_folder}/removedAdapters"
+fi
+# Clean trimmed folder of catted and unpaired reads, leaving only R1 and R2
+echo "Cleaning Trimmed Folder"
+if [ -d "${sample_folder}/trimmed" ]; then
+	echo "Deleting extraneous reads"
+	if [ -f "${sample_folder}/trimmed/${sample_name}.paired.fq" ]; then
+		if [ ! -f "${sample_folder}/trimmed/${sample_name}.paired.fq.gz" ]; then
+			gzip "${sample_folder}/trimmed/${sample_name}.paired.fq"
 		fi
-		#if [ -f "${sample_folder}/trimmed/${sample_name}.single.fq" ]; then
-		#	echo "Deleting catted single reads"
-		#	rm "${sample_folder}/trimmed/${sample_name}.single.fq"
-		#fi
-		if [ -f "${sample_folder}/trimmed/${sample_name}_R1_001.unpaired.fq" ]; then
-			echo "Deleting unpaired R1 reads"
-			rm "${sample_folder}/trimmed/${sample_name}_R1_001.unpaired.fq"
-		fi
-		if [ -f "${sample_folder}/trimmed/${sample_name}_R2_001.unpaired.fq" ]; then
-			echo "Deleting unpaired R2 reads"
-			rm "${sample_folder}/trimmed/${sample_name}_R2_001.unpaired.fq"
-		fi
+		echo "Deleting catted paired reads"
+		rm "${sample_folder}/trimmed/${sample_name}.paired.fq"
 	fi
-	# Clean FASTQ folder by zipping any unzipped reads
+	#if [ -f "${sample_folder}/trimmed/${sample_name}.single.fq" ]; then
+	#	echo "Deleting catted single reads"
+	#	rm "${sample_folder}/trimmed/${sample_name}.single.fq"
+	#fi
+	if [ ! -f "${sample_folder}/trimmed/${sample_name}.single.fq.gz" ]; then
+		if  [ ! -f "${sample_folder}/trimmed/${sample_name}.single.fq" ]; then
+			if [ -f "${sample_folder}/trimmed/${sample_name}_R1_001.unpaired.fq" ] && [ -f "${sample_folder}/trimmed/${sample_name}_R2_001.unpaired.fq" ]; then
+				cat "${sample_folder}/trimmed/${sample_name}_R1_001.unpaired.fq"  "${sample_folder}/trimmed/${sample_name}_R2_001.unpaired.fq" > "${sample_folder}/trimmed/${sample_name}.single.fq"
+			fi
+			gzip "${sample_folder}/trimmed/${sample_name}.single.fq"
+	fi
+	if [ -f "${sample_folder}/trimmed/${sample_name}_R1_001.unpaired.fq" ]; then
+		echo "Deleting unpaired R1 reads"
+		rm "${sample_folder}/trimmed/${sample_name}_R1_001.unpaired.fq"
+	fi
+	if [ -f "${sample_folder}/trimmed/${sample_name}_R2_001.unpaired.fq" ]; then
+		echo "Deleting unpaired R2 reads"
+		rm "${sample_folder}/trimmed/${sample_name}_R2_001.unpaired.fq"
+	fi
+fi
+# Clean FASTQ folder by zipping any unzipped reads
 	# if [ -s "${sample_folder}/FASTQs/${sample_name}_R1_001.fastq.gz" ] && [ -s "${sample_folder}/FASTQs/${sample_name}_R2_001.fastq.gz"]; then
 	# 	echo "Clumping R1 and R2"
 	#
