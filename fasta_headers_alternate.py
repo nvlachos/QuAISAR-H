@@ -32,7 +32,7 @@ sequences = []
 
 
 #print("FORWARD")
-name=os.path.basename(args.input).split("_")[-3:-2:]
+name=os.path.basename(args.input).split("_")[-5:-2:]
 print(name)
 exit()
 name=name[3:]
