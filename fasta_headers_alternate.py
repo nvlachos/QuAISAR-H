@@ -22,10 +22,10 @@ import argparse
 #print("Starting")
 #Create an arg parser...someday
 def parseArgs(args=None):
-	parser = argparse.ArgumentParser(description='Script to rename contigs in assemblies')
-	parser.add_argument('-i', '--input', required=True, help='input fasta filename')
-	parser.add_argument('-o', '--output', required=True, help='output filename')
-	return parser.parse_args()
+    parser = argparse.ArgumentParser(description='Script to rename contigs in assemblies')
+    parser.add_argument('-i', '--input', required=True, help='input fasta filename')
+    parser.add_argument('-o', '--output', required=True, help='output filename')
+    return parser.parse_args()
 
 args=parseArgs()
 sequences = []
@@ -41,7 +41,7 @@ for record in SeqIO.parse(args.input,"fasta"):
     print(record.id)
     print(name)
     record.id = record.id.split("_cov")[0].replace("NODE",name)
-	seq_length = record.id.split(" ")[6].split("_")[-1]
+    seq_length = record.id.split(" ")[6].split("_")[-1]
 
     #print(record.id)
     record.description = ""
