@@ -33,19 +33,20 @@ sequences = []
 
 #print("FORWARD")
 name=os.path.basename(args.input).split("_")[-5:-2:]
-print(name)
-exit()
+#print(name)
 name=name[3:]
 #print(name)
 name='_'.join(name[::-1])
-#print(name)
 for record in SeqIO.parse(args.input,"fasta"):
-    #print(record.id)
-    #print(name)
+    print(record.id)
+    print(name)
     record.id = record.id.split("_cov")[0].replace("NODE",name)
+	seq_length = record.id.split(" ")[6].split("_")[-1]
+
     #print(record.id)
     record.description = ""
 #    print(record.description)
 #    print(record)
     sequences.append(record)
+exit()
 SeqIO.write(sequences, args.output, "fasta")
