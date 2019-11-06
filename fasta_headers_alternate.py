@@ -43,8 +43,8 @@ for record in SeqIO.parse(args.input,"fasta"):
     record.id = record.id.split("_cov")[0].replace("NODE",name)
     contig_num = record.id.split(" ")   #[6].split("_")[-1]
     print(*contig_num, sep = "\n")
-	seq_length=len(record)
-	print("Length=", seq_length)
+    seq_length=len(record)
+    print("Length=", seq_length)
     #print(record.id)
     record.description = ""
 #    print(record.description)
