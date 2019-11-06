@@ -40,7 +40,7 @@ import os,sys,zipfile,re,itertools
 
 def myjoin(seq, sep=" "):
   " because str.join() is annoying "
-  return sep.join(str(x) for x in seq)
+  return sep.join(x.encode("utf-8") for x in seq)
 
 args = sys.argv[:]
 args.pop(0)
