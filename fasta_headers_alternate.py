@@ -39,7 +39,7 @@ name=os.path.basename(args.input).split("_")[-5:-2:]
 name='_'.join(name[::-1])
 for record in SeqIO.parse(args.input,"fasta"):
     print(record.id)
-	print(record.name)
+    print(record.name)
     print(name)
     #record.id = record.id.split("_cov")[0].replace("NODE",name)
     contig_num = record.id.split("|")   #[6].split("_")[-1]

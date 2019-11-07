@@ -38,7 +38,7 @@ elif [[ -z "${1}" ]]; then
 	exit 1
 # Gives the user a brief usage and help section if requested with the -h option argument
 elif [[ "${1}" = "-h" ]]; then
-	echo "Usage is ./run_kraken.sh   sample_name   assembly_relativity(pre or post)   read_type(paired,assembled, or single)   run_ID"
+	echo "Usage is ./run_kraken.sh   sample_name   assembly_relativity(pre or post)   read_type(paired,assembled)   run_ID"
 	echo "Output is saved to in ${processed}/miseq_run_ID/sample_name/kraken/assembly_relativity"
 	exit 0
 elif [ -z "$2" ]; then
