@@ -36,7 +36,7 @@ name=os.path.basename(args.input).split("_")[-5:-2:]
 #print(name)
 #name=name[3:]
 #print(name)
-name='_'.join(name[::-1])
+name='-'.join(name[::])
 for record in SeqIO.parse(args.input,"fasta"):
     print(record.id)
     #print(record.name)
