@@ -32,12 +32,12 @@ sequences = []
 
 
 #print("FORWARD")
-name=os.path.basename(args.input).split('-')[0].replace('_', '-')#.replace('.','-')
+name=os.path.basename(args.input).split('-')[0].replace('_', '-').replace('.','-')
 
 print(name)
 #name=name[3:]
 #print(name)
-name='-'.join(name[::])
+#name='-'.join(name[::])
 print("Name=", name)
 exit()
 for record in SeqIO.parse(args.input,"fasta"):
