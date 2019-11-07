@@ -44,7 +44,7 @@ for record in SeqIO.parse(args.input,"fasta"):
     #record.id = record.id.split("_cov")[0].replace("NODE",name)
     entrails = record.id.split("|")   #[6].split("_")[-1]
     #print(*entrails, sep = "\n")
-    #contig_num=entrails[2].split("_")[5]
+    contig_num=entrails[2].split("_")[5]
     seq_length=len(record)
     #print("Contig=", contig_num)
     #print("Length=", seq_length)
