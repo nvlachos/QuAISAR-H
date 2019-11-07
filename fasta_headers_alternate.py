@@ -48,11 +48,10 @@ for record in SeqIO.parse(args.input,"fasta"):
     seq_length=len(record)
     #print("Contig=", contig_num)
     #print("Length=", seq_length)
-    print("Example out=", name+"_"+str(contig_num)+"_length_"+str(seq_length)+"    "+record.id)
+    record.id = name+"_"+str(contig_num)+"_length_"+str(seq_length)+"    "+record.id
     #print(record.id)
     record.description = ""
 #    print(record.description)
 #    print(record)
     sequences.append(record)
-exit()
 SeqIO.write(sequences, args.output, "fasta")
