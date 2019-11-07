@@ -38,7 +38,7 @@ print(name)
 #name=name[3:]
 #print(name)
 #name='-'.join(name[::])
-#print("Name=", name)
+print("Name=", name)
 for record in SeqIO.parse(args.input,"fasta"):
     #print(record.id)
     #print(record.name)
