@@ -46,7 +46,7 @@ for record in SeqIO.parse(args.input,"fasta"):
     print(*entrails, sep = "\n")
     contig_num=entrails[2].split("_")[5]
     seq_length=len(record)
-    print("Contig=", contig_num
+    print("Contig=", contig_num)
     print("Length=", seq_length)
     #print(record.id)
     record.description = ""
