@@ -39,15 +39,16 @@ name=os.path.basename(args.input).split("_")[-5:-2:]
 name='_'.join(name[::-1])
 for record in SeqIO.parse(args.input,"fasta"):
     print(record.id)
-    print(record.name)
-    print(name)
+    #print(record.name)
+    #print(name)
     #record.id = record.id.split("_cov")[0].replace("NODE",name)
     entrails = record.id.split("|")   #[6].split("_")[-1]
-    print(*entrails, sep = "\n")
-    contig_num=entrails[2].split("_")[5]
+    #print(*entrails, sep = "\n")
+    #contig_num=entrails[2].split("_")[5]
     seq_length=len(record)
-    print("Contig=", contig_num)
-    print("Length=", seq_length)
+    #print("Contig=", contig_num)
+    #print("Length=", seq_length)
+    print("Example out=", name+"_"+contig_num+"_length"+seq_length)
     #print(record.id)
     record.description = ""
 #    print(record.description)
