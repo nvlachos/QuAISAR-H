@@ -83,7 +83,7 @@ def Mash_Centroid(input_assembly_list):
     List1 = Mash_List_Maker(input_assembly_list)
     Averages = Average_Mash(List1)
     for thing in Averages:
-        print("First:", thing[0], "Second:", thing[1])
+        print("Sample:", thing[0], "Avg. Dist to all other samples:", thing[1])
     Best = Averages[0][0]
     return Best
 
