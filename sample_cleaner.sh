@@ -21,7 +21,7 @@ fi
 #
 # Modules required: None
 #
-# v1.0 (10/3/2019)
+# v1.0.1 (11/18/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
@@ -118,6 +118,7 @@ if [ -d "${sample_folder}/trimmed" ]; then
 				cat "${sample_folder}/trimmed/${sample_name}_R1_001.unpaired.fq"  "${sample_folder}/trimmed/${sample_name}_R2_001.unpaired.fq" > "${sample_folder}/trimmed/${sample_name}.single.fq"
 			fi
 			gzip "${sample_folder}/trimmed/${sample_name}.single.fq"
+		fi
 	fi
 	if [ -f "${sample_folder}/trimmed/${sample_name}_R1_001.unpaired.fq" ]; then
 		echo "Deleting unpaired R1 reads"
