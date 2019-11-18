@@ -23,7 +23,7 @@ fi
 #
 # Modules required: Python3/3.5.4
 #
-# v1.0.3 (10/30/2019)
+# v1.0.4 (11/18/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
@@ -70,8 +70,8 @@ if [[ ! -z "${5}" ]]; then
 fi
 
 # Remove old run stats as the presence of the file indicates run completion
-if [[ -f "${processed}/${proj}/${file}/${file}_pipeline_stats.txt" ]]; then
-	rm "${processed}/${proj}/${file}/${file}_pipeline_stats.txt"
+if [[ -f "${processed}/${proj}/${sample_name}/${sample_name}_pipeline_stats.txt" ]]; then
+	rm "${processed}/${proj}/${sample_name}/${sample_name}_pipeline_stats.txt"
 fi
 
 # Create an empty time_summary_redo file that tracks clock time of tools used
