@@ -73,7 +73,7 @@ def Mash_List_Maker(input_assembly_list):
     Output = []
     for files in input_assembly_list:
         for files2 in input_assembly_list:
-            String1 = subprocess.check_output('mash dist ' + files + ' ' + files2, shell=True)
+            String1 = subprocess.Popen('mash dist ' + files + ' ' + files2, shell=True)
             Output.append(String1)
     Output.sort()
     return Output
