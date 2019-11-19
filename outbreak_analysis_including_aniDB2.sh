@@ -1,8 +1,8 @@
 #!/bin/sh -l
 
-#$ -o outbreak_analysis.out
-#$ -e outbreak_analysis.err
-#$ -N outbreak_analysis
+#$ -o OA_2.out
+#$ -e OA_2.err
+#$ -N OA_2
 #$ -cwd
 #$ -q short.q
 
