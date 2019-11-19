@@ -625,7 +625,7 @@ while IFS= read -r line; do
 done < ${1}
 
 # Calls script that sorts and formats all isolates info into a matrix for easy viewing
-python3 "${shareScript}/project_parser.py" -s "${output_directory}/${4}-sample_summary.txt" -p "${output_directory}/${4}-plasmid_summary.txt" -o "${output_directory}/${4}_AR_plasmid_report_aniDB2.csv" -d "${ResGANNCBI_srst2_filename}"
+python3 "${shareScript}/project_parser_aniDB2.py" -s "${output_directory}/${4}-sample_summary.txt" -p "${output_directory}/${4}-plasmid_summary.txt" -o "${output_directory}/${4}_AR_plasmid_report_aniDB2.csv" -d "${ResGANNCBI_srst2_filename}"
 
 submitter=$(whoami)
 global_end_time=$(date "+%m-%d-%Y @ %Hh_%Mm_%Ss")
