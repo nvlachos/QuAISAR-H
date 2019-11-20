@@ -45,6 +45,7 @@ def do_AR(input_summary_AR, input_plas, output_file, DB_name):
 		looper=1
 		for col in summary_line_sections:
 			print(looper, col)
+			looper+=1			
 		csstar_list=summary_line_sections[12].split(",")
 		print(csstar_list)
 		ar_dict={}
