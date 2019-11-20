@@ -24,7 +24,7 @@ fi
 # Modules required: Python3/3.5.2, mashtree/0.29
 #		***Must be submitted as a job (or run on the cluster) if there are isolates that need to have csstar, GAMA or srst2 updated
 #
-# v1.0 (10/3/2019)
+# v1.0.2 (11/20/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
@@ -394,12 +394,17 @@ while IFS= read -r line || [ -n "$line" ]; do
 		done < "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${Alt_db}_srst2__results.txt"
 		#echo "Test1"
 		if [[ -z "${srst2_results}" ]]; then
+			echo "1"
 			echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
+			srst2_results="No AR genes discovered"
 		else
+			echo "2"
 			echo "${project}	${sample_name}	${srst2_results}" >> ${output_directory}/${4}-srst2.txt
 		fi
 	else
-		echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
+		echo "3"
+		echo "${project}	${sample_name}	NO CURRENT FILE" >> ${output_directory}/${4}-srst2.txt
+		srst2_results="NO CURRENT FILE"
 	fi
 
 #Test

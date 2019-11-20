@@ -24,7 +24,7 @@ fi
 # Modules required: Python3/3.5.2, mashtree/0.29
 #		***Must be submitted as a job (or run on the cluster) if there are isolates that need to have csstar, GAMA or srst2 updated
 #
-# v1.0.1 (10/8/2019)
+# v1.0.2 (11/20/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
@@ -286,7 +286,7 @@ while IFS= read -r line; do
 
 	GAMA_list=""
 	# Extracts all AR genes from normal csstar output file and creates a lits of all genes that pass the filtering steps
- 	echo "^^^^^^^^^^^^^^^^^^^ ${OUTDATADIR}/GAMA/${sample_name}.${ResGANNCBI_srst2_filename}.GAMA"
+ 	#echo "^^^^^^^^^^^^^^^^^^^ ${OUTDATADIR}/GAMA/${sample_name}.${ResGANNCBI_srst2_filename}.GAMA"
 	if [[ -f "${OUTDATADIR}/GAMA/${sample_name}.${ResGANNCBI_srst2_filename}.GAMA" ]]; then
 		GARDB_full="${OUTDATADIR}/GAMA/${sample_name}.${ResGANNCBI_srst2_filename}.GAMA"
 		while IFS= read -r line; do
@@ -296,7 +296,7 @@ while IFS= read -r line; do
 			elif [[ "${line}" == *"DB	Resistance	Gene_Family	Gene	Contig	Start"* ]]; then
 				continue
 			fi
-			echo "!!!!!!!!!!!!            ${line}"
+			#echo "!!!!!!!!!!!!            ${line}"
 			IFS='	' read -r -a ar_line <<< "$line"
 			percent_BP_ID=$(echo "${ar_line[11]}" | awk '{ printf "%d", ($1*100) }' )
 			percent_codon_ID=$(echo "${ar_line[12]}" | awk '{ printf "%d", ($1*100) }' )
@@ -396,15 +396,17 @@ while IFS= read -r line; do
 		done < "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${ResGANNCBI_srst2_filename}_srst2__results.txt"
 		#echo "Test1"
 		if [[ -z "${srst2_results}" ]]; then
-			echo "1"
+			#echo "1"
 			echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
+			srst2_results="No AR genes discovered"
 		else
-			echo "2"
+			#echo "2"
 			echo "${project}	${sample_name}	${srst2_results}" >> ${output_directory}/${4}-srst2.txt
 		fi
 	else
-		echo "3"
+		#echo "3"
 		echo "${project}	${sample_name}	NO CURRENT FILE" >> ${output_directory}/${4}-srst2.txt
+		srst2_results="NO CURRENT FILE"
 	fi
 
 	# Extracts taxonomic info
@@ -431,7 +433,7 @@ while IFS= read -r line; do
 	fi
 
 	# Quick fix to rename mlst filenames after it was decided that all should be _Pasteur
-	echo -e "\n\n\n\n\n\n\n\n Checking to move ${OUTDATADIR}/MLST/${sample_name}_abaumannii.mlst \n\n\n\n\n\n\n\n"
+	#echo -e "\n\n\n\n\n\n\n\n Checking to move ${OUTDATADIR}/MLST/${sample_name}_abaumannii.mlst \n\n\n\n\n\n\n\n"
 
 	if [[ "${taxonomy}" == "Acinetobacter baumannii" ]]; then
 		mv "${OUTDATADIR}/MLST/${sample_name}_abaumannii.mlst" "${OUTDATADIR}/MLST/${sample_name}_Oxford.mlst"
