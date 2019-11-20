@@ -65,6 +65,7 @@ def do_AR(input_summary_AR, input_plas, output_file, DB_name):
 
 		srst2_list=summary_line_sections[13].split(",")
 		for srst2_gene in srst2_list:
+			print("test:", srst2_gene)
 			if srst2_gene[0] == "No AR genes discovered":
 				gene_name="No AR genes discovered"
 				gene_stats="[0/0]S"
