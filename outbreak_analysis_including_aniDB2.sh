@@ -24,7 +24,7 @@ fi
 # Modules required: Python3/3.5.2, mashtree/0.29
 #		***Must be submitted as a job (or run on the cluster) if there are isolates that need to have csstar, GAMA or srst2 updated
 #
-# v1.0.1 (10/8/2019)
+# v1.0.2 (11/20/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
@@ -298,9 +298,9 @@ while IFS= read -r line; do
 			fi
 			echo "!!!!!!!!!!!!            ${line}"
 			IFS='	' read -r -a ar_line <<< "$line"
-			percent_BP_ID=$(echo "${ar_line[11]}" | awk '{ printf "%d", ($1*100) }' )
-			percent_codon_ID=$(echo "${ar_line[12]}" | awk '{ printf "%d", ($1*100) }' )
-			percent_length=$(echo "${ar_line[13]}" | awk '{ printf "%d", ($1*100) }' )
+			percent_BP_ID=$(echo "${ar_line[11]}" | awk '{ printf "%d", int($1*100) }' )
+			percent_codon_ID=$(echo "${ar_line[12]}" | awk '{ printf "%d", int($1*100) }' )
+			percent_length=$(echo "${ar_line[13]}" | awk '{ printf "%d", int($1*100) }' )
 			conferred=$(echo "${ar_line[1]}" | rev | cut -d'_' -f2- | rev)
 			contig_number=$(echo "${ar_line[4]}" | rev | cut -d'_' -f3 | rev)
 			gene="${ar_line[3]}"
