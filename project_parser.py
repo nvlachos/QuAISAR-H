@@ -242,7 +242,7 @@ def do_AR(input_summary_AR, input_plas, output_file, DB_name):
 	#all_AR_to_write.insert(0,",")
 	#all_AR_to_write.insert(0,",")
 	#all_AR_to_write=','.join(map(str, all_AR_to_write))
-	header="id, Project__autocolour, Species__autocolour, Species_determinant__autocolour, Species_Support__autocolour , MLST_Pasteur__autocolour, MLST_Pasteur_alleles__autocolour, ALT_MLST__autocolour, ALT_MLST_alleles__autocolour, AR_Database__autocolour, "
+	header="id	Project__autocolour	Species__autocolour	Species_determinant__autocolour	Species_Support__autocolour 	MLST_Pasteur__autocolour	MLST_Pasteur_alleles__autocolour	ALT_MLST__autocolour	ALT_MLST_alleles__autocolour	AR_Database__autocolour	"
 	for thing in all_ar_and_plasmids:
 		header = header + " " + thing + "__autocolour,"
 	header = header[:-1]
