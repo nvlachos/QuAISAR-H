@@ -269,13 +269,13 @@ def do_AR(input_summary_AR, input_plas, output_file, DB_name):
 				continue
 			if sample[12].get(gene):
 				status=sample[12].get(gene)
-			elif sample[10].get(gene):
-				if sample[11].get(gene):
-					status="F:"+sample[10].get(gene)+";P:"+sample[11].get(gene)
+			elif sample[13].get(gene):
+				if sample[14].get(gene):
+					status="F:"+sample[13].get(gene)+";P:"+sample[14].get(gene)
 				else:
-					status="F:"+sample[10].get(gene)
-			elif sample[10].get(gene):
-				status="P:"+sample[11].get(gene)
+					status="F:"+sample[13].get(gene)
+			elif sample[13].get(gene):
+				status="P:"+sample[14].get(gene)
 			sample_details.append(status)
 		#print("Post Sample check", sample_details)
 		sample_details=','.join(map(str, sample_details))
