@@ -104,8 +104,8 @@ fi
 if [[ -f ${output_directory}/${4}-plasmid_summary.txt ]]; then
 	rm ${output_directory}/${4}-plasmid_summary.txt
 fi
-if [[ -f ${output_directory}/${4}_AR_plasmid_report.csv ]]; then
-	rm ${output_directory}/${4}_AR_plasmid_report.csv
+if [[ -f ${output_directory}/${4}_AR_plasmid_report.tsv ]]; then
+	rm ${output_directory}/${4}_AR_plasmid_report.tsv
 fi
 if [[ -f ${output_directory}/${4}-csstar_summary_full.txt ]]; then
 	rm ${output_directory}/${4}-csstar_summary_full.txt
@@ -514,7 +514,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 done < ${1}
 
 # Calls script that sorts and formats all isolates info into a matrix for easy viewing
-python3 "${shareScript}/project_parser.py" -c "${output_directory}/${4}-csstar_summary_full.txt" -p "${output_directory}/${4}-plasmid_summary.txt" -o "${output_directory}/${4}_AR_plasmid_report.csv" -d "${Alt_db}"
+python3 "${shareScript}/project_parser.py" -c "${output_directory}/${4}-csstar_summary_full.txt" -p "${output_directory}/${4}-plasmid_summary.txt" -o "${output_directory}/${4}_AR_plasmid_report.tsv" -d "${Alt_db}"
 
 submitter=$(whoami)
 global_end_time=$(date "+%m-%d-%Y @ %Hh_%Mm_%Ss")
