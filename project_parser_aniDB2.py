@@ -65,7 +65,7 @@ def do_AR(input_summary_AR, input_plas, output_file, DB_name):
 
 		srst2_list=summary_line_sections[13].split(",")
 		for srst2_gene in srst2_list:
-			print("test:", srst2_gene)
+			#print("srst2_test:", srst2_gene)
 			if srst2_gene == "No AR genes discovered":
 				gene_name="No AR genes discovered"
 				gene_stats="[0/0]S"
@@ -109,6 +109,7 @@ def do_AR(input_summary_AR, input_plas, output_file, DB_name):
 
 		GAMA_list=summary_line_sections[14].split(",")
 		for GAMA_gene in GAMA_list:
+			#print("GAMA_test:", GAMA_gene)
 			if GAMA_gene == "No AR genes discovered":
 				gene_name="No AR genes discovered"
 				gene_stats="[0/0]G"
@@ -259,15 +260,15 @@ def do_AR(input_summary_AR, input_plas, output_file, DB_name):
 	#	print ("2:",sample[0])
 	#return
 	for sample in samples:
-		sample_details=[sample[1], sample[0], sample[2], sample[3], sample[4], sample[5], sample[6], sample[7], sample[8], DB_name]
+		sample_details=[sample[1], sample[0], sample[2], sample[3], sample[4], sample[5], sample[6], sample[7], sample[8], sample[9], sample[10], sample[11], DB_name]
 		#print("pre:",sample)
 		for gene in all_ar_and_plasmids:
 			status=" "
 			if gene == "|":
 				sample_details.append(gene)
 				continue
-			if sample[9].get(gene):
-				status=sample[9].get(gene)
+			if sample[12].get(gene):
+				status=sample[12].get(gene)
 			elif sample[10].get(gene):
 				if sample[11].get(gene):
 					status="F:"+sample[10].get(gene)+";P:"+sample[11].get(gene)
