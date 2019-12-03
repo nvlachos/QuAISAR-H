@@ -61,7 +61,7 @@ def do_AR(input_summary_AR, input_plas, output_file, DB_name):
 
 		srst2_list=summary_line_sections[10].split(",")
 		for srst2_gene in srst2_list:
-			if srst2_gene[0] == "No AR genes discovered":
+			if srst2_gene == "No AR genes discovered":
 				gene_name="No AR genes discovered"
 				gene_stats="[0/0]S"
 				#print("Looking up", gene_name, "in csstar dic")
@@ -72,7 +72,7 @@ def do_AR(input_summary_AR, input_plas, output_file, DB_name):
 					ar_dict[gene_name]=gene_stats
 				if gene_name not in all_ARs_in_file:
 					all_ARs_in_file.append(gene_name)
-			elif srst2_gene[0] == "NO CURRENT FILE":
+			elif srst2_gene == "NO CURRENT FILE":
 				gene_name="NO-"+DB_name+"-SRST2-FILE"
 				gene_stats="[NA/NA]S"
 				#print("Looking up", gene_name, "in csstar dic")
@@ -104,7 +104,7 @@ def do_AR(input_summary_AR, input_plas, output_file, DB_name):
 
 		GAMA_list=summary_line_sections[11].split(",")
 		for GAMA_gene in GAMA_list:
-			if GAMA_gene[0] == "No AR genes discovered":
+			if GAMA_gene == "No AR genes discovered":
 				gene_name="No AR genes discovered"
 				gene_stats="[0/0]G"
 				#print("Looking up", gene_name, "in csstar dic")
@@ -115,7 +115,7 @@ def do_AR(input_summary_AR, input_plas, output_file, DB_name):
 					ar_dict[gene_name]=gene_stats
 				if gene_name not in all_ARs_in_file:
 					all_ARs_in_file.append(gene_name)
-			elif GAMA_gene[0] == "NO CURRENT FILE":
+			elif GAMA_gene == "NO CURRENT FILE":
 				gene_name="NO-"+DB_name+"-GAMA-FILE"
 				gene_stats="[NA/NA]G"
 				#print("Looking up", gene_name, "in csstar dic")
