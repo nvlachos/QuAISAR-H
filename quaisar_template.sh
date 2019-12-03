@@ -243,7 +243,7 @@ echo "----- Assembling Using SPAdes -----"
 # Get start time of SPAdes
 start=$SECONDS
 # script tries 3 times for a completed assembly
-for i in 1 2 3
+for i in 1 2 3 4 5 6 7 8 9
 do
 	# If assembly exists already and this is the first attempt (then the previous run will be used) [should not happen anymore as old runs are now renamed]
 	if [ -s "${OUTDATADIR}/${filename}/Assembly/scaffolds.fasta" ]; then
