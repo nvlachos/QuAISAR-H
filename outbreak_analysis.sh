@@ -275,7 +275,7 @@ while IFS= read -r line; do
 				echo -e "${project}\t${sample_name}\tfull_assembly\t${line}" >> ${output_directory}/${4}-csstar_rejects.txt
 			fi
 		done < ${ARDB_full}
-		if [[ -z "${csstar_list}" ]]; then
+		if [[ -z "${csstar_list}" ]] || [[ "${csstar_list}" == "" ]]; then
 			echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-csstar_summary.txt
 		else
 			echo "${project}	${sample_name}	${csstar_list}" >> ${output_directory}/${4}-csstar_summary.txt
