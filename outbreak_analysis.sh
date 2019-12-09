@@ -276,8 +276,10 @@ while IFS= read -r line; do
 			fi
 		done < ${ARDB_full}
 		if [[ -z "${csstar_list}" ]] || [[ "${csstar_list}" == "" ]]; then
+			echo "EMPTY-${project}	${sample_name}	No AR genes discovered"
 			echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-csstar_summary.txt
 		else
+			echo "OCCUPADO-${project}	${sample_name}	:${csstar_list}:"
 			echo "${project}	${sample_name}	${csstar_list}" >> ${output_directory}/${4}-csstar_summary.txt
 		fi
 	else
