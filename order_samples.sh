@@ -19,9 +19,9 @@ fi
 #
 # Output location: /deafult_config.sh_output_location/Run_ID/Run_ID_list_ordered.txt
 #
-# Modules required: Python2.7.13
+# Modules required: Python3/3.5.2
 #
-# v1.0.1 (10/21/2019)
+# v1.0.2 (12/09/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #

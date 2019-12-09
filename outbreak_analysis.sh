@@ -24,7 +24,7 @@ fi
 # Modules required: Python3/3.5.2, mashtree/0.29
 #		***Must be submitted as a job (or run on the cluster) if there are isolates that need to have csstar, GAMA or srst2 updated
 #
-# v1.0.2 (11/20/2019)
+# v1.0.3 (12/09/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
@@ -275,7 +275,7 @@ while IFS= read -r line; do
 				echo -e "${project}\t${sample_name}\tfull_assembly\t${line}" >> ${output_directory}/${4}-csstar_rejects.txt
 			fi
 		done < ${ARDB_full}
-		if [[ -z "${GAMA_list}" ]]; then
+		if [[ -z "${csstar_list}" ]]; then
 			echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-csstar_summary.txt
 		else
 			echo "${project}	${sample_name}	${csstar_list}" >> ${output_directory}/${4}-csstar_summary.txt
