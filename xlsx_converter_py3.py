@@ -156,9 +156,13 @@ for row in rows:
   #print( *(cell2text( c ).encode("utf-8").replace("\t"," ") for c in cells), sep="\t")
   #print(myjoin((cell_text_clean(cell2text( c )) for c in cells), sep="\t"))
   for c in cells:
+      print("start")
       cellout = cell2text( c )
+      type(cellout)
       clean_cell = cell_text_clean(cellout).encode("utf-8")
+      type(clean_cell)
       to_print = myjoin(clean_cell, sep="\t")
-      print(to_print)
+      type(to_print)
+      #print(to_print)
 if warning_count > warning_max:
   print("%d total warnings, %d hidden" % (warning_count, warning_count-warning_max), file=sys.stderr)
