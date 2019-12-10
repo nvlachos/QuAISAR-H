@@ -158,7 +158,7 @@ for row in rows:
   for c in cells:
       cellout = cell2text( c )
       clean_cell = cell_text_clean(cellout)
-      to_print = myjoin(clean_cell, sep="\t")
+      to_print = myjoin(clean_cell, sep="\t").encode("utf-8")
       print(to_print)
 if warning_count > warning_max:
   print("%d total warnings, %d hidden" % (warning_count, warning_count-warning_max), file=sys.stderr)
