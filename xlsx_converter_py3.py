@@ -142,7 +142,7 @@ def cell_text_clean(text):
   if "\n".encode("utf-8") in s: warning("Clobbering embedded newline")
   if "\r".encode("utf-8") in s: warning("Clobbering embedded carriage return")
   s = s.replace("\t".encode("utf-8")," ".encode("utf-8")).replace("\n".encode("utf-8")," ".encode("utf-8")).replace("\r".encode("utf-8")," ".encode("utf-8"))
-  #return s.decode()
+  return s.decode()
 
 for row in rows:
   cells_elts = row.findall(n("c"))
@@ -157,7 +157,7 @@ for row in rows:
   #print(myjoin((cell_text_clean(cell2text( c )) for c in cells), sep="\t"))
   for c in cells:
       cellout = cell2text( c )
-      clean_cell = cell_text_clean(cellout)
+      clean_cell = cell_text_clean(cellout).encode("utf-8")
       to_print = myjoin(clean_cell, sep="\t")
       print(to_print)
 if warning_count > warning_max:
