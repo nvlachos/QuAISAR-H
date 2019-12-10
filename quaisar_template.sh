@@ -126,7 +126,7 @@ if [ ! -d "$OUTDATADIR/$filename/preQCcounts" ]; then
 	mkdir -p "$OUTDATADIR/$filename/preQCcounts"
 fi
 # Run qc count check on raw reads
-python2 "${shareScript}/Fastq_Quality_Printer.py" -1 "${OUTDATADIR}/${filename}/FASTQs/${filename}_R1_001.fastq" -2 "${OUTDATADIR}/${filename}/FASTQs/${filename}_R2_001.fastq" > "${OUTDATADIR}/$filename/preQCcounts/${filename}_counts.txt"
+python3 "${shareScript}/Fastq_Quality_Printer.py" -1 "${OUTDATADIR}/${filename}/FASTQs/${filename}_R1_001.fastq" -2 "${OUTDATADIR}/${filename}/FASTQs/${filename}_R2_001.fastq" > "${OUTDATADIR}/$filename/preQCcounts/${filename}_counts.txt"
 
 	# Get end time of qc count and calculate run time and append to time summary (and sum to total time used)
 end=$SECONDS

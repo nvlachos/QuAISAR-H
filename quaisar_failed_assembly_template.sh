@@ -37,7 +37,8 @@ if [[ $# -eq 0 ]]; then
 elif [[ "${1}" = "-h" ]]; then
 	echo "Usage is ./quaisar_failed_assembly.sh  sample_name miseq_run_ID(or_project_name) continue config_file_to_run_on"
 	echo "Populated trimmed folder needs to be present in ${2}/${1}, wherever it resides"
-	echo "Output by default is processed to processed/miseq_run_ID/sample_name"
+	echo "Output by default is processed
+	to processed/miseq_run_ID/sample_name"
 	exit 0
 elif [[ -z "${2}" ]]; then
 	echo "No Project/Run_ID supplied to quaisar_failed_assembly.sh, exiting"

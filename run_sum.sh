@@ -17,7 +17,7 @@ fi
 #
 # Usage ./run_sum.sh run_ID
 #
-# Output loction: default_config.sh_output_location/run_ID/
+# Output location: default_config.sh_output_location/run_ID/
 #
 # Modules required: None
 #
