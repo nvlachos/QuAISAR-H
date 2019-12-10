@@ -21,7 +21,7 @@ fi
 #
 # Modules required: None
 #
-# v1.0 (10/3/2019)
+# v1.0.1 (12/10/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
@@ -387,7 +387,7 @@ fi
 # #Check plasFlow plasmid assembly
 plasmidsFoundviaplasFlow=0
 if [[ -d "${OUTDATADIR}/plasFlow" ]]; then
-	if [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_original.fasta" ]]; then
+	if [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_original.fasta" ]] || [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta" ]]; then
 		# Count the number of '>' in the assembly file before trimming
 		plas_scaffolds=">"
 		plas_scaffolds=$(grep -c ${plas_scaffolds} "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_original.fasta")
@@ -404,7 +404,7 @@ if [[ -d "${OUTDATADIR}/plasFlow" ]]; then
 			fi
 		fi
 	else
-		printf "%-20s: %-8s : %s\\n" "plasmid Assembly" "SUCCESS" "No plasmid scaffold found using plasmidSpades"
+		printf "%-20s: %-8s : %s\\n" "plasmid Assembly" "SUCCESS" "No plasmid scaffold found using plasFlow"
 	fi
 elif [[ "${dec_family}" == "Enterobacteriaceae" ]]; then
 	printf "%-20s: %-8s : %s\\n" "plasmid Assembly" "FAILED" "/plasFlow not found"
