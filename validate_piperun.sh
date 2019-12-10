@@ -387,7 +387,7 @@ fi
 # #Check plasFlow plasmid assembly
 plasmidsFoundviaplasFlow=0
 if [[ -d "${OUTDATADIR}/plasFlow" ]]; then
-	if [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_original.fasta" ]]  || || [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta" ]]; then
+	if [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_original.fasta" ]]  || [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta" ]]; then
 		# Count the number of '>' in the assembly file before trimming
 		if [[ -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta" ]] && [[ ! -s "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_original.fasta" ]]; then
 			mv "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly.fasta" "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_original.fasta"
