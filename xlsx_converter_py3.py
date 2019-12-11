@@ -163,6 +163,6 @@ for row in rows:
       print("2:",type(clean_cell))
       to_print = myjoin(clean_cell, sep="\t")
       print("3:",type(to_print))
-      #print(to_print)
+      print(to_print)
 if warning_count > warning_max:
   print("%d total warnings, %d hidden" % (warning_count, warning_count-warning_max), file=sys.stderr)
