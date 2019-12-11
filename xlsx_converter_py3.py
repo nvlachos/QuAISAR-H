@@ -163,7 +163,7 @@ for row in rows:
       clean_cell = cell_text_clean(cellout).encode("utf-8")
       print("2:",type(clean_cell))
       print(clean_cell.decode())
-      to_print = myjoin(clean_cell, sep="\t")
+      to_print = myjoin(clean_cell.decode(), sep="\t")
       print("3:",type(to_print))
       print(to_print)
 if warning_count > warning_max:
