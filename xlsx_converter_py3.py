@@ -159,7 +159,7 @@ for row in rows:
   lcounter=0
   for c in cells:
       if lcounter > 0:
-          rowprint=rowprint+"   "
+          rowprint=rowprint+"  "
       #print("start")
       cellout = cell2text( c )
       #print("1:",type(cellout))
@@ -172,7 +172,7 @@ for row in rows:
       #print("3:",type(to_print))
       #print(to_print)
       lcounter+=1
-  print(rowprint)  
+  print(rowprint)
 
 if warning_count > warning_max:
   print("%d total warnings, %d hidden" % (warning_count, warning_count-warning_max), file=sys.stderr)
