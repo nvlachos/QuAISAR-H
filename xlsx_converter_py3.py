@@ -155,16 +155,24 @@ for row in rows:
     cells[j] = c
   #print( *(cell2text( c ).encode("utf-8").replace("\t"," ") for c in cells), sep="\t")
   #print(myjoin((cell_text_clean(cell2text( c )) for c in cells), sep="\t"))
+  rowprint=""
+  lcounter=0
   for c in cells:
+      if lcounter > 0:
+          rowprint=rowprint+"   "
       #print("start")
       cellout = cell2text( c )
       #print("1:",type(cellout))
       #print(cellout)
       clean_cell = cell_text_clean(cellout).encode("utf-8")
+      rowprint=rowprint+clean_cell.decode()
      # print("2:",type(clean_cell))
-      print(clean_cell.decode())
+      #print(clean_cell.decode()+"  ")
       #to_print = myjoin(clean_cell.decode(), sep="\t")
       #print("3:",type(to_print))
       #print(to_print)
+      lcounter+=1
+  print(rowprint)  
+
 if warning_count > warning_max:
   print("%d total warnings, %d hidden" % (warning_count, warning_count-warning_max), file=sys.stderr)
