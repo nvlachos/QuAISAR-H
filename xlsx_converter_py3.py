@@ -161,7 +161,7 @@ for row in rows:
 #      if lcounter > 0:
 #          rowprint=rowprint+"
       #print("start")
-      cellout = cell2text( c )
+      cellout = cell2text( c ).decode()
       #print("1:",type(cellout))
       #print(cellout)
       clean_cell = cell_text_clean(cellout)
