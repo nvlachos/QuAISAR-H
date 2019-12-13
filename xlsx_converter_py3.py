@@ -162,9 +162,9 @@ for row in rows:
 #          rowprint=rowprint+"
       #print("start")
       cellout = cell2text( c )
-      #print("1:",type(cellout))
-      #print(cellout)
-      clean_cell = cell_text_clean(cellout).encode("utf-8")
+      print("1:",type(cellout))
+      print(cellout)
+      clean_cell = cell_text_clean(cellout)
       rowprint.append(clean_cell)
      # print("2:",type(clean_cell))
       #print(clean_cell.decode()+"  ")
