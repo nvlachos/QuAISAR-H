@@ -112,6 +112,7 @@ def cell2text(cell):
   else:
     v_elt = cell.find(n("v"))
     if v_elt is None: return ""
+    print("cell2text:", type(v_elt.text))
     return v_elt.text
 
 
