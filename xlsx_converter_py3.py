@@ -165,7 +165,7 @@ for row in rows:
       #print("1:",type(cellout))
       #print(cellout)
       clean_cell = cell_text_clean(cellout).encode("utf-8")
-      rowprint.append(clean_cell.decode())
+      rowprint.append(clean_cell)
      # print("2:",type(clean_cell))
       #print(clean_cell.decode()+"  ")
       #to_print = myjoin(clean_cell.decode(), sep="\t")
