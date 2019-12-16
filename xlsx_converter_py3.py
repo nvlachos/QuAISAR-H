@@ -63,6 +63,7 @@ def sheet_report():
   print("Sheets in this file:", file=sys.stderr)
   for i,x in enumerate(sheet_xs):
     print("%3d: %s" % (i+1, x.get('name')), file=sys.stderr)
+    print("nothing")
   sys.exit(1)
 
 def sheet_error(msg):
