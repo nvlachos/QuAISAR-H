@@ -1,8 +1,8 @@
 #!/bin/sh -l
 
-#$ -o abl-template1.out
-#$ -e abl-template1.err
-#$ -N abl-template1
+#$ -o 	list_runner.out
+#$ -e 	list_runner.err
+#$ -N 	list_runner
 #$ -cwd
 #$ -q short.q
 
@@ -15,7 +15,7 @@ fi
 #
 # Description: Quick and dirty way to perform something on a list of samples in the standard format (project/sample_name)
 #
-# Usage: ./act_by_list_template.sh path_to_list
+# Usage: ./list_runner.sh path_to_list
 #
 # Output location: Varies on contents
 #
