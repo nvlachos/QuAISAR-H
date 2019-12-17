@@ -19,12 +19,14 @@ fi
 #
 # Output location: /deafult_config.sh_output_location/run_ID
 #
-# Modules required: None
+# Modules required: Python3/3.5.4
 #
-# v1.0.3 (10/24/2019)
+# v1.0.4 (12/17/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
+
+ml Python3/3.5.4
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -73,7 +75,7 @@ rm -r "${processed}/${1}/sorted_summaries.txt"
 
 # Order samples (according to logsheet) in folder if not already done so
 if [[ ! -f ${processed}/${1}/${1}_list_ordered.txt ]]; then
-	${shareScript}/order_samples_2.sh -i "${processed}/${1}/${1}_list.txt" -r ${1} -s "FY19 Miseq Isolate Log" -o "${processed}/${1}/${1}_list_ordered.txt"
+	python3 ${shareScript}/order_samples_2.py -i "${processed}/${1}/${1}_list.txt" -r ${1} -s "FY19 Miseq Isolate Log" -o "${processed}/${1}/${1}_list_ordered.txt"
 	if [[ ! -s "${processed}/${1}/${1}_list_ordered.txt" ]]; then
 		echo "Isolates were not able to be sorted, something wrong with MiSeq Log entries or list file, or....?"
 		exit
@@ -293,6 +295,8 @@ while IFS= read -r var || [ -n "$var" ]; do
 	# Add all pertinent info to the output file in the correct formatting to add to MMB_Seq log
 	echo -e "${sample_name}\\t${NOW}\\t${g_s_reads}\\t${g_s_assembled}\\t${g_s_16s}\\t${read_qc_info}\\t${avg_coverage}\\t${contig_info}\\t${busco_info}\\t${ani_info}\\r" >> "${processed}/${1}/Seqlog_output.txt"
 done < ${processed}/${1}/${1}_list_ordered.txt
+
+ml -Python3/3.5.4
 
 #Script exited gracefully
 exit 0
