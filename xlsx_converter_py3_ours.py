@@ -40,7 +40,7 @@ def do_conversion(excel_filename, sheetname_in, output_name, run_name):
 	print("Matching rows: {0}".format(len(matching_isolates)))
 	summary_out=open(output_name, 'w')
 	for match in matching_isolates:
-		summary_out.write(match)
+		summary_out.write(match+"\n")
 	summary_out.close()
 
 args = parseArgs()
