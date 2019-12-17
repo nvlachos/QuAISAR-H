@@ -27,11 +27,14 @@ def parseArgs(args=None):
 	return parser.parse_args()
 
 def do_conversion(excel_filename, sheetname_in, output_name, run_name):
-	seqlog = pd.read_excel(excel_filename, sheetname=sheetname_in)
-	print("Total rows: {0}".format(len(seqlog)))
-	matching_rows = seqlog[seqlog['Output_Folder_Name'] == run_name]
-	print("Mathcing rows: {0}".format(len(matching_rows)))
-	print(list(matching_rows))
+	seqlog = pd.read_excel(excel_filename, sheetname=sheetname_in, usecols['CDC Aliquot ID (Miseq_ID)','Output Folder Name'])
+	matching_isaoltes=[]
+	for index, row in seqlog.iterrows():
+		if row['Output Folder Name'] == run_name:
+			matching_isolates.append(run_name+"/"row['CDC Aliquot ID (Miseq_ID)'])
+	print("Matching rows: {0}".format(len(matching_isolates)))
+	for match in matching_isolates:
+		print(match+"\n")
 
 args = parseArgs()
 do_conversion(args.input, args.sheet, args.output, args.run)
