@@ -35,7 +35,7 @@ def do_conversion(excel_filename, sheetname_in, output_name, run_name):
 			matching_isolates.append(run_name+"/"+row['CDC Aliquot ID (Miseq ID)'])
 	print("Matching rows: {0}".format(len(matching_isolates)))
 	for match in matching_isolates:
-		print(match+"\n")
+		print(str(match)+"\n")
 
 args = parseArgs()
 do_conversion(args.input, args.sheet, args.output, args.run)
