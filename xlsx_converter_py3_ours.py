@@ -30,8 +30,12 @@ def do_conversion(excel_filename, sheetname_in, output_name, run_name):
 	seqlog = pd.read_excel(excel_filename, sheet_name=sheetname_in)  #usecols['CDC Aliquot ID (Miseq_ID)','Output Folder Name']
 	matching_isolates=[]
 	for index, row in seqlog.iterrows():
-		print(index,row)
+		#print(index,row)
 		if row['Output Folder Name'] == run_name:
+			print(type row['Output Folder Name'])
+			print(row['Output Folder Name'])
+			print(type row['CDC Aliquot ID (Miseq ID)'])
+			print(row['CDC Aliquot ID (Miseq ID)'])
 			matching_isolates.append(run_name+"/"+row['CDC Aliquot ID (Miseq ID)'])
 	print("Matching rows: {0}".format(len(matching_isolates)))
 	for match in matching_isolates:
