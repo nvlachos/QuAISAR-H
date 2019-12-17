@@ -38,8 +38,10 @@ def do_conversion(excel_filename, sheetname_in, output_name, run_name):
 			print(row['CDC Aliquot ID (Miseq ID)'])
 			matching_isolates.append(str(run_name)+"/"+str(row['CDC Aliquot ID (Miseq ID)']))
 	print("Matching rows: {0}".format(len(matching_isolates)))
+	summary_out=open(output_name, 'w')
 	for match in matching_isolates:
-		print(str(match)+"\n")
+		summary_out.write(match)
+	summary_out.close()
 
 args = parseArgs()
 do_conversion(args.input, args.sheet, args.output, args.run)
