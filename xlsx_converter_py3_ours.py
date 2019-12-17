@@ -32,7 +32,7 @@ def do_conversion(excel_filename, sheetname_in, output_name, run_name):
 	for index, row in seqlog.iterrows():
 		print(index,row)
 		if row['Output Folder Name'] == run_name:
-			matching_isolates.append(run_name+"/"+row['CDC Aliquot ID (Miseq_ID)'])
+			matching_isolates.append(run_name+"/"+row['CDC Aliquot ID (Miseq ID)'])
 	print("Matching rows: {0}".format(len(matching_isolates)))
 	for match in matching_isolates:
 		print(match+"\n")
