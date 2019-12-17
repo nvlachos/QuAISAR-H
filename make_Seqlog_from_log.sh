@@ -26,7 +26,7 @@ fi
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
-ml Python3/3.5.4
+ml Python3/3.7
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -296,7 +296,7 @@ while IFS= read -r var || [ -n "$var" ]; do
 	echo -e "${sample_name}\\t${NOW}\\t${g_s_reads}\\t${g_s_assembled}\\t${g_s_16s}\\t${read_qc_info}\\t${avg_coverage}\\t${contig_info}\\t${busco_info}\\t${ani_info}\\r" >> "${processed}/${1}/Seqlog_output.txt"
 done < ${processed}/${1}/${1}_list_ordered.txt
 
-ml -Python3/3.5.4
+ml -Python3/3.7
 
 #Script exited gracefully
 exit 0
