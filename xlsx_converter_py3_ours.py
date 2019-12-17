@@ -29,7 +29,7 @@ def parseArgs(args=None):
 def do_conversion(excel_filename, sheetname_in, output_name, run_name):
 	seqlog = pd.read_excel(excel_filename, sheetname=sheetname_in)
 	print("Total rows: {0}".format(len(seqlog)))
-	matching_rows = seqlog[seqlog['Output_Folder_Name'].str.contains(run_name, na=False)]
+	matching_rows = seqlog[seqlog['Output_Folder_Name'] == run_name]
 	print("Mathcing rows: {0}".format(len(matching_rows)))
 	print(list(matching_rows))
 
