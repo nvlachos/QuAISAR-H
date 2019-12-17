@@ -27,7 +27,7 @@ def parseArgs(args=None):
 	return parser.parse_args()
 
 def do_conversion(excel_filename, sheetname_in, output_name, run_name):
-	seqlog = pd.read_excel(excel_filename, sheet_name=sheetname_in, usecols['CDC Aliquot ID (Miseq_ID)','Output Folder Name'])
+	seqlog = pd.read_excel(excel_filename, usecols['CDC Aliquot ID (Miseq_ID)','Output Folder Name'], sheet_name=sheetname_in)
 	matching_isaoltes=[]
 	for index, row in seqlog.iterrows():
 		if row['Output Folder Name'] == run_name:
