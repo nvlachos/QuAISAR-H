@@ -15,7 +15,7 @@
 
 
 #from __future__ import print_function
-import os,sys,csv,pandas,argparse
+import os,sys,csv,pandas as pd,argparse
 
 # Parse all arguments from command line
 def parseArgs(args=None):
