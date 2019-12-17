@@ -73,7 +73,7 @@ rm -r "${processed}/${1}/sorted_summaries.txt"
 
 # Order samples (according to logsheet) in folder if not already done so
 if [[ ! -f ${processed}/${1}/${1}_list_ordered.txt ]]; then
-	${shareScript}/order_samples.sh -p ${1} -y ${year}
+	${shareScript}/order_samples_2.sh -i "${processed}/${1}/${1}_list.txt" -r ${1} -s "FY19 Miseq Isolate Log" -o "${processed}/${1}/${1}_list_ordered.txt"
 	if [[ ! -s "${processed}/${1}/${1}_list_ordered.txt" ]]; then
 		echo "Isolates were not able to be sorted, something wrong with MiSeq Log entries or list file, or....?"
 		exit
