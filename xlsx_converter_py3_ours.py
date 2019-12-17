@@ -26,7 +26,7 @@ def parseArgs(args=None):
 	parser.add_argument('-o', '--output', required=True, help='Output file to export to')
 	return parser.parse_args()
 
-do_conversion(excel_filename, sheetname_in, output_name, run_name)
+def do_conversion(excel_filename, sheetname_in, output_name, run_name):
 	seqlog = pd.read_excel(excel_filename, sheetname=shetname_in)
 	print("Total rows: {0}".format(len(seqlog)))
 	matching_rows = seqlog[(seqlog.Output Folder Name)]
