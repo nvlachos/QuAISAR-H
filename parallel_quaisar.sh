@@ -316,12 +316,6 @@ if [[ -f "${processed}/${PROJECT}/${PROJECT}_list_original.txt" ]]; then
 	mv "${processed}/${PROJECT}/${PROJECT}_list_original.txt" "${processed}/${PROJECT}/${PROJECT}_list.txt"
 fi
 
-# Get run summary info to send in an email
-runsumdate=$(date "+%m_%d_%Y_at_%Hh_%Mm")
-${shareScript}/run_sum.sh ${PROJECT}
-runsum=$(echo ${shareScript}/view_sum.sh ${PROJECT})
-outarray+="${runsum}"
-
 # Run the Seqlog creator on the proper file
 if [ "${is_proj}" = "true" ]; then
 	"${shareScript}/make_Seqlog_from_log.sh" "${PROJECT}"
@@ -329,12 +323,17 @@ else
 	"${shareScript}/make_Seqlog_from_list.sh" "${processed}/${PROJECT}/${PROJECT}_list.txt"
 fi
 
+# Get run summary info to send in an email
+runsumdate=$(date "+%m_%d_%Y_at_%Hh_%Mm")
+${shareScript}/run_sum.sh ${PROJECT}
+runsum=$(echo ${shareScript}/view_sum.sh ${PROJECT})
+outarray+="${runsum}"
+
 # Add print time the run completed in the text that will be emailed
 global_end_time=$(date "+%m-%d-%Y_at_%Hh_%Mm_%Ss")
 echo "Finished with run ${PROJECT} at ${global_end_time}"
 outarray+=("
 ${PROJECT} finished at ${global_end_time}")
-exit
 
 #Send email to submitter and Nick with run status
 if [ "${requestor}" != "nvx4" ]; then
