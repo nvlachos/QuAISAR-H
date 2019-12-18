@@ -227,6 +227,7 @@ while IFS= read -r var || [ -n "$var" ]; do
 				notes="${notes},"
 			fi
 			notes="${notes}unexpected number of mlst-srst2 files"
+		fi
 	elif [[ "${tool_status}" == "WARNING" ]]; then
 		#echo "Found warning"
 		if [[ "${tool}" == "FASTQs" ]]; then
@@ -554,6 +555,7 @@ while IFS= read -r var || [ -n "$var" ]; do
 				failure_flags="${failure_flags}-NO_plasmidFinder_directory_for_plasmid_assembly"
 				failures=$(( failures + 1 ))
 			fi
+		fi
 	fi
 done < "${sum_file}"
 total_samples=$(( success_samples + failed_samples + warning_samples ))
