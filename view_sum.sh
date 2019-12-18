@@ -21,7 +21,7 @@ fi
 #
 # Modules required: None
 #
-# v1.0 (10/3/2019)
+# v1.0.1 (12/18/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
@@ -147,16 +147,16 @@ while IFS= read -r var || [ -n "$var" ]; do
 				notes="${notes},"
 			fi
 			notes="No time summary found"
-		elif [[ "${tool}" == "Trimmedcoverage" ]]; then
-			if [[ "${notes}" != "" ]]; then
-				notes="${notes},"
-			fi
-			notes="${notes}Trimmed coverage not in acceptable range(40-90)"
 		elif [[ "${tool}" == "Rawcoverage" ]]; then
 			if [[ "${notes}" != "" ]]; then
 				notes="${notes},"
 			fi
 			notes="${notes}Raw read coverage over 90x"
+		elif [[ "${tool}" == "Trimmedcoverage" ]]; then
+			if [[ "${notes}" != "" ]]; then
+				notes="${notes},"
+			fi
+			notes="${notes}Trimmed coverage not in acceptable range(40-90)"
 		elif [[ "${tool}" == "c-SSTAR" ]] || [[ "${tool}" == "c-sstar" ]]; then
 			if [[ "${notes}" != "" ]]; then
 				notes="${notes},"
@@ -170,7 +170,7 @@ while IFS= read -r var || [ -n "$var" ]; do
 			else
 				notes="${notes}OLD ResGANNCBI DB used in c-sstar"
 			fi
-		elif [[ "${tool}" == "c-SSTAR_plasmid" ]] || [[ "${tool}" == "c-sstar_plasmid" ]]; then
+		elif [[ "${tool}" == "c-SSTAR_plasFlow" ]] || [[ "${tool}" == "c-sstar_plasFlow" ]]; then
 			if [[ "${tool_details}" = *"NO KNOWN AMR genes"* ]]; then
 				if [[ "${notes}" != "" ]]; then
 					notes="${notes},"
@@ -182,6 +182,32 @@ while IFS= read -r var || [ -n "$var" ]; do
 				fi
 			else
 				notes="${notes}OLD ResGANNCBI DB used in c-sstar plasmid"
+			fi
+		elif [[ "${tool}" == "GAMA" ]]; then
+			if [[ "${notes}" != "" ]]; then
+				notes="${notes},"
+			fi
+			if [[ "${tool_details}" = *"NO KNOWN AMR genes"* ]]; then
+				if [[ "${tool_details}" = *"(DB NOT up to date!"* ]]; then
+					notes="${notes}No AMR found AND OLD ResGANNCBI DB used in GAMA"
+				else
+					notes="${notes}No AMR found"
+				fi
+			else
+				notes="${notes}OLD ResGANNCBI DB used in GAMA"
+			fi
+		elif [[ "${tool}" == "GAMA_plasFlow" ]]; then
+			if [[ "${tool_details}" = *"NO KNOWN AMR genes"* ]]; then
+				if [[ "${notes}" != "" ]]; then
+					notes="${notes},"
+				fi
+				if [[ "${tool_details}" = *"(DB NOT up to date!"* ]]; then
+					notes="${notes}No plasmid AMR found AND OLD ResGANNCBI DB used in GAMA_plasFlow"
+				else
+					notes="${notes}No plasmid AMR found"
+				fi
+			else
+				notes="${notes}OLD ResGANNCBI DB used in c-sstar plasFlow"
 			fi
 		elif [[ "${tool}" == "srst2" ]]; then
 			if [[ "${notes}" != "" ]]; then
@@ -196,12 +222,11 @@ while IFS= read -r var || [ -n "$var" ]; do
 			else
 				notes="${notes}OLD ResGANNCBI DB used in srst2"
 			fi
-		elif [[ "${tool}" == "preClassContam." ]]; then
+		elif [[ "${tool}" == "MLST-srst2" ]]; then
 			if [[ "${notes}" != "" ]]; then
 				notes="${notes},"
 			fi
-			notes="${notes}<>1 Species found in kraken list file above ${contamination_threshold}"
-		fi
+			notes="${notes}unexpected number of mlst-srst2 files"
 	elif [[ "${tool_status}" == "WARNING" ]]; then
 		#echo "Found warning"
 		if [[ "${tool}" == "FASTQs" ]]; then
@@ -232,12 +257,15 @@ while IFS= read -r var || [ -n "$var" ]; do
 		elif [[ "${tool}" == "QCcountaftertrim" ]]; then
 			warning_flags="${warning_flags}-Trimmed_reads_below_500000"
 			warnings=$(( warnings + 1 ))
-		elif [[ "${tool}" == "Merging" ]]; then
-			warning_flags="${warning_flags}-Missing_merged_reads"
-			warnings=$(( warnings + 1 ))
+		#elif [[ "${tool}" == "Merging" ]]; then
+		#	warning_flags="${warning_flags}-Missing_merged_reads"
+		#	warnings=$(( warnings + 1 ))
 		elif [[ "${tool}" == "PreClassify" ]]; then
 			# Determine way to check for multiple species above 30%
 			warning_flags="${warning_flags}-High_#_unclassified_reads_kraken(pre)"
+			warnings=$(( warnings + 1 ))
+		elif [[ "${tool}" == "preClassContam." ]]; then
+			warning_flags="${warning_flags}-Multiple_species_found_above_contamination_threshold(${contamination_threshold}%)_kraken(pre)"
 			warnings=$(( warnings + 1 ))
 		elif [[ "${tool}" == "Gottcha_S" ]]; then
 			if [[ ! -s "${processed}/${1}/${sample_name}/gottcha/gottcha_S/${sample_name}.gottcha_full.tsv" ]]; then
@@ -251,6 +279,9 @@ while IFS= read -r var || [ -n "$var" ]; do
 			# Determine way to check for multiple species above 30%
 			warning_flags="${warning_flags}-High_#_unclassified_reads_gottcha"
 			warnings=$(( warnings + 1 ))
+		#elif [[ "${tool}" == "gottchaContam." ]]; then
+		#	warning_flags="${warning_flags}-Multiple_species_found_above_contamination_threshold(${contamination_threshold}%)_gottcha"
+		#	warnings=$(( warnings + 1 ))
 		elif [[ "${tool}" == "ContigTrim" ]]; then
 			warning_flags="${warning_flags}->200_contigs_remain"
 			warnings=$(( warnings + 1 ))
@@ -262,36 +293,29 @@ while IFS= read -r var || [ -n "$var" ]; do
 				warning_flags="${warning_flags}-Unclassified_reads_above ${unclass_flag}(kraken_post)"
 			fi
 			warnings=$(( warnings + 1 ))
+		elif [[ "${tool}" == "postClassContam." ]]; then
+			warning_flags="${warning_flags}-Multiple_species_found_above_contamination_threshold(${contamination_threshold}%)_kraken(post)"
+			warnings=$(( warnings + 1 ))
 		elif [[ "${tool}" == "weightedClassify" ]]; then
 			# Determine way to check for multiple species above 30%
 			warning_flags="${warning_flags}-High_#_unclassified_reads_kraken(weighted)"
+			warnings=$(( warnings + 1 ))
+		elif [[ "${tool}" == "Taxa" ]]; then
+			warning_flags="${warning_flags}-NO_species_was_determined"
 			warnings=$(( warnings + 1 ))
 		elif [[ "${tool}" == "Assembly_Ratio" ]]; then
 			warning_flags="${warning_flags}-Species_not_found_in_MMB_Bugs_database"
 			warnings=$(( warnings + 1 ))
 		elif [[ "${tool}" == "MLST" ]]; then
-			#echo "${tool_details}"
-			if [[ "${tool_details}" == *"no type found"* ]];then
 				warning_flags="${warning_flags}-NOVEL_SCHEME"
 				warnings=$(( warnings + 1 ))
-			elif [[ "${tool_details}" == *"no scheme found"* ]]; then
-				warning_flags="${warning_flags}-NO_SCHEME_DB"
-				warnings=$(( warnings + 1 ))
-			fi
+		elif [[ "${tool}" == "MLST-srst2" ]]; then
+
 		elif [[ "${tool}" == "16s_best_hit" ]]; then
 			warning_flags="${warning_flags}-NO_16s_best_species"
 			warnings=$(( warnings + 1 ))
 		elif [[ "${tool}" == "16s_largest_hit" ]]; then
 			warning_flags="${warning_flags}-NO_16s_largest_species"
-			warnings=$(( warnings + 1 ))
-		elif [[ "${tool}" == "preClassContam." ]]; then
-			warning_flags="${warning_flags}-Multiple_species_found_above_contamination_threshold(${contamination_threshold})_kraken(pre)"
-			warnings=$(( warnings + 1 ))
-		elif [[ "${tool}" == "gottchaContam." ]]; then
-			warning_flags="${warning_flags}-Multiple_species_found_above_contamination_threshold(${contamination_threshold})_gottcha"
-			warnings=$(( warnings + 1 ))
-		elif [[ "${tool}" == "Taxa" ]]; then
-			warning_flags="${warning_flags}-NO_species_was_determined"
 			warnings=$(( warnings + 1 ))
 		fi
 	elif [[ "${tool_status}" == "FAILED" ]]; then
@@ -314,17 +338,9 @@ while IFS= read -r var || [ -n "$var" ]; do
 		elif [[ "${tool}" == "QCcountaftertrim" ]]; then
 			failure_flags="${failure_flags}-NO_QC_trimmed_counts.txt"
 			failures=$(( failures + 1 ))
-		elif [[ "${tool}" == "Merging" ]]; then
-			failure_flags="${failure_flags}-Missing_merged_reads"
-			failures=$(( failures + 1 ))
-		elif [[ "${tool}" == "PreClassify" ]]; then
-			if [[ -s "${processed}/${1}/${sample_name}/kraken/preAssembly/${1}_kraken_summary_paired.txt" ]]; then
-				failure_flags="${failure_flags}-NO_classified_reads(pre)"
-				failures=$(( failures + 1 ))
-			else
-				failure_flags="${failure_flags}-NO_kraken_file(pre)"
-				failures=$(( failures + 1 ))
-			fi
+		#elif [[ "${tool}" == "Merging" ]]; then
+		#	failure_flags="${failure_flags}-Missing_merged_reads"
+		#	failures=$(( failures + 1 ))
 		elif [[ "${tool}" == "krona-kraken-preasmb" ]]; then
 			if [[ ! -s "${processed}/${1}/${sample_name}/kraken/preAssembly/${1}_paired.krona" ]] && [[ ! -s "${processed}/${1}/${sample_name}/kraken/preAssembly/${1}_paired.html" ]]; then
 				failure_flags="${failure_flags}-NO_HTML_or_krona_file(pre)"
@@ -339,6 +355,17 @@ while IFS= read -r var || [ -n "$var" ]; do
 				failure_flags="${failure_flags}-kraken_preclassify_failed"
 				failures=$(( failures + 1 ))
 			fi
+		elif [[ "${tool}" == "PreClassify" ]]; then
+			if [[ -s "${processed}/${1}/${sample_name}/kraken/preAssembly/${1}_kraken_summary_paired.txt" ]]; then
+				failure_flags="${failure_flags}-NO_classified_reads(pre)"
+				failures=$(( failures + 1 ))
+			else
+				failure_flags="${failure_flags}-NO_kraken_file(pre)"
+				failures=$(( failures + 1 ))
+			fi
+		elif [[ "${tool}" == "preClassContam." ]]; then
+				failure_flags="${failure_flags}-NO_species_found_above_${contamination_threshold}%(post)"
+				failures=$(( failures + 1 ))
 		elif [[ "${tool}" == "Gottcha_S" ]]; then
 			failure_flags="${failure_flags}-Missing_intermediate_gottcha_files (TSV AND HTML)"
 			failures=$(( failures + 1 ))
@@ -353,8 +380,14 @@ while IFS= read -r var || [ -n "$var" ]; do
 		elif [[ "${tool}" == "Assembly" ]]; then
 			failure_flags="${failure_flags}-NO_assembly_file"
 			failures=$(( failures + 1 ))
+		elif [[ "${tool}" == "plasmidAssembly" ]]; then
+			failure_flags="${failure_flags}-NO_assembly_file"
+			failures=$(( failures + 1 ))
 		elif [[ "${tool}" == "ContigTrim" ]]; then
 			failure_flags="${failure_flags}-NO_trimmed_assembly_file"
+			failures=$(( failures + 1 ))
+		elif [[ "${tool}" == "plasmidscontigTrim" ]]; then
+			failure_flags="${failure_flags}-NO_trimmed_plasmid_assembly_file"
 			failures=$(( failures + 1 ))
 		elif [[ "${tool}" == "krakenpostassembly" ]]; then
 			failure_flags="${failure_flags}-NO_kraken_file(post)"
@@ -375,7 +408,7 @@ while IFS= read -r var || [ -n "$var" ]; do
 			fi
 		elif [[ "${tool}" == "postClassify" ]]; then
 			if [[ -s "${processed}/${1}/${sample_name}/kraken/postAssembly/${1}_kraken_summary_assembled.txt" ]]; then
-				failure_flags="${failure_flags}-NO_classified_reads(post)"
+				failure_flags="${failure_flags}-NO_classified_contigs(post)"
 				failures=$(( failures + 1 ))
 			else
 				failure_flags="${failure_flags}-NO_kraken_file(post)"
@@ -385,7 +418,7 @@ while IFS= read -r var || [ -n "$var" ]; do
 		#	failure_flags="${failure_flags}-Multiple_species_found_above_contamination_threshold(${contamination_threshold})_kraken(post)"
 		#	failures=$(( failures + 1 ))
 		elif [[ "${tool}" == "krakenweighted" ]]; then
-			failure_flags="${failure_flags}-NO_kraken_file(weighted)"
+			failure_flags="${failure_flags}-Top_match_under_50%_likely_contaminated"
 			failures=$(( failures + 1 ))
 		elif [[ "${tool}" == "krona-kraken-weight" ]]; then
 			if [[ ! -s "${processed}/${1}/${sample_name}/kraken/postAssembly/${1}_assembled_weighted.krona" ]] && [[ ! -s "${processed}/${1}/${sample_name}/kraken/postAssembly/${1}_assembled_weighted_BP_krona.html" ]]; then
@@ -403,8 +436,14 @@ while IFS= read -r var || [ -n "$var" ]; do
 			fi
 		elif [[ "${tool}" == "weightedClassify" ]]; then
 			if [[ -s "${processed}/${1}/${sample_name}/kraken/postAssembly/${1}_kraken_summary_assembled_BP.txt" ]]; then
-				failure_flags="${failure_flags}-NO_classified_reads(post)"
-				failures=$(( failures + 1 ))
+				domain=$(sed -n '2p' "${OUTDATADIR}/kraken/postAssembly/${1}_kraken_summary_assembled_BP.txt" | cut -d' ' -f2)
+				if (( $(echo "${domain} <= 0" | bc -l) )); then
+					failure_flags="${failure_flags}-NO_weighted_classified_contigs(post)"
+					failures=$(( failures + 1 ))
+				else
+					failure_flags="${failure_flags}-Top_match_under_50%_likely_contaminated"
+					failures=$(( failures + 1 ))
+				fi
 			else
 				failure_flags="${failure_flags}-NO_kraken_file(post)"
 				failures=$(( failures + 1 ))
@@ -415,6 +454,12 @@ while IFS= read -r var || [ -n "$var" ]; do
 		elif [[ "${tool}" == "QUAST" ]]; then
 			failure_flags="${failure_flags}-NO_QUAST_report"
 			failures=$(( failures + 1 ))
+		elif [[ "${tool}" == "QUAST_plasFlow" ]]; then
+			failure_flags="${failure_flags}-NO_QUAST_PlasFlow_report"
+			failures=$(( failures + 1 ))
+		elif [[ "${tool}" == "Taxa" ]]; then
+			warning_flags="${warning_flags}-NO_taxonomy_was_determined"
+			warnings=$(( warnings + 1 ))
 		elif [[ "${tool}" == "Assembly_Ratio" ]]; then
 			if [[ "${tool_details}" == *"Too large"* ]]; then
 				failure_flags="${failure_flags}-Assembly_is_>1.2x"
@@ -423,7 +468,10 @@ while IFS= read -r var || [ -n "$var" ]; do
 				failure_flags="${failure_flags}-Assembly_is_<.8x"
 				failures=$(( failures + 1 ))
 			fi
-		elif [[ "${tool}" == "PROKKA" ]]; then
+		elif [[ "${tool}" == "Rawcoverage" ]]; then
+			failure_flags="${failure_flags}-Raw_coverage_below_40x"
+			failures=$(( failures + 1 ))
+		elif [[ "${tool}" == "prokka" ]]; then
 			failure_flags="${failure_flags}-NO_PROKKA_GBF_file"
 			failures=$(( failures + 1 ))
 		elif [[ "${tool}" == "BUSCO" ]]; then
@@ -447,6 +495,18 @@ while IFS= read -r var || [ -n "$var" ]; do
 		elif [[ "${tool}" == "c-SSTAR" ]]; then
 			failure_flags="${failure_flags}-NO_c-SSTAR_summary"
 			failures=$(( failures + 1 ))
+		elif [[ "${tool}" == "c-SSTAR_plasFlow" ]]; then
+			failure_flags="${failure_flags}-NO_c-sstar_output_on_plasFlow_assembly"
+			failures=$(( failures + 1 ))
+		elif [[ "${tool}" == "GAMA" ]]; then
+			failure_flags="${failure_flags}-NO_GAMA_summary"
+			failures=$(( failures + 1 ))
+		elif [[ "${tool}" == "GAMA_plasFlow" ]]; then
+			failure_flags="${failure_flags}-NO_GAMA_output_on_plasFlow_assembly"
+			failures=$(( failures + 1 ))
+		elif [[ "${tool}" == "srst2" ]]; then
+			failure_flags="${failure_flags}-NO_srst2_output"
+			failures=$(( failures + 1 ))
 		elif [[ "${tool}" == "MLST" ]]; then
 			if [[ -s "${processed}/${1}/${sample_name}/MLST/${1}_Pasteur.mlst" ]]; then
 				failure_flags="${failure_flags}-NO_SCHEME-Check_that_pubMLST_has_${genus^}_${species})"
@@ -455,6 +515,9 @@ while IFS= read -r var || [ -n "$var" ]; do
 				failure_flags="${failure_flags}-NO_MLST_output"
 				failures=$(( failures + 1 ))
 			fi
+		elif [[ "${tool}" == "MLST-srst2" ]]; then
+				failure_flags="${failure_flags}-ST_indeterminable"
+				failures=$(( failures + 1 ))
 		elif [[ "${tool}" == "16s_best_hit" ]]; then
 			if [[ -s "${processed}/${1}/${sample_name}/16s/${sample_name}_16s_blast_id.txt" ]]; then
 				failure_flags="${failure_flags}-No_taxonomy_assigned_in_16s_best"
@@ -482,9 +545,6 @@ while IFS= read -r var || [ -n "$var" ]; do
 				failure_flags="${failure_flags}-NO_plasmidFinder_directory_for_plasmid_assembly"
 				failures=$(( failures + 1 ))
 			fi
-		elif [[ "${tool}" == "plasmidscontigTrim" ]]; then
-			failure_flags="${failure_flags}-NO_trimmed_plasmid_assembly_file"
-			failures=$(( failures + 1 ))
 		elif [[ "${tool}" == "plasmid-plasmidAsmb" ]]; then
 			if [[ -d "${processed}/${1}/${sample_name}/plasmid_on_plasFlow/" ]]; then
 				failure_flags="${failure_flags}-NO_plasmidFinder_summary_file"
@@ -493,22 +553,6 @@ while IFS= read -r var || [ -n "$var" ]; do
 				failure_flags="${failure_flags}-NO_plasmidFinder_directory_for_plasmid_assembly"
 				failures=$(( failures + 1 ))
 			fi
-		elif [[ "${tool}" == "c-sstar_plasmid" ]]; then
-			failure_flags="${failure_flags}-NO_c-sstar_output_on_plasmid_assembly"
-			failures=$(( failures + 1 ))
-		elif [[ "${tool}" == "Rawcoverage" ]]; then
-			failure_flags="${failure_flags}-Raw_coverage_below_40x"
-			failures=$(( failures + 1 ))
-		elif [[ "${tool}" == "Trimmedcoverage" ]]; then
-			failure_flags="${failure_flags}-Trimmed_coverage_below_40x"
-			failures=$(( failures + 1 ))
-		elif [[ "${tool}" == "srst2" ]]; then
-			failure_flags="${failure_flags}-NO_srst2_output"
-			failures=$(( failures + 1 ))
-		elif [[ "${tool}" == "Taxa" ]]; then
-			warning_flags="${warning_flags}-NO_taxonomy_was_determined"
-			warnings=$(( warnings + 1 ))
-		fi
 	fi
 done < "${sum_file}"
 total_samples=$(( success_samples + failed_samples + warning_samples ))
@@ -516,11 +560,12 @@ printf "\n%-20s: %-8s\\n" "Total samples" "${total_samples}"
 printf "%-20s: %-8s\\n" "Successful samples" "${success_samples}"
 printf "%-20s: %-8s\\n" "Warning samples" "${warning_samples}"
 printf "%-20s: %-8s\\n\n" "Failed samples" "${failed_samples}"
-if [[ ${#imperfect_samples[@]} -gt 0 ]]; then
-	for imperfect in "${imperfect_samples[@]}"; do
-		echo -e "${imperfect}"
-	done
-	echo -e "\n\n"
-else
-	echo "All samples completed successfully, with nothing noteworthy"
-fi
+
+#if [[ ${#imperfect_samples[@]} -gt 0 ]]; then
+#	for imperfect in "${imperfect_samples[@]}"; do
+#		echo -e "${imperfect}"
+#	done
+#	echo -e "\n\n"
+#else
+#	echo "All samples completed successfully, with nothing noteworthy"
+#fi

@@ -21,7 +21,7 @@ fi
 #
 # Modules required: None
 #
-# v1.0.1 (12/10/2019)
+# v1.0.2 (12/18/2019)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
@@ -401,7 +401,7 @@ if [[ -d "${OUTDATADIR}/plasFlow" ]]; then
 			printf "%-20s: %-8s : %s\\n" "plasmid Assembly" "SUCCESS" "${plas_scaffolds} scaffolds found via plasFlow"
 			plasmidsFoundviaplasFlow=1
 		else
-			printf "%-20s: %-8s : %s\\n" "plasmid Assembly" "ALERT" "No plasmid scaffold found?"
+			printf "%-20s: %-8s : %s\\n" "plasmid Assembly" "WARNING" "No plasmid scaffold found?"
 			if [[ "${status}" == "SUCCESS" ]]; then
 				status="WARNING"
 			fi
@@ -451,14 +451,14 @@ if [[ "${plasmidsFoundviaplasFlow}" -eq 1 ]]; then
 			plas_shorties=0
 		fi
 		if [[ "${plas_longies}" -gt 0 ]]; then
-			printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "SUCCESS" "${plas_longies} scaffolds remain. ${plas_shorties} were removed due to shortness"
+			printf "%-20s: %-8s : %s\\n" "Plasmids Contig Trim" "SUCCESS" "${plas_longies} scaffolds remain. ${plas_shorties} were removed due to shortness"
 		else
-			printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "SUCCESS" "No plasmid scaffold found"
+			printf "%-20s: %-8s : %s\\n" "Plasmids Contig Trim" "SUCCESS" "No plasmid scaffold found"
 		fi
 	elif [[ -f "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta" ]]; then
-		printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "SUCCESS" "No plasmid scaffolds found"
+		printf "%-20s: %-8s : %s\\n" "Plasmids Contig Trim" "SUCCESS" "No plasmid scaffolds found"
 	else
-		printf "%-20s: %-8s : %s\\n" "Plasmids contig Trim" "FAILED" "plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta not found"
+		printf "%-20s: %-8s : %s\\n" "Plasmids Contig Trim" "FAILED" "plasFlow/Unicycler_assemblies/${1}_uni_assembly/${1}_plasmid_assembly_trimmed.fasta not found"
 		status="FAILED"
 	fi
 fi
@@ -545,16 +545,16 @@ if [[ -s "${OUTDATADIR}/kraken/postAssembly/${1}_assembled.list" ]]; then
 		fi
 	done < ${OUTDATADIR}/kraken/postAssembly/${1}_assembled.list
 	if [[ $number_of_species -gt 1 ]]; then
-		printf "%-20s: %-8s : %s\\n" "post Class Contam." "ALERT" "${number_of_species} species have been found above the ${contamination_threshold}% threshold"
-		if [[ "${status}" == "SUCCESS" ]]; then
-			status="ALERT"
+		printf "%-20s: %-8s : %s\\n" "post Class Contam." "WARNING" "${number_of_species} species have been found above the ${contamination_threshold}% threshold"
+		if [[ "${status}" == "SUCCESS" ]] || [[ "${status}" == "ALERT" ]]; then
+			status="WARNING"
 		fi
 	elif [[ "${number_of_species}" -eq 1 ]]; then
 		:
 	else
-		printf "%-20s: %-8s : %s\\n" "post Class Contam." "ALERT" "No species have been found above ${contamination_threshold}% abundance"
-		if [[ "${status}" == "SUCCESS" ]]; then
-			status="ALERT"
+		printf "%-20s: %-8s : %s\\n" "post Class Contam." "WARNING" "No species have been found above ${contamination_threshold}% abundance"
+		if [[ "${status}" == "SUCCESS" ]] || [[ "${status}" == "ALERT" ]]; then
+			status="WARNING"
 		fi
 	fi
 	#echo "Number of species: ${number_of_species}"
@@ -990,7 +990,7 @@ if [[ "${plasmidsFoundviaplasFlow}" -eq 1 ]]; then
 			fi
 		fi
 	else
-		printf "%-20s: %-8s : %s\\n" "c-sstar_plasFlow" "FAILED" "/c-sstar_plasFlow/ does not exist - BOOYA"
+		printf "%-20s: %-8s : %s\\n" "c-sstar_plasFlow" "FAILED" "/c-sstar_plasFlow/ does not exist"
 		status="FAILED"
 	# Signals that the current sample is completed with verification
 	fi
