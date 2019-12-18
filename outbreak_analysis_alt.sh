@@ -17,7 +17,7 @@ fi
 #
 # Description: Pulls out MLST, AR genes, and plasmid repicons and creates a mashtree for the listed samples and consolidates them into one sheet when run from an alternate or old database
 #
-# Usage ./outbreak_analysis.sh path_to_list gapped/ungapped (analysis ran) identity (80/95/98/99/100) analysis_identifier(e.g. outbreak identifier) output_directory(will create a folder at this location with name of analysis_identifier) clobberness[keep|clobber]
+# Usage ./outbreak_analysis.sh path_to_list gapped/ungapped (analysis ran) identity (80/95/98/99/100) output_directory(will create a folder at this location with name of analysis_identifier) analysis_identifier(e.g. outbreak identifier) clobberness[keep|clobber]
 #
 # Output location: Parameter
 #
@@ -40,7 +40,7 @@ if [[ $# -eq 0 ]]; then
 	exit 1
 # Shows a brief uasge/help section if -h option used as first argument
 elif [[ "$1" = "-h" ]]; then
-	echo "Usage is ./outbreak_analysis.sh path_to_list_file gapped/ungapped 80/95/98/99/100 output_prefix output_directory clobberness[keep|clobber] "
+	echo "Usage is ./outbreak_analysis.sh path_to_list_file gapped/ungapped 80/95/98/99/100 output_directory output_prefix clobberness[keep|clobber] "
 	exit 0
 elif [[ ! -f ${1} ]]; then
 	echo "list does not exist...exiting"
@@ -50,7 +50,7 @@ elif ! [[ ${6} =~ $number ]] || [[ -z "${6}" ]]; then
 		echo "Clobberness is empty...keeping"
 		clobberness=${6}
 	else
-		echo "clobberness not input coreectly, must be keep or clobber...keeping"
+		echo "clobberness not input correctly, must be keep or clobber...keeping"
 		clobberness="keep"
 	fi
 elif  [[ -z "${7}" ]]; then
@@ -89,32 +89,32 @@ if [[ -f "${shareScript}/outbreak_analysis.err" ]]; then
 fi
 
 # Creates the output directory if it does not exist
-output_directory=${5}/${4}
+output_directory=${4}/${5}
 if [[ ! -d ${output_directory} ]]; then
 	mkdir -p ${output_directory}
 fi
 
 # # Remove any pre-existing files from previous runs
-if [[ -f ${output_directory}/${4}-mlst_summary.txt ]]; then
-	rm ${output_directory}/${4}-mlst_summary.txt
+if [[ -f ${output_directory}/${5}-mlst_summary.txt ]]; then
+	rm ${output_directory}/${5}-mlst_summary.txt
 fi
-if [[ -f ${output_directory}/${4}-csstar_summary.txt ]]; then
-	rm ${output_directory}/${4}-csstar_summary.txt
+if [[ -f ${output_directory}/${5}-csstar_summary.txt ]]; then
+	rm ${output_directory}/${5}-csstar_summary.txt
 fi
-if [[ -f ${output_directory}/${4}-plasmid_summary.txt ]]; then
-	rm ${output_directory}/${4}-plasmid_summary.txt
+if [[ -f ${output_directory}/${5}-plasmid_summary.txt ]]; then
+	rm ${output_directory}/${5}-plasmid_summary.txt
 fi
-if [[ -f ${output_directory}/${4}_AR_plasmid_report.tsv ]]; then
-	rm ${output_directory}/${4}_AR_plasmid_report.tsv
+if [[ -f ${output_directory}/${5}_AR_plasmid_report.tsv ]]; then
+	rm ${output_directory}/${5}_AR_plasmid_report.tsv
 fi
-if [[ -f ${output_directory}/${4}-csstar_summary_full.txt ]]; then
-	rm ${output_directory}/${4}-csstar_summary_full.txt
+if [[ -f ${output_directory}/${5}-csstar_summary_full.txt ]]; then
+	rm ${output_directory}/${5}-csstar_summary_full.txt
 fi
-if [[ -f ${output_directory}/${4}-srst2.txt ]]; then
-	rm ${output_directory}/${4}-srst2.txt
+if [[ -f ${output_directory}/${5}-srst2.txt ]]; then
+	rm ${output_directory}/${5}-srst2.txt
 fi
-if [[ -f ${output_directory}/${4}-srst2_rejects.txt ]]; then
-	rm ${output_directory}/${4}-srst2_rejects.txt
+if [[ -f ${output_directory}/${5}-srst2_rejects.txt ]]; then
+	rm ${output_directory}/${5}-srst2_rejects.txt
 fi
 
 # Clean list of any extra spaces and formatting
@@ -141,8 +141,8 @@ done < "${local_DBs}/star/group_defs.txt"
 # Set defaults for checking if all isolates have been compared to the newest ResGANNCBI DB file . If any isolates are not up-to-date, they will be submitted with the appropriate abl_mass_qsub.
 run_csstar="false"
 run_srst2="false"
-> "${output_directory}/${4}_csstar_todo.txt"
-> "${output_directory}/${4}_srst2_todo.txt"
+> "${output_directory}/${5}_csstar_todo.txt"
+> "${output_directory}/${5}_srst2_todo.txt"
 
 # Remove blank lines in list files
 #dos2unix ${1}
@@ -168,7 +168,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 		:
 	else
 		echo "${project}/${sample_name} - ccstar needs to be run against ${Alt_db} at ${sim}"
-		echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
+		echo "${project}/${sample_name}" >> "${output_directory}/${5}_csstar_todo.txt"
 		run_csstar="true"
 	fi
 	#echo "checking for ${OUTDATADIR}/c-sstar_plasmid/${sample_name}.${Alt_db}.${2}_${sim}_sstar_summary.txt"
@@ -178,9 +178,9 @@ while IFS= read -r line || [ -n "$line" ]; do
 	# 		:
 	# 	else
 	# 		echo "${project}/${sample_name} - ccstar plasmid needs to be run against ${Alt_db}"
-	# 		echo "${project}/${sample_name}" >> "${output_directory}/${4}_csstar_todo.txt"
-	# 		sort -u "${output_directory}/${4}_csstar_todo.txt" > "${output_directory}/${4}_csstar_todo_no_dups.txt"
-	# 		cp "${output_directory}/${4}_csstar_todo_no_dups.txt" "${output_directory}/${4}_csstar_todo.txt"
+	# 		echo "${project}/${sample_name}" >> "${output_directory}/${5}_csstar_todo.txt"
+	# 		sort -u "${output_directory}/${5}_csstar_todo.txt" > "${output_directory}/${5}_csstar_todo_no_dups.txt"
+	# 		cp "${output_directory}/${5}_csstar_todo_no_dups.txt" "${output_directory}/${5}_csstar_todo.txt"
 	# 		run_csstar="true"
 	# 	fi
 	# else
@@ -194,7 +194,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 				:
 			else
 				echo "${project}/${sample_name} - SRST2 needs to be run against ${Alt_db}"
-				echo "${project}/${sample_name}" >> "${output_directory}/${4}_srst2_todo.txt"
+				echo "${project}/${sample_name}" >> "${output_directory}/${5}_srst2_todo.txt"
 				run_srst2="true"
 		fi
 	fi
@@ -202,20 +202,20 @@ done < ${1}
 
 # Creating mashtree of all isolates in list
 echo "Creating mashtree of all samples"
-${shareScript}/mashtree_of_list.sh -i "${1}" -d "${output_directory}/mashtree" -o "${4}"
-cp "${output_directory}/mashtree/${4}.dnd" "${output_directory}/${4}.nwk"
-sed -i "s/_scaffolds_trimmed//g" "${output_directory}/${4}.nwk"
+${shareScript}/mashtree_of_list.sh -i "${1}" -d "${output_directory}/mashtree" -o "${5}"
+cp "${output_directory}/mashtree/${5}.dnd" "${output_directory}/${5}.nwk"
+sed -i "s/_scaffolds_trimmed//g" "${output_directory}/${5}.nwk"
 rm -r ${output_directory}/mashtree
 
 # Submits the list of isolates that need the newest ResGANNCBI file for csstar
 if [[ "${run_csstar}" = "true" ]]; then
 	echo "Submitting list for csstar qsub analysis"
-	qsub -sync y ${shareScript}/abl_mass_qsub_csstar.sh "${output_directory}/${4}_csstar_todo.txt" 25 "${mass_qsub_folder}" "${clobberness}" "${sim}"
+	qsub -sync y ${shareScript}/abl_mass_qsub_csstar.sh "${output_directory}/${5}_csstar_todo.txt" 25 "${mass_qsub_folder}" "${clobberness}" "${sim}"
 fi
 # Submits the list of isolates that need the newest ResGANNCBI file for srst2
 if [[ "${run_srst2}" = "true" ]]; then
 	echo "Submitting list for srst2 qsub analysis"
-	qsub -sync y ${shareScript}/abl_mass_qsub_srst2.sh "${output_directory}/${4}_srst2_todo.txt" 25 "${mass_qsub_folder}" "${clobberness}"
+	qsub -sync y ${shareScript}/abl_mass_qsub_srst2.sh "${output_directory}/${5}_srst2_todo.txt" 25 "${mass_qsub_folder}" "${clobberness}"
 fi
 
 echo $(date)
@@ -270,7 +270,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 			fi
 		# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
 		else
-			echo -e "${project}\t${sample_name}\tfull_assembly\t${line}" >> ${output_directory}/${4}-csstar_rejects.txt
+			echo -e "${project}\t${sample_name}\tfull_assembly\t${line}" >> ${output_directory}/${5}-csstar_rejects.txt
 		fi
 	done < ${ARDB_full}
 	# Changes list names if empty
@@ -286,7 +286,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 	else
 		mlst="N/A"
 	fi
-	echo -e "${project}\t${sample_name}\t${mlst}" >> ${output_directory}/${4}-mlst_summary.txt
+	echo -e "${project}\t${sample_name}\t${mlst}" >> ${output_directory}/${5}-mlst_summary.txt
 
 	# Pulls Alternate MLST type for sample and adds it to the summary file
 	if [[ -f "${OUTDATADIR}/MLST/${sample_name}_Oxford.mlst" ]]; then
@@ -303,7 +303,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 	else
 		alt_mlst="N/A"
 	fi
-	echo -e "${project}\t${sample_name}\t${alt_mlst}" >> ${output_directory}/${4}-alt_mlst_summary.txt
+	echo -e "${project}\t${sample_name}\t${alt_mlst}" >> ${output_directory}/${5}-alt_mlst_summary.txt
 
 	# Extracts taxonomic info
 	if [[ ! -f "${OUTDATADIR}/${sample_name}.tax" ]]; then
@@ -329,7 +329,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 	fi
 #	echo "${ANI}"
 # Print all extracted info to primary file
-	echo -e "${project}\t${sample_name}\t${taxonomy}\t${taxonomy_source_type}\t${confidence_info}\t${mlst}\t${alt_mlst}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_full.txt
+	echo -e "${project}\t${sample_name}\t${taxonomy}\t${taxonomy_source_type}\t${confidence_info}\t${mlst}\t${alt_mlst}\t${oar_list}" >> ${output_directory}/${5}-csstar_summary_full.txt
 
 	# Adding in srst2 output in a similar fashion as to how the csstar genes are output to the file.
 	if [[ -s "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${Alt_db}_srst2__results.txt" ]]; then
@@ -388,22 +388,22 @@ while IFS= read -r line || [ -n "$line" ]; do
 				if [[ ${line} = "Sample	DB	gene"* ]]; then
 					:
 				else
-					echo ${line} >> ${output_directory}/${4}-srst2_rejects.txt
+					echo ${line} >> ${output_directory}/${5}-srst2_rejects.txt
 				fi
 			fi
 		done < "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${Alt_db}_srst2__results.txt"
 		#echo "Test1"
 		if [[ -z "${srst2_results}" ]]; then
 			echo "1"
-			echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
+			echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${5}-srst2.txt
 			srst2_results="No AR genes discovered"
 		else
 			echo "2"
-			echo "${project}	${sample_name}	${srst2_results}" >> ${output_directory}/${4}-srst2.txt
+			echo "${project}	${sample_name}	${srst2_results}" >> ${output_directory}/${5}-srst2.txt
 		fi
 	else
 		echo "3"
-		echo "${project}	${sample_name}	NO CURRENT FILE" >> ${output_directory}/${4}-srst2.txt
+		echo "${project}	${sample_name}	NO CURRENT FILE" >> ${output_directory}/${5}-srst2.txt
 		srst2_results="NO CURRENT FILE"
 	fi
 
@@ -454,7 +454,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 	# 			fi
 	# 		# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
 	# 		else
-	# 			echo -e "${project}\t${sample_name}\t${line}" >> ${output_directory}/${4}-csstar_rejects_plasmids.txt
+	# 			echo -e "${project}\t${sample_name}\t${line}" >> ${output_directory}/${5}-csstar_rejects_plasmids.txt
 	# 		fi
 	# 	done < ${ARDB_plasmid}
 	# 	# Adds generic output saying nothing was found if the list was empty
@@ -463,7 +463,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 	# 		oar_list="No AR genes discovered"
 	# 	fi
 	# 	# Adds info to plasmid csstar summary file
-	# 	echo -e "${project}\t${sample_name}\t${oxa_list}\t${oar_list}" >> ${output_directory}/${4}-csstar_summary_plasmid.txt
+	# 	echo -e "${project}\t${sample_name}\t${oxa_list}\t${oar_list}" >> ${output_directory}/${5}-csstar_summary_plasmid.txt
 	# fi
 
 
@@ -482,12 +482,12 @@ while IFS= read -r line || [ -n "$line" ]; do
 			# echo "Not using line: $plasmid"
 			:
 		else
-			echo -e "${project}\t${sample_name}\tfull_assembly\t${plasmid}" >> ${output_directory}/${4}-plasmid_summary.txt
+			echo -e "${project}\t${sample_name}\tfull_assembly\t${plasmid}" >> ${output_directory}/${5}-plasmid_summary.txt
 			added=1
 		fi
 	done < ${OUTDATADIR}/plasmid/${sample_name}_results_table_summary.txt
 	if [[ "${added}" -eq 0 ]]; then
-		echo -e "${project}\t${sample_name}\tfull_assembly\tNo_Plasmids_Found\t${full_contigs}_contigs-${components}_components" >> ${output_directory}/${4}-plasmid_summary.txt
+		echo -e "${project}\t${sample_name}\tfull_assembly\tNo_Plasmids_Found\t${full_contigs}_contigs-${components}_components" >> ${output_directory}/${5}-plasmid_summary.txt
 	fi
 	plas_contigs=">"
 	plas_contigs=$(grep -c ${plas_contigs} "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${sample_name}_uni_assembly/${sample_name}_plasmid_assembly_trimmed.fasta")
@@ -502,19 +502,19 @@ while IFS= read -r line || [ -n "$line" ]; do
 		if [[ "${line_in}" = "No" ]] || [[ "${line_in}" = "Enterococcus,Streptococcus,Staphylococcus" ]] || [[ "${line_in}" = "Enterobacteriaceae" ]] || [[ "${line_in}" = "Plasmid" ]]; then
 			:
 		else
-			echo -e "${project}\t${sample_name}\tplasmid_assembly\t${plasmid}" >> ${output_directory}/${4}-plasmid_summary.txt
+			echo -e "${project}\t${sample_name}\tplasmid_assembly\t${plasmid}" >> ${output_directory}/${5}-plasmid_summary.txt
 			added=1
 		fi
 	done < ${OUTDATADIR}/plasmid_on_plasFlow/${sample_name}_results_table_summary.txt
 
 	if [[ "${added}" -eq 0 ]]; then
-		echo -e "${project}\t${sample_name}\tplasmid_assembly\tNo_Plasmids_Found\t${plas_contigs}_contigs-${components}_components" >> ${output_directory}/${4}-plasmid_summary.txt
+		echo -e "${project}\t${sample_name}\tplasmid_assembly\tNo_Plasmids_Found\t${plas_contigs}_contigs-${components}_components" >> ${output_directory}/${5}-plasmid_summary.txt
 	fi
 
 done < ${1}
 
 # Calls script that sorts and formats all isolates info into a matrix for easy viewing
-python3 "${shareScript}/project_parser.py" -c "${output_directory}/${4}-csstar_summary_full.txt" -p "${output_directory}/${4}-plasmid_summary.txt" -o "${output_directory}/${4}_AR_plasmid_report.tsv" -d "${Alt_db}"
+python3 "${shareScript}/project_parser.py" -c "${output_directory}/${5}-csstar_summary_full.txt" -p "${output_directory}/${5}-plasmid_summary.txt" -o "${output_directory}/${5}_AR_plasmid_report.tsv" -d "${Alt_db}"
 
 submitter=$(whoami)
 global_end_time=$(date "+%m-%d-%Y @ %Hh_%Mm_%Ss")

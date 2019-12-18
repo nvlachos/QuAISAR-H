@@ -339,6 +339,7 @@ ${PROJECT} finished at ${global_end_time}")
 if [ "${requestor}" != "nvx4" ]; then
 	echo "Sending summary email to ${requestor}@cdc.gov & nvx4@cdc.gov"
 	printf "%s\\n" "${outarray}" | mail -s "Run Status for ${PROJECT}_on_${run_start_time}_run.log" "nvx4@cdc.gov"
+	printf "%s\\n" "${outarray}" | mail -s "Run Status for ${PROJECT}_on_${run_start_time}_run.log" "kbj5@cdc.gov"
 	printf "%s\\n" "${outarray}" | mail -s "Run Status for ${PROJECT}_on_${run_start_time}_run.log" "${requestor}@cdc.gov"
 else
 	echo "Sending summary email to nvx4@cdc.gov"
