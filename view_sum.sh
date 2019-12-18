@@ -307,10 +307,11 @@ while IFS= read -r var || [ -n "$var" ]; do
 			warning_flags="${warning_flags}-Species_not_found_in_MMB_Bugs_database"
 			warnings=$(( warnings + 1 ))
 		elif [[ "${tool}" == "MLST" ]]; then
-				warning_flags="${warning_flags}-NOVEL_SCHEME"
-				warnings=$(( warnings + 1 ))
+			warning_flags="${warning_flags}-NOVEL_SCHEME"
+			warnings=$(( warnings + 1 ))
 		elif [[ "${tool}" == "MLST-srst2" ]]; then
-
+			warning_flags="${warning_flags}-ST_indeterminable"
+			warnings=$(( warnings + 1 ))
 		elif [[ "${tool}" == "16s_best_hit" ]]; then
 			warning_flags="${warning_flags}-NO_16s_best_species"
 			warnings=$(( warnings + 1 ))
