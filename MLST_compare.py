@@ -3,7 +3,7 @@
 #
 # Description: Script to compare and group similar MLST profiles together to allow SNV analysis
 #
-# Usage: python3 ./MLST_Compare.py -i input -o outbreak_folder_name
+# Usage: python3 ./MLST_compare.py -i input -o outbreak_folder_name
 #
 # Output location: parameter
 #

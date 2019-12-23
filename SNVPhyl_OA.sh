@@ -52,7 +52,7 @@ mkdir $Folder
 
 ml Python3/3.5.2
 
-python MLST_Compare.py $List $Folder/$Name
+python MLST_compare.py $List $Folder/$Name
 
 for k in $Folder/*.samples
 do
