@@ -326,7 +326,7 @@ fi
 # Get run summary info to send in an email
 runsumdate=$(date "+%m_%d_%Y_at_%Hh_%Mm")
 ${shareScript}/run_sum.sh ${PROJECT}
-runsum=$(echo ${shareScript}/view_sum.sh ${PROJECT})
+runsum=$(${shareScript}/view_sum.sh ${PROJECT})
 outarray+="${runsum}"
 
 # Add print time the run completed in the text that will be emailed
@@ -337,13 +337,14 @@ ${PROJECT} finished at ${global_end_time}")
 
 #Send email to submitter and Nick with run status
 if [ "${requestor}" != "nvx4" ]; then
-	echo "Sending summary email to ${requestor}@cdc.gov & nvx4@cdc.gov"
+	echo "Sending summary email to ${requestor}@cdc.gov & nvx4@cdc.gov & kbi5@cdc.gov"
 	printf "%s\\n" "${outarray}" | mail -s "Run Status for ${PROJECT}_on_${run_start_time}_run.log" "nvx4@cdc.gov"
-	printf "%s\\n" "${outarray}" | mail -s "Run Status for ${PROJECT}_on_${run_start_time}_run.log" "kbj5@cdc.gov"
+	printf "%s\\n" "${outarray}" | mail -s "Run Status for ${PROJECT}_on_${run_start_time}_run.log" "kbi5@cdc.gov"
 	printf "%s\\n" "${outarray}" | mail -s "Run Status for ${PROJECT}_on_${run_start_time}_run.log" "${requestor}@cdc.gov"
 else
-	echo "Sending summary email to nvx4@cdc.gov"
+	echo "Sending summary email to nvx4@cdc.gov and kbi5@cdc.gov"
 	printf "%s\\n" "${outarray}" | mail -s "Run Status for ${PROJECT}_on_${run_start_time}_run.log" "nvx4@cdc.gov"
+	printf "%s\\n" "${outarray}" | mail -s "Run Status for ${PROJECT}_on_${run_start_time}_run.log" "kbi5@cdc.gov"
 fi
 
 # One final check for any dump files
