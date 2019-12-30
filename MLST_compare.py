@@ -114,12 +114,28 @@ def MLST_Species(MLST_file):
     f = open(MLST_file, 'r')
     String1 = f.readline()
     f.close()
-    Species = 'None'
+    Species = 'Unknown'
     List1 = filter(None, re.split("[()\t\n]+", String1))
     if len(List1) == 17:
         Species = List1[1]
         Species = filter(None,re.split("_+", Species))
         Species = Species[0]
+    return Species
+
+def Taxa_Stats(input_stats_file):
+    f = open(input_stats_file, 'r')
+    String1 = f.readline()
+    Species = 'Unknown'
+    while String1 != '':
+        List1 = filter(None, re.split(" ", String1))
+        if List1[0] == 'Taxa':
+            Species = List1[4][0].lower() + List1[5]
+            if Species[-1] == '\n':
+                Species = Species[0:-1]
+            String1 = f.readline()
+        else:
+            String1 = f.readline()
+    f.close()
     return Species
 
 def MLST_ST(MLST_file):
@@ -138,8 +154,12 @@ def Species_Cluster_Maker(input_list):
     Species_List = []
     Out_List = []
     for isos in input_list:
+        Name = isos.split('/')[1]
         MLST = glob.glob('/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/' + isos + '/MLST/*.mlst')
-        Species = MLST_Species(MLST[0])
+	    Species = MLST_Species(MLST[0])
+        if Species == 'Unknown':
+            Stats = '/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/' + isos + '/' + Name + '_pipeline_stats.txt'
+            Species = Taxa_Stats(Stats)
         Iso_Info = [isos, Species]
         Species_List.append(Iso_Info)
     Out_List = []
