@@ -10,7 +10,7 @@
 #
 # Modules required: Biopython must be available in python instance
 #
-# v1.0.4 (11/20/2019)
+# v1.0.5 (12/31/2019)
 #
 # Created by Rich Stanton (njr5@cdc.gov)
 #
@@ -443,11 +443,12 @@ def Indel_Line(PSL_Line, genome_gene, gene):
     Codon_Mutants = Indel_Mutant_Count(PSL_Line, genome_gene, gene)
     Sum = Indel_Sum(PSL_Line)
     Codon_Sum = Sum // 3
+    Coding_Length = int(List1[14]) // 3
     if Type == 'Indel Truncation':
         Location = Truncation_Location(genome_gene)
         Location = str(Location + 1)
         Info = Indel_Base_Output(PSL_Line)
-        Description = Info + 'truncation at codon ' + Location + ',' + str(Codon_Mutants) + ' coding mutations'
+        Description = Info + 'truncation at codon ' + Location + ' (of ' + str(Coding_Length) + ' codons),' + str(Codon_Mutants) + ' coding mutations'
     elif Codon_Changes - Codon_Sum < 10:
         Description = Indel_Codon_Info(PSL_Line, genome_gene, gene)
     else:
@@ -455,7 +456,6 @@ def Indel_Line(PSL_Line, genome_gene, gene):
         Description = Info + str(Codon_Mutants) + ' coding mutations'
     BP_Changes = Indel_BP_Count(PSL_Line, genome_gene, gene)
     Transversions = Indel_Transversion_Count(PSL_Line, genome_gene, gene)
-    Coding_Length = int(List1[14]) // 3
     Percent_Codons = str(Decimal(Coding_Length - Codon_Changes) / Decimal(Coding_Length))
     Percent_Bases = str(Decimal(int(List1[14]) - BP_Changes) / Decimal(int(List1[14])))
     Match_Length = Match_Length_Maker(PSL_Line)
@@ -484,11 +484,12 @@ def Indel_Edge_Line(PSL_Line, genome_gene, gene):
     BP_Total = BP_Changes + BP_Missing
     Sum = Indel_Sum(PSL_Line)
     Codon_Sum = Sum // 3
+    Coding_Length = int(List1[14]) // 3
     if Type == 'Indel Truncation':
         Location = Truncation_Location(genome_gene)
         Location = str(Location + 1)
         Info = Indel_Base_Output(PSL_Line)
-        Description = Info + 'truncation at codon ' + Location + ',' + str(Codon_Mutants) + ' coding mutations'
+        Description = Info + 'truncation at codon ' + Location + ' (of ' + str(Coding_Length) + ' codons),' + str(Codon_Mutants) + ' coding mutations'
     elif Codon_Changes - Codon_Sum < 10:
         Description = Indel_Codon_Info(PSL_Line, genome_gene, gene)
     else:
@@ -497,7 +498,6 @@ def Indel_Edge_Line(PSL_Line, genome_gene, gene):
     Type = Type + ' (contig edge)'
     Description = Description + ' for ' + str(int(List1[15]) + 1) + '-' + str(int(List1[16])) + ' of ' + List1[14] + ' bp'
     Transversions = Indel_Transversion_Count(PSL_Line, genome_gene, gene)
-    Coding_Length = int(List1[14]) // 3
     Percent_Codons = str(Decimal(Coding_Length - Codon_Total) / Decimal(Coding_Length))
     Percent_Bases = str(Decimal(int(List1[14]) - BP_Total) / Decimal(int(List1[14])))
     Match_Length = Match_Length_Maker(PSL_Line)
@@ -508,7 +508,7 @@ def Indel_Edge_Line(PSL_Line, genome_gene, gene):
         Start = str(int(List1[10]) - Blocks[0][1])
         Stop = str(int(List1[10]) - Blocks[0][0])
     Percent_Length = str(Decimal(Match_Length) / Decimal(int(List1[14])))
-    Out = List1[13] + '\t' + List1[9] + '\t' + Start + '\t' + Stop + '\t' + Type + '\t' + Description + '\t' + str(Codon_Changes) + '\t' + str(BP_Changes) + '\t' + Percent_Codons + '\t' + Percent_Bases + '\t' + Percent_Length + '\t' + str(Match_Length) + '\t' + List1[14] + '\t' + str(Transversions)
+    Out = List1[13] + '\t' + List1[9] + '\t' + Start + '\t' + Stop + '\t' + Type + '\t' + Description + '\t' + str(Codon_Total) + '\t' + str(BP_Total) + '\t' + Percent_Codons + '\t' + Percent_Bases + '\t' + Percent_Length + '\t' + str(Match_Length) + '\t' + List1[14] + '\t' + str(Transversions)
     return Out
 
 def Mutant_Line(PSL_Line, genome_gene, gene):
@@ -525,7 +525,7 @@ def Mutant_Line(PSL_Line, genome_gene, gene):
     elif Type == 'Truncation':
         Location = Truncation_Location(genome_gene)
         Location = str(Location + 1)
-        Description = 'truncation at codon ' + Location + ',' + str(Codon_Changes) + ' coding mutations'
+        Description = 'truncation at codon ' + Location + ' (of ' + str(len(gene_pro)) + ' codons),' + str(Codon_Changes) + ' coding mutations'
     elif Codon_Changes > 10:
         Description = str(Codon_Changes) + ' coding mutations'
     if Is_Partial(PSL_Line) == True:
