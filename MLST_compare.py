@@ -156,6 +156,7 @@ def Species_Cluster_Maker(input_list):
     for isos in input_list:
         Name = isos.split('/')[1]
         MLST = glob.glob('/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/' + isos + '/MLST/*.mlst')
+		print(isos, MLST[0])
         Species = MLST_Species(MLST[0])
         if Species == 'Unknown':
             Stats = '/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/' + isos + '/' + Name + '_pipeline_stats.txt'
