@@ -116,7 +116,7 @@ def MLST_Species(MLST_file):
     f.close()
     Species = 'Unknown'
     List1 = list(filter(None, re.split("[()\t\n]+", String1)))
-    if len(List1) == 17:
+    if len(List1) == 17 or len(List1) == 19:
         Species = List1[1]
         Species = list(filter(None,re.split("_+", Species)))
         Species = Species[0]
@@ -145,7 +145,7 @@ def MLST_ST(MLST_file):
     ST = ['None']
     print(String1)
     List1 = list(filter(None, re.split("[()\t\n]+", String1)))
-    if len(List1) == 17:
+    if len(List1) == 17 or len(List1) == 19:
         ST = List1[2]
         ST = list(filter(None,re.split("[/,]+", ST)))
         print(ST)
