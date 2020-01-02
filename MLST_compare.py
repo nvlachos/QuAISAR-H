@@ -45,13 +45,13 @@ def MLST_List_Maker(MLST_file):
     f = open(MLST_file, 'r')
     String1 = f.readline()
     f.close()
-    List1 = filter(None, re.split("[()\t\n]+", String1))
+    List1 = list(filter(None, re.split("[()\t\n]+", String1)))
     if len(List1) != 17:
         List1 = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
     List2 = [[List1[4]], [List1[6]], [List1[8]], [List1[10]], [List1[12]], [List1[14]], [List1[16]]]
     List3 = []
     for items in List2:
-        item = filter(None, re.split(',', items[0]))
+        item = list(filter(None, re.split(',', items[0])))
         List3.append(item)
     Output_Lists = list(itertools.product(*List3))
     return Output_Lists
@@ -61,7 +61,7 @@ def MLST_List_Maker_Names(MLST_file):
     f = open(MLST_file, 'r')
     String1 = f.readline()
     f.close()
-    List1 = filter(None, re.split("[()\t\n]+", String1))
+    List1 = list(filter(None, re.split("[()\t\n]+", String1)))
     if len(List1) != 17:
         List1 = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
     List2 = [List1[3], List1[5], List1[7], List1[9], List1[11], List1[13], List1[15]]
@@ -127,7 +127,7 @@ def Taxa_Stats(input_stats_file):
     String1 = f.readline()
     Species = 'Unknown'
     while String1 != '':
-        List1 = filter(None, re.split(" ", String1))
+        List1 = list(filter(None, re.split(" ", String1)))
         if List1[0] == 'Taxa':
             Species = List1[4][0].lower() + List1[5]
             if Species[-1] == '\n':
@@ -143,10 +143,10 @@ def MLST_ST(MLST_file):
     String1 = f.readline()
     f.close()
     ST = ['None']
-    List1 = filter(None, re.split("[()\t\n]+", String1))
+    List1 = list(filter(None, re.split("[()\t\n]+", String1)))
     if len(List1) == 17:
         ST = List1[2]
-        ST = filter(None,re.split("[/,]+", ST))
+        ST = list(filter(None,re.split("[/,]+", ST)))
     return ST
 
 def Species_Cluster_Maker(input_list):
