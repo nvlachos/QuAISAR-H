@@ -156,7 +156,7 @@ def Species_Cluster_Maker(input_list):
     for isos in input_list:
         Name = isos.split('/')[1]
         MLST = glob.glob('/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/' + isos + '/MLST/*.mlst')
-        print(isos, MLST[0])
+        print("IS:",isos, MLST[0])
         Species = MLST_Species(MLST[0])
         if Species == 'Unknown':
             Stats = '/scicomp/groups/OID/NCEZID/DHQP/CEMB/MiSeqAnalysisFiles/' + isos + '/' + Name + '_pipeline_stats.txt'
@@ -297,6 +297,7 @@ def OA_Samples(input_file, outbreak_name):
             Sample_List.append(String1)
             String1 = f.readline()
     f.close()
+	print("SL:",Sample_List)
     Species = Species_Cluster_Maker(Sample_List)
 ##    for entries in Species:
 ##        Name= entries[0][1]
