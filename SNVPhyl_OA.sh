@@ -48,7 +48,9 @@ List=$1
 Name=$2
 Folder=$3
 
-mkdir $Folder
+if [[ ! -d ${Folder} ]]; then
+	mkdir ${Folder}
+fi
 
 ml Python3/3.5.2
 
