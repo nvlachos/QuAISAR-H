@@ -115,7 +115,7 @@ def MLST_Species(MLST_file):
     String1 = f.readline()
     f.close()
     Species = 'Unknown'
-    List1 = filter(None, re.split("[()\t\n]+", String1))
+    List1 = list(filter(None, re.split("[()\t\n]+", String1)))
     if len(List1) == 17:
         Species = List1[1]
         Species = filter(None,re.split("_+", Species))
