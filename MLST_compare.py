@@ -143,10 +143,12 @@ def MLST_ST(MLST_file):
     String1 = f.readline()
     f.close()
     ST = ['None']
+	print(String1)
     List1 = list(filter(None, re.split("[()\t\n]+", String1)))
     if len(List1) == 17:
         ST = List1[2]
         ST = list(filter(None,re.split("[/,]+", ST)))
+		print(ST)
     return ST
 
 def Species_Cluster_Maker(input_list):
