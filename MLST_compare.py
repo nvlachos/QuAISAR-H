@@ -297,7 +297,7 @@ def OA_Samples(input_file, outbreak_name):
             Sample_List.append(String1)
             String1 = f.readline()
     f.close()
-	print("SL:",Sample_List)
+    print("SL:",Sample_List)
     Species = Species_Cluster_Maker(Sample_List)
 ##    for entries in Species:
 ##        Name= entries[0][1]
