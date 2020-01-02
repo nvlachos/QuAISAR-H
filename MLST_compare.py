@@ -277,7 +277,7 @@ def STs_Present(input_ST_list):
             print("is digit:"+entries)
             Final.append(int(entries))
         else:
-            print("Not digit:"+entries")
+            print("Not digit:"+entries)
             Final.append(entries)
     Final.sort()
     Out = []
