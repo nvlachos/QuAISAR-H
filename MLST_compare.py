@@ -273,6 +273,7 @@ def STs_Present(input_ST_list):
     STs = Repeat_Remover(STs)
     Final = []
     for entries in STs:
+		print(":"+entries+":")
         if str.isdigit(entries) == True:
             Final.append(int(entries))
         else:
