@@ -21,7 +21,7 @@ fi
 #
 # Modules required: srst2/0.2.0 bowtie2/2.2.4(?)
 #
-# v1.0 (10/3/2019)
+# v1.0.1 (1/6/2020)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
