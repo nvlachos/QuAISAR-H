@@ -255,7 +255,7 @@ def do_AR(input_summary_AR, input_plas, output_file, DB_name):
 	#return
 	for sample in samples:
 		sample_details=[sample[1], sample[0], sample[2], sample[3], sample[4], sample[5], sample[6], sample[7], sample[8], DB_name]
-		print("pre:",sample)
+		print("pre:", len(sample),sample)
 		for gene in all_ar_and_plasmids:
 			status=" "
 			if gene == "|":
