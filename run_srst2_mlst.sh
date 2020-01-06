@@ -26,8 +26,7 @@ fi
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
-ml srst2 bowtie2/2.2.4
-ml
+ml srst2 bowtie2/2.2.4 Python2/2.7.13
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
