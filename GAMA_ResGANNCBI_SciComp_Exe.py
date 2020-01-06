@@ -10,7 +10,7 @@
 #
 # Modules required: Biopython must be available in python instance
 #
-# v1.0.5 (12/31/2019)
+# v1.0.6 (1/06/2020) (Eq. to 4.7.4)
 #
 # Created by Rich Stanton (njr5@cdc.gov)
 #
@@ -833,7 +833,7 @@ def Best_List(input_contig_list):
             List2 = items_2.split('\t')
             if items == items_2:
                 continue
-            elif Overlap_Fraction([int(List1[2]), int(List1[3])], [int(List2[2]), int(List2[3])]) > 0.5 and List2[-1] == List1[-1]:
+            elif Overlap_Fraction([int(List1[2]), int(List1[3])], [int(List2[2]), int(List2[3])]) > 0.5:
 ##                if ('Truncation' in List1[4]) == True and ('Truncation' in List2[4]) == False:
 ##                    Add == 0
                 if float(List2[8]) > float(List1[8]):

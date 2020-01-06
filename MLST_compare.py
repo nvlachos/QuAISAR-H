@@ -9,7 +9,7 @@
 #
 # Modules required: None
 #
-# v1.0 (12/23/2019)
+# v1.0.1 (1/06/2020)
 #
 # Created by Rich Stanton (njr5@cdc.gov)
 #
@@ -320,11 +320,13 @@ def OA_Samples(input_file, outbreak_name):
             if len(clusters) > 1:
                 ST_String = STs_Present(clusters)
                 f = open(outbreak_name + '__' + Name + '__' + ST_String + '.samples', 'w')
+                clusters = Repeat_Remover(clusters)
                 for isos in clusters:
                     f.write(isos[0] + '\n')
                 f.close()
         if len(Clusters) > 1:
             f = open(outbreak_name + '__' + Name + '.samples', 'w')
+            entries = Repeat_Remover(clusters)
             for isos in entries:
                 f.write(isos[0] + '\n')
             f.close()
