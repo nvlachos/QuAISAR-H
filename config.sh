@@ -24,7 +24,7 @@ host=$(echo ${hostname} | cut -d'.' -f1)
 #echo ${hostname}
 if [[ "${host}" = "scicomp-mue-01" ]]; then
 	host="biolinux"
-elif [[ "${host}" = "scicomp-mue-prod-01" ]]; then
+elif [[ "${host}" = "scbs-mue-prod-01" ]]; then
 	host="biolinux2020"
 elif [[ "${host}" =~ ^("login01"|"aspen"|"login.aspen"|"login02"|"login2.aspen") ]]; then
 	host="aspen_login"
