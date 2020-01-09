@@ -60,9 +60,8 @@ elif  [[ "${7}" == "clobber" ]]; then
 	clobberness=${7}
 fi
 
-if  [[ "${6}" == "MATRIX" ]] || [[ "${6}" == "SNV" ]] || [[ "${6}" == "BOTH" ]] || [[ "${6}" == "matrix" ]] || [[ "${6}" == "snv" ]] || [[ "${6}" == "both" ]]  [[ "${6}" == "Matrix" ]] || [[ "${6}" == "Snv" ]] || [[ "${6}" == "Both" ]]; then
-	analysis_requested="${6^^}"
-else
+analysis_requested="${6^^}"
+if  [[ "${6}" != "MATRIX" ]] && [[ "${6}" != "SNV" ]] && [[ "${6}" != "BOTH" ]]; then
 	echo "Analysis not set correctly, should be MATRIX, SNV, or BOTH, try again"
 	exit 4565
 fi
