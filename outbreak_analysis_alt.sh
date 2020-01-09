@@ -532,7 +532,7 @@ if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "B
 		if [[ "${added}" -eq 0 ]]; then
 			echo -e "${project}\t${sample_name}\tplasmid_assembly\tNo_Plasmids_Found\t${plas_contigs}_contigs-${components}_components" >> ${output_directory}/${5}-plasmid_summary.txt
 		fi
-		
+
 	done < ${1}
 
 	# Calls script that sorts and formats all isolates info into a matrix for easy viewing
@@ -540,14 +540,14 @@ if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "B
 
 	declare -a move_list
 	move_list=(csstar_todo GAMA_todo srst2_todo alt_mlst_summary csstar_rejects csstar_summary GAMA_rejects GAMA_summary mlst_summary plasmid_summary sample_summary srst2 srst2_rejects)
-	if [[ ! -d "${output_directory}/OA_files" ]]; then
-		mkdir "${output_directory}/OA_files"
+	if [[ ! -d "${output_directory}/alt_OA_files" ]]; then
+		mkdir "${output_directory}/alt_OA_files"
 	for mlist in move_list: do
 	 	mv "${output_directory}/${5}-${mlist}.txt" "${output_directory}/alt_OA_files/${5}-${mlist}.txt"
 	done
 fi
 
-if [[ "${analysis_requested}" == "BOTH"]]  or [[ "${analysis_requested}" == "SNV" ]]; then
+if [[ "${analysis_requested}" == "BOTH" ]] or [[ "${analysis_requested}" == "SNV" ]]; then
 	"${shareScript}/SNVPhyl_OA.sh" "${1}" "${4}" "${5}_SNVPhyls"
 fi
 
