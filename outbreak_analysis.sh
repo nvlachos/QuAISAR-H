@@ -540,6 +540,7 @@ if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "B
 	move_list=(csstar_todo GAMA_todo srst2_todo alt_mlst_summary csstar_rejects csstar_summary GAMA_rejects GAMA_summary mlst_summary plasmid_summary sample_summary srst2 srst2_rejects)
 	if [[ ! -d "${output_directory}/OA_files" ]]; then
 		mkdir "${output_directory}/OA_files"
+	fi
 	for mlist in move_list: do
 	 	mv "${output_directory}/${5}-${mlist}.txt" "${output_directory}/OA_files/${5}-${mlist}.txt"
 	done
