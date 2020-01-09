@@ -541,7 +541,7 @@ if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "B
 	if [[ ! -d "${output_directory}/OA_files" ]]; then
 		mkdir "${output_directory}/OA_files"
 	fi
-	for mlist in move_list: do
+	for mlist in "${move_list[@]}"; do
 	 	mv "${output_directory}/${5}-${mlist}.txt" "${output_directory}/OA_files/${5}-${mlist}.txt"
 	done
 fi
