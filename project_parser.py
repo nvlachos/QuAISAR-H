@@ -272,7 +272,7 @@ def do_AR(input_summary_AR, input_plas, output_file, DB_name):
 				status="P:"+sample[11].get(gene)
 			sample_details.append(status)
 		#print("Post Sample check", sample_details)
-		sample_details='	'.join(map(str, sample_details))
+		sample_details=','.join(map(str, sample_details))
 		summary_out.write(sample_details+"\n")
 	summary_out.close
 #print (sys.argv[1:])
