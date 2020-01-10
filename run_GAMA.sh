@@ -50,8 +50,10 @@ elif [[ "${3}" != "-c" &&  "${3}" != "-p" ]]; then
 	exit 1
 elif [ ! -z "${4}" ]; then
 	ARDB="${4}"
+	ARDB_short=$(echo "${4}" | rev | cut -d'/' -f1 | cut -d'.' -f2- | rev)
 else
 	ARDB="${ResGANNCBI_srst2}"
+	ARDB_short="${ResGANNCBI_srst2_filename}"
 fi
 
 # Sets the output folder of GAMA classifier to the GAMA folder under the sample_name folder in processed samples
@@ -81,7 +83,7 @@ else
 	exit 5564
 fi
 ### GAMA AR Classifier ### in species mode
-python3 GAMA_ResGANNCBI_SciComp_Exe.py -i "${assembly_source}" -d "${ARDB}" -o "${OUTDATADIR}/${1}.${ResGANNCBI_srst2_filename}.GAMA"
+python3 GAMA_ResGANNCBI_SciComp_Exe.py -i "${assembly_source}" -d "${ARDB}" -o "${OUTDATADIR}/${1}.${ARDB_short}.GAMA"
 
 ml -blat -Python3/3.5.4
 
