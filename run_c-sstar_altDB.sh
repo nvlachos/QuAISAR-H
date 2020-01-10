@@ -106,22 +106,22 @@ if [ "${2}" == "u" ]; then
 	suffix="ungapped"
 	if [ ! -d "$OUTDATADIR/${alt_database}" ]; then  #create outdir if absent
 		echo "Creating $OUTDATADIR/${alt_database}"
-		mkdir -p "$OUTDATADIR/${alt_database}_${suffix}"
+		mkdir -p "$OUTDATADIR/${alt_database}_${suffix}_${sim}"
 	fi
 	owd=$(pwd)
-	cd "${OUTDATADIR}/${alt_database}_${suffix}"
+	cd "${OUTDATADIR}/${alt_database}_${suffix}_${sim}"
 	echo "Running c-SSTAR on ResGANNCBI DB"
-	python "${shareScript}/c-SSTAR_ungapped.py" -g "${source_assembly}" -s "${sim}" -d "${5}" > "${OUTDATADIR}/${alt_database}_${suffix}/${1}.${alt_database}.${suffix}_${sim}.sstar"
+	python "${shareScript}/c-SSTAR_ungapped.py" -g "${source_assembly}" -s "${sim}" -d "${5}" > "${OUTDATADIR}/${alt_database}_${suffix}_${sim}/${1}.${alt_database}.${suffix}_${sim}.sstar"
 elif [ "${2}" == "g" ]; then
 	suffix="gapped"
-	if [ ! -d "$OUTDATADIR/${alt_database}_${suffix}" ]; then  #create outdir if absent
-		echo "Creating $OUTDATADIR/${alt_database}_${suffix}"
-		mkdir -p "$OUTDATADIR/${alt_database}_${suffix}"
+	if [ ! -d "$OUTDATADIR/${alt_database}_${suffix}_${sim}" ]; then  #create outdir if absent
+		echo "Creating $OUTDATADIR/${alt_database}_${suffix}_${sim}"
+		mkdir -p "$OUTDATADIR/${alt_database}_${suffix}_${sim}"
 	fi
 	owd=$(pwd)
-	cd "${OUTDATADIR}/${alt_database}_${suffix}"
+	cd "${OUTDATADIR}/${alt_database}_${suffix}_${sim}"
 	echo "Running c-SSTAR on ResGANNCBI DB"
-	python "${shareScript}/c-SSTAR_gapped.py" -g "${source_assembly}" -s "${sim}" -d "${5}" > "${OUTDATADIR}/${alt_database}_${suffix}/${1}.${alt_database}.${suffix}_${sim}.sstar"
+	python "${shareScript}/c-SSTAR_gapped.py" -g "${source_assembly}" -s "${sim}" -d "${5}" > "${OUTDATADIR}/${alt_database}_${suffix}_${sim}/${1}.${alt_database}.${suffix}_${sim}.sstar"
 else
 	echo "Unknown run type set (only use 'g' or 'u' for gapped/ungapped analysis"
 	exit 1
@@ -178,8 +178,8 @@ while IFS= read -r line || [ -n "$line" ]; do
 	fi
 	#printf "%-10s %-50s %-15s %-25s %-25s %-40s %-4s %-5d %-5d %-5d\\n" "${source}" "${resistance}" "${label1}" "${info1}" "${label2}" "${contig}" "${percent}" "${len1}" "${len2}" "${plen}" "${SNPs}"
 	echo "${source}	${resistance}	${label1}	${info1}	${label2}	${contig}	${percent}	${len1}	${len2}	${plen}" "${SNPs}"
-done < "${OUTDATADIR}/${alt_database}_${suffix}/${1}.${alt_database}.${suffix}_${sim}.sstar" > "${OUTDATADIR}/${alt_database}_${suffix}/${1}.${alt_database}.${suffix}_${sim}.sstar_grouped"
-sort -k7,7nr -k10,10nr -k8,8n "${OUTDATADIR}/${alt_database}_${suffix}/${1}.${alt_database}.${suffix}_${sim}.sstar_grouped" > "${OUTDATADIR}/${1}.${alt_database}.${suffix}_${sim}_sstar_summary.txt"
+done < "${OUTDATADIR}/${alt_database}_${suffix}_${sim}/${1}.${alt_database}.${suffix}_${sim}.sstar" > "${OUTDATADIR}/${alt_database}_${suffix}_${sim}/${1}.${alt_database}.${suffix}_${sim}.sstar_grouped"
+sort -k7,7nr -k10,10nr -k8,8n "${OUTDATADIR}/${alt_database}_${suffix}_${sim}/${1}.${alt_database}.${suffix}_${sim}.sstar_grouped" > "${OUTDATADIR}/${1}.${alt_database}.${suffix}_${sim}_sstar_summary.txt"
 
 # Catches an empty or missing file
 if [ ! -s "${OUTDATADIR}/${1}.${alt_database}.${suffix}_${sim}_sstar_summary.txt" ]; then

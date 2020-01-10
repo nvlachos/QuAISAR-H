@@ -83,10 +83,10 @@ else
 	elif [[ "${2}" = "u" ]]; then
 		suffix="ungapped"
 	fi
-	if [[ ! -d "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}" ]]; then
-		mkdir -p "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}"
+	if [[ ! -d "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}_${sim}" ]]; then
+		mkdir -p "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}_${sim}"
 	fi
-	#echo "No anti-microbial genes were found using c-SSTAR because there were No Plasmids Found" > "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}.sstar"
+	#echo "No anti-microbial genes were found using c-SSTAR because there were No Plasmids Found" > "${OUTDATADIR}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}.sstar"
 	exit
 fi
 
@@ -104,25 +104,25 @@ if [ "${2}" == "u" ]; then
 	suffix="ungapped"
 	if [ ! -d "$OUTDATADIR/${ResGANNCBI_srst2_filename}" ]; then  #create outdir if absent
 		echo "Creating $OUTDATADIR/${ResGANNCBI_srst2_filename}"
-		mkdir -p "$OUTDATADIR/${ResGANNCBI_srst2_filename}_${suffix}"
+		mkdir -p "$OUTDATADIR/${ResGANNCBI_srst2_filename}_${suffix}_${sim}"
 	fi
 	owd=$(pwd)
-	cd "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}"
+	cd "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}_${sim}"
 	echo "Running c-SSTAR on ResGANNCBI DB using"
-	echo "python \"${shareScript}/c-SSTAR_ungapped.py\" -g \"${source_assembly}\" -s \"${sim}\" -d \"${ResGANNCBI_srst2}\" > \"${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}.sstar\""
-	python3 "${shareScript}/c-SSTAR_ungapped.py" -g "${source_assembly}" -s "${sim}" -d "${ResGANNCBI_srst2}" > "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}.sstar"
+	echo "python \"${shareScript}/c-SSTAR_ungapped.py\" -g \"${source_assembly}\" -s \"${sim}\" -d \"${ResGANNCBI_srst2}\" > \"${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}_${sim}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}.sstar\""
+	python3 "${shareScript}/c-SSTAR_ungapped.py" -g "${source_assembly}" -s "${sim}" -d "${ResGANNCBI_srst2}" > "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}_${sim}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}.sstar"
 # Calls the gapped version of csstar
 elif [ "${2}" == "g" ]; then
 	suffix="gapped"
-	if [ ! -d "$OUTDATADIR/${ResGANNCBI_srst2_filename}_${suffix}" ]; then  #create outdir if absent
-		echo "Creating $OUTDATADIR/${ResGANNCBI_srst2_filename}_${suffix}"
-		mkdir -p "$OUTDATADIR/${ResGANNCBI_srst2_filename}_${suffix}"
+	if [ ! -d "$OUTDATADIR/${ResGANNCBI_srst2_filename}_${suffix}_${sim}" ]; then  #create outdir if absent
+		echo "Creating $OUTDATADIR/${ResGANNCBI_srst2_filename}_${suffix}_${sim}"
+		mkdir -p "$OUTDATADIR/${ResGANNCBI_srst2_filename}_${suffix}_${sim}"
 	fi
 	owd=$(pwd)
-	cd "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}"
+	cd "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}_${sim}"
 	echo "Running c-SSTAR on ResGANNCBI DB"
-	echo "python \"${shareScript}/c-SSTAR_gapped.py\" -g \"${source_assembly}\" -s \"${sim}\" -d \"${ResGANNCBI_srst2}\" > \"${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}.sstar\""
-	python3 "${shareScript}/c-SSTAR_gapped.py" -g "${source_assembly}" -s "${sim}" -d "${ResGANNCBI_srst2}" > "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}.sstar"
+	echo "python \"${shareScript}/c-SSTAR_gapped.py\" -g \"${source_assembly}\" -s \"${sim}\" -d \"${ResGANNCBI_srst2}\" > \"${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}_${sim}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}.sstar\""
+	python3 "${shareScript}/c-SSTAR_gapped.py" -g "${source_assembly}" -s "${sim}" -d "${ResGANNCBI_srst2}" > "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}_${sim}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}.sstar"
 # Unknown gapping parameter when called (not 'g' or 'u')
 else
 	echo "Unknown run type set (only use 'g' or 'u' for gapped/ungapped analysis"
@@ -189,9 +189,9 @@ while IFS= read -r line || [ -n "$line" ]; do
 	fi
 	#printf "%-10s %-50s %-15s %-25s %-25s %-40s %-4s %-5d %-5d %-5d\\n" "${source}1" "${resistance}2" "${label1}3" "${info1}4" "${label2}5" "${contig}A" "${percent}B" "${len1}C" "${len2}D" "${plen}E"
 	echo "${source}	${resistance}	${label1}	${info1}	${label2}	${contig}	${percent}	${len1}	${len2}	${plen}"
-done < "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}.sstar" > "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}.sstar_grouped"
+done < "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}_${sim}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}.sstar" > "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}_${sim}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}.sstar_grouped"
 # Writes all AR genes to file based on %ID, %length, and finally length of gene
-sort -k7,7nr -k10,10nr -k8,8n "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}.sstar_grouped" > "${OUTDATADIR}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}_sstar_summary.txt"
+sort -k7,7nr -k10,10nr -k8,8n "${OUTDATADIR}/${ResGANNCBI_srst2_filename}_${suffix}_${sim}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}.sstar_grouped" > "${OUTDATADIR}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}_sstar_summary.txt"
 
 # Catches an empty or missing file, adding that no AMR genes were found if no file was created
 if [ ! -s "${OUTDATADIR}/${1}.${ResGANNCBI_srst2_filename}.${suffix}_${sim}_sstar_summary.txt" ]; then
