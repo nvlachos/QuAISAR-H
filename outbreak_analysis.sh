@@ -75,12 +75,12 @@ if [[ -f "${shareScript}/outbreak_analysis.err" ]]; then
 fi
 
 # Creates the output directory if it does not exist
-output_directory=${4}/${5}
+output_directory=${def_OA}/${5}
 if [[ ! -d ${output_directory} ]]; then
 	mkdir -p ${output_directory}
 fi
 
-# # Remove any pre-existing files from previous runs
+## Remove any pre-existing files from previous runs
 if [[ -f ${output_directory}/${5}-mlst_summary.txt ]]; then
 	rm ${output_directory}/${5}-mlst_summary.txt
 fi
