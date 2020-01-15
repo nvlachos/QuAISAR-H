@@ -56,12 +56,12 @@ elif [[ "${2}" != "gapped" ]] && [[ "${2}" != "ungapped" ]]; then
 elif [[ "${3}" != 80 ]] && [[ "${3}" != 95 ]] && [[ "${3}" != 98 ]] && [[ "${3}" != 99 ]] && [[ "${3}" != 100 ]]; then
 	echo "Identity is not one of the presets for csstar and therefore will fail, exiting..."
 	exit 1
-elif  [[ "${7}" == "clobber" ]]; then
-	clobberness=${7}
+elif  [[ "${6}" == "clobber" ]]; then
+	clobberness=${6}
 fi
 
-analysis_requested="${6^^}"
-if  [[ "${6}" != "MATRIX" ]] && [[ "${6}" != "SNV" ]] && [[ "${6}" != "BOTH" ]]; then
+analysis_requested="${5^^}"
+if  [[ "${5}" != "MATRIX" ]] && [[ "${5}" != "SNV" ]] && [[ "${5}" != "BOTH" ]]; then
 	echo "Analysis not set correctly, should be MATRIX, SNV, or BOTH, try again"
 	exit 4565
 fi
@@ -84,32 +84,32 @@ if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "B
 	fi
 
 	# # Remove any pre-existing files from previous runs
-	if [[ -f ${output_directory}/${5}-mlst_summary.txt ]]; then
-		rm ${output_directory}/${5}-mlst_summary.txt
+	if [[ -f ${output_directory}/${4}-mlst_summary.txt ]]; then
+		rm ${output_directory}/${4}-mlst_summary.txt
 	fi
-	if [[ -f ${output_directory}/${5}-csstar_summary.txt ]]; then
-		rm ${output_directory}/${5}-csstar_summary.txt
+	if [[ -f ${output_directory}/${4}-csstar_summary.txt ]]; then
+		rm ${output_directory}/${4}-csstar_summary.txt
 	fi
-	if [[ -f ${output_directory}/${5}-plasmid_summary.txt ]]; then
-		rm ${output_directory}/${5}-plasmid_summary.txt
+	if [[ -f ${output_directory}/${4}-plasmid_summary.txt ]]; then
+		rm ${output_directory}/${4}-plasmid_summary.txt
 	fi
-	if [[ -f ${output_directory}/${5}_AR_plasmid_report.tsv ]]; then
-		rm ${output_directory}/${5}_AR_plasmid_report.tsv
+	if [[ -f ${output_directory}/${4}_AR_plasmid_report.tsv ]]; then
+		rm ${output_directory}/${4}_AR_plasmid_report.tsv
 	fi
-	if [[ -f ${output_directory}/${5}-sample_summary.txt ]]; then
-		rm ${output_directory}/${5}-sample_summary.txt
+	if [[ -f ${output_directory}/${4}-sample_summary.txt ]]; then
+		rm ${output_directory}/${4}-sample_summary.txt
 	fi
-	if [[ -f ${output_directory}/${5}-GAMA_summary.txt ]]; then
-		rm ${output_directory}/${5}-GAMA_summary.txt
+	if [[ -f ${output_directory}/${4}-GAMA_summary.txt ]]; then
+		rm ${output_directory}/${4}-GAMA_summary.txt
 	fi
-	if [[ -f ${output_directory}/${5}-GAMA_rejects.txt ]]; then
-		rm ${output_directory}/${5}-GAMA_rejects.txt
+	if [[ -f ${output_directory}/${4}-GAMA_rejects.txt ]]; then
+		rm ${output_directory}/${4}-GAMA_rejects.txt
 	fi
-	if [[ -f ${output_directory}/${5}-srst2.txt ]]; then
-		rm ${output_directory}/${5}-srst2.txt
+	if [[ -f ${output_directory}/${4}-srst2.txt ]]; then
+		rm ${output_directory}/${4}-srst2.txt
 	fi
-	if [[ -f ${output_directory}/${5}-srst2_rejects.txt ]]; then
-		rm ${output_directory}/${5}-srst2_rejects.txt
+	if [[ -f ${output_directory}/${4}-srst2_rejects.txt ]]; then
+		rm ${output_directory}/${4}-srst2_rejects.txt
 	fi
 
 	# Clean list of any extra spaces and formatting
@@ -138,9 +138,9 @@ if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "B
 	run_csstar="false"
 	run_srst2="false"
 	run_GAMA="false"
-	> "${output_directory}/${5}-csstar_todo.txt"
-	> "${output_directory}/${5}-srst2_todo.txt"
-	> "${output_directory}/${5}-GAMA_todo.txt"
+	> "${output_directory}/${4}-csstar_todo.txt"
+	> "${output_directory}/${4}-srst2_todo.txt"
+	> "${output_directory}/${4}-GAMA_todo.txt"
 
 	# Check that each isolate has been compared to the newest ResGANNCBI DB file
 	if [[ "${clobberness}" == "keep" ]]; then
@@ -156,7 +156,7 @@ if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "B
 				:
 			else
 				echo "${project}/${sample_name} - ccstar needs to be run against ${ResGANNCBI_srst2_filename} at ${sim}"
-				echo "${project}/${sample_name}" >> "${output_directory}/${5}-csstar_todo.txt"
+				echo "${project}/${sample_name}" >> "${output_directory}/${4}-csstar_todo.txt"
 				run_csstar="true"
 			fi
 			#echo "checking for ${OUTDATADIR}/srst2/${sample_name}__genes__${ResGANNCBI_srst2_filename}_srst2__results.txt"
@@ -167,7 +167,7 @@ if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "B
 						:
 					else
 						echo "${project}/${sample_name} - SRST2 needs to be run against ${ResGANNCBI_srst2_filename}"
-						echo "${project}/${sample_name}" >> "${output_directory}/${5}-srst2_todo.txt"
+						echo "${project}/${sample_name}" >> "${output_directory}/${4}-srst2_todo.txt"
 						run_srst2="true"
 				fi
 			fi
@@ -181,7 +181,7 @@ if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "B
 				:
 			else
 				echo "${project}/${sample_name} - GAMA needs to be run against ${ResGANNCBI_srst2_filename}"
-				echo "${project}/${sample_name}" >> "${output_directory}/${5}-GAMA_todo.txt"
+				echo "${project}/${sample_name}" >> "${output_directory}/${4}-GAMA_todo.txt"
 				run_GAMA="true"
 			fi
 		done < ${1}
@@ -189,35 +189,35 @@ if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "B
 		run_csstar="true"
 		run_srst2="true"
 		run_GAMA="true"
-		rm "${output_directory}/${5}-csstar_todo.txt"
-		rm "${output_directory}/${5}-srst2_todo.txt"
-		rm "${output_directory}/${5}-GAMA_todo.txt"
-		echo "Copying ${1} to ${output_directory}/${5}_*_todo.txt"
-		cp ${1} "${output_directory}/${5}-csstar_todo.txt"
-		cp ${1} "${output_directory}/${5}-srst2_todo.txt"
-		cp ${1} "${output_directory}/${5}-GAMA_todo.txt"
+		rm "${output_directory}/${4}-csstar_todo.txt"
+		rm "${output_directory}/${4}-srst2_todo.txt"
+		rm "${output_directory}/${4}-GAMA_todo.txt"
+		echo "Copying ${1} to ${output_directory}/${4}_*_todo.txt"
+		cp ${1} "${output_directory}/${4}-csstar_todo.txt"
+		cp ${1} "${output_directory}/${4}-srst2_todo.txt"
+		cp ${1} "${output_directory}/${4}-GAMA_todo.txt"
 	fi
 
 	# Creating mashtree of all isolates in list
 	echo "Creating mashtree of all samples"
-	${shareScript}/mashtree_of_list.sh -i "${1}" -d "${output_directory}/mashtree" -o "${5}"
-	cp "${output_directory}/mashtree/${5}.dnd" "${output_directory}/${5}_MASH.newick"
-	sed -i "s/_scaffolds_trimmed//g" "${output_directory}/${5}_MASH.newick"
+	${shareScript}/mashtree_of_list.sh -i "${1}" -d "${output_directory}/mashtree" -o "${4}"
+	cp "${output_directory}/mashtree/${4}.dnd" "${output_directory}/${4}_MASH.newick"
+	sed -i "s/_scaffolds_trimmed//g" "${output_directory}/${4}_MASH.newick"
 	rm -r ${output_directory}/mashtree
 
 	# Submits the list of isolates that need the newest ResGANNCBI file for csstar
 	if [[ "${run_csstar}" = "true" ]]; then
 		echo "Submitting list for csstar qsub analysis"
-		qsub -sync y ${shareScript}/abl_mass_qsub_csstar.sh "${output_directory}/${5}-csstar_todo.txt" 25 "${mass_qsub_folder}" "${clobberness}" "${sim}"
+		qsub -sync y ${shareScript}/abl_mass_qsub_csstar.sh "${output_directory}/${4}-csstar_todo.txt" 25 "${mass_qsub_folder}" "${clobberness}" "${sim}"
 	fi
 	# Submits the list of isolates that need the newest ResGANNCBI file for srst2
 	if [[ "${run_srst2}" = "true" ]]; then
 		echo "Submitting list for srst2 qsub analysis"
-		qsub -sync y ${shareScript}/abl_mass_qsub_srst2.sh "${output_directory}/${5}-srst2_todo.txt" 25 "${mass_qsub_folder}" "${clobberness}"
+		qsub -sync y ${shareScript}/abl_mass_qsub_srst2.sh "${output_directory}/${4}-srst2_todo.txt" 25 "${mass_qsub_folder}" "${clobberness}"
 	fi
 	if [[ "${run_GAMA}" = "true" ]]; then
 		echo "Submitting list for GAMA qsub analysis"
-		qsub -sync y ${shareScript}/abl_mass_qsub_GAMA.sh "${output_directory}/${5}-GAMA_todo.txt" 25 "${mass_qsub_folder}" "${clobberness}"
+		qsub -sync y ${shareScript}/abl_mass_qsub_GAMA.sh "${output_directory}/${4}-GAMA_todo.txt" 25 "${mass_qsub_folder}" "${clobberness}"
 	fi
 
 	echo $(date)
@@ -261,19 +261,19 @@ if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "B
 					fi
 					# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
 				else
-					echo -e "${project}\t${sample_name}\tfull_assembly\t${line}" >> ${output_directory}/${5}-csstar_rejects.txt
+					echo -e "${project}\t${sample_name}\tfull_assembly\t${line}" >> ${output_directory}/${4}-csstar_rejects.txt
 				fi
 			done < ${ARDB_full}
 			if [[ -z "${csstar_list}" ]]; then
 				#echo "EMPTY-${project}	${sample_name}	No AR genes discovered"
-				echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${5}-csstar_summary.txt
+				echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-csstar_summary.txt
 				csstar_list="No AR genes discovered"
 			else
 				#echo "OCCUPADO-${project}	${sample_name}	:${csstar_list}:"
-				echo "${project}	${sample_name}	${csstar_list}" >> ${output_directory}/${5}-csstar_summary.txt
+				echo "${project}	${sample_name}	${csstar_list}" >> ${output_directory}/${4}-csstar_summary.txt
 			fi
 		else
-			echo "${project}	${sample_name}	NO CURRENT FILE" >> ${output_directory}/${5}-csstar_summary.txt
+			echo "${project}	${sample_name}	NO CURRENT FILE" >> ${output_directory}/${4}-csstar_summary.txt
 		fi
 
 		GAMA_list=""
@@ -312,17 +312,17 @@ if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "B
 					fi
 				# If length is less than predetermined minimum (90% right now) then the gene is added to a rejects list to show it was outside acceptable limits
 				else
-					echo -e "${project}\t${sample_name}\tfull_assembly\t${line}" >> ${output_directory}/${5}-GAMA_rejects.txt
+					echo -e "${project}\t${sample_name}\tfull_assembly\t${line}" >> ${output_directory}/${4}-GAMA_rejects.txt
 				fi
 			done < ${GARDB_full}
 			if [[ -z "${GAMA_list}" ]]; then
-				echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${5}-GAMA_summary.txt
+				echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-GAMA_summary.txt
 				GAMA_list="No AR genes discovered"
 			else
-				echo "${project}	${sample_name}	${GAMA_list}" >> ${output_directory}/${5}-GAMA_summary.txt
+				echo "${project}	${sample_name}	${GAMA_list}" >> ${output_directory}/${4}-GAMA_summary.txt
 			fi
 		else
-			echo "${project}	${sample_name}	NO CURRENT FILE" >> ${output_directory}/${5}-GAMA_summary.txt
+			echo "${project}	${sample_name}	NO CURRENT FILE" >> ${output_directory}/${4}-GAMA_summary.txt
 		fi
 
 		# Adding in srst2 output in a similar fashion as to how the csstar genes are output to the file.
@@ -382,22 +382,22 @@ if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "B
 					if [[ ${line} = "Sample	DB	gene"* ]]; then
 						:
 					else
-						echo ${line} >> ${output_directory}/${5}-srst2_rejects.txt
+						echo ${line} >> ${output_directory}/${4}-srst2_rejects.txt
 					fi
 				fi
 			done < "${OUTDATADIR}/srst2/${sample_name}__fullgenes__${ResGANNCBI_srst2_filename}_srst2__results.txt"
 			#echo "Test1"
 			if [[ -z "${srst2_results}" ]]; then
 				#echo "1"
-				echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${5}-srst2.txt
+				echo "${project}	${sample_name}	No AR genes discovered" >> ${output_directory}/${4}-srst2.txt
 				srst2_results="No AR genes discovered"
 			else
 				#echo "2"
-				echo "${project}	${sample_name}	${srst2_results}" >> ${output_directory}/${5}-srst2.txt
+				echo "${project}	${sample_name}	${srst2_results}" >> ${output_directory}/${4}-srst2.txt
 			fi
 		else
 			#echo "3"
-			echo "${project}	${sample_name}	NO CURRENT FILE" >> ${output_directory}/${5}-srst2.txt
+			echo "${project}	${sample_name}	NO CURRENT FILE" >> ${output_directory}/${4}-srst2.txt
 			srst2_results="NO CURRENT FILE"
 		fi
 
@@ -458,7 +458,7 @@ if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "B
 			mlst="N/A"
 			alleles="N/A"
 		fi
-		echo -e "${project}\t${sample_name}\t${mlst}\t${alleles}" >> ${output_directory}/${5}-mlst_summary.txt
+		echo -e "${project}\t${sample_name}\t${mlst}\t${alleles}" >> ${output_directory}/${4}-mlst_summary.txt
 
 		# Pulls Alternate MLST type for sample and adds it to the summary file
 		if [[ -f "${OUTDATADIR}/MLST/${sample_name}_Oxford.mlst" ]]; then
@@ -482,10 +482,10 @@ if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "B
 			alt_mlst="N/A"
 			alt_alleles="N/A"
 		fi
-		echo -e "${project}\t${sample_name}\t${alt_mlst}\t${alt_alleles}" >> ${output_directory}/${5}-alt_mlst_summary.txt
+		echo -e "${project}\t${sample_name}\t${alt_mlst}\t${alt_alleles}" >> ${output_directory}/${4}-alt_mlst_summary.txt
 
   	# Print all extracted info to primary file
-		echo -e "${project}\t${sample_name}\t${taxonomy}\t${taxonomy_source_type}\t${confidence_info}\t${mlst}\t${alleles}\t${alt_mlst}\t${alt_alleles}\t${csstar_list}\t${srst2_results}\t${GAMA_list}" >> ${output_directory}/${5}-sample_summary.txt
+		echo -e "${project}\t${sample_name}\t${taxonomy}\t${taxonomy_source_type}\t${confidence_info}\t${mlst}\t${alleles}\t${alt_mlst}\t${alt_alleles}\t${csstar_list}\t${srst2_results}\t${GAMA_list}" >> ${output_directory}/${4}-sample_summary.txt
 
 		# Goes through the plasmid file of the sample and adds all found plasmid replicons to the summary file
 		#echo "Starting plasmid extraction"
@@ -502,12 +502,12 @@ if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "B
 				# echo "Not using line: $plasmid"
 				:
 			else
-				echo -e "${project}\t${sample_name}\tfull_assembly\t${plasmid}" >> ${output_directory}/${5}-plasmid_summary.txt
+				echo -e "${project}\t${sample_name}\tfull_assembly\t${plasmid}" >> ${output_directory}/${4}-plasmid_summary.txt
 				added=1
 			fi
 		done < ${OUTDATADIR}/plasmid/${sample_name}_results_table_summary.txt
 		if [[ "${added}" -eq 0 ]]; then
-			echo -e "${project}\t${sample_name}\tfull_assembly\tNo_Plasmids_Found\t${full_contigs}_contigs-${components}_components" >> ${output_directory}/${5}-plasmid_summary.txt
+			echo -e "${project}\t${sample_name}\tfull_assembly\tNo_Plasmids_Found\t${full_contigs}_contigs-${components}_components" >> ${output_directory}/${4}-plasmid_summary.txt
 		fi
 		plas_contigs=">"
 		plas_contigs=$(grep -c ${plas_contigs} "${OUTDATADIR}/plasFlow/Unicycler_assemblies/${sample_name}_uni_assembly/${sample_name}_plasmid_assembly_trimmed.fasta")
@@ -522,19 +522,19 @@ if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "B
 			if [[ "${line_in}" = "No" ]] || [[ "${line_in}" = "Enterococcus,Streptococcus,Staphylococcus" ]] || [[ "${line_in}" = "Enterobacteriaceae" ]] || [[ "${line_in}" = "Plasmid" ]]; then
 				:
 			else
-				echo -e "${project}\t${sample_name}\tplasmid_assembly\t${plasmid}" >> ${output_directory}/${5}-plasmid_summary.txt
+				echo -e "${project}\t${sample_name}\tplasmid_assembly\t${plasmid}" >> ${output_directory}/${4}-plasmid_summary.txt
 				added=1
 			fi
 		done < ${OUTDATADIR}/plasmid_on_plasFlow/${sample_name}_results_table_summary.txt
 
 		if [[ "${added}" -eq 0 ]]; then
-			echo -e "${project}\t${sample_name}\tplasmid_assembly\tNo_Plasmids_Found\t${plas_contigs}_contigs-${components}_components" >> ${output_directory}/${5}-plasmid_summary.txt
+			echo -e "${project}\t${sample_name}\tplasmid_assembly\tNo_Plasmids_Found\t${plas_contigs}_contigs-${components}_components" >> ${output_directory}/${4}-plasmid_summary.txt
 		fi
 
 	done < ${1}
 
 	# Calls script that sorts and formats all isolates info into a matrix for easy viewing
-	python3 "${shareScript}/project_parser.py" -s "${output_directory}/${5}-sample_summary.txt" -p "${output_directory}/${5}-plasmid_summary.txt" -o "${output_directory}/${5}_AR_plasmid_report.csv" -d "${ResGANNCBI_srst2_filename}"
+	python3 "${shareScript}/project_parser.py" -s "${output_directory}/${4}-sample_summary.txt" -p "${output_directory}/${4}-plasmid_summary.txt" -o "${output_directory}/${4}_AR_plasmid_report.csv" -d "${ResGANNCBI_srst2_filename}"
 
 	declare -a move_list
 	move_list=(csstar_todo GAMA_todo srst2_todo alt_mlst_summary csstar_rejects csstar_summary GAMA_rejects GAMA_summary mlst_summary plasmid_summary sample_summary srst2 srst2_rejects)
@@ -542,7 +542,7 @@ if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "B
 		mkdir "${output_directory}/OA_files"
 	fi
 	for mlist in "${move_list[@]}"; do
-	 	mv "${output_directory}/${5}-${mlist}.txt" "${output_directory}/OA_files/${5}-${mlist}.txt"
+	 	mv "${output_directory}/${4}-${mlist}.txt" "${output_directory}/OA_files/${4}-${mlist}.txt"
 	done
 fi
 
