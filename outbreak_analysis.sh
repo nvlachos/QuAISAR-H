@@ -17,7 +17,7 @@ fi
 #
 # Description: Pulls out MLST, AR genes, and plasmid repicons and creates a mashtree for the listed samples and consolidates them into one sheet
 #
-# Usage ./outbreak_analysis.sh path_to_list gapped/ungapped (analysis ran) identity (80/95/98/99/100) output_directory(will create a folder at this location with name of analysis_identifier) analysis_identifier(e.g. outbreak identifier) [MATRIX|SNV|Both] clobberness[keep|clobber]
+# Usage ./outbreak_analysis.sh path_to_list gapped/ungapped (analysis ran) identity (80/95/98/99/100) analysis_identifier(e.g. outbreak identifier) [MATRIX|SNV|Both] clobberness[keep|clobber]
 #
 # Output location: Parameter
 #
@@ -43,7 +43,7 @@ if [[ $# -eq 0 ]]; then
 	exit 1
 # Shows a brief uasge/help section if -h option used as first argument
 elif [[ "$1" = "-h" ]]; then
-	echo "Usage is ./outbreak_analysis.sh path_to_list_file gapped/ungapped 80/95/98/99/100 output_directory output_prefix [matrix|SNV|both] clobberness[keep|clobber]"
+	echo "Usage is ./outbreak_analysis.sh path_to_list_file gapped/ungapped 80/95/98/99/100 output_prefix [matrix|SNV|both] clobberness[keep|clobber]"
 	exit 0
 elif [[ ! -f ${1} ]]; then
 	echo "list does not exist...exiting"
@@ -78,7 +78,7 @@ fi
 
 if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "BOTH" ]]; then
 	# Creates the output directory if it does not exist
-	output_directory=${4}/${5}
+	output_directory=${Phyl_OA}/${4}
 	if [[ ! -d ${output_directory} ]]; then
 		mkdir -p ${output_directory}
 	fi
@@ -547,7 +547,7 @@ if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "B
 fi
 
 if [[ "${analysis_requested}" == "BOTH"]] || [[ "${analysis_requested}" == "SNV" ]]; then
-	"${shareScript}/SNVPhyl_OA.sh" "${1}" "${4}" "${5}_SNVPhyls"
+	"${shareScript}/SNVPhyl_OA.sh" "${1}" "${4}" "${Phyl_OA}/${4}"
 fi
 
 
