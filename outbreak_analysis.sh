@@ -547,7 +547,7 @@ if [[ "${analysis_requested}" == "MATRIX" ]] || [[ "${analysis_requested}" == "B
 fi
 
 if [[ "${analysis_requested}" == "BOTH"]] || [[ "${analysis_requested}" == "SNV" ]]; then
-	"${shareScript}/SNVPhyl_OA.sh" "${1}" "${4}" "${Phyl_OA}/${4}"
+	"${shareScript}/SNVPhyl_OA.sh" "${1}" "${4}" "${Phyl_OA}"
 fi
 
 
