@@ -12,7 +12,7 @@
 #
 # Modules required: None
 #
-# v1.0.1 (1/8/2020)
+# v1.0.1 (1/17/2020)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
@@ -30,6 +30,9 @@ elif [[ "${host}" =~ ^("login01"|"aspen"|"login.aspen"|"login02"|"login2.aspen")
 	host="aspen_login"
 elif [[ "${host:0:4}" = "node" ]]; then
 	host="cluster:${host}"
+elif [[ "${host}" = "scbs-mue-prod-01" ]];
+then
+	host="Biolinux2020"
 else
 	echo "Hostname (${host}) not recognized, exiting"
 	exit 1
@@ -48,7 +51,8 @@ mass_qsub_folder="/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/mass_subs"
 if [[ ! -d "/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/mass_subs" ]]; then
 	mkdir -p "/scicomp/groups/OID/NCEZID/DHQP/CEMB/Nick_DIR/mass_subs"
 fi
-
+# Location of default Outbreak Analyses files
+Phyl_OA="/scicomp/groups/OID/NCEZID/DHQP/CEMB/PhylogenyAnalysis"
 # Local databases that are necessary for pipeline...ANI, BUSCO, star, adapters, phiX
 local_DBs="/scicomp/groups/OID/NCEZID/DHQP/CEMB/databases"
 # Scicomp databases that are necessary for pipeline...eventually refseq, kraken, gottcha,

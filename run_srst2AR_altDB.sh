@@ -26,7 +26,7 @@ fi
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #
 
-ml srst2 bowtie2/2.2.4 Python2/2.7.13
+ml srst2 bowtie2/2.2.4
 
 # Checks for proper argumentation
 if [[ $# -eq 0 ]]; then
@@ -84,8 +84,8 @@ srst2 --input_pe "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz" "${
 # Clean up extra files
 rm -r "${processed}/${2}/${1}/srst2/${1}_S1_L001_R1_001.fastq.gz"
 rm -r "${processed}/${2}/${1}/srst2/${1}_S1_L001_R2_001.fastq.gz"
-rm -r "${processed}/${2}/${1}/srst2/"*".bam"
-rm -r "${processed}/${2}/${1}/srst2/"*".pileup"
+#rm -r "${processed}/${2}/${1}/srst2/"*".bam"
+#rm -r "${processed}/${2}/${1}/srst2/"*".pileup"
 
 # Rename files to reduce redundancy
 find ${processed}/${2}/${1}/srst2 -type f -name "*_${alt_DB}__*" | while read FILE ; do

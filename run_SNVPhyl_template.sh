@@ -21,7 +21,7 @@ fi
 #
 # Modules required: snvphyl-galaxy-cli/1.3.0, Python/2.7.13 Mash/2.0
 #
-# v1.0 (10/3/2019)
+# v1.0.1 (1/15/2020)
 #
 # Created by Nick Vlachos (nvx4@cdc.gov)
 #

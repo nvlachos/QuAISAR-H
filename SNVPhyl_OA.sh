@@ -21,7 +21,7 @@ fi
 #
 # Modules required: None
 #
-# v1.0 (12/23/2019)
+# v1.0.1 (1/15/2019)
 #
 # Created by Rich Stanton (njr5@cdc.gov)
 #
@@ -54,12 +54,16 @@ fi
 
 ml Python3/3.5.2
 
-python MLST_compare.py -i $List -o $Folder/$Name
+python MLST_compare.py -i $List -o $Folder/$Name/$Name
 
-for k in $Folder/*.samples
+for k in $Folder/$Name/*.samples
 do
 	sample=$(basename $k)
-	qsub qSNVPhyl.sh $k $Folder ${sample:0: -8}
+	echo "qSNVPhyl.sh $k $Folder/$Name ${sample:0: -8}"
+	qsub qSNVPhyl.sh $k $Folder/$Name ${sample:0: -8}
 done
+
+short_list=$(basename $List)
+cp $List $Folder/$Name/$short_list.original
 
 ml -Python3/3.5.2
